@@ -25,4 +25,4 @@ FIRE.SpriteTexture = (function (super_) {
     };
 
     return SpriteTexture;
-})(Texture);
+})(FIRE.Texture);
