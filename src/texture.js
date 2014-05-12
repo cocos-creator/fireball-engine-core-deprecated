@@ -1,7 +1,9 @@
-FIRE.Texture = (function (super_) {
+FIRE.Texture = (function () {
+    var _super = FIRE.Asset;
+
     // constructor
     function Texture ( img ) {
-        super_.call(this, img);
+        _super.call(this, img);
 
         // basic settings
         this.name = "";
@@ -9,7 +11,7 @@ FIRE.Texture = (function (super_) {
         this.width = img.width;
         this.height = img.height;
     }
-    FIRE.extend(Texture, super_);
+    FIRE.extend(Texture, _super);
 
     return Texture;
-})(FIRE.Asset);
+})();

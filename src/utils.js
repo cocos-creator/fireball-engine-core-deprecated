@@ -66,7 +66,7 @@
 };
 
 // modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class
-var getClassName = function (obj) {
+FIRE.getClassName = function (obj) {
     if (obj && obj.constructor) {
         //  for browsers which have name property in the constructor of the object, such as chrome 
         if (obj.constructor.name) {
@@ -87,5 +87,5 @@ var getClassName = function (obj) {
             }
         }
     }
-    return undefined;
+    return null;
 };

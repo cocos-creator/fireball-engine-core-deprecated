@@ -1,7 +1,9 @@
-FIRE.SpriteTexture = (function (super_) {
+FIRE.SpriteTexture = (function () {
+    var _super = FIRE.Texture;
+
     // constructor
     function SpriteTexture ( img ) {
-        super_.call(this,img);
+        _super.call(this,img);
 
         // basic settings
         this.rotated = false;
@@ -14,7 +16,7 @@ FIRE.SpriteTexture = (function (super_) {
         this.x = 0;
         this.y = 0;
     }
-    FIRE.extend(SpriteTexture, super_);
+    FIRE.extend(SpriteTexture, _super);
 
     SpriteTexture.prototype.rotatedWidth = function () {
         return this.rotated ? this.height : this.width;
@@ -25,4 +27,4 @@ FIRE.SpriteTexture = (function (super_) {
     };
 
     return SpriteTexture;
-})(FIRE.Texture);
+})();

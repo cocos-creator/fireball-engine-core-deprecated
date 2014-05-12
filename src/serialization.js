@@ -1,19 +1,19 @@
 ﻿FIRE.ReferenceType = function () {};
 
 FIRE.Asset = (function () {
-    var super_ = FIRE.ReferenceType;
+    var _super = FIRE.ReferenceType;
     // constructor
     function Asset () {
-        super_.call(this);
+        _super.call(this);
     }
-    FIRE.extend(Asset, super_);
+    FIRE.extend(Asset, _super);
     return Asset;
 })();
 
 // obj: the obj to serialize
 // referencedList: list of all ReferenceType objs
 // serializedList: list of serialized data for all ReferenceType objs
-var getSerializedData = function (obj, canNestObj, referencedList, serializedList) {
+var _getSerializedData = function (obj, canNestObj, referencedList, serializedList) {
     // TODO: 这里的算法还是有问题，因为Array和dict都有可能相互嵌套
     var retval; // serialized object
     var entry;  // sub item
@@ -24,8 +24,8 @@ var getSerializedData = function (obj, canNestObj, referencedList, serializedLis
             entry = obj[i];
             if (typeof entry === 'object') {
                 //if (canNestObj) {
-                    data = getSerializedData(entry, false, referencedList, serializedList);
-                    serializedList[data.id].type = getClassName(entry);  // array needs to know class type
+                    data = _getSerializedData(entry, false, referencedList, serializedList);
+                    serializedList[data.id].type = FIRE.getClassName(entry);  // array needs to know class type
                     retval.push(data);
                 //}
                 //else {
@@ -69,7 +69,7 @@ var getSerializedData = function (obj, canNestObj, referencedList, serializedLis
                 data[key] = undefined;
             }
             else {
-                data[key] = getSerializedData(entry, false, referencedList, serializedList);
+                data[key] = _getSerializedData(entry, false, referencedList, serializedList);
             }
         }
     }
@@ -84,6 +84,6 @@ FIRE.serialize = function (obj) {
     var referencedList = [];
     var serializedList = [];
     var canNestObj = (obj instanceof FIRE.ReferenceType);
-    getSerializedData(obj, canNestObj, referencedList, serializedList);
+    _getSerializedData(obj, canNestObj, referencedList, serializedList);
     return JSON.stringify(serializedList, null, 4);
 };
