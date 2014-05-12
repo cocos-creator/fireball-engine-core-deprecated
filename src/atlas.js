@@ -13,7 +13,7 @@ FIRE.Atlas = (function () {
         this.sortBy = Atlas.SortBy.UseBest; 
         this.sortOrder = Atlas.SortOrder.UseBest; 
         this.customPadding = 1;
-        this.allowRotate = false;
+        this.allowRotate = true;
 
         // element settings
         // this.elementBgColor = [1.0, 1.0, 1.0, 0.0];
@@ -126,7 +126,7 @@ FIRE.Atlas = (function () {
         // (we do not use paddedHeight, because the padding area is reserved and should
         // never be occupied)
         node.right = { 
-            rect: new Rect (
+            rect: new FIRE.Rect (
                 rect.x + paddedWidth, 
                 rect.y,
                 rect.width - paddedWidth, 
@@ -138,7 +138,7 @@ FIRE.Atlas = (function () {
         
         // create second child node in remaining space at the bottom, occupying the entire width
         node.bottom = {
-            rect: new Rect ( 
+            rect: new FIRE.Rect ( 
                 rect.x,
                 rect.y + paddedHeight,
                 rect.width, 
@@ -153,7 +153,7 @@ FIRE.Atlas = (function () {
     };
     var _treeLayout = function (atlas) {
         var root = {
-            rect: new Rect( 
+            rect: new FIRE.Rect( 
                 0,
                 0,
                 atlas.width,
@@ -227,12 +227,12 @@ FIRE.Atlas = (function () {
         // cleanUpFreeRects
         for ( i = 0; i < freeRects.length; ++i ) {
             for ( var j = i + 1; j < freeRects.length; ++j ) {
-                if ( Rect.contains(freeRects[i], freeRects[j]) == -1 ) {
+                if ( FIRE.Rect.contains(freeRects[i], freeRects[j]) == -1 ) {
                     freeRects.splice(i, 1);
                     --i;
                     break;
                 }
-                if ( Rect.contains(freeRects[j], freeRects[i]) == -1 ) {
+                if ( FIRE.Rect.contains(freeRects[j], freeRects[i]) == -1 ) {
                     freeRects.splice(j, 1);
                     --j;
                 }
@@ -243,12 +243,12 @@ FIRE.Atlas = (function () {
     //
     var _maxRectLayout = function (atlas) {
         var freeRects = [];
-        freeRects.push ( new Rect( 0, 0, atlas.width + atlas.customPadding, atlas.height + atlas.customPadding ) );
+        freeRects.push ( new FIRE.Rect( 0, 0, atlas.width + atlas.customPadding, atlas.height + atlas.customPadding ) );
         var score1, scroe2;
         var scoreRect = function (_freeRects, _width, _height, _allowRotate) {
             score1 = Number.MAX_VALUE;
             score2 = Number.MAX_VALUE;
-            var newRect = new Rect(0, 0, 1, 1);
+            var newRect = new FIRE.Rect(0, 0, 1, 1);
             var found = false;
 
             //
@@ -310,7 +310,7 @@ FIRE.Atlas = (function () {
             var bestScore1 = Number.MAX_VALUE;
             var bestScore2 = Number.MAX_VALUE;
             var bestElementIdx = -1;
-            var bestRect = new Rect( 0, 0, 1, 1 );
+            var bestRect = new FIRE.Rect( 0, 0, 1, 1 );
 
             for ( var i = 0; i < processElements.length; ++i ) {
                 var newRect = scoreRect ( freeRects, 
@@ -440,7 +440,7 @@ FIRE.Atlas = (function () {
                 break;
 
             case Atlas.Algorithm.MaxRect:
-                mySortBy = Atlas.SortBy.Area;
+                mySortBy = Atlas.SortBy.Height;
                 break;
 
             default:
