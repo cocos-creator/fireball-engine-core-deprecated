@@ -11,6 +11,7 @@ profile
 *.idb
 *.csproj
 *.csproj.user
+obj/*
 
 # xcode files
 PLBlocks.framework/*
@@ -42,4 +43,3 @@ bin/
 
 # scripts
 Build.bat
-BuildAndLaunch.bat

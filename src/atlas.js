@@ -1,6 +1,9 @@
 FIRE.Atlas = (function () {
+    var super_ = FIRE.Asset;
     // constructor
     function Atlas () {
+        super_.call(this);
+
         // basic settings
         this.width = 512;
         this.height = 512;
@@ -19,6 +22,7 @@ FIRE.Atlas = (function () {
         // this.elementBgColor = [1.0, 1.0, 1.0, 0.0];
         // this.elementSelectColor = [0.0, 0.0, 1.0, 1.0];
     }
+    FIRE.extend(Atlas, super_);
 
     // enum Algorithm
     Atlas.Algorithm = (function (t) {

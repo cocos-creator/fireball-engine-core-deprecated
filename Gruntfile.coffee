@@ -20,6 +20,7 @@ module.exports = (grunt) ->
                 'src/core.js',
                 'src/utils.js',
                 'src/rect.js',
+                'src/serialization.js',
                 'src/texture.js',
                 'src/spriteTexture.js',
                 'src/atlas.js',

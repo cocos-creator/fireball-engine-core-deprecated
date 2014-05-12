@@ -65,3 +65,27 @@
     return new FIRE.Rect(xmin, ymin, newWidth, newHeight);
 };
 
+// modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class
+var getClassName = function (obj) {
+    if (obj && obj.constructor) {
+        //  for browsers which have name property in the constructor of the object, such as chrome 
+        if (obj.constructor.name) {
+            return obj.constructor.name;
+        }
+        if (obj.constructor.toString) {
+            var arr, str = obj.constructor.toString();
+            if (str.charAt(0) == '[') {
+                // str is "[object objectClass]"
+                arr = str.match(/\[\w+\s*(\w+)\]/);
+            }
+            else {
+                // str is function objectClass () {} for IE Firefox
+                arr = str.match(/function\s*(\w+)/);
+            }
+            if (arr && arr.length == 2) {
+                return arr[1];
+            }
+        }
+    }
+    return undefined;
+};
