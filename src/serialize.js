@@ -4,28 +4,28 @@
 var _getSerializedData = function (obj, isFObject, referencedList, serializedList) {
     // TODO: 这里的算法还是有问题，因为Array和dict都有可能相互嵌套
     var retval; // serialized object
-    var entry;  // sub item
+    var field;  // sub item
     var data;   // core data without meta info
     if (Array.isArray(obj)) {
         retval = [];
         for (var i = 0; i < obj.length; ++i) {
-            entry = obj[i];
-            if (typeof entry === 'object') {
+            field = obj[i];
+            if (typeof field === 'object') {
                 //if (isFObject) {
-                    data = _getSerializedData(entry, false, referencedList, serializedList);
-                    serializedList[data.id].type = FIRE.getClassName(entry);  // array needs to know class type
+                    data = _getSerializedData(field, false, referencedList, serializedList);
+                    serializedList[data.id].type = FIRE.getClassName(field);  // array needs to know class type
                     retval.push(data);
                 //}
                 //else {
-                //    retval.push(entry);
+                //    retval.push(field);
                 //}
             }
-            else if (typeof entry === 'function') {
+            else if (typeof field === 'function') {
                 retval.push(null);
                 continue;
             }
             else {
-                retval.push(entry);
+                retval.push(field);
             }
         }
     }
@@ -47,17 +47,20 @@ var _getSerializedData = function (obj, isFObject, referencedList, serializedLis
             retval.data = data;
         }
         for (var key in obj) {
-            entry = obj[key];
-            if (typeof entry === 'function') {
+            if ( obj.hasOwnProperty(key) === false )
+                continue;
+
+            field = obj[key];
+            if (typeof field === 'function') {
                 continue;
             }
             // TODO read attr
-            if (isFObject === false && typeof entry === 'object' && Array.isArray(entry) === false) {
+            if (isFObject === false && typeof field === 'object' && Array.isArray(field) === false) {
                 // can not nest object
                 data[key] = null;
             }
             else {
-                data[key] = _getSerializedData(entry, false, referencedList, serializedList);
+                data[key] = _getSerializedData(field, false, referencedList, serializedList);
             }
         }
     }
