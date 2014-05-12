@@ -1,19 +1,7 @@
-﻿FIRE.ReferenceType = function () {};
-
-FIRE.Asset = (function () {
-    var _super = FIRE.ReferenceType;
-    // constructor
-    function Asset () {
-        _super.call(this);
-    }
-    FIRE.extend(Asset, _super);
-    return Asset;
-})();
-
-// obj: the obj to serialize
-// referencedList: list of all ReferenceType objs
-// serializedList: list of serialized data for all ReferenceType objs
-var _getSerializedData = function (obj, canNestObj, referencedList, serializedList) {
+﻿// obj: the obj to serialize
+// referencedList: list of all FIRE.FObject objs
+// serializedList: list of serialized data for all FIRE.FObject objs
+var _getSerializedData = function (obj, isFObject, referencedList, serializedList) {
     // TODO: 这里的算法还是有问题，因为Array和dict都有可能相互嵌套
     var retval; // serialized object
     var entry;  // sub item
@@ -23,7 +11,7 @@ var _getSerializedData = function (obj, canNestObj, referencedList, serializedLi
         for (var i = 0; i < obj.length; ++i) {
             entry = obj[i];
             if (typeof entry === 'object') {
-                //if (canNestObj) {
+                //if (isFObject) {
                     data = _getSerializedData(entry, false, referencedList, serializedList);
                     serializedList[data.id].type = FIRE.getClassName(entry);  // array needs to know class type
                     retval.push(data);
@@ -33,7 +21,7 @@ var _getSerializedData = function (obj, canNestObj, referencedList, serializedLi
                 //}
             }
             else if (typeof entry === 'function') {
-                retval.push(undefined);
+                retval.push(null);
                 continue;
             }
             else {
@@ -44,7 +32,7 @@ var _getSerializedData = function (obj, canNestObj, referencedList, serializedLi
     else if (typeof obj === 'object') {
         retval = {};
         data = {};
-        if (obj instanceof FIRE.ReferenceType) {
+        if (obj instanceof FIRE.FObject) {
             var id = referencedList.indexOf(obj);
             if (id !== -1) {
                 return { id : id };
@@ -64,9 +52,9 @@ var _getSerializedData = function (obj, canNestObj, referencedList, serializedLi
                 continue;
             }
             // TODO read attr
-            if (canNestObj === false && typeof entry === 'object' && Array.isArray(entry) === false) {
+            if (isFObject === false && typeof entry === 'object' && Array.isArray(entry) === false) {
                 // can not nest object
-                data[key] = undefined;
+                data[key] = null;
             }
             else {
                 data[key] = _getSerializedData(entry, false, referencedList, serializedList);
@@ -83,7 +71,7 @@ var _getSerializedData = function (obj, canNestObj, referencedList, serializedLi
 FIRE.serialize = function (obj) {
     var referencedList = [];
     var serializedList = [];
-    var canNestObj = (obj instanceof FIRE.ReferenceType);
-    _getSerializedData(obj, canNestObj, referencedList, serializedList);
+    var isFObject = (obj instanceof FIRE.FObject);
+    _getSerializedData(obj, isFObject, referencedList, serializedList);
     return JSON.stringify(serializedList, null, 4);
 };

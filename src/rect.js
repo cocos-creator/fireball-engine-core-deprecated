@@ -1,10 +1,15 @@
 FIRE.Rect = (function () {
+    var _super = FIRE.FObject;
+
     function Rect( x, y, w, h ) {
+        _super.call(this);
+
         this.x = x;
         this.y = y;
         this.width = w;
         this.height = h;
     }
+    FIRE.extend(Rect, _super);
 
     // ------------------------------------------------------------------ 
     /// \param _a rect a
