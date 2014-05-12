@@ -64,7 +64,7 @@
 
     var newWidth  = (xmax - xmin) + 1;
     var newHeight = (ymax - ymin) + 1;
-    return new Rect(xmin, ymin, newWidth, newHeight);
+    return new FIRE.Rect(xmin, ymin, newWidth, newHeight);
 };
 
 // 目前name参数不可用，如果要做的好点，估计要用node-webkit打开文件保存窗口，然后自己写入文件。

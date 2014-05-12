@@ -14,7 +14,7 @@ FIRE.SpriteTexture = (function (super_) {
         this.x = 0;
         this.y = 0;
     }
-    extend(SpriteTexture, super_);
+    FIRE.extend(SpriteTexture, super_);
 
     SpriteTexture.prototype.rotatedWidth = function () {
         return this.rotated ? this.height : this.width;
