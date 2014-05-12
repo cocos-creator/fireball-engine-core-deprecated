@@ -1,0 +1,19 @@
+{
+    "name": "fireball-core",
+    "version": "0.1.0",
+    "description": "Fireball Core Module",
+    "homepage": "http://fireball-x.github.io",
+    "license": "MIT",
+    "licenseUrl": "http://opensource.org/licenses/MIT",
+    "dependencies": {
+        "connect": ""
+    },
+    "devDependencies": {
+        "grunt": "",
+        "grunt-contrib-clean": "",
+        "grunt-contrib-concat": "",
+        "grunt-contrib-copy": "",
+        "grunt-contrib-jshint": "",
+        "grunt-contrib-uglify": ""
+    }
+}
