@@ -13,7 +13,6 @@ var _getSerializedData = function (obj, isFObject, referencedList, serializedLis
             if (typeof field === 'object') {
                 //if (isFObject) {
                     data = _getSerializedData(field, false, referencedList, serializedList);
-                    serializedList[data.id].type = FIRE.getClassName(field);  // array needs to know class type
                     retval.push(data);
                 //}
                 //else {
@@ -22,7 +21,6 @@ var _getSerializedData = function (obj, isFObject, referencedList, serializedLis
             }
             else if (typeof field === 'function') {
                 retval.push(null);
-                continue;
             }
             else {
                 retval.push(field);
@@ -35,16 +33,18 @@ var _getSerializedData = function (obj, isFObject, referencedList, serializedLis
         if (obj instanceof FIRE.FObject) {
             var id = referencedList.indexOf(obj);
             if (id !== -1) {
-                return { id : id };
+                return { __id__ : id }; // already serialized, no need to parse again
             }
             // register new referenced object
             id = referencedList.length;
             referencedList.push(obj);
-            serializedList.push( { id : id, data : data } );  // TODO: what if user nest a same dict ?
-            retval.id = id;
+            serializedList.push(data);  // TODO: what if user nest a same dict ?
+            data.__id__ = id;
+            data.__type__ = FIRE.getClassName(obj);
+            retval.__id__ = id;         // just return id because it is serialized in serializedList
         }
         else {
-            retval.data = data;
+            retval = data;
         }
         for (var key in obj) {
             if ( obj.hasOwnProperty(key) === false )
