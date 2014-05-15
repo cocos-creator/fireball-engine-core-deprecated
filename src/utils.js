@@ -1,4 +1,65 @@
-﻿FIRE.getTrimRect = function (img, trimThreshold) {
+﻿var _doGetTrimRect = function (pixels, w, h, trimThreshold) {
+    // A B C
+    // D x F
+    // G H I
+
+    var tx = w, ty = h,
+        tw = 0, th = 0,
+        rowByte = w * 4;
+
+    var x, y, i;
+    var index;  // alpha index in pixels
+
+    // trim A B C
+    for (y = 0; y < h; y++) {
+        index = y * rowByte + 3;  // (x + y * w) * 4 + 3
+        for (x = 0; x < w; x++, index += 4) {
+            if (pixels[index] >= trimThreshold) {
+                ty = y;
+                y = h;
+                break;
+            }
+        }
+    }
+    // trim G H I
+    for (y = h - 1; y >= ty; y--) {
+        index = y * rowByte + 3;
+        for (x = 0; x < w; x++, index += 4) {
+            if (pixels[index] >= trimThreshold) {
+                th = y - ty + 1;
+                y = 0;
+                break;
+            }
+        }
+    }
+    var skipTrimmedY = rowByte * ty;   // skip A B C
+    // trim D
+    for (x = 0; x < w; x++) {
+        index = skipTrimmedY + x * 4 + 3;
+        for (i = 0; i < th; i++, index += rowByte) {
+            if (pixels[index] >= trimThreshold) {
+                tx = x;
+                x = w;
+                break;
+            }
+        }
+    }
+    // trim F
+    for (x = w - 1; x >= tx; x--) {
+        index = skipTrimmedY + x * 4 + 3;
+        for (i = 0; i < th; i++, index += rowByte) {
+            if (pixels[index] >= trimThreshold) {
+                tw = x - tx + 1;
+                x = 0;
+                break;
+            }
+        }
+    }
+
+    return new FIRE.Rect(tx, ty, tw, th);
+};
+
+FIRE.getTrimRect = function (img, trimThreshold) {
     // create temp canvas
     var canvas = document.createElement('canvas');
     canvas.width = img.width;
@@ -7,62 +68,8 @@
     ctx.drawImage( img, 0, 0, img.width, img.height );  
     var pixels = ctx.getImageData(0, 0, img.width, img.height).data;
 
-    //
-    var xmin = img.width;
-    var xmax = 0;
-    var ymin = img.height;
-    var ymax = 0;
-
-    var x_start = 0;
-    var x_end = img.width;
-    var y_start = 0;
-    var y_end = img.height;
-    var x = -1;
-    var y = -1;
-
-    for ( x = x_start; x < x_end; ++x ) {
-        for ( y = y_start; y < y_end; ++y ) {
-            if ( pixels[(x+y*img.width)*4+3] >= trimThreshold ) {
-                xmin = x;
-                x = img.width;
-                break;
-            }
-        }
-    }
-
-    for ( x = x_end-1; x >= x_start; --x ) {
-        for ( y = y_start; y < y_end; ++y ) {
-            if ( pixels[(x+y*img.width)*4+3] >= trimThreshold ) {
-                xmax = x;
-                x = -1;
-                break;
-            }
-        }
-    }
-
-    for ( y = y_start; y < y_end; ++y ) {
-        for ( x = x_start; x < x_end; ++x ) {
-            if ( pixels[(x+y*img.width)*4+3] >= trimThreshold ) {
-                ymin = y;
-                y = img.height;
-                break;
-            }
-        }
-    }
-
-    for ( y = y_end-1; y >= y_start; --y ) {
-        for ( x = x_start; x < x_end; ++x ) {
-            if ( pixels[(x+y*img.width)*4+3] >= trimThreshold ) {
-                ymax = y;
-                y = -1;
-                break;
-            }
-        }
-    }
-
-    var newWidth  = (xmax - xmin) + 1;
-    var newHeight = (ymax - ymin) + 1;
-    return new FIRE.Rect(xmin, ymin, newWidth, newHeight);
+    // get trim
+    return _doGetTrimRect(pixels, img.width, img.height, trimThreshold);
 };
 
 // modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class
