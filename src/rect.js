@@ -11,13 +11,13 @@ FIRE.Rect = (function () {
     }
     FIRE.extend(Rect, _super);
 
-    // ------------------------------------------------------------------ 
-    /// \param _a rect a
-    /// \param _b rect b
-    /// \result the contains result
-    /// check if rect contains, 1 is _a contains _b, -1 is _b contains _a, 0 is no contains 
-    // ------------------------------------------------------------------ 
-    
+    /**
+     * Check if rect contains
+     *
+     * @param a {FIRE.Rect} Rect a
+     * @param b {FIRE.Rect} Rect b
+     * @return {Number} The contains result, 1 is a contains b, -1 is b contains a, 0 is no contains 
+     */
     Rect.contains = function _Contains ( a, b ) {
         if ( a.x <= b.x &&
              a.x + a.width >= b.x + b.width &&
