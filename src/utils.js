@@ -72,12 +72,17 @@ FIRE.getTrimRect = function (img, trimThreshold) {
     return _doGetTrimRect(pixels, img.width, img.height, trimThreshold);
 };
 
-// modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class
+/**
+ * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null
+ * modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class
+ * @return {String}
+ */
 FIRE.getClassName = function (obj) {
     if (obj && obj.constructor) {
+        var retval;
         //  for browsers which have name property in the constructor of the object, such as chrome 
         if (obj.constructor.name) {
-            return obj.constructor.name;
+            retval = obj.constructor.name;
         }
         if (obj.constructor.toString) {
             var arr, str = obj.constructor.toString();
@@ -90,9 +95,10 @@ FIRE.getClassName = function (obj) {
                 arr = str.match(/function\s*(\w+)/);
             }
             if (arr && arr.length == 2) {
-                return arr[1];
+                retval = arr[1];
             }
         }
+        return retval !== 'Object' ? retval : null;
     }
     return null;
 };
