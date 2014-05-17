@@ -5,6 +5,8 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-concat'
     grunt.loadNpmTasks 'grunt-contrib-jshint'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
+    grunt.loadNpmTasks 'grunt-contrib-qunit'
+
 
     # load tasks 
     # grunt.loadTasks 'tasks'
@@ -44,7 +46,8 @@ module.exports = (grunt) ->
                 src: [
                     '<%= files.src %>', 
                     '!src/__intro.js', 
-                    '!src/__outro.js'
+                    '!src/__outro.js',
+                    'test/unit/*.js'
                 ]
 
         # concat
@@ -59,9 +62,13 @@ module.exports = (grunt) ->
                 src: '<%= files.dev %>'
                 dest: '<%= files.min %>'
 
+        # qunit
+        qunit:
+            all: ['test/unit/*.html']
+
     # Default task(s).
     grunt.registerTask 'default', ['min']
 
-    grunt.registerTask 'min', ['jshint', 'concat', 'uglify']
-    grunt.registerTask 'dev', ['jshint', 'concat']
+    grunt.registerTask 'min', ['jshint', 'concat', 'qunit', 'uglify']
+    grunt.registerTask 'dev', ['jshint', 'concat', 'qunit']
 
