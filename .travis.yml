@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+- '0.11'
+before_install: npm install -g grunt-cli
+install: npm install
+script: grunt
+notifications:
+  campfire:
+    rooms:
+      secure: d1t248oYvZdxDjIYqtjLao0C46eaWkYvmbB1L5iby5K8i2gkI7RSgLUlrA2rYHftjw4sQeZ13SVifSm8Kz9rZOmultR0uiCUPKT/VN/2ky1ovcVQ8m3JNlwHWLB2iGT7EBXIdnwBJ0Mv5eWsGL1DKljnrnwnDGKovGcs4qtXv1E=
+    on_success: always
+    on_failure: always
+    template:
+    - '%{repository_slug}#%{build_number}: %{message} (%{branch} - %{commit} : %{author}):
+      %{commit_message}'
+    - 'Change view: %{compare_url}'
+    - 'Build details: %{build_url}'
