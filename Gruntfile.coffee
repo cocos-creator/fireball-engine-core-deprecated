@@ -72,5 +72,5 @@ module.exports = (grunt) ->
     grunt.registerTask 'min', ['jshint', 'concat', 'uglify']
     grunt.registerTask 'dev', ['jshint', 'concat']
     grunt.registerTask 'test', ['dev', 'qunit']
-    grunt.registerTask 'all', ['test']
+    grunt.registerTask 'all', ['test', 'uglify']
 

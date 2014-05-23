@@ -1,4 +1,11 @@
-﻿var _Serializer = (function () {
+﻿function _isDomNode(obj) {
+    return (
+        typeof Node === "object" ? obj instanceof Node : 
+        obj && typeof obj === "object" && typeof obj.nodeType === "number" && typeof obj.nodeName === "string"
+    );
+}
+
+var _Serializer = (function () {
     /**
      * @param obj {FIRE.FObject} The object to serialize
      */
@@ -8,7 +15,7 @@
         this._parsingData = [];    // 记录当前引用对象的序列化结果
         this._referencedObjs = []; // 序列化过程中引用过的对象
 
-        this.serializedList.push(this._serializeObj(obj));
+        this.serializedList.push(_serializeObj(this, obj));
 
         for (var i = 0; i < this._referencedObjs.length; ++i) {
             delete this._referencedObjs[i].__id__;     // delete temp id
@@ -20,15 +27,15 @@
     }
 
     // even array may caused circular reference, so we'd be better check it all the time, 否则就要像unity限制递归层次，有好有坏
-    _Serializer.prototype._checkCircularReference = function (obj) {
-        var parsingIndex = this._parsingObjs.indexOf(obj);
+    var _checkCircularReference = function (self, obj) {
+        var parsingIndex = self._parsingObjs.indexOf(obj);
         var circularReferenced = (parsingIndex !== -1);
         if (circularReferenced) {
             // register new referenced object
-            var id = this.serializedList.length;
+            var id = self.serializedList.length;
             obj.__id__ = id;        // we use this prop to fast lookup whether an obj has been serialized
-            this._referencedObjs.push(obj);
-            var data = this._parsingData[parsingIndex];
+            self._referencedObjs.push(obj);
+            var data = self._parsingData[parsingIndex];
             if (Array.isArray(obj) === false) {
                 data.__id__ = id;   // debug only
                 var className = FIRE.getClassName(obj);
@@ -36,7 +43,7 @@
                     data.__type__ = className;
                 }
             }
-            this.serializedList.push(data);
+            self.serializedList.push(data);
             return data;
         }
     };
@@ -46,17 +53,17 @@
      * @param data {Object} The array or dict where serialized data to store
      * @return {Number} If obj been referenced in serializedList, return its id, else return -1
      */
-    _Serializer.prototype._getObjectData = function (obj, data) {
-        var oldSerializedCount = this.serializedList.length;
+    var _getObjectData = function (self, obj, data) {
+        var oldSerializedCount = self.serializedList.length;
 
-        this._parsingObjs.push(obj);
-        this._parsingData.push(data);
+        self._parsingObjs.push(obj);
+        self._parsingData.push(data);
         if (Array.isArray(obj)) {
             for (var i = 0; i < obj.length; ++i) {
                 var element = obj[i];
                 var type = typeof element;
                 if (type === 'object') {
-                    data.push(this._serializeObj(element));
+                    data.push(_serializeObj(self, element));
                 }
                 else if (type === 'function') {
                     data.push(null);
@@ -68,6 +75,7 @@
         }
         else {
             for (var key in obj) {
+                //console.log(key);
                 if (obj.hasOwnProperty(key) === false || key === '__id__')
                     continue;
 
@@ -75,7 +83,7 @@
                 var valType = typeof val;
                 // TODO read attr
                 if (valType === 'object') {
-                    data[key] = this._serializeObj(val);
+                    data[key] = _serializeObj(self, val);
                 }
                 else if (valType === 'function') {
                     data[key] = null;
@@ -85,13 +93,13 @@
                 }
             }
         }
-        this._parsingObjs.pop();
-        this._parsingData.pop();
+        self._parsingObjs.pop();
+        self._parsingData.pop();
 
         // check whether obj is been serialized to serializedList, 
         // if it is, no need to serialized to data again
-        if (this.serializedList.length > oldSerializedCount) {
-            var index = this.serializedList.indexOf(data, oldSerializedCount);
+        if (self.serializedList.length > oldSerializedCount) {
+            var index = self.serializedList.indexOf(data, oldSerializedCount);
             if (index !== -1) {
                 return index;
             }
@@ -102,16 +110,24 @@
     /**
      * @param obj {Object} The object to serialize
      */
-    _Serializer.prototype._serializeObj = function (obj) {
+    var _serializeObj = function (self, obj) {
+        //console.log(obj);
+        if (!obj) {
+            return null;
+        }
+        if (_isDomNode(obj)) {
+            console.warn("" + obj + " won't be serialized");
+            return null;
+        }
         // has been serialized ?
         if (!!obj.__id__) {
             return { __id__: obj.__id__ }; // no need to parse again
         }
         
-        var referencedData = this._checkCircularReference(obj);
+        var referencedData = _checkCircularReference(self, obj);
         if (referencedData) {
             // already referenced
-            // this._getObjectData(obj, referencedData); 不是第一次引用，不需要重复解析数据
+            // _getObjectData(self, obj, referencedData); 不是第一次引用，不需要重复解析数据
             return { __id__: obj.__id__ };
         }
         else {
@@ -127,7 +143,7 @@
                     data.__type__ = className;
                 }
             }
-            var id = this._getObjectData(obj, data);
+            var id = _getObjectData(self, obj, data);
             if (id === -1) {
                 return data;
             }
