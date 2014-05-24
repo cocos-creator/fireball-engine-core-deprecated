@@ -15,6 +15,16 @@
         "grunt-contrib-copy": "",
         "grunt-contrib-jshint": "",
         "grunt-contrib-uglify": "",
-        "grunt-contrib-qunit": ""
+        "grunt-contrib-qunit": "",
+
+        "gulp": "",
+        "gulp-filter": "",
+        "gulp-clean": "",
+        "gulp-rename": "",
+        "gulp-concat": "",
+        "gulp-jshint": "",
+        "jshint-stylish": "",
+        "gulp-uglify": "",
+        "gulp-qunit": ""
     }
 }

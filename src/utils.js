@@ -1,4 +1,4 @@
-﻿var _doGetTrimRect = function (pixels, w, h, trimThreshold) {
+var _doGetTrimRect = function (pixels, w, h, trimThreshold) {
     // A B C
     // D x F
     // G H I
