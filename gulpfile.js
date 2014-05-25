@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var gulpFilter = require('gulp-filter');
+var gulpfilter = require('gulp-filter');
 
 var clean = require('gulp-clean');
 var rename = require('gulp-rename');
@@ -36,7 +36,7 @@ gulp.task('clean', function() {
 
 // dev
 gulp.task('dev', function() {
-    var filter = gulpFilter( ['!__intro.js','!__outro.js'] );
+    var filter = gulpfilter( ['!__intro.js','!__outro.js'] );
 
     return gulp.src(paths.src)
     .pipe(filter)
@@ -54,6 +54,13 @@ gulp.task('min', ['dev'], function() {
     .pipe(rename('core.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('bin'))
+    ;
+});
+
+// test
+gulp.task('test', ['dev'], function() {
+    return gulp.src('test/unit/**/*.html')
+    .pipe(qunit())
     ;
 });
 
