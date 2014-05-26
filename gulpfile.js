@@ -71,3 +71,4 @@ gulp.task('watch', function() {
 
 //
 gulp.task('default', ['min'] );
+gulp.task('all', ['min','test'] );
