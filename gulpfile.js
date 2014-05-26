@@ -64,5 +64,10 @@ gulp.task('test', ['dev'], function() {
     ;
 });
 
+// watch
+gulp.task('watch', function() {
+    gulp.watch(paths.src, ['min']);
+});
+
 //
 gulp.task('default', ['min'] );

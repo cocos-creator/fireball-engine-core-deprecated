@@ -9,14 +9,6 @@
         "connect": ""
     },
     "devDependencies": {
-        "grunt": "",
-        "grunt-contrib-clean": "",
-        "grunt-contrib-concat": "",
-        "grunt-contrib-copy": "",
-        "grunt-contrib-jshint": "",
-        "grunt-contrib-uglify": "",
-        "grunt-contrib-qunit": "",
-
         "gulp": "",
         "gulp-filter": "",
         "gulp-clean": "",
