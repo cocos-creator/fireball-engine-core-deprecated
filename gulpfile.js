@@ -42,6 +42,7 @@ gulp.task('dev', function() {
     .pipe(filter)
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
+    // .pipe(jshint.reporter('fail')) // disabled
     .pipe(filter.restore())
     .pipe(concat('core.dev.js'))
     .pipe(gulp.dest('bin'))
@@ -61,6 +62,10 @@ gulp.task('min', ['dev'], function() {
 gulp.task('test', ['dev'], function() {
     return gulp.src('test/unit/**/*.html')
     .pipe(qunit())
+    .on('error', function(err) {
+        // Make sure failed tests cause gulp to exit non-zero
+        throw err;
+    })
     ;
 });
 
