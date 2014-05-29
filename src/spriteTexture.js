@@ -18,13 +18,13 @@ FIRE.SpriteTexture = (function () {
     }
     FIRE.extend(SpriteTexture, _super);
 
-    SpriteTexture.prototype.rotatedWidth = function () {
+    SpriteTexture.prototype.__defineGetter__('rotatedWidth', function () {
         return this.rotated ? this.height : this.width;
-    };
+    });
 
-    SpriteTexture.prototype.rotatedHeight = function () {
+    SpriteTexture.prototype.__defineGetter__('rotatedHeight', function () {
         return this.rotated ? this.width : this.height;
-    };
+    });
 
     return SpriteTexture;
 })();
