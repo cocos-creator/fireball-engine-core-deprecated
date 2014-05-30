@@ -4,3 +4,7 @@ FIRE.extend = function (cls, base) {
     __.prototype = base.prototype;
     cls.prototype = new __();
 };
+
+FIRE.enum = function (def) {
+    // TODO:
+};
