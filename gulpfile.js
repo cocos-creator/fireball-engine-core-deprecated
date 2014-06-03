@@ -18,6 +18,7 @@ var paths = {
         'src/object.js',
         'src/asset.js',
         'src/rect.js',
+        'src/color.js',
         'src/texture.js',
         'src/spriteTexture.js',
         'src/atlas.js',
