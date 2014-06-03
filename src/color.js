@@ -67,6 +67,49 @@ FIRE.Color = (function () {
         return true;
     };
 
+    Color.prototype.clamp = function () {
+        this.r = Math.min(1.0, Math.max(0, this.r));
+        this.g = Math.min(1.0, Math.max(0, this.g));
+        this.b = Math.min(1.0, Math.max(0, this.b));
+        this.a = Math.min(1.0, Math.max(0, this.a));
+    };
+
+
+    Color.prototype.fromHEX = function (hexString) {
+        var hex = parseInt(((hexString.indexOf('#') > -1) ? hexString.substring(1) : hexString), 16);
+        this.r = hex >> 16;
+        this.g = (hex & 0x00FF00) >> 8;
+        this.b = (hex & 0x0000FF);
+    };
+
+    Color.prototype.fromHSB = function ( h_, s_, b_ ) {
+        var r;
+        var g;
+        var b;
+        var h1 = Math.round(h_);
+        var s1 = Math.round(s_*255/100);
+        var v1 = Math.round(b_*255/100);
+        if ( s1 === 0 ) {
+            r = g = b = v1;
+        } 
+        else {
+            var t1 = v1;
+            var t2 = (255-s1)*v1/255;
+            var t3 = (t1-t2)*(h1%60)/60;
+            if(h1==360) h1 = 0;
+            if(h1<60) {r=t1; b=t2; g=t2+t3;}
+            else if(h1<120) {g=t1; b=t2; r=t1-t3;}
+            else if(h1<180) {g=t1; r=t2; b=t2+t3;}
+            else if(h1<240) {b=t1; r=t2; g=t1-t3;}
+            else if(h1<300) {b=t1; g=t2; r=t2+t3;}
+            else if(h1<360) {r=t1; g=t2; b=t1-t3;}
+            else {r=0; g=0;	b=0;}
+        }
+        this.r = Math.round(r);
+        this.g = Math.round(g);
+        this.b = Math.round(b);
+    };
+
     return Color;
 })();
 
