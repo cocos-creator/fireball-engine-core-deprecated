@@ -40,13 +40,8 @@ FIRE.Color = (function () {
                 Math.floor(this.b * 255) + ")"
             ;
         }
-        else if ( opt === '#rgb' ) {
-            // TODO
-            return "";
-        }
-        else if ( opt === '#rrggbb' ) {
-            // TODO
-            return "";
+        else {
+            return '#' + this.toHEX(opt);
         }
         return "";
     };
@@ -82,6 +77,30 @@ FIRE.Color = (function () {
         this.b = (hex & 0x0000FF);
     };
 
+    Color.prototype.toHEX = function ( fmt ) {
+        var hex = [
+            Math.floor(this.r * 255).toString(16),
+            Math.floor(this.g * 255).toString(16),
+            Math.floor(this.b * 255).toString(16),
+        ];
+        var i = -1;
+        if ( fmt === '#rgb' ) {
+            for ( i = 0; i < hex.length; ++i ) {
+                if ( hex[i].length > 1 ) {
+                    hex[i] = hex[i][0];
+                }
+            }
+        }
+        else if ( fmt === '#rrggbb' ) {
+            for ( i = 0; i < hex.length; ++i ) {
+                if ( hex[i].length == 1 ) {
+                    hex[i] = '0' + hex[i];
+                }
+            }
+        }
+        return hex.join('');
+    };
+
     Color.prototype.fromHSB = function ( h_, s_, b_ ) {
         var r;
         var g;
@@ -108,6 +127,37 @@ FIRE.Color = (function () {
         this.r = Math.round(r);
         this.g = Math.round(g);
         this.b = Math.round(b);
+    };
+
+    Color.prototype.toHSB = function () {
+        var hsb = {
+            h: 0,
+            s: 0,
+            b: 0
+        };
+        var min = Math.min(this.r, this.g, this.b);
+        var max = Math.max(this.r, this.g, this.b);
+        var delta = max - min;
+        hsb.b = max;
+        hsb.s = max !== 0 ? 255 * delta / max : 0;
+        if (hsb.s !== 0) {
+            if (this.r == max) {
+                hsb.h = (this.g - this.b) / delta;
+            } else if (this.g == max) {
+                hsb.h = 2 + (this.b - this.r) / delta;
+            } else {
+                hsb.h = 4 + (this.r - this.g) / delta;
+            }
+        } else {
+            hsb.h = -1;
+        }
+        hsb.h *= 60;
+        if (hsb.h < 0) {
+            hsb.h += 360;
+        }
+        hsb.s *= 100/255;
+        hsb.b *= 100/255;
+        return hsb;
     };
 
     return Color;
