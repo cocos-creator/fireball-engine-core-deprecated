@@ -124,9 +124,9 @@ FIRE.Color = (function () {
             else if(h1<360) {r=t1; g=t2; b=t1-t3;}
             else {r=0; g=0;	b=0;}
         }
-        this.r = Math.round(r);
-        this.g = Math.round(g);
-        this.b = Math.round(b);
+        this.r = Math.round(r)/255;
+        this.g = Math.round(g)/255;
+        this.b = Math.round(b)/255;
     };
 
     Color.prototype.toHSB = function () {
@@ -135,23 +135,27 @@ FIRE.Color = (function () {
             s: 0,
             b: 0
         };
-        var min = Math.min(this.r, this.g, this.b);
-        var max = Math.max(this.r, this.g, this.b);
+
+        var r = Math.floor(this.r * 255);
+        var g = Math.floor(this.g * 255);
+        var b = Math.floor(this.b * 255);
+        var min = Math.min(r, g, b);
+        var max = Math.max(r, g, b);
         var delta = max - min;
         hsb.b = max;
         hsb.s = max !== 0 ? 255 * delta / max : 0;
         if (hsb.s !== 0) {
-            if (this.r == max) {
-                hsb.h = (this.g - this.b) / delta;
-            } else if (this.g == max) {
-                hsb.h = 2 + (this.b - this.r) / delta;
+            if (r == max) {
+                hsb.h = (g - b) / delta;
+            } else if (g == max) {
+                hsb.h = 2 + (b - r) / delta;
             } else {
-                hsb.h = 4 + (this.r - this.g) / delta;
+                hsb.h = 4 + (r - g) / delta;
             }
         } else {
-            hsb.h = -1;
+            hsb.h = 0;
         }
-        hsb.h *= 60;
+        hsb.h = parseInt(hsb.h * 60);
         if (hsb.h < 0) {
             hsb.h += 360;
         }
