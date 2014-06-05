@@ -102,3 +102,95 @@ FIRE.getClassName = function (obj) {
     }
     return null;
 };
+
+// r, g, b must be [0.0, 1.0]
+FIRE.rgb2hsv = function ( r, g, b ) {
+    var hsv = { h: 0, s: 0, v: 0 }, min = 0, max = 0, delta;
+    if (r >= g && r >= b) {
+        max = r;
+        min = g > b ? b : g;
+    }
+    else if (g >= b && g >= r) {
+        max = g;
+        min = r > b ? b : r;
+    }
+    else {
+        max = b;
+        min = g > r ? r : g;
+    }
+    hsv.v = max;
+    hsv.s = max ? (max - min) / max : 0;
+    if (!hsv.s) hsv.h = 0;
+    else {
+        delta = max - min;
+        if (r == max) hsv.h = (g - b) / delta;
+        else if (g == max) hsv.h = 2 + (b - r) / delta;
+        else hsv.h = 4 + (r - g) / delta;
+        hsv.h = parseInt(hsv.h * 60);
+        if (hsv.h < 0) hsv.h += 360;
+    }
+    hsv.s = (hsv.s * 100) | 0;
+    hsv.v = (hsv.v * 100) | 0;
+    return hsv;
+};
+
+// the return rgb will be in [0.0, 1.0]
+FIRE.hsv2rgb = function ( h, s, v ) {
+    var rgb = { r: 0, g: 0, b: 0 };
+    if (s === 0) {
+        if (v === 0) rgb.r = rgb.g = rgb.b = 0;
+        else rgb.r = rgb.g = rgb.b = (v * 255 / 100) | 0;
+    }
+    else {
+        if (h == 360) h = 0;
+        h /= 60;
+        s = s / 100;
+        v = v / 100;
+        var i = h | 0,
+        f = h - i,
+        p = v * (1 - s),
+        q = v * (1 - (s * f)),
+        t = v * (1 - (s * (1 - f)));
+        switch (i) {
+            case 0:
+                rgb.r = v;
+                rgb.g = t;
+                rgb.b = p;
+                break;
+
+            case 1:
+                rgb.r = q;
+                rgb.g = v;
+                rgb.b = p;
+                break;
+
+            case 2:
+                rgb.r = p;
+                rgb.g = v;
+                rgb.b = t;
+                break;
+
+            case 3:
+                rgb.r = p;
+                rgb.g = q;
+                rgb.b = v;
+                break;
+
+            case 4:
+                rgb.r = t;
+                rgb.g = p;
+                rgb.b = v;
+                break;
+
+            case 5:
+                rgb.r = v;
+                rgb.g = p;
+                rgb.b = q;
+                break;
+        }
+        rgb.r = rgb.r;
+        rgb.g = rgb.g;
+        rgb.b = rgb.b;
+    }
+    return rgb;
+};

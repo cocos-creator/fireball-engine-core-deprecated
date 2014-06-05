@@ -12,4 +12,9 @@ test('basic test', function() {
     equal ( testColor.toHEX('#rgb'), "4f0", "The value must be ff0" ); 
     equal ( testColor.toCSS('#rrggbb'), "#4cff00", "The value must be #ffff00" ); 
     equal ( testColor.toCSS('#rgb'), "#4f0", "The value must be #ff0" ); 
+
+    testColor = new FIRE.Color( 1.0, 0.0, 0.0, 1.0 );
+    deepEqual ( testColor.toHSV(), { h: 0, s: 100, v: 100 }, "The value must be { h:0, s:100, v:100 }" ); 
+    deepEqual ( testColor.fromHSV(0,100,100).toCSS('#rrggbb'), '#ff0000', "The value must be #ff0000" ); 
+    deepEqual ( testColor.fromHSV(360,100,100).toCSS('#rrggbb'), '#ff0000', "The value must be #ff0000" ); 
 });

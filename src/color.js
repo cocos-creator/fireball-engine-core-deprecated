@@ -27,17 +27,17 @@ FIRE.Color = (function () {
     Color.prototype.toCSS = function ( opt ) {
         if ( opt === 'rgba' ) {
             return "rgba(" + 
-                Math.floor(this.r * 255) + "," + 
-                Math.floor(this.g * 255) + "," + 
-                Math.floor(this.b * 255) + "," + 
+                (this.r * 255 | 0 ) + "," + 
+                (this.g * 255 | 0 ) + "," + 
+                (this.b * 255 | 0 ) + "," + 
                 this.a.toFixed(2) + ")"
             ;
         }
         else if ( opt === 'rgb' ) {
             return "rgb(" + 
-                Math.floor(this.r * 255) + "," + 
-                Math.floor(this.g * 255) + "," + 
-                Math.floor(this.b * 255) + ")"
+                (this.r * 255 | 0 ) + "," + 
+                (this.g * 255 | 0 ) + "," + 
+                (this.b * 255 | 0 ) + ")"
             ;
         }
         else {
@@ -63,10 +63,10 @@ FIRE.Color = (function () {
     };
 
     Color.prototype.clamp = function () {
-        this.r = Math.min(1.0, Math.max(0, this.r));
-        this.g = Math.min(1.0, Math.max(0, this.g));
-        this.b = Math.min(1.0, Math.max(0, this.b));
-        this.a = Math.min(1.0, Math.max(0, this.a));
+        this.r = Math.min(1, Math.max(0, this.r));
+        this.g = Math.min(1, Math.max(0, this.g));
+        this.b = Math.min(1, Math.max(0, this.b));
+        this.a = Math.min(1, Math.max(0, this.a));
     };
 
 
@@ -75,13 +75,14 @@ FIRE.Color = (function () {
         this.r = hex >> 16;
         this.g = (hex & 0x00FF00) >> 8;
         this.b = (hex & 0x0000FF);
+        return this;
     };
 
     Color.prototype.toHEX = function ( fmt ) {
         var hex = [
-            Math.floor(this.r * 255).toString(16),
-            Math.floor(this.g * 255).toString(16),
-            Math.floor(this.b * 255).toString(16),
+            (this.r * 255 | 0 ).toString(16),
+            (this.g * 255 | 0 ).toString(16),
+            (this.b * 255 | 0 ).toString(16),
         ];
         var i = -1;
         if ( fmt === '#rgb' ) {
@@ -101,67 +102,16 @@ FIRE.Color = (function () {
         return hex.join('');
     };
 
-    Color.prototype.fromHSB = function ( h_, s_, b_ ) {
-        var r;
-        var g;
-        var b;
-        var h1 = Math.round(h_);
-        var s1 = Math.round(s_*255/100);
-        var v1 = Math.round(b_*255/100);
-        if ( s1 === 0 ) {
-            r = g = b = v1;
-        } 
-        else {
-            var t1 = v1;
-            var t2 = (255-s1)*v1/255;
-            var t3 = (t1-t2)*(h1%60)/60;
-            if(h1==360) h1 = 0;
-            if(h1<60) {r=t1; b=t2; g=t2+t3;}
-            else if(h1<120) {g=t1; b=t2; r=t1-t3;}
-            else if(h1<180) {g=t1; r=t2; b=t2+t3;}
-            else if(h1<240) {b=t1; r=t2; g=t1-t3;}
-            else if(h1<300) {b=t1; g=t2; r=t2+t3;}
-            else if(h1<360) {r=t1; g=t2; b=t1-t3;}
-            else {r=0; g=0;	b=0;}
-        }
-        this.r = Math.round(r)/255;
-        this.g = Math.round(g)/255;
-        this.b = Math.round(b)/255;
+    Color.prototype.fromHSV = function ( h, s, v ) {
+        var rgb = FIRE.hsv2rgb( h, s, v ); 
+        this.r = rgb.r;
+        this.g = rgb.g;
+        this.b = rgb.b;
+        return this;
     };
 
-    Color.prototype.toHSB = function () {
-        var hsb = {
-            h: 0,
-            s: 0,
-            b: 0
-        };
-
-        var r = Math.floor(this.r * 255);
-        var g = Math.floor(this.g * 255);
-        var b = Math.floor(this.b * 255);
-        var min = Math.min(r, g, b);
-        var max = Math.max(r, g, b);
-        var delta = max - min;
-        hsb.b = max;
-        hsb.s = max !== 0 ? 255 * delta / max : 0;
-        if (hsb.s !== 0) {
-            if (r == max) {
-                hsb.h = (g - b) / delta;
-            } else if (g == max) {
-                hsb.h = 2 + (b - r) / delta;
-            } else {
-                hsb.h = 4 + (r - g) / delta;
-            }
-        } else {
-            hsb.h = 0;
-        }
-        hsb.h = parseInt(hsb.h * 60);
-        if (hsb.h < 0) {
-            hsb.h += 360;
-        }
-        hsb.s *= 100/255;
-        hsb.b *= 100/255;
-        return hsb;
+    Color.prototype.toHSV = function () {
+        return FIRE.rgb2hsv( this.r, this.g, this.b );
     };
 
     return Color;
