@@ -126,11 +126,9 @@ FIRE.rgb2hsv = function ( r, g, b ) {
         if (r == max) hsv.h = (g - b) / delta;
         else if (g == max) hsv.h = 2 + (b - r) / delta;
         else hsv.h = 4 + (r - g) / delta;
-        hsv.h = parseInt(hsv.h * 60);
-        if (hsv.h < 0) hsv.h += 360;
+        hsv.h /= 6;
+        if (hsv.h < 0) hsv.h += 1.0;
     }
-    hsv.s = (hsv.s * 100) | 0;
-    hsv.v = (hsv.v * 100) | 0;
     return hsv;
 };
 
@@ -138,59 +136,60 @@ FIRE.rgb2hsv = function ( r, g, b ) {
 FIRE.hsv2rgb = function ( h, s, v ) {
     var rgb = { r: 0, g: 0, b: 0 };
     if (s === 0) {
-        if (v === 0) rgb.r = rgb.g = rgb.b = 0;
-        else rgb.r = rgb.g = rgb.b = (v * 255 / 100) | 0;
+        rgb.r = rgb.g = rgb.b = v;
     }
     else {
-        if (h == 360) h = 0;
-        h /= 60;
-        s = s / 100;
-        v = v / 100;
-        var i = h | 0,
-        f = h - i,
-        p = v * (1 - s),
-        q = v * (1 - (s * f)),
-        t = v * (1 - (s * (1 - f)));
-        switch (i) {
-            case 0:
-                rgb.r = v;
-                rgb.g = t;
-                rgb.b = p;
-                break;
-
-            case 1:
-                rgb.r = q;
-                rgb.g = v;
-                rgb.b = p;
-                break;
-
-            case 2:
-                rgb.r = p;
-                rgb.g = v;
-                rgb.b = t;
-                break;
-
-            case 3:
-                rgb.r = p;
-                rgb.g = q;
-                rgb.b = v;
-                break;
-
-            case 4:
-                rgb.r = t;
-                rgb.g = p;
-                rgb.b = v;
-                break;
-
-            case 5:
-                rgb.r = v;
-                rgb.g = p;
-                rgb.b = q;
-                break;
+        if (v === 0) {
+            rgb.r = rgb.g = rgb.b = 0;
         }
-        rgb.r = rgb.r;
-        rgb.g = rgb.g;
-        rgb.b = rgb.b;
+        else {
+            if (h === 1) h = 0;
+            h *= 6;
+            s = s;
+            v = v;
+            var i = Math.floor(h);
+            var f = h - i;
+            var p = v * (1 - s);
+            var q = v * (1 - (s * f));
+            var t = v * (1 - (s * (1 - f)));
+            switch (i) {
+                case 0:
+                    rgb.r = v;
+                    rgb.g = t;
+                    rgb.b = p;
+                    break;
+
+                case 1:
+                    rgb.r = q;
+                    rgb.g = v;
+                    rgb.b = p;
+                    break;
+
+                case 2:
+                    rgb.r = p;
+                    rgb.g = v;
+                    rgb.b = t;
+                    break;
+
+                case 3:
+                    rgb.r = p;
+                    rgb.g = q;
+                    rgb.b = v;
+                    break;
+
+                case 4:
+                    rgb.r = t;
+                    rgb.g = p;
+                    rgb.b = v;
+                    break;
+
+                case 5:
+                    rgb.r = v;
+                    rgb.g = p;
+                    rgb.b = q;
+                    break;
+            }
+        }
     }
     return rgb;
 };
