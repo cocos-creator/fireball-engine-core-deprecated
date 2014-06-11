@@ -113,6 +113,26 @@ FIRE.getClassName = function (obj) {
     return null;
 };
 
+//
+FIRE.getEnumList = function (enumDef) {
+    if ( enumDef.__enums__ !== undefined )
+        return enumDef.__enums__;
+
+    var enums = [];
+    for ( var entry in enumDef ) {
+        if ( enumDef.hasOwnProperty(entry) ) {
+            var test = parseInt(entry);
+            if ( isNaN(test) ) {
+                enums.push( { name: entry, value: enumDef[entry] } );
+            }
+        }
+    }
+    enums.sort( function ( a, b ) { return a.value - b.value; } );
+
+    enumDef.__enums__ = enums;
+    return enumDef.__enums__;
+};
+
 // r, g, b must be [0.0, 1.0]
 FIRE.rgb2hsv = function ( r, g, b ) {
     var hsv = { h: 0, s: 0, v: 0 };
