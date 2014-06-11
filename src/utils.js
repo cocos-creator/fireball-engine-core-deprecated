@@ -85,10 +85,10 @@ FIRE.getTrimRect = function (img, trimThreshold) {
  * @return {String}
  */
 FIRE.getClassName = function (obj) {
-    if (obj.getClassName) {
-        return obj.getClassName();
-    }
     if (obj && obj.constructor) {
+        if (obj.constructor.prototype && obj.constructor.prototype.hasOwnProperty('getClassName')) {
+            return obj.getClassName();
+        }
         var retval;
         //  for browsers which have name property in the constructor of the object, such as chrome 
         if (obj.constructor.name) {
