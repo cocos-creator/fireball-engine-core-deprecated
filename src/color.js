@@ -10,6 +10,8 @@ FIRE.Color = (function () {
         this.a = a;
     }
     FIRE.extend(Color, _super);
+    Color.prototype.__classname__ = "FIRE.Color";
+    Color.prototype.getClassName = function () { return this.__classname__; };
 
     Color.prototype.clone = function () {
         return new Color(this.r, this.g, this.b, this.a);

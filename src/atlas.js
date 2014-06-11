@@ -24,6 +24,8 @@ FIRE.Atlas = (function () {
         // this.elementSelectColor = [0.0, 0.0, 1.0, 1.0];
     }
     FIRE.extend(Atlas, _super);
+    Atlas.prototype.__classname__ = "FIRE.Atlas";
+    Atlas.prototype.getClassName = function () { return this.__classname__; };
 
     // enum Algorithm
     Atlas.Algorithm = (function (t) {

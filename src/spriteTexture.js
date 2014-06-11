@@ -17,6 +17,8 @@ FIRE.SpriteTexture = (function () {
         this.y = 0;
     }
     FIRE.extend(SpriteTexture, _super);
+    SpriteTexture.prototype.__classname__ = "FIRE.SpriteTexture";
+    SpriteTexture.prototype.getClassName = function () { return this.__classname__; };
 
     SpriteTexture.prototype.__defineGetter__('rotatedWidth', function () {
         return this.rotated ? this.height : this.width;
