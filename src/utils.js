@@ -60,13 +60,20 @@ var _doGetTrimRect = function (pixels, w, h, trimThreshold) {
 };
 
 FIRE.getTrimRect = function (img, trimThreshold) {
-    // create temp canvas
-    var canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    var ctx = canvas.getContext('2d');
-    ctx.drawImage( img, 0, 0, img.width, img.height );  
-    var pixels = ctx.getImageData(0, 0, img.width, img.height).data;
+    var canvas, ctx;
+    if (img instanceof Image) {
+        // create temp canvas
+        canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx = canvas.getContext('2d');
+        ctx.drawImage( img, 0, 0, img.width, img.height );  
+    }
+    else {
+        canvas = img;
+        ctx = canvas.getContext('2d');
+    }
+    var pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 
     // get trim
     return _doGetTrimRect(pixels, img.width, img.height, trimThreshold);
@@ -78,6 +85,9 @@ FIRE.getTrimRect = function (img, trimThreshold) {
  * @return {String}
  */
 FIRE.getClassName = function (obj) {
+    if (obj.getClassName) {
+        return obj.getClassName();
+    }
     if (obj && obj.constructor) {
         var retval;
         //  for browsers which have name property in the constructor of the object, such as chrome 
@@ -86,7 +96,7 @@ FIRE.getClassName = function (obj) {
         }
         if (obj.constructor.toString) {
             var arr, str = obj.constructor.toString();
-            if (str.charAt(0) == '[') {
+            if (str.charAt(0) === '[') {
                 // str is "[object objectClass]"
                 arr = str.match(/\[\w+\s*(\w+)\]/);
             }
@@ -94,7 +104,7 @@ FIRE.getClassName = function (obj) {
                 // str is function objectClass () {} for IE Firefox
                 arr = str.match(/function\s*(\w+)/);
             }
-            if (arr && arr.length == 2) {
+            if (arr && arr.length === 2) {
                 retval = arr[1];
             }
         }

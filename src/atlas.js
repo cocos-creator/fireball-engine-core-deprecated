@@ -66,6 +66,11 @@ FIRE.Atlas = (function () {
         this.textures.push(texture);
     };
 
+    // clear all textures
+    Atlas.prototype.clear = function () {
+        this.textures.length = 0;
+    };
+
     //
     var _basicLayout = function (atlas) {
         var curX = 0; 
