@@ -115,19 +115,10 @@ FIRE.getClassName = function (obj) {
 
 // r, g, b must be [0.0, 1.0]
 FIRE.rgb2hsv = function ( r, g, b ) {
-    var hsv = { h: 0, s: 0, v: 0 }, min = 0, max = 0, delta;
-    if (r >= g && r >= b) {
-        max = r;
-        min = g > b ? b : g;
-    }
-    else if (g >= b && g >= r) {
-        max = g;
-        min = r > b ? b : r;
-    }
-    else {
-        max = b;
-        min = g > r ? r : g;
-    }
+    var hsv = { h: 0, s: 0, v: 0 };
+    var max = Math.max(r,g,b);
+    var min = Math.min(r,g,b);
+    var delta = 0;
     hsv.v = max;
     hsv.s = max ? (max - min) / max : 0;
     if (!hsv.s) hsv.h = 0;
