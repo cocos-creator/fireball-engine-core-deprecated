@@ -1,4 +1,31 @@
-﻿module('serialize');
+﻿module('getClassName');
+
+test('test getClassName', function() {
+    var MyAsset = (function () {
+        var _super = FIRE.Asset;
+
+        function MyAsset () {
+            _super.call(this);
+        }
+        FIRE.extend(MyAsset, _super);
+        MyAsset.prototype.getClassName = function () { return 'Foo'; };
+
+        return MyAsset;
+    })();
+    var myAsset = new MyAsset();
+
+    equal(FIRE.getClassName(myAsset), 'Foo', 'can getClassName of user type');
+
+    delete MyAsset.prototype.getClassName;
+    ok(FIRE.getClassName(myAsset), 'should fallback to constructor name if classname not defined');
+    // (constructor's name may renamed by uglify, so we do not test the value exactly)
+
+    var asset = new FIRE.Asset();
+    ok(FIRE.getClassName(asset), 'can getClassName of FIRE type');
+    notEqual(FIRE.getClassName(myAsset), FIRE.getClassName(asset), 'class name should not achieved from its super');
+});
+
+module('serialize');
 
 var match = function (obj, expect, info) {
     deepEqual(JSON.parse(FIRE.serialize(obj)), expect, info);
