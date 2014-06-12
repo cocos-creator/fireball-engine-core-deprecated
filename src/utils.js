@@ -133,6 +133,19 @@ FIRE.getEnumList = function (enumDef) {
     return enumDef.__enums__;
 };
 
+//
+FIRE.getVarFrom = function ( obj, text ) {
+    var res = text.split('.');
+    var curObj = obj; 
+    for ( var i = 0; i < res.length; ++i ) {
+        var name = res[i];
+        curObj = curObj[name];
+        if ( curObj === undefined || curObj === null )
+            return null;
+    }
+    return curObj;
+};
+
 // r, g, b must be [0.0, 1.0]
 FIRE.rgb2hsv = function ( r, g, b ) {
     var hsv = { h: 0, s: 0, v: 0 };
