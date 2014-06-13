@@ -16,12 +16,14 @@ FIRE.Atlas = (function () {
         this.algorithm = Atlas.Algorithm.MaxRect; 
         this.sortBy = Atlas.SortBy.UseBest; 
         this.sortOrder = Atlas.SortOrder.UseBest; 
-        this.customPadding = 1;
         this.allowRotate = true;
 
-        // element settings
-        // this.elementBgColor = [1.0, 1.0, 1.0, 0.0];
-        // this.elementSelectColor = [0.0, 0.0, 1.0, 1.0];
+        // build settings
+        this.useContourBleed = true;
+        this.usePaddingBleed = true;
+        this.customPadding = 1;
+        this.customBuildColor = false;
+        this.buildColor = new FIRE.Color( 1,1,1,0 );
     }
     FIRE.extend(Atlas, _super);
     Atlas.prototype.__classname__ = "FIRE.Atlas";

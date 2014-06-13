@@ -14,6 +14,7 @@ var paths = {
         'src/__intro.js',
         'src/core.js',
         'src/utils.js',
+        'src/dom.js',
         'src/serialize.js',
         'src/object.js',
         'src/asset.js',

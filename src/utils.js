@@ -59,26 +59,6 @@ var _doGetTrimRect = function (pixels, w, h, trimThreshold) {
     return new FIRE.Rect(tx, ty, tw, th);
 };
 
-FIRE.getTrimRect = function (img, trimThreshold) {
-    var canvas, ctx;
-    if (img instanceof Image) {
-        // create temp canvas
-        canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx = canvas.getContext('2d');
-        ctx.drawImage( img, 0, 0, img.width, img.height );  
-    }
-    else {
-        canvas = img;
-        ctx = canvas.getContext('2d');
-    }
-    var pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-
-    // get trim
-    return _doGetTrimRect(pixels, img.width, img.height, trimThreshold);
-};
-
 /**
  * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null
  * modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class
