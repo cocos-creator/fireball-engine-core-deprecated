@@ -25,7 +25,6 @@ FIRE.Atlas = (function () {
     }
     FIRE.extend(Atlas, _super);
     Atlas.prototype.__classname__ = "FIRE.Atlas";
-    Atlas.prototype.getClassName = function () { return this.__classname__; };
 
     // enum Algorithm
     Atlas.Algorithm = (function (t) {

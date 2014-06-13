@@ -8,7 +8,7 @@ test('test getClassName', function() {
             _super.call(this);
         }
         FIRE.extend(MyAsset, _super);
-        MyAsset.prototype.getClassName = function () { return 'Foo'; };
+        MyAsset.prototype.__classname__ = 'Foo';
 
         return MyAsset;
     })();
@@ -50,7 +50,7 @@ test('basic test', function() {
             this.obj = {};
         }
         FIRE.extend(MyAsset, _super);
-        MyAsset.prototype.getClassName = function () { return 'MyAsset'; };
+        MyAsset.prototype.__classname__ = 'MyAsset';
 
         // should not serialize ----------------------------
         MyAsset.staticFunc = function () { };
@@ -98,7 +98,7 @@ test('test circular reference', function () {
             // array2 = [array1, 2]
         }
         FIRE.extend(MyAsset, _super);
-        MyAsset.prototype.getClassName = function () { return 'MyAsset'; };
+        MyAsset.prototype.__classname__ = 'MyAsset';
 
         return MyAsset;
     })();
@@ -125,7 +125,7 @@ test('test circular reference', function () {
             this.dict1.other = this.dict2;
         }
         FIRE.extend(MyAsset, _super);
-        MyAsset.prototype.getClassName = function () { return 'MyAsset'; };
+        MyAsset.prototype.__classname__ = 'MyAsset';
 
         return MyAsset;
     })();

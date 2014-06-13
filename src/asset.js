@@ -7,7 +7,6 @@ FIRE.Asset = (function () {
     }
     FIRE.extend(Asset, _super);
     Asset.prototype.__classname__ = "FIRE.Asset";
-    Asset.prototype.getClassName = function () { return this.__classname__; };
 
     return Asset;
 })();
