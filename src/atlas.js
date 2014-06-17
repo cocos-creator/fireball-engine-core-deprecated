@@ -32,13 +32,13 @@ FIRE.Atlas = (function () {
     Atlas.Algorithm = (function (t) {
         t[t.Basic   = 0] = 'Basic';
         t[t.Tree    = 1] = 'Tree';
-        t[t.MaxRect = 2] = 'MaxRect';
+        t[t.MaxRect = 2] = 'Max Rect';
         return t;
     })({});
 
     // enum SortBy
     Atlas.SortBy = (function (t) {
-        t[t.UseBest = 0] = 'UseBest';
+        t[t.UseBest = 0] = 'Use Best';
         t[t.Width   = 1] = 'Width';
         t[t.Height  = 2] = 'Height';
         t[t.Area    = 3] = 'Area';
@@ -48,7 +48,7 @@ FIRE.Atlas = (function () {
 
     // enum SortOrder
     Atlas.SortOrder = (function (t) {
-        t[t.UseBest    = 0] = 'UseBest';
+        t[t.UseBest    = 0] = 'Use Best';
         t[t.Ascending  = 1] = 'Ascending';
         t[t.Descending = 2] = 'Descending';
         return t;

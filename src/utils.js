@@ -103,7 +103,7 @@ FIRE.getEnumList = function (enumDef) {
         if ( enumDef.hasOwnProperty(entry) ) {
             var test = parseInt(entry);
             if ( isNaN(test) ) {
-                enums.push( { name: entry, value: enumDef[entry] } );
+                enums.push( { name: enumDef[enumDef[entry]], value: enumDef[entry] } );
             }
         }
     }
