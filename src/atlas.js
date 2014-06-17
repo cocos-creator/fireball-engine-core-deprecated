@@ -86,7 +86,7 @@ FIRE.Atlas = (function () {
                 maxY = 0;
             }
             if ( curY + texture.rotatedHeight() > atlas.height ) {
-                console.log ( "Error: Failed to layout element " + texture.name );
+                console.log ( "Warning: Failed to layout element " + texture.name );
             }
             texture.x = curX;
             texture.y = curY;
@@ -340,8 +340,10 @@ FIRE.Atlas = (function () {
             }
 
             if ( bestElementIdx === -1 ) {
-                console.error( "Failed to layout atlas elements" );
+                console.log( "Warning: Failed to layout atlas elements" );
+                break;
             }
+
             _placeRect( freeRects, bestRect );
 
             // apply the best-element
