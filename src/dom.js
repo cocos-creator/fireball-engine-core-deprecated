@@ -56,3 +56,28 @@ FIRE.getTrimRect = function (img, trimThreshold) {
     // get trim
     return _doGetTrimRect(pixels, img.width, img.height, trimThreshold);
 };
+
+var _dragGhost = null; 
+FIRE.addDragGhost = function ( cursor ) {
+    // add drag-ghost
+    if ( _dragGhost === null ) {
+        _dragGhost = document.createElement('div');
+        _dragGhost.classList.add('drag-ghost');
+        _dragGhost.style.position = 'fixed';
+        _dragGhost.style.zIndex = '999';
+        _dragGhost.style.left = '0';
+        _dragGhost.style.top = '0';
+        _dragGhost.style.width = window.innerWidth + 'px';
+        _dragGhost.style.height = window.innerHeight + 'px';
+        _dragGhost.oncontextmenu = function() { return false; };
+    }
+    _dragGhost.style.cursor = cursor;
+    document.body.appendChild(_dragGhost);
+};
+
+FIRE.removeDragGhost = function () {
+    if ( _dragGhost !== null ) {
+        _dragGhost.style.cursor = 'auto';
+        _dragGhost.parentNode.removeChild(_dragGhost);
+    }
+};

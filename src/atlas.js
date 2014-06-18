@@ -318,7 +318,6 @@ FIRE.Atlas = (function () {
         };
 
         var processElements = atlas.textures.slice();   // clone
-        console.log(processElements.length);
         while ( processElements.length > 0 ) {
             var bestScore1 = Number.MAX_VALUE;
             var bestScore2 = Number.MAX_VALUE;
