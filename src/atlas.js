@@ -80,20 +80,20 @@ FIRE.Atlas = (function () {
 
         for (var i = 0; i < atlas.textures.length; ++i) {
             var texture = atlas.textures[i];
-            if ( curX + texture.rotatedWidth() > atlas.width ) {
+            if ( curX + texture.rotatedWidth > atlas.width ) {
                 curX = 0;
                 curY = curY + maxY + atlas.customPadding;
                 maxY = 0;
             }
-            if ( curY + texture.rotatedHeight() > atlas.height ) {
+            if ( curY + texture.rotatedHeight > atlas.height ) {
                 console.log ( "Warning: Failed to layout element " + texture.name );
             }
             texture.x = curX;
             texture.y = curY;
 
-            curX = curX + texture.rotatedWidth() + atlas.customPadding;
-            if ( texture.rotatedHeight() > maxY ) {
-                maxY = texture.rotatedHeight();
+            curX = curX + texture.rotatedWidth + atlas.customPadding;
+            if ( texture.rotatedHeight > maxY ) {
+                maxY = texture.rotatedHeight;
             }
         }
     };
@@ -110,8 +110,8 @@ FIRE.Atlas = (function () {
         }
 
         // determine trimmed and padded sizes
-        var elWidth = texture.rotatedWidth();
-        var elHeight = texture.rotatedHeight();
+        var elWidth = texture.rotatedWidth;
+        var elHeight = texture.rotatedHeight;
         var paddedWidth = elWidth + padding;
         var paddedHeight = elHeight + padding;
         var rect = node.rect;
@@ -127,8 +127,8 @@ FIRE.Atlas = (function () {
             }
             else {
                 texture.rotated = !texture.rotated;
-                elWidth = texture.rotatedWidth();
-                elHeight = texture.rotatedHeight();
+                elWidth = texture.rotatedWidth;
+                elHeight = texture.rotatedHeight;
                 paddedWidth = elWidth + padding;
                 paddedHeight = elHeight + padding;
             }
