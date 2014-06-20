@@ -350,7 +350,6 @@ FIRE.Atlas = (function () {
             bestElement.x = Math.floor(bestRect.x);
             bestElement.y = Math.floor(bestRect.y);
             bestElement.rotated = bestElement.width + atlas.customPadding != bestRect.width;
-            console.log('layout ' + bestElement.name);
             // remove the processed(inserted) element
             processElements.splice( bestElementIdx, 1 );
         }
