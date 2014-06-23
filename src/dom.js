@@ -11,7 +11,6 @@ var _findInChildren = function ( element, elementToFind ) {
     return false;
 };
 
-
 //
 FIRE.find = function ( elements, elementToFind ) {
     if ( Array.isArray(elements) || 
@@ -34,6 +33,20 @@ FIRE.find = function ( elements, elementToFind ) {
         return true;
 
     return _findInChildren( elements, elementToFind );
+};
+
+//
+FIRE.getParentTabIndex = function ( element ) {
+    var parent = element.parentElement;
+    while ( parent ) {
+        if ( parent.tabIndex !== null && 
+             parent.tabIndex !== undefined &&
+             parent.tabIndex !== -1 )
+            return parent.tabIndex;
+
+        parent = parent.parentElement;
+    }
+    return 0;
 };
 
 //
