@@ -49,6 +49,23 @@ FIRE.getParentTabIndex = function ( element ) {
     return 0;
 };
 
+FIRE.getFirstFocusableChild = function ( element ) {
+    if ( element.tabIndex !== null && 
+         element.tabIndex !== undefined &&
+         element.tabIndex !== -1 )
+    {
+        return element;
+    }
+
+    for ( var i = 0; i < element.children.length; ++i ) {
+        var el = FIRE.getFirstFocusableChild(element.children[i]);
+        if ( el !== null )
+            return el;
+    }
+
+    return null;
+};
+
 //
 FIRE.getTrimRect = function (img, trimThreshold) {
     var canvas, ctx;
