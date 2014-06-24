@@ -19,6 +19,7 @@ var paths = {
         'src/serialize.js',
         'src/object.js',
         'src/asset.js',
+        'src/vec2.js',
         'src/rect.js',
         'src/color.js',
         'src/texture.js',
