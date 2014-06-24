@@ -52,7 +52,7 @@ FIRE.getParentTabIndex = function ( element ) {
 //
 FIRE.getTrimRect = function (img, trimThreshold) {
     var canvas, ctx;
-    if (img instanceof Image) {
+    if (img instanceof Image || img instanceof HTMLImageElement) {
         // create temp canvas
         canvas = document.createElement('canvas');
         canvas.width = img.width;
