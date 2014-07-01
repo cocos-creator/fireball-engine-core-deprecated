@@ -108,6 +108,8 @@ FIRE.addDragGhost = function ( cursor ) {
 FIRE.removeDragGhost = function () {
     if ( _dragGhost !== null ) {
         _dragGhost.style.cursor = 'auto';
-        _dragGhost.parentNode.removeChild(_dragGhost);
+        if ( _dragGhost.parentNode !== null ) {
+            _dragGhost.parentNode.removeChild(_dragGhost);
+        }
     }
 };
