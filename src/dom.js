@@ -57,8 +57,14 @@ FIRE.getFirstFocusableChild = function ( element ) {
         return element;
     }
 
+    var el = null;
     for ( var i = 0; i < element.children.length; ++i ) {
-        var el = FIRE.getFirstFocusableChild(element.children[i]);
+        el = FIRE.getFirstFocusableChild(element.children[i]);
+        if ( el !== null )
+            return el;
+    }
+    if ( element.shadowRoot ) {
+        el = FIRE.getFirstFocusableChild(element.shadowRoot);
         if ( el !== null )
             return el;
     }
