@@ -25,6 +25,7 @@ var paths = {
         'src/texture.js',
         'src/spriteTexture.js',
         'src/atlas.js',
+        'src/fontInfo.js',
 
         'src/nw.js',
         'src/dom.js',
