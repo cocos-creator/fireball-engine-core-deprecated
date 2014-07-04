@@ -12,10 +12,10 @@ var qunit = require('gulp-qunit');
 var paths = {
     src: [
         'src/__intro.js',
+
         'src/core.js',
         'src/utils.js',
         'src/stringUtils.js',
-        'src/dom.js',
         'src/serialize.js',
         'src/object.js',
         'src/asset.js',
@@ -25,6 +25,10 @@ var paths = {
         'src/texture.js',
         'src/spriteTexture.js',
         'src/atlas.js',
+
+        'src/nw.js',
+        'src/dom.js',
+
         'src/__outro.js',
     ],
     dev: 'bin/core.dev.js',
