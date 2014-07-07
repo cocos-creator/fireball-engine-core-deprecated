@@ -7,6 +7,8 @@ FIRE.FontInfo = (function () {
 
         this.atlas = new FIRE.Atlas();
 
+        // TODO: this.spacing = get this.atlas.customPadding 
+
         // this.charSetType = TODO: custom, unicode, ascii 
         this.charSet = 
             'abcdefghijklmnopqrstuvwxyz\n' + 

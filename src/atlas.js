@@ -6,6 +6,7 @@ FIRE.Atlas = (function () {
         _super.call(this);
 
         // basic settings
+        this.autoSize = true;
         this.width = 512;
         this.height = 512;
         this.trim = true;
@@ -86,7 +87,7 @@ FIRE.Atlas = (function () {
                 maxY = 0;
             }
             if ( curY + texture.rotatedHeight > atlas.height ) {
-                console.log ( "Warning: Failed to layout element " + texture.name );
+                throw new Error("Warning: Failed to layout element " + texture.name);
             }
             texture.x = curX;
             texture.y = curY;
@@ -183,7 +184,7 @@ FIRE.Atlas = (function () {
             }
             else {
                 // log warning but continue processing other elements
-                console.log( "Error: Failed to layout atlas element " + texture.name );
+                throw new Error("Warning: Failed to layout element " + texture.name);
             }
         }
     };
@@ -339,8 +340,7 @@ FIRE.Atlas = (function () {
             }
 
             if ( bestElementIdx === -1 ) {
-                console.log( "Warning: Failed to layout atlas elements" );
-                break;
+                throw new Error( "Error: Failed to layout atlas element" );
             }
 
             _placeRect( freeRects, bestRect );
@@ -356,26 +356,46 @@ FIRE.Atlas = (function () {
     };
 
     Atlas.prototype.layout = function () {
-
-        // TODO: temp
         // reset texture infos
         for (var i = 0; i < this.textures.length; ++i) {
             var texture = this.textures[i];
             texture.rotated = false;
         }
 
-        switch ( this.algorithm ) {
-            case Atlas.Algorithm.Basic:
-                _basicLayout(this);
+        //
+        try {
+            switch ( this.algorithm ) {
+                case Atlas.Algorithm.Basic:
+                    _basicLayout(this);
                 break;
 
-            case Atlas.Algorithm.Tree:
-                _treeLayout(this);
+                case Atlas.Algorithm.Tree:
+                    _treeLayout(this);
                 break;
 
-            case Atlas.Algorithm.MaxRect:
-                _maxRectLayout(this);
+                case Atlas.Algorithm.MaxRect:
+                    _maxRectLayout(this);
                 break;
+            }
+        }
+        catch ( err ) {
+            if ( this.autoSize === false ) {
+                console.error(err.message);
+                return;
+            }
+
+            if ( this.width == 4096 && this.height == 4096 ) {
+                console.error(err.message);
+                return;
+            }
+
+            if ( this.width === this.height ) {
+                this.width *= 2;
+            }
+            else {
+                this.height = this.width;
+            }
+            this.layout();
         }
     };
 
