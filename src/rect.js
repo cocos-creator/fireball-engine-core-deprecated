@@ -43,6 +43,14 @@ FIRE.Rect = (function () {
         return new Rect(this.x, this.y, this.width, this.height);
     };
 
+    Rect.prototype.__defineGetter__('xMax', function () {
+        return this.x + this.width;
+    });
+
+    Rect.prototype.__defineGetter__('yMax', function () {
+        return this.y + this.height;
+    });
+
     return Rect;
 })();
 

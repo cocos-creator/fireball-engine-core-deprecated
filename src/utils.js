@@ -1,4 +1,4 @@
-var _doGetTrimRect = function (pixels, w, h, trimThreshold) {
+var _doGetTrimRect = function (pixelBuffer, w, h, trimThreshold) {
     // A B C
     // D x F
     // G H I
@@ -14,7 +14,7 @@ var _doGetTrimRect = function (pixels, w, h, trimThreshold) {
     for (y = 0; y < h; y++) {
         index = y * ditch + 3;  // (x + y * w) * 4 + 3
         for (x = 0; x < w; x++, index += 4) {
-            if (pixels[index] >= trimThreshold) {
+            if (pixelBuffer[index] >= trimThreshold) {
                 ty = y;
                 y = h;
                 break;
@@ -25,7 +25,7 @@ var _doGetTrimRect = function (pixels, w, h, trimThreshold) {
     for (y = h - 1; y >= ty; y--) {
         index = y * ditch + 3;
         for (x = 0; x < w; x++, index += 4) {
-            if (pixels[index] >= trimThreshold) {
+            if (pixelBuffer[index] >= trimThreshold) {
                 th = y - ty + 1;
                 y = 0;
                 break;
@@ -37,7 +37,7 @@ var _doGetTrimRect = function (pixels, w, h, trimThreshold) {
     for (x = 0; x < w; x++) {
         index = skipTrimmedY + x * 4 + 3;
         for (i = 0; i < th; i++, index += ditch) {
-            if (pixels[index] >= trimThreshold) {
+            if (pixelBuffer[index] >= trimThreshold) {
                 tx = x;
                 x = w;
                 break;
@@ -48,7 +48,7 @@ var _doGetTrimRect = function (pixels, w, h, trimThreshold) {
     for (x = w - 1; x >= tx; x--) {
         index = skipTrimmedY + x * 4 + 3;
         for (i = 0; i < th; i++, index += ditch) {
-            if (pixels[index] >= trimThreshold) {
+            if (pixelBuffer[index] >= trimThreshold) {
                 tw = x - tx + 1;
                 x = 0;
                 break;

@@ -87,10 +87,10 @@ FIRE.getTrimRect = function (img, trimThreshold) {
         canvas = img;
         ctx = canvas.getContext('2d');
     }
-    var pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    var pixelBuffer = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 
     // get trim
-    return _doGetTrimRect(pixels, img.width, img.height, trimThreshold);
+    return _doGetTrimRect(pixelBuffer, img.width, img.height, trimThreshold);
 };
 
 var _dragGhost = null; 

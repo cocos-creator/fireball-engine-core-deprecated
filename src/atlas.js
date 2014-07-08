@@ -20,8 +20,8 @@ FIRE.Atlas = (function () {
         this.allowRotate = true;
 
         // build settings
-        this.useContourBleed = true;
-        this.usePaddingBleed = true;
+        this.useContourBleed = true;    // also called Reduce border artifacts。应用于sprite内部，只改变全透明像素的颜色
+        this.usePaddingBleed = true;    // also called Extrude。应用于sprite外部，同时复制颜色和透明度
         this.customPadding = 1;
         this.customBuildColor = false;
         this.buildColor = new FIRE.Color( 1,1,1,0 );
