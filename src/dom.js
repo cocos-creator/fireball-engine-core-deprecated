@@ -119,3 +119,82 @@ FIRE.removeDragGhost = function () {
         }
     }
 };
+
+var _readDir = function (dirReader, callback) {
+    var onReadDir = function (entries) {
+        if (!entries.length) {
+            return; // readed
+        }
+        else {
+            // recursive directory read
+            _readEntries(entries, callback);
+
+            // Keep calling readEntries() until no more results are returned.
+            // This is needed to get all directory entries as one 
+            // call of readEntries may not return all items. Works a 
+            // bit like stream reader.
+            _readDir(dirReader, callback);
+        }
+    };
+    dirReader.readEntries(onReadDir);
+};
+// Recursive directory read 
+var _readEntries = function (entries, callback) {
+    var files = [];
+    var processingFile = 0;
+    var onLoadFile = function (file) {
+        --processingFile;
+        files.push(file);
+        if (processingFile === 0) {
+            callback(files);
+        }
+    };
+    var dirReader;
+    for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isDirectory) {
+            dirReader = entries[i].createReader();
+            _readDir(dirReader, callback);
+        }
+        else {
+            ++processingFile;
+            entries[i].file(onLoadFile);
+        }
+    }
+};
+
+// 获得浏览器拖进来的文件，当包含文件夹时，callback将被多次调用
+// recursive read all the files and (sub-)folders which dragged and dropped to browser
+FIRE.getDraggingFiles = function (event, callback) {
+    //var paths = [];
+    //for (var i = 0; i < files.length; i++) {
+    //    paths.push(files[i].path);
+    //}
+    //files = FIRE.readDirRecursively(paths);
+    var items = event.dataTransfer.items;
+    if (!items) {
+        callback(event.dataTransfer.files);
+        return;
+    }
+    var files = [];
+    var entry;
+    for (var i = 0; i < items.length; i++) {
+        if (items[i].getAsEntry) {
+            entry = items[i].getAsEntry();
+        }
+        else if (items[i].webkitGetAsEntry) {
+            entry = items[i].webkitGetAsEntry();
+        }
+        else {
+            entry = null;
+        }
+        if (entry !== null && entry.isDirectory) {
+            _readEntries([entry], callback);
+        }
+        else {
+            files.push(event.dataTransfer.files[i]);
+        }
+    }
+    if (files.length > 0) {
+        callback(files);
+    }
+};
