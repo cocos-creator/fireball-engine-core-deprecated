@@ -27,8 +27,9 @@ var paths = {
         'src/atlas.js',
         'src/fontInfo.js',
 
-        'src/platform.js',
-        'src/dom.js',
+        'src/editor/platform.js',
+        'src/editor/dom.js',
+        'src/editor/fileUtils.js',
 
         'src/__outro.js',
     ],
