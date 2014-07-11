@@ -43,16 +43,20 @@ gulp.task('clean', function() {
     ;
 });
 
-// dev
-gulp.task('dev', function() {
+// jshint
+gulp.task('jshint', function() {
     var filter = gulpfilter( ['!__intro.js','!__outro.js'] );
-
     return gulp.src(paths.src)
     .pipe(filter)
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
     // .pipe(jshint.reporter('fail')) // disabled
-    .pipe(filter.restore())
+    ;
+});
+
+// dev
+gulp.task('dev', ['jshint'], function() {
+    return gulp.src(paths.src)
     .pipe(concat('core.dev.js'))
     .pipe(gulp.dest('bin'))
     ;
