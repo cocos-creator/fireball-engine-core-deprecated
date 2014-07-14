@@ -3,7 +3,7 @@ FIRE.Texture = (function () {
 
     // constructor
     function Texture ( img ) {
-        _super.call(this, img);
+        _super.call(this);
 
         // basic settings
         this.name = "";
