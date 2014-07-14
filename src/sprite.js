@@ -1,8 +1,8 @@
-FIRE.SpriteTexture = (function () {
+FIRE.Sprite = (function () {
     var _super = FIRE.Asset;
 
     // constructor
-    function SpriteTexture ( img ) {
+    function Sprite ( img ) {
         _super.call(this);
 
         // basic settings
@@ -19,16 +19,16 @@ FIRE.SpriteTexture = (function () {
         this.x = 0;
         this.y = 0;
     }
-    FIRE.extend(SpriteTexture, _super);
-    SpriteTexture.prototype.__classname__ = "FIRE.SpriteTexture";
+    FIRE.extend(Sprite, _super);
+    Sprite.prototype.__classname__ = "FIRE.Sprite";
 
-    SpriteTexture.prototype.__defineGetter__('rotatedWidth', function () {
+    Sprite.prototype.__defineGetter__('rotatedWidth', function () {
         return this.rotated ? this.height : this.width;
     });
 
-    SpriteTexture.prototype.__defineGetter__('rotatedHeight', function () {
+    Sprite.prototype.__defineGetter__('rotatedHeight', function () {
         return this.rotated ? this.width : this.height;
     });
 
-    return SpriteTexture;
+    return Sprite;
 })();

@@ -23,7 +23,7 @@ var paths = {
         'src/rect.js',
         'src/color.js',
         'src/texture.js',
-        'src/spriteTexture.js',
+        'src/sprite.js',
         'src/atlas.js',
         'src/fontInfo.js',
 
