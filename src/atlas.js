@@ -11,7 +11,7 @@ FIRE.Atlas = (function () {
         this.height = 512;
         this.trim = true;
         this.trimThreshold = 1;
-        this.textures = [];
+        this.sprites = [];
 
         // layout settings
         this.algorithm = Atlas.Algorithm.MaxRect; 
@@ -56,21 +56,21 @@ FIRE.Atlas = (function () {
     })({});
 
     //
-    Atlas.prototype.add = function ( texture ) {
-        for (var i = 0; i < this.textures.length; ++i) {
-            var t = this.textures[i];
-            if ( t.name === texture.name ) {
-                this.textures[i] = texture;
+    Atlas.prototype.add = function ( sprite ) {
+        for (var i = 0; i < this.sprites.length; ++i) {
+            var t = this.sprites[i];
+            if ( t.name === sprite.name ) {
+                this.sprites[i] = sprite;
                 return;
             }
         }
 
-        this.textures.push(texture);
+        this.sprites.push(sprite);
     };
 
-    // clear all textures
+    // clear all sprites
     Atlas.prototype.clear = function () {
-        this.textures.length = 0;
+        this.sprites.length = 0;
     };
 
     //
@@ -79,40 +79,40 @@ FIRE.Atlas = (function () {
         var curY = 0; 
         var maxY = 0; 
 
-        for (var i = 0; i < atlas.textures.length; ++i) {
-            var texture = atlas.textures[i];
-            if ( curX + texture.rotatedWidth > atlas.width ) {
+        for (var i = 0; i < atlas.sprites.length; ++i) {
+            var sprite = atlas.sprites[i];
+            if ( curX + sprite.rotatedWidth > atlas.width ) {
                 curX = 0;
                 curY = curY + maxY + atlas.customPadding;
                 maxY = 0;
             }
-            if ( curY + texture.rotatedHeight > atlas.height ) {
-                throw new Error("Warning: Failed to layout element " + texture.name);
+            if ( curY + sprite.rotatedHeight > atlas.height ) {
+                throw new Error("Warning: Failed to layout element " + sprite.name);
             }
-            texture.x = curX;
-            texture.y = curY;
+            sprite.x = curX;
+            sprite.y = curY;
 
-            curX = curX + texture.rotatedWidth + atlas.customPadding;
-            if ( texture.rotatedHeight > maxY ) {
-                maxY = texture.rotatedHeight;
+            curX = curX + sprite.rotatedWidth + atlas.customPadding;
+            if ( sprite.rotatedHeight > maxY ) {
+                maxY = sprite.rotatedHeight;
             }
         }
     };
 
     //
-    var _insertNode = function ( node, texture, padding, allowRotate ) {
+    var _insertNode = function ( node, sprite, padding, allowRotate ) {
         // when this node is already occupied (when it has children),
         // forward to child nodes recursively
         if ( node.right !== null ) {
-            var pos = _insertNode( node.right, texture, padding, allowRotate );
+            var pos = _insertNode( node.right, sprite, padding, allowRotate );
             if ( pos !== null )
                 return pos;
-            return _insertNode( node.bottom, texture, padding, allowRotate );
+            return _insertNode( node.bottom, sprite, padding, allowRotate );
         }
 
         // determine trimmed and padded sizes
-        var elWidth = texture.rotatedWidth;
-        var elHeight = texture.rotatedHeight;
+        var elWidth = sprite.rotatedWidth;
+        var elHeight = sprite.rotatedHeight;
         var paddedWidth = elWidth + padding;
         var paddedHeight = elHeight + padding;
         var rect = node.rect;
@@ -127,9 +127,9 @@ FIRE.Atlas = (function () {
                 return null;
             }
             else {
-                texture.rotated = !texture.rotated;
-                elWidth = texture.rotatedWidth;
-                elHeight = texture.rotatedHeight;
+                sprite.rotated = !sprite.rotated;
+                elWidth = sprite.rotatedWidth;
+                elHeight = sprite.rotatedHeight;
                 paddedWidth = elWidth + padding;
                 paddedHeight = elHeight + padding;
             }
@@ -175,16 +175,16 @@ FIRE.Atlas = (function () {
             right: null,
             bottom: null,
         };
-        for (var i = 0; i < atlas.textures.length; ++i) {
-            var texture = atlas.textures[i];
-            var pos = _insertNode ( root, texture, atlas.customPadding, atlas.allowRotate );
+        for (var i = 0; i < atlas.sprites.length; ++i) {
+            var sprite = atlas.sprites[i];
+            var pos = _insertNode ( root, sprite, atlas.customPadding, atlas.allowRotate );
             if ( pos !== null ) {
-                texture.x = pos[0];
-                texture.y = pos[1];
+                sprite.x = pos[0];
+                sprite.y = pos[1];
             }
             else {
                 // log warning but continue processing other elements
-                throw new Error("Warning: Failed to layout element " + texture.name);
+                throw new Error("Warning: Failed to layout element " + sprite.name);
             }
         }
     };
@@ -318,7 +318,7 @@ FIRE.Atlas = (function () {
             return newRect;
         };
 
-        var processElements = atlas.textures.slice();   // clone
+        var processElements = atlas.sprites.slice();   // clone
         while ( processElements.length > 0 ) {
             var bestScore1 = Number.MAX_VALUE;
             var bestScore2 = Number.MAX_VALUE;
@@ -356,10 +356,10 @@ FIRE.Atlas = (function () {
     };
 
     Atlas.prototype.layout = function () {
-        // reset texture infos
-        for (var i = 0; i < this.textures.length; ++i) {
-            var texture = this.textures[i];
-            texture.rotated = false;
+        // reset sprite infos
+        for (var i = 0; i < this.sprites.length; ++i) {
+            var sprite = this.sprites[i];
+            sprite.rotated = false;
         }
 
         //
@@ -489,30 +489,30 @@ FIRE.Atlas = (function () {
         switch ( mySortBy ) {
             case Atlas.SortBy.Width:
                 if ( this.allowRotate )
-                    this.textures.sort( _compareByRotateWidth );
+                    this.sprites.sort( _compareByRotateWidth );
                 else
-                    this.textures.sort( _compareByWidth );
+                    this.sprites.sort( _compareByWidth );
                 break;
 
             case Atlas.SortBy.Height:
                 if ( this.allowRotate )
-                    this.textures.sort( _compareByRotateHeight );
+                    this.sprites.sort( _compareByRotateHeight );
                 else
-                    this.textures.sort( _compareByHeight );
+                    this.sprites.sort( _compareByHeight );
                 break;
 
             case Atlas.SortBy.Area:
-                this.textures.sort( _compareByArea );
+                this.sprites.sort( _compareByArea );
                 break;
 
             case Atlas.SortBy.Name:
-                this.textures.sort( _compareByName );
+                this.sprites.sort( _compareByName );
                 break;
         }
 
         // sort order
         if ( mySortOrder === Atlas.SortOrder.Descending ) {
-            this.textures.reverse();
+            this.sprites.reverse();
         }
     };
 
