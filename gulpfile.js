@@ -50,6 +50,7 @@ gulp.task('jshint', function() {
     return gulp.src(paths.src)
     .pipe(filter)
     .pipe(jshint())
+    .pipe(filter.restore())
     .pipe(jshint.reporter(stylish))
     // .pipe(jshint.reporter('fail')) // disabled
     ;
