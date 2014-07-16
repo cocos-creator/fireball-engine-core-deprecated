@@ -6,9 +6,7 @@ if (FIRE.isnode) {
     var Fs = require('fs');
     var Path = require('path');
 
-    FIRE.setExtension = function ( path, newExtension ) {
-        return Path.join(Path.dirname(path), Path.basename(path, Path.extname(path))) + newExtension;
-    };
+    FIRE.Path = Path;
 
     var _readDirRecursively = function ( dirPath, resultArray ) {
         var fileList = Fs.readdirSync(dirPath);
@@ -64,10 +62,23 @@ else {
     var error = function () {
         throw "This function can only be used in node-webkit or server";
     };
-    FIRE.setExtension = error;
     FIRE.readDirRecursively = error;
     FIRE.saveDataUrl = error;
+
+    FIRE.Path = {};
+    FIRE.Path.basename = function (path) {
+        return path.replace(/^.*(\\|\/|\:)/, '');
+    };
+    FIRE.Path.extname = function (path) {
+        return path.substring((~-path.lastIndexOf(".") >>> 0) + 1);
+    };
 }
+
+FIRE.Path.setExtension = function (path, newExtension) {
+    // if (FIRE.isnode) return Path.join(Path.dirname(path), Path.basename(path, Path.extname(path))) + newExtension;
+    var dotIndex = (~-path.lastIndexOf(".") >>> 0) + 1;
+    return path.substring(0, dotIndex) + newExtension;
+};
 
 if (FIRE.isnw) {
     FIRE.getSavePath = function (defaultFilename, preserveDirKey, callback) {
