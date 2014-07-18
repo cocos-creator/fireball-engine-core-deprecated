@@ -1,6 +1,20 @@
 //
-FIRE.savePng = function (canvas, filename, path, pixelBuffer) {
-    if (typeof(libpng) !== 'undefined') {
+//var hasLibPng
+
+FIRE.savePng = function (canvas, filename, path, pixelBuffer, callback) {
+    function getLibpng(callback) {
+        if (typeof(libpng) !== 'undefined') {
+            callback(libpng);
+            return true;
+        }
+        else if (FIRE.isnode === false && require) {
+            require(['libpng'], callback);
+            return true;
+        }
+        return false;
+    }
+    
+    var usingLibpng = getLibpng(function (libpng) {
         // encode by libpng
         console.time('libpng encode ' + filename);
         var png = libpng.createWriter(canvas.width, canvas.height);
@@ -17,14 +31,24 @@ FIRE.savePng = function (canvas, filename, path, pixelBuffer) {
             var blob = new Blob([new Uint8Array(png.data)], {type: 'image/png'});
             FIRE.downloadBlob(blob, filename);
         }
-    }
-    else {  // encode by canvas
+        if (callback) {
+            callback();
+        }
+    });
+    if (usingLibpng === false) {
+        if (!canvas) {
+            throw 'no png encoder nor canvas';
+        }
+        // encode by canvas
         if (FIRE.isnode) {
             var dataUrl = canvas.toDataURL('image/png');
             FIRE.saveDataUrl(dataUrl, path);
         }
         else {
             FIRE.downloadCanvas(canvas, filename);
+        }
+        if (callback) {
+            callback();
         }
     }
 };

@@ -24,7 +24,7 @@ FIRE.Atlas = (function () {
         this.usePaddingBleed = true;    // also called Extrude。应用于sprite外部，同时复制颜色和透明度
         this.customPadding = 2;
         this.customBuildColor = false;
-        this.buildColor = new FIRE.Color( 1,1,1,0 );
+        this.buildColor = new FIRE.Color( 1,1,1,1 );
     }
     FIRE.extend(Atlas, _super);
     Atlas.prototype.__classname__ = "FIRE.Atlas";
