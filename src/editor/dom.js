@@ -209,30 +209,31 @@ var _downloadDataUrl = function (url, filename) {
     a.dispatchEvent(event);
 };
 
-// these functions already defined in platform.js if node enabled.
-if (FIRE.isnode === false) {
-    window.navigator.saveBlob = window.navigator.saveBlob || window.navigator.msSaveBlob;
-    window.URL = window.URL || window.webkitURL;
+window.navigator.saveBlob = window.navigator.saveBlob || window.navigator.msSaveBlob;
+window.URL = window.URL || window.webkitURL;
 
-    FIRE.downloadBlob = function (blob, filename) {
-        if (window.navigator.saveBlob) {
-            window.navigator.saveBlob(blob, filename);
-        }
-        else {
-            var dataURL = window.URL.createObjectURL(blob);
-            _downloadDataUrl(dataURL, filename);
-            window.URL.revokeObjectURL(dataURL);    // Chrome中可立刻revokeObjectURL，其它浏览器需要进一步测试
-        }
-    };
+FIRE.downloadBlob = function (blob, filename) {
+    if (window.navigator.saveBlob) {
+        window.navigator.saveBlob(blob, filename);
+    }
+    else {
+        var dataURL = window.URL.createObjectURL(blob);
+        _downloadDataUrl(dataURL, filename);
+        window.URL.revokeObjectURL(dataURL);    // Chrome中可立刻revokeObjectURL，其它浏览器需要进一步测试
+    }
+};
 
-    FIRE.downloadCanvas = function (canvas, filename) {
-        canvas.toBlob = canvas.toBlob || canvas.msToBlob;
-        if (canvas.toBlob && window.navigator.saveBlob) {
-            window.navigator.saveBlob(canvas.toBlob(), filename);
-        }
-        else {
-            var dataURL = canvas.toDataURL("image/png");
-            _downloadDataUrl(dataURL, filename);
-        }
-    };
-}
+FIRE.downloadCanvas = function (canvas, filename) {
+    canvas.toBlob = canvas.toBlob || canvas.msToBlob;
+    if (canvas.toBlob && window.navigator.saveBlob) {
+        window.navigator.saveBlob(canvas.toBlob(), filename);
+    }
+    else {
+        var dataURL = canvas.toDataURL("image/png");
+        _downloadDataUrl(dataURL, filename);
+    }
+};
+
+FIRE.imgDataUrlToBase64 = function (dataUrl) {
+    return dataUrl.replace(/^data:image\/\w+;base64,/, "");
+};

@@ -52,18 +52,12 @@ if (FIRE.isnode) {
         }
         return retval;
     };
-
-    FIRE.saveDataUrl = function (dataUrl, path) {
-        var base64 = dataUrl.replace(/^data:image\/\w+;base64,/, "");
-        Fs.writeFileSync(path, base64, {'encoding': 'base64'});
-    };
 }
 else {
     var error = function () {
         throw "This function can only be used in node-webkit or server";
     };
     FIRE.readDirRecursively = error;
-    FIRE.saveDataUrl = error;
 
     FIRE.Path = {};
     FIRE.Path.basename = function (path) {

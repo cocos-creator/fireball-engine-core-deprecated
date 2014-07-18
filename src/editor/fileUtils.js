@@ -1,7 +1,7 @@
 //
 //var hasLibPng
 
-FIRE.savePng = function (canvas, filename, path, pixelBuffer, callback) {
+FIRE.savePng = function (canvas, filename, path, pixelBuffer, zip, callback) {
     function getLibpng(callback) {
         if (typeof(libpng) !== 'undefined') {
             callback(libpng);
@@ -25,27 +25,51 @@ FIRE.savePng = function (canvas, filename, path, pixelBuffer, callback) {
         console.timeEnd('libpng encode ' + filename);
         //console.log('Bytes: ' + png.data.length);
         if (FIRE.isnode) {
-            Fs.writeFileSync(path, new Buffer(png.data));   //, {'encoding': 'base64'}
+            if (zip) {
+                zip.file(filename, png.data);   // TODO: test
+            }
+            else {
+                Fs.writeFileSync(path, new Buffer(png.data));   //, {'encoding': 'base64'}
+            }
         }
         else {
-            var blob = new Blob([new Uint8Array(png.data)], {type: 'image/png'});
-            FIRE.downloadBlob(blob, filename);
+            if (zip) {
+                zip.file(filename, png.data);
+            }
+            else {
+                var blob = new Blob([new Uint8Array(png.data)], {type: 'image/png'});
+                FIRE.downloadBlob(blob, filename);
+            }
         }
         if (callback) {
             callback();
         }
     });
     if (usingLibpng === false) {
+        var dataUrl, base64;
         if (!canvas) {
             throw 'no png encoder nor canvas';
         }
         // encode by canvas
         if (FIRE.isnode) {
-            var dataUrl = canvas.toDataURL('image/png');
-            FIRE.saveDataUrl(dataUrl, path);
+            dataUrl = canvas.toDataURL('image/png');
+            base64 = FIRE.imgDataUrlToBase64(dataUrl);
+            if (zip) {
+                zip.file(filename, base64, { base64: true });
+            }
+            else {
+                Fs.writeFileSync(path, base64, {'encoding': 'base64'});
+            }
         }
         else {
-            FIRE.downloadCanvas(canvas, filename);
+            if (zip) {
+                dataUrl = canvas.toDataURL('image/png');
+                base64 = FIRE.imgDataUrlToBase64(dataUrl);
+                zip.file(filename, base64, { base64: true });
+            }
+            else {
+                FIRE.downloadCanvas(canvas, filename);
+            }
         }
         if (callback) {
             callback();
