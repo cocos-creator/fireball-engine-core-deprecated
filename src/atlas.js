@@ -68,6 +68,14 @@ FIRE.Atlas = (function () {
         this.sprites.push(sprite);
     };
 
+    // remove sprite 
+    Atlas.prototype.remove = function ( sprite ) {
+        var idx = this.sprites.indexOf(sprite);
+        if ( idx !== -1 ) {
+            this.sprites.splice(idx,1);
+        }
+    };
+
     // clear all sprites
     Atlas.prototype.clear = function () {
         this.sprites.length = 0;
