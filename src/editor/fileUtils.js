@@ -7,7 +7,7 @@ FIRE.savePng = function (canvas, filename, path, pixelBuffer, zip, callback) {
             callback(libpng);
             return true;
         }
-        else if (FIRE.isnode === false && requirejs) {
+        else if (requirejs) {
             requirejs(['libpng'], callback);
             return true;
         }
