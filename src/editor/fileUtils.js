@@ -16,13 +16,13 @@ FIRE.savePng = function (canvas, filename, path, pixelBuffer, zip, callback) {
     
     var usingLibpng = getLibpng(function (libpng) {
         // encode by libpng
-        console.time('libpng encode ' + filename);
+        console.time('png ' + filename);
         var png = libpng.createWriter(canvas.width, canvas.height);
         png.set_filter(libpng.FILTER_NONE);
         png.set_compression_level(3);
         png.write_imageData(pixelBuffer);
         png.write_end();
-        console.timeEnd('libpng encode ' + filename);
+        console.timeEnd('png ' + filename);
         //console.log('Bytes: ' + png.data.length);
         if (FIRE.isnode) {
             if (zip) {

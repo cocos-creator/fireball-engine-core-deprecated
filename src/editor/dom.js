@@ -204,9 +204,7 @@ var _downloadDataUrl = function (url, filename) {
     var a = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
     a.href = url;
     a.download = filename;
-    var event = document.createEvent('MouseEvents');
-    event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    a.dispatchEvent(event);
+    a.click();
 };
 
 window.navigator.saveBlob = window.navigator.saveBlob || window.navigator.msSaveBlob;
