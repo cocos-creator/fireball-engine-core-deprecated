@@ -12,13 +12,13 @@ FIRE.buildPng = function (canvas, filename, pixelBuffer, returnBinOrBase64, call
         return false;
     }
     function encodeByLibpng(libpng) {
-        console.time('png ' + filename);
+        console.time('png');
         var png = libpng.createWriter(canvas.width, canvas.height);
         png.set_filter(libpng.FILTER_NONE);
         png.set_compression_level(3);
         png.write_imageData(pixelBuffer);
         png.write_end();
-        console.timeEnd('png ' + filename);
+        console.timeEnd('png');
         //console.log('Bytes: ' + png.data.length);
         if (returnBinOrBase64 || FIRE.isnode) {
             callback( { bin: png.data } );

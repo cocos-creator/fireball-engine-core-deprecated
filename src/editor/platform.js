@@ -77,17 +77,29 @@ FIRE.Path.setExtension = function (path, newExtension) {
 
 if (FIRE.isnw) {
     FIRE.getSavePath = function (defaultFilename, preserveDirKey, callback) {
-        var chooser = document.createElement('input');
+        var persistentId = 'SaveFileDialog';
+        var chooser = document.getElementById(persistentId);
+        if (chooser) {
+            // remove the old one or change event may not fired
+            document.body.removeChild(chooser);
+        }
+        chooser = document.createElement('input');
+        document.body.appendChild(chooser);
+        chooser.id = persistentId;
+        chooser.style.display = 'none';
         chooser.type = 'file';
+
         chooser.nwsaveas = defaultFilename;
         var defaultDir = localStorage[preserveDirKey];
-        if (defaultDir) {
-            chooser.nwworkingdir = defaultDir;
-        }
-        chooser.addEventListener("change", function (evt) {
+        chooser.nwworkingdir = defaultDir || '';
+        
+        chooser.onchange = function (evt) {
+            //chooser.removeEventListener("change", arguments.callee);
+            chooser.onchange = null;
+            //console.log('value ' + this.value);
             localStorage[preserveDirKey] = this.value;
             callback(this.value);
-        }, false);
+        };
         chooser.click();
     };
 }
