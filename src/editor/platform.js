@@ -1,6 +1,7 @@
 //
 FIRE.isnode = !!(typeof(process) !== 'undefined' && process.versions && process.versions.node);
 FIRE.isnw = !!(FIRE.isnode && process.versions['node-webkit']);
+FIRE.isweb = !FIRE.isnode && !FIRE.isnw;
 
 if (FIRE.isnode) {
     var Fs = require('fs');

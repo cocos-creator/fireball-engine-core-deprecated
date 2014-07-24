@@ -1,7 +1,5 @@
 //
-//var hasLibPng
-
-FIRE.savePng = function (canvas, filename, path, pixelBuffer, zip, callback) {
+FIRE.buildPng = function (canvas, filename, pixelBuffer, returnBinOrBase64, callback) {
     function getLibpng(callback) {
         if (typeof(libpng) !== 'undefined') {
             callback(libpng);
@@ -13,9 +11,7 @@ FIRE.savePng = function (canvas, filename, path, pixelBuffer, zip, callback) {
         }
         return false;
     }
-    
-    var usingLibpng = getLibpng(function (libpng) {
-        // encode by libpng
+    function encodeByLibpng(libpng) {
         console.time('png ' + filename);
         var png = libpng.createWriter(canvas.width, canvas.height);
         png.set_filter(libpng.FILTER_NONE);
@@ -24,55 +20,65 @@ FIRE.savePng = function (canvas, filename, path, pixelBuffer, zip, callback) {
         png.write_end();
         console.timeEnd('png ' + filename);
         //console.log('Bytes: ' + png.data.length);
-        if (FIRE.isnode) {
-            if (zip) {
-                zip.file(filename, png.data);   // TODO: test
-            }
-            else {
-                Fs.writeFileSync(path, new Buffer(png.data));   //, {'encoding': 'base64'}
-            }
+        if (returnBinOrBase64 || FIRE.isnode) {
+            callback( { bin: png.data } );
         }
         else {
-            if (zip) {
-                zip.file(filename, png.data);
-            }
-            else {
-                var blob = new Blob([new Uint8Array(png.data)], {type: 'image/png'});
-                FIRE.downloadBlob(blob, filename);
-            }
+            var blob = new Blob([new Uint8Array(png.data)], {type: 'image/png'});
+            callback( { blob: blob } );
         }
-        if (callback) {
-            callback();
-        }
-    });
-    if (usingLibpng === false) {
-        var dataUrl, base64;
+    }
+    if ( getLibpng (encodeByLibpng) === false ) {
+        // encode by canvas
         if (!canvas) {
             throw 'no png encoder nor canvas';
         }
-        // encode by canvas
-        if (FIRE.isnode) {
-            dataUrl = canvas.toDataURL('image/png');
-            base64 = FIRE.imgDataUrlToBase64(dataUrl);
-            if (zip) {
-                zip.file(filename, base64, { base64: true });
-            }
-            else {
-                Fs.writeFileSync(path, base64, {'encoding': 'base64'});
-            }
+        if (returnBinOrBase64 || FIRE.isnode) {
+            var dataUrl = canvas.toDataURL('image/png');
+            var base64 = FIRE.imgDataUrlToBase64(dataUrl);
+            callback( { base64: base64 } );
         }
         else {
-            if (zip) {
-                dataUrl = canvas.toDataURL('image/png');
-                base64 = FIRE.imgDataUrlToBase64(dataUrl);
-                zip.file(filename, base64, { base64: true });
-            }
-            else {
-                FIRE.downloadCanvas(canvas, filename);
-            }
+            callback( { canvas: canvas } );
         }
-        if (callback) {
-            callback();
+    }
+};
+
+FIRE.savePng = function (data, filename, path, zip) {
+    var type = Object.keys(data)[0];
+    var value = data[type];
+    if (zip) {
+        if (type === 'bin') {
+            zip.file(filename, value);
+        }
+        else if (type === 'base64') {
+            zip.file(filename, value, { base64: true });
+        }
+        else {
+            console.error('unknown data type to zip');
+        }
+        return;
+    }
+    if (FIRE.isnode) {
+        if (type === 'bin') {
+            Fs.writeFileSync(path, new Buffer(value));
+        }
+        else if (type === 'base64') {
+            Fs.writeFileSync(path, value, {'encoding': 'base64'});
+        }
+        else {
+            console.warn('unknown node type: ' + type);
+        }
+    }
+    else {
+        if (type === 'blob') {
+            FIRE.downloadBlob(value, filename);
+        }
+        else if (type === 'canvas') {
+            FIRE.downloadCanvas(value, filename);
+        }
+        else {
+            console.warn('unknown browser type: ' + type);
         }
     }
 };
