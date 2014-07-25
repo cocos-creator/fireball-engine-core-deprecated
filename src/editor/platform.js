@@ -4,6 +4,17 @@ FIRE.isnw = !!(FIRE.isnode && process.versions['node-webkit']);
 FIRE.isweb = !FIRE.isnode && !FIRE.isnw;
 
 if (FIRE.isnode) {
+    FIRE.isdarwin = process.platform === 'darwin';
+    FIRE.iswin32 = process.platform === 'win32';
+}
+else {
+    // http://stackoverflow.com/questions/19877924/what-is-the-list-of-possible-values-for-navigator-platform-as-of-today
+    var platform = window.navigator.platform;
+    FIRE.isdarwin = platform.substring(0, 3) === 'Mac';
+    FIRE.iswin32 = platform.substring(0, 3) === 'Win';
+}
+
+if (FIRE.isnode) {
     var Fs = require('fs');
     var Path = require('path');
 
@@ -94,6 +105,7 @@ if (FIRE.isnw) {
         chooser.nwworkingdir = defaultDir || '';
         
         chooser.onchange = function (evt) {
+            document.body.removeChild(chooser);
             //chooser.removeEventListener("change", arguments.callee);
             chooser.onchange = null;
             //console.log('value ' + this.value);
