@@ -249,12 +249,12 @@ FIRE.Atlas = (function () {
         // cleanUpFreeRects
         for ( i = 0; i < freeRects.length; ++i ) {
             for ( var j = i + 1; j < freeRects.length; ++j ) {
-                if ( FIRE.Rect.contains(freeRects[i], freeRects[j]) == -1 ) {
+                if ( FIRE.Rect.contains(freeRects[i], freeRects[j]) === -1 ) {
                     freeRects.splice(i, 1);
                     --i;
                     break;
                 }
-                if ( FIRE.Rect.contains(freeRects[j], freeRects[i]) == -1 ) {
+                if ( FIRE.Rect.contains(freeRects[j], freeRects[i]) === -1 ) {
                     freeRects.splice(j, 1);
                     --j;
                 }
@@ -299,8 +299,8 @@ FIRE.Atlas = (function () {
 
                 // rotated
                 if (_allowRotate && freeRect.width >= _height && freeRect.height >= _width) {
-                    leftoverHoriz = Math.abs(Math.floor(_freeRects[i].width) - _width);
-                    leftoverVert = Math.abs(Math.floor(_freeRects[i].height) - _height);
+                    leftoverHoriz = Math.abs(Math.floor(_freeRects[i].width) - _height);
+                    leftoverVert = Math.abs(Math.floor(_freeRects[i].height) - _width);
                     shortSideFit = Math.min(leftoverHoriz, leftoverVert);
                     longSideFit = Math.max(leftoverHoriz, leftoverVert);
 
@@ -357,20 +357,13 @@ FIRE.Atlas = (function () {
             var bestElement = processElements[bestElementIdx];
             bestElement.x = Math.floor(bestRect.x);
             bestElement.y = Math.floor(bestRect.y);
-            bestElement.rotated = bestElement.width + atlas.customPadding != bestRect.width;
+            bestElement.rotated = (bestElement.width + atlas.customPadding !== bestRect.width);
             // remove the processed(inserted) element
             processElements.splice( bestElementIdx, 1 );
         }
     };
 
     Atlas.prototype.layout = function () {
-        // reset sprite infos
-        for (var i = 0; i < this.sprites.length; ++i) {
-            var sprite = this.sprites[i];
-            sprite.rotated = false;
-        }
-
-        //
         try {
             switch ( this.algorithm ) {
                 case Atlas.Algorithm.Basic:
@@ -467,6 +460,11 @@ FIRE.Atlas = (function () {
         return ret;
     };
     Atlas.prototype.sort = function () {
+        // reset rotation
+        for (var i = 0; i < this.sprites.length; ++i) {
+            var sprite = this.sprites[i];
+            sprite.rotated = false;
+        }
         //
         var mySortBy = this.sortBy;
         var mySortOrder = this.sortOrder;
@@ -480,9 +478,11 @@ FIRE.Atlas = (function () {
                 mySortBy = Atlas.SortBy.Area;
                 break;
 
-            case Atlas.Algorithm.MaxRect:
-                mySortBy = Atlas.SortBy.Height;
-                break;
+            // TODO {
+            // case Atlas.Algorithm.MaxRect:
+            //     mySortBy = Atlas.SortBy.Area;
+            //     break;
+            // } TODO end
 
             default:
                 mySortBy = Atlas.SortBy.Height;
