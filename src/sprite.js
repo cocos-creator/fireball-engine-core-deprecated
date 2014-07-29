@@ -6,7 +6,8 @@ FIRE.Sprite = (function () {
         _super.call(this);
 
         // basic settings
-        this.texture = new FIRE.Texture(img);
+        this.rawTexture = new FIRE.Texture(img);    // untrimmed raw texture, editor only
+        this.texture = new FIRE.Texture(img);       // texture for rendering
         this.rotated = false;
         this.trim = false;          // TODO, editor only ?
         this.trimThreshold = 1;     // TODO, editor only ?
