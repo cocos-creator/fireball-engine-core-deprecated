@@ -116,10 +116,40 @@ if (FIRE.isnw) {
         };
         chooser.click();
     };
+    var nwgui = require('nw.gui');
+    FIRE.showItemInFolder = nwgui.Shell.showItemInFolder;
+}
+else if (FIRE.isas) {
+    FIRE.getSavePath = function (defaultFilename, preserveDirKey, callback, title, browserWindow) {
+        var defaultDir = localStorage[preserveDirKey];
+        var defaultPath = null;
+        if (defaultDir && typeof defaultDir === 'string') {
+            defaultDir = FIRE.Path.dirname(defaultDir);
+            defaultPath = FIRE.Path.join(defaultDir, defaultFilename);
+        }
+        var remote = require('remote');
+        var dialog = remote.require('dialog');
+        var options = {
+            title: title,
+            defaultPath: defaultPath,
+        };
+        if (!browserWindow) {
+            browserWindow = remote.getCurrentWindow();
+        }
+        dialog.showSaveDialog(browserWindow, options, function (path) {
+            if (path) {
+                localStorage[preserveDirKey] = path;
+            }
+            callback(path);
+        });
+    };
+    var shell = require('shell');
+    FIRE.showItemInFolder = shell.showItemInFolder;
 }
 else {
     var error = function () {
-        throw "This function can only be used in node-webkit";
+        throw "This function can only be used in node-webkit or atom-shell";
     };
     FIRE.getSavePath = error;
+    FIRE.showItemInFolder = error;
 }
