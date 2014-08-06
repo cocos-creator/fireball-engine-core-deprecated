@@ -3,7 +3,7 @@ FIRE.isnode = !!(typeof(process) !== 'undefined' && process.versions && process.
 FIRE.isnw = !!(FIRE.isnode && 'node-webkit' in process.versions);   // node-webkit
 FIRE.isas = !!(FIRE.isnode && 'atom-shell' in process.versions);    // atom-shell
 FIRE.isapp = FIRE.isnw || FIRE.isas;                                // native client
-FIRE.isweb = !FIRE.isnode && !FIRE.isapp;
+FIRE.isweb = !FIRE.isnode && !FIRE.isapp;                           // common web browser
 
 if (FIRE.isnode) {
     FIRE.isdarwin = process.platform === 'darwin';

@@ -1,3 +1,6 @@
+if (typeof window !== 'undefined') {
+
+
 var _findInChildren = function ( element, elementToFind ) {
     for ( var i = 0; i < element.children.length; ++i ) {
         var childEL = element.children[i];
@@ -235,3 +238,5 @@ FIRE.downloadCanvas = function (canvas, filename) {
 FIRE.imgDataUrlToBase64 = function (dataUrl) {
     return dataUrl.replace(/^data:image\/\w+;base64,/, "");
 };
+
+}
