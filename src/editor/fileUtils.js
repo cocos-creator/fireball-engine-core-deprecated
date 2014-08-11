@@ -20,7 +20,7 @@ FIRE.buildPng = function (canvas, filename, pixelBuffer, returnBinOrBase64, call
         png.write_end();
         console.timeEnd('png');
         //console.log('Bytes: ' + png.data.length);
-        if (returnBinOrBase64 || FIRE.isnode) {
+        if (returnBinOrBase64 || FIRE.isNode) {
             callback( { bin: png.data } );
         }
         else {
@@ -33,7 +33,7 @@ FIRE.buildPng = function (canvas, filename, pixelBuffer, returnBinOrBase64, call
         if (!canvas) {
             throw 'no png encoder nor canvas';
         }
-        if (returnBinOrBase64 || FIRE.isnode) {
+        if (returnBinOrBase64 || FIRE.isNode) {
             var dataUrl = canvas.toDataURL('image/png');
             var base64 = FIRE.imgDataUrlToBase64(dataUrl);
             callback( { base64: base64 } );
@@ -59,7 +59,7 @@ FIRE.savePng = function (data, filename, path, zip) {
         }
         return;
     }
-    if (FIRE.isnode) {
+    if (FIRE.isNode) {
         if (type === 'bin') {
             Fs.writeFileSync(path, new Buffer(value));
         }
@@ -84,7 +84,7 @@ FIRE.savePng = function (data, filename, path, zip) {
 };
 
 FIRE.saveText = function (text, filename, path) {
-    if (FIRE.isnode) {
+    if (FIRE.isNode) {
         Fs.writeFileSync(path, text, {'encoding': 'ascii'});
     }
     else {

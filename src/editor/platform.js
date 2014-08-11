@@ -1,23 +1,23 @@
 //
-FIRE.isnode = !!(typeof process !== 'undefined' && process.versions && process.versions.node);
-FIRE.isviewctx = (typeof __dirname === 'undefined' || __dirname === null);  // window's render context in node-webkit or atom-shell
-FIRE.isnw = !!(FIRE.isnode && 'node-webkit' in process.versions);           // node-webkit
-FIRE.isas = !!(FIRE.isnode && 'atom-shell' in process.versions);            // atom-shell
-FIRE.isapp = FIRE.isnw || FIRE.isas;                                        // native client
-FIRE.isweb = !FIRE.isnode && !FIRE.isapp;                                   // common web browser
+FIRE.isNode = !!(typeof process !== 'undefined' && process.versions && process.versions.node);
+FIRE.isWeb = (typeof __dirname === 'undefined' || __dirname === null);  // common web browser, or window's render context in node-webkit or atom-shell
+FIRE.isNw = !!(FIRE.isNode && 'node-webkit' in process.versions);       // node-webkit
+//FIRE.isAs = !!(FIRE.isNode && 'atom-shell' in process.versions);      // atom-shell
+FIRE.isApp = FIRE.isNw/* || FIRE.isAs;*/                                // native client
+//FIRE.isPureWeb = !FIRE.isNode && !FIRE.isApp;                         // common web browser
 
-if (FIRE.isnode) {
-    FIRE.isdarwin = process.platform === 'darwin';
-    FIRE.iswin32 = process.platform === 'win32';
+if (FIRE.isNode) {
+    FIRE.isDarwin = process.platform === 'darwin';
+    FIRE.isWin32 = process.platform === 'win32';
 }
 else {
     // http://stackoverflow.com/questions/19877924/what-is-the-list-of-possible-values-for-navigator-platform-as-of-today
     var platform = window.navigator.platform;
-    FIRE.isdarwin = platform.substring(0, 3) === 'Mac';
-    FIRE.iswin32 = platform.substring(0, 3) === 'Win';
+    FIRE.isDarwin = platform.substring(0, 3) === 'Mac';
+    FIRE.isWin32 = platform.substring(0, 3) === 'Win';
 }
 
-if (FIRE.isnode) {
+if (FIRE.isNode) {
     var Fs = require('fs');
     var Path = require('path');
 
@@ -84,13 +84,13 @@ else {
 }
 
 FIRE.Path.setExtension = function (path, newExtension) {
-    // if (FIRE.isnode) return Path.join(Path.dirname(path), Path.basename(path, Path.extname(path))) + newExtension;
+    // if (FIRE.isNode) return Path.join(Path.dirname(path), Path.basename(path, Path.extname(path))) + newExtension;
     var dotIndex = (~-path.lastIndexOf(".") >>> 0) + 1;
     return path.substring(0, dotIndex) + newExtension;
 };
 
-if (FIRE.isviewctx) {
-    if (FIRE.isnw) {
+if (FIRE.isApp && FIRE.isWeb) {
+    if (FIRE.isNw) {
         FIRE.getSavePath = function (defaultFilename, preserveDirKey, callback) {
             var persistentId = 'SaveFileDialog';
             var chooser = document.getElementById(persistentId);
@@ -218,7 +218,7 @@ if (FIRE.isviewctx) {
         var nwgui = require('nw.gui');
         FIRE.showItemInFolder = nwgui.Shell.showItemInFolder;
     }
-    else if (FIRE.isas) {
+    /*else if (FIRE.isAs) {
         FIRE.getSavePath = function (defaultFilename, preserveDirKey, callback, title, browserWindow) {
             var defaultDir = localStorage[preserveDirKey];
             var defaultPath = null;
@@ -244,12 +244,12 @@ if (FIRE.isviewctx) {
         };
         var shell = require('shell');
         FIRE.showItemInFolder = shell.showItemInFolder;
-    }
-    else {
-        var error = function () {
-            throw "This function can only be used in node-webkit or atom-shell";
-        };
-        FIRE.getSavePath = error;
-        FIRE.showItemInFolder = error;
-    }
+    }*/
+}
+else {
+    var error = function () {
+        throw "This function can only be used in node-webkit or atom-shell";
+    };
+    FIRE.getSavePath = error;
+    FIRE.showItemInFolder = error;
 }
