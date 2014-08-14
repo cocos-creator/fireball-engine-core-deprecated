@@ -106,3 +106,34 @@ test('multiply deferred destroy', function () {
     strictEqual(obj1.isValid, false, 'deleted at the end of frame');
     strictEqual(obj2.isValid, false, 'deleted at the end of frame');
 });
+
+test('destroy other at destroy callback', function () {
+    expect(3);
+
+    var obj1 = new FObject();
+    var obj2 = new FObject();
+
+    obj1.destroy();
+
+    obj2._onPreDestroy = function () {
+        ok(false, 'other should not destroyed this frame');
+    }
+
+    obj1._onPreDestroy = function () {
+        obj2.destroy();
+        strictEqual(obj2.isValid, true, 'other is valid until the end of next frame');
+    }
+
+    FObject._deferredDestroy();
+
+    obj1._onPreDestroy = function () {
+        ok(false, 'should not destroyed again');
+    }
+    obj2._onPreDestroy = function () {
+        ok(true, "should called other's destroy callback at the end of next frame");
+    }
+
+    FObject._deferredDestroy();
+
+    strictEqual(obj2.isValid, false, 'other should destroyed at the end of next frame');
+});
