@@ -1,9 +1,9 @@
 //
 FIRE.isNode = !!(typeof process !== 'undefined' && process.versions && process.versions.node);
-FIRE.isWeb = (typeof __dirname === 'undefined' || __dirname === null);  // common web browser, or window's render context in node-webkit or atom-shell
+FIRE.isWeb = (typeof __dirname === 'undefined' || __dirname === null); // common web browser, or window's render context in node-webkit or atom-shell
 FIRE.isNw = !!(FIRE.isNode && 'node-webkit' in process.versions);       // node-webkit
 //FIRE.isAs = !!(FIRE.isNode && 'atom-shell' in process.versions);      // atom-shell
-FIRE.isApp = FIRE.isNw/* || FIRE.isAs;*/                                // native client
+FIRE.isApp = FIRE.isNw/* || FIRE.isAs*/;                                // native client
 //FIRE.isPureWeb = !FIRE.isNode && !FIRE.isApp;                         // common web browser
 
 if (FIRE.isNode) {
