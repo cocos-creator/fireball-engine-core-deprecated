@@ -27,8 +27,9 @@ FIRE.FObject = (function () {
         var deleteCount = objectsToDestroy.length;
         for (var i = 0; i < deleteCount; ++i) {
             var obj = objectsToDestroy[i];
-            //delete obj._toDestroy;
-            obj._destroyImmediate();
+            if (!obj._destroyed) {
+                obj._destroyImmediate();
+            }
         }
         if (deleteCount === objectsToDestroy.length) {
             objectsToDestroy.length = 0;
@@ -48,12 +49,11 @@ FIRE.FObject = (function () {
      * @see FIRE.isValid
      */
     FObject.prototype.destroy = function () {
-        if (this._destroyed || this._toDestroy) {   // TODO: use flags  
+        if (this._destroyed) {
             console.error('object already destroyed');
             return;
         }
         objectsToDestroy.push(this);
-        this._toDestroy = true;
     };
 
     FObject.prototype._destroyImmediate = function () {

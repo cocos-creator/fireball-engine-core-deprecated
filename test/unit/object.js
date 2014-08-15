@@ -24,13 +24,6 @@ test('destroyImmediate', function () {
     obj._onPreDestroy = function () {
         ok(false, 'can only destroyed once');
     }
-
-    var error = console.error;
-    console.error = function () {}  // forbid error
-
-    obj._destroyImmediate();
-
-    console.error = error;
 });
 
 test('FObject.isValid', function () {
