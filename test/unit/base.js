@@ -33,3 +33,18 @@ test('basic test', function() {
                ],
                "The value must be same" ); 
 });
+
+module('simpleExtend');
+
+test('test', function () {
+    var MyClass = FIRE.simpleExtend(FIRE.Texture, function (img, x, y) {
+        this.x = x;
+        this.y = y;
+    }, 'My_Class');
+    var img = {width: 125, height: 256};
+    var obj = new MyClass(img, 2, 5);
+    strictEqual(obj.y, 5);
+    strictEqual(obj.image, img);
+    strictEqual(obj.width, 125);
+    strictEqual(FIRE.getClassName(obj), 'My_Class');
+});

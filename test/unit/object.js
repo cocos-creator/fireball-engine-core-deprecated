@@ -8,9 +8,7 @@ test('basic test', function () {
     strictEqual(obj.isValid, true, 'valid');
 });
 
-test('destroyImmediate', function () {
-    expect(2);
-
+test('destroyImmediate', 2, function () {
     var obj = new FObject();
 
     obj._onPreDestroy = function () {
@@ -100,9 +98,7 @@ test('multiply deferred destroy', function () {
     strictEqual(obj2.isValid, false, 'deleted at the end of frame');
 });
 
-test('destroy other at destroy callback', function () {
-    expect(3);
-
+test('destroy other at destroy callback', 3, function () {
     var obj1 = new FObject();
     var obj2 = new FObject();
 

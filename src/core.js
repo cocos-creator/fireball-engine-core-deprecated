@@ -3,6 +3,20 @@ FIRE.extend = function (cls, base) {
     function __() { this.constructor = cls; }
     __.prototype = base.prototype;
     cls.prototype = new __();
+    return cls;
+};
+
+// for test only
+FIRE.simpleExtend = function (base, cls, className_opt) {
+    function realClass () {
+        base.apply(this, arguments);
+        cls.apply(this, arguments);
+    }
+    FIRE.extend(realClass, base);
+    if (className_opt) {
+        realClass.prototype.__classname__ = className_opt;
+    }
+    return realClass;
 };
 
 FIRE.enum = function () {

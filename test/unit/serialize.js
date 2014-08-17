@@ -1,4 +1,6 @@
-﻿module('getClassName');
+﻿// jshint ignore: start
+
+module('getClassName');
 
 test('test getClassName', function() {
     var MyAsset = (function () {
@@ -146,3 +148,5 @@ test('test circular reference', function () {
     expect[2].sameRef = { __id__: 1 };
     match(asset, expect, 'more referenced object just serialize its id');
 });
+
+// jshint ignore: end
