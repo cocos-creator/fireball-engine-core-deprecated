@@ -7,10 +7,12 @@ FIRE.extend = function (cls, base) {
 };
 
 // for test only
-FIRE.simpleExtend = function (base, cls, className_opt) {
+FIRE.simpleExtend = function (base, cls_opt, className_opt) {
     function realClass () {
         base.apply(this, arguments);
-        cls.apply(this, arguments);
+        if (cls_opt) {
+            cls_opt.apply(this, arguments);
+        }
     }
     FIRE.extend(realClass, base);
     if (className_opt) {

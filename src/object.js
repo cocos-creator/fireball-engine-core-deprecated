@@ -11,7 +11,7 @@ FIRE.FObject = (function () {
     /**
      * Checks whether the object is not destroyed
      * @method FIRE.isValid
-     * @return {Boolean} whether it is not destroyed
+     * @return {boolean} whether it is not destroyed
      * @see FIRE.FObject#destroy
      * @static
      */
@@ -46,6 +46,7 @@ FIRE.FObject = (function () {
      * After destory, this FObject is not usable any more.
      * You can use FIRE.isValid(obj) (or obj.isValid if obj is non-nil) to check whether the object is destroyed before accessing it.
      * @method FIRE.FObject#destroy
+     * @return {boolean} whether it is the first time the destroy being called
      * @see FIRE.isValid
      */
     FObject.prototype.destroy = function () {
@@ -53,7 +54,12 @@ FIRE.FObject = (function () {
             console.error('object already destroyed');
             return;
         }
+        if (this.toDestroy) {   // TODO: flag
+            return false;
+        }
+        this.toDestroy = true;
         objectsToDestroy.push(this);
+        return true;
     };
 
     FObject.prototype._destroyImmediate = function () {
@@ -73,7 +79,7 @@ FIRE.FObject = (function () {
 
     /**
      * Checks whether the object is not destroyed
-     * @return {Boolean} whether it is not destroyed
+     * @return {boolean} whether it is not destroyed
      * @see FIRE.FObject#destroy
      */
     FObject.prototype.__defineGetter__('isValid', function () {
