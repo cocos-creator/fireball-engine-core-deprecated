@@ -15,7 +15,6 @@ var paths = {
 
         'src/core.js',
         'src/utils.js',
-        'src/stringUtils.js',
         'src/serialize.js',
         'src/object.js',
         'src/asset.js',
