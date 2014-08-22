@@ -19,6 +19,7 @@ var paths = {
         'src/object.js',
         'src/asset.js',
         'src/vec2.js',
+        'src/matrix3.js',
         'src/rect.js',
         'src/color.js',
         'src/texture.js',

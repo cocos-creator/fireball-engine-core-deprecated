@@ -1,8 +1,17 @@
-FIRE.extend = function (cls, base) {
+/**
+ * @method FIRE.extend
+ * @param {function} cls
+ * @param {function} base
+ * @param {string} [className]
+ */
+FIRE.extend = function (cls, base, className) {
     for (var p in base) if (base.hasOwnProperty(p)) cls[p] = base[p];
     function __() { this.constructor = cls; }
     __.prototype = base.prototype;
     cls.prototype = new __();
+    if (className) {
+        FIRE.setClassName(cls, className);
+    }
     return cls;
 };
 

@@ -12,6 +12,7 @@ profile
 *.csproj
 *.csproj.user
 obj/*
+dummyTypeScript.*
 
 # xcode files
 PLBlocks.framework/*
