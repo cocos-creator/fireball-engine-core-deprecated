@@ -7,9 +7,7 @@ FIRE.Vec2 = (function () {
         this.x = x;
         this.y = y;
     }
-    FIRE.extend(Vec2, _super);
-    Vec2.prototype.__classname__ = "FIRE.Vec2";
-
+    FIRE.extend("FIRE.Vec2", Vec2, _super);
 
     Vec2.prototype.clone = function () {
         return new Vec2(this.x, this.y);

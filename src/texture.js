@@ -11,8 +11,7 @@ FIRE.Texture = (function () {
         this.width = img.width;
         this.height = img.height;
     }
-    FIRE.extend(Texture, _super);
-    Texture.prototype.__classname__ = "FIRE.Texture";
+    FIRE.extend("FIRE.Texture", Texture, _super);
 
     return Texture;
 })();

@@ -5,8 +5,7 @@ FIRE.Asset = (function () {
     function Asset () {
         _super.call(this);
     }
-    FIRE.extend(Asset, _super);
-    Asset.prototype.__classname__ = "FIRE.Asset";
+    FIRE.extend("FIRE.Asset", Asset, _super);
 
     return Asset;
 })();

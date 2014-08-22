@@ -9,8 +9,7 @@ FIRE.Rect = (function () {
         this.width = w;
         this.height = h;
     }
-    FIRE.extend(Rect, _super);
-    Rect.prototype.__classname__ = "FIRE.Rect";
+    FIRE.extend("FIRE.Rect", Rect, _super);
 
     /**
      * Check if rect contains

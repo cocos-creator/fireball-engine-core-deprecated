@@ -26,8 +26,7 @@ FIRE.Atlas = (function () {
         this.customBuildColor = false;
         this.buildColor = new FIRE.Color( 1,1,1,1 );
     }
-    FIRE.extend(Atlas, _super);
-    Atlas.prototype.__classname__ = "FIRE.Atlas";
+    FIRE.extend("FIRE.Atlas", Atlas, _super);
 
     // enum Algorithm
     Atlas.Algorithm = (function (t) {

@@ -20,8 +20,7 @@ FIRE.Sprite = (function () {
         this.x = 0;
         this.y = 0;
     }
-    FIRE.extend(Sprite, _super);
-    Sprite.prototype.__classname__ = "FIRE.Sprite";
+    FIRE.extend("FIRE.Sprite", Sprite, _super);
 
     Sprite.prototype.__defineGetter__('rotatedWidth', function () {
         return this.rotated ? this.height : this.width;
