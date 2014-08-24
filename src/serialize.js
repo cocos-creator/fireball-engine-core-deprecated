@@ -7,7 +7,8 @@ function _isDomNode(obj) {
 
 var _Serializer = (function () {
     /**
-     * @param obj {FIRE.FObject} The object to serialize
+     * @class
+     * @param {FIRE.FObject} obj - The object to serialize
      */
     function _Serializer(obj) {
         this.serializedList = [];  // list of serialized data for all FIRE.FObject objs
@@ -33,11 +34,12 @@ var _Serializer = (function () {
         if (circularReferenced) {
             // register new referenced object
             var id = self.serializedList.length;
-            obj.__id__ = id;        // we use this prop to fast lookup whether an obj has been serialized
+            obj.__id__ = id;        // we add this prop dynamically to simply lookup whether an obj has been serialized.
+                                    // If it will lead to performance degradations in V8, we just need to save ids to another table.
             self._referencedObjs.push(obj);
             var data = self._parsingData[parsingIndex];
             if (Array.isArray(obj) === false) {
-                data.__id__ = id;   // debug only
+                data.__id__ = id;   // also save id in source data, just for debugging
                 var className = FIRE.getClassName(obj);
                 if (className) {
                     data.__type__ = className;
@@ -49,16 +51,15 @@ var _Serializer = (function () {
     };
 
     /**
-     * @param obj {Object} The object to serialize
-     * @param data {Object} The array or dict where serialized data to store
-     * @return {Number} If obj been referenced in serializedList, return its id, else return -1
+     * @param {Object} obj - The object to serialize
+     * @param {Object} data - The array or dict where serialized data to store
+     * @returns {Object} The reference info used to embed to its container.
+     *                   if the serialized data not contains in serializedList, then return the data directly.
      */
-    var _getObjectData = function (self, obj, data) {
-        var oldSerializedCount = self.serializedList.length;
-
-        self._parsingObjs.push(obj);
-        self._parsingData.push(data);
+    var _enumerateObject = function (self, obj, data) {
         if (Array.isArray(obj)) {
+            //var oldSerializedCount = self.serializedList.length;
+
             for (var i = 0; i < obj.length; ++i) {
                 var element = obj[i];
                 var type = typeof element;
@@ -72,6 +73,14 @@ var _Serializer = (function () {
                     data.push(element);
                 }
             }
+            /*
+            // check whether obj has been serialized to serializedList, 
+            // if so, no need to serialized to data again
+            var index = self.serializedList.indexOf(data, oldSerializedCount);
+            if (index !== -1) {
+                return { __id__: index };
+            }
+            */
         }
         else {
             for (var key in obj) {
@@ -92,23 +101,21 @@ var _Serializer = (function () {
                     data[key] = val;
                 }
             }
-        }
-        self._parsingObjs.pop();
-        self._parsingData.pop();
-
-        // check whether obj is been serialized to serializedList, 
-        // if it is, no need to serialized to data again
-        if (self.serializedList.length > oldSerializedCount) {
-            var index = self.serializedList.indexOf(data, oldSerializedCount);
-            if (index !== -1) {
-                return index;
+            /*
+            // check whether obj has been serialized to serializedList, 
+            // if so, no need to serialized to data again
+            var refId = data.__id__;
+            // notEqual(refId, obj.__id__);
+            if (refId !== undefined) {
+                return { __id__: refId };
             }
+            */
         }
-        return -1;
+        //return data;
     };
 
     /**
-     * @param obj {Object} The object to serialize
+     * @param {Object} obj - The object to serialize
      */
     var _serializeObj = function (self, obj) {
         //console.log(obj);
@@ -127,39 +134,54 @@ var _Serializer = (function () {
         var referencedData = _checkCircularReference(self, obj);
         if (referencedData) {
             // already referenced
-            // _getObjectData(self, obj, referencedData); 不是第一次引用，不需要重复解析数据
             return { __id__: obj.__id__ };
         }
-        else {
-            // embedded
-            var data;
-            if (Array.isArray(obj)) {
-                data = [];
-            }
-            else {  // 'object'
-                data = {};
-                var className = FIRE.getClassName(obj);
-                if (className) {
-                    data.__type__ = className;
-                }
-            }
-            var id = _getObjectData(self, obj, data);
-            if (id === -1) {
-                return data;
-            }
-            else {
-                return { __id__: id };
+
+        // get data:
+
+        var data;
+        if (Array.isArray(obj)) {
+            data = [];
+        }
+        else {  // 'object'
+            data = {};
+            var className = FIRE.getClassName(obj);
+            if (className) {
+                data.__type__ = className;
             }
         }
+
+        var oldSerializedCount = self.serializedList.length;
+
+        // mark parsing to prevent circular reference
+        self._parsingObjs.push(obj);
+        self._parsingData.push(data);
+
+        _enumerateObject(self, obj, data);
+
+        self._parsingObjs.pop();
+        self._parsingData.pop();
+
+        // check whether obj has been serialized to serializedList, 
+        // if so, no need to serialized to data again
+        if (self.serializedList.length > oldSerializedCount) {
+            var index = self.serializedList.indexOf(data, oldSerializedCount);
+            if (index !== -1) {
+                return { __id__: index };
+            }
+        }
+
+        // inline
+        return data;
     };
 
     return _Serializer;
 })();
 
 /**
- * Serialize FIRE.Asset to json string
- * @param obj {FIRE.Asset} The object to serialize
- * @return {String} The json string to represent the object
+ * Serialize FIRE.Asset to a json string
+ * @param {FIRE.Asset} obj - The object to serialize
+ * @returns {string} The json string to represent the object
  */
 FIRE.serialize = function (obj) {
     var serializer = new _Serializer(obj);
