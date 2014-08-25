@@ -9,7 +9,7 @@ var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var qunit = require('gulp-qunit');
 
-var core = require('./gulp-lib.js');
+var fb = require('gulp-fb');
 
 var paths = {
     src: [
@@ -102,8 +102,8 @@ gulp.task('unit-runner', function() {
     var js = paths.test.src;
     var dest = paths.test.src.split('*')[0];
     return gulp.src(js, { read: false, base: './' })
-               .pipe(core.toFileList())
-               .pipe(core.generateRunner(paths.test.runner,
+               .pipe(fb.toFileList())
+               .pipe(fb.generateRunner(paths.test.runner,
                                          dest,
                                          'Fireball Core Test Suite',
                                          paths.test.lib_min,
@@ -131,7 +131,7 @@ gulp.task('test', ['dev', 'unit-runner'], function() {
 gulp.task('ref', function() {
     var files = paths.ref.src.concat(paths.src);
     var destPath = paths.ref.dest;
-    return core.generateReference(files, destPath);
+    return fb.generateReference(files, destPath);
 });
 
 // watch

@@ -12,13 +12,12 @@
     "gulp": "",
     "gulp-clean": "",
     "gulp-concat": "",
+    "gulp-fb": "fireball-x/gulp-fb#master",
     "gulp-filter": "",
     "gulp-jshint": "",
     "gulp-qunit": "",
     "gulp-rename": "",
     "gulp-uglify": "",
-    "gulp-util": "",
-    "jshint-stylish": "",
-    "through": ""
+    "jshint-stylish": ""
   }
 }
