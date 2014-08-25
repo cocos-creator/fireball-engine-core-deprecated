@@ -9,6 +9,8 @@ var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var qunit = require('gulp-qunit');
 
+var core = require('./test/lib/test-runner.js');
+
 var paths = {
     src: [
         'src/__intro.js',
@@ -35,6 +37,17 @@ var paths = {
     ],
     dev: 'bin/core.dev.js',
     min: 'bin/core.min.js',
+
+    test: {
+        src: 'test/unit/**/*.js',
+        runner: 'test/lib/runner.html',
+        lib_dev: [
+            'bin/core.dev.js',
+        ],
+        lib_min: [
+            'bin/core.min.js',
+        ],
+    },
 };
 
 // clean
@@ -73,8 +86,26 @@ gulp.task('min', ['dev'], function() {
     ;
 });
 
+/////////////////////////////////////////////////////////////////////////////
 // test
-gulp.task('test', ['dev'], function() {
+/////////////////////////////////////////////////////////////////////////////
+
+gulp.task('unit-runner', function() {
+    var js = paths.test.src;
+    var dest = paths.test.src.split('*')[0];
+    return gulp.src(js, { read: false, base: './' })
+               .pipe(core.toFileList())
+               .pipe(core.generateRunner(paths.test.runner,
+                                         dest,
+                                         'Fireball Core Test Suite',
+                                         paths.test.lib_min,
+                                         paths.test.lib_dev,
+                                         paths.src))
+               .pipe(gulp.dest(dest))
+               ;
+});
+
+gulp.task('test', ['dev', 'unit-runner'], function() {
     return gulp.src('test/unit/**/*.html')
     .pipe(qunit())
     .on('error', function(err) {
@@ -83,6 +114,10 @@ gulp.task('test', ['dev'], function() {
     })
     ;
 });
+
+/////////////////////////////////////////////////////////////////////////////
+// tasks
+/////////////////////////////////////////////////////////////////////////////
 
 // watch
 gulp.task('watch', function() {

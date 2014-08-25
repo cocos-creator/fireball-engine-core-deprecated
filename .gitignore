@@ -40,8 +40,13 @@ quick_gen_project_*_autogen.sh
 # project files
 vimfiles/bundle/*
 node_modules/
+bower_components/
 bin/
+/ext/
+publish/
+test/unit/**/*.html
+_references.js
+npm-debug.log
 
 # scripts
-Build.bat
-Install.bat
+*.bat

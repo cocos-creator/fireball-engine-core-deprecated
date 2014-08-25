@@ -1,22 +1,24 @@
 {
-    "name": "fireball-core",
-    "version": "0.1.0",
-    "description": "Fireball Core Module",
-    "homepage": "http://fireball-x.github.io",
-    "license": "MIT",
-    "licenseUrl": "http://opensource.org/licenses/MIT",
-    "dependencies": {
-        "connect": ""
-    },
-    "devDependencies": {
-        "gulp": "",
-        "gulp-filter": "",
-        "gulp-clean": "",
-        "gulp-rename": "",
-        "gulp-concat": "",
-        "gulp-jshint": "",
-        "jshint-stylish": "",
-        "gulp-uglify": "",
-        "gulp-qunit": ""
-    }
+  "name": "fireball-core",
+  "version": "0.1.0",
+  "description": "Fireball Core Module",
+  "homepage": "http://fireball-x.github.io",
+  "license": "MIT",
+  "licenseUrl": "http://opensource.org/licenses/MIT",
+  "dependencies": {
+    "connect": ""
+  },
+  "devDependencies": {
+    "gulp": "",
+    "gulp-clean": "",
+    "gulp-concat": "",
+    "gulp-filter": "",
+    "gulp-jshint": "",
+    "gulp-qunit": "",
+    "gulp-rename": "",
+    "gulp-uglify": "",
+    "gulp-util": "",
+    "jshint-stylish": "",
+    "through": ""
+  }
 }
