@@ -9,7 +9,7 @@ var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var qunit = require('gulp-qunit');
 
-var core = require('./test/lib/test-runner.js');
+var core = require('./gulp-lib.js');
 
 var paths = {
     src: [
@@ -47,6 +47,14 @@ var paths = {
         lib_min: [
             'bin/core.min.js',
         ],
+    },
+
+    ref: {
+        src: [
+            'test/lib/*.js',
+            'test/unit/_*.js',
+        ],
+        dest: '_references.js',
     },
 };
 
@@ -119,6 +127,13 @@ gulp.task('test', ['dev', 'unit-runner'], function() {
 // tasks
 /////////////////////////////////////////////////////////////////////////////
 
+// ref
+gulp.task('ref', function() {
+    var files = paths.ref.src.concat(paths.src);
+    var destPath = paths.ref.dest;
+    return core.generateReference(files, destPath);
+});
+
 // watch
 gulp.task('watch', function() {
     gulp.watch(paths.src, ['min']);
@@ -126,4 +141,5 @@ gulp.task('watch', function() {
 
 //
 gulp.task('default', ['min'] );
-gulp.task('all', ['min','test'] );
+gulp.task('all', ['min', 'test', 'ref'] );
+gulp.task('ci', ['min', 'test'] );
