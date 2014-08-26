@@ -1,2 +1,2 @@
-var FIRE;
+var FIRE = FIRE || {};
 (function (FIRE) {

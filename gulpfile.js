@@ -129,7 +129,8 @@ gulp.task('test', ['dev', 'unit-runner'], function() {
 
 // ref
 gulp.task('ref', function() {
-    var files = paths.ref.src.concat(paths.src);
+    var src = paths.src;//.concat(['!src/__intro.js', '!src/__outro.js']);
+    var files = paths.ref.src.concat(src);
     var destPath = paths.ref.dest;
     return fb.generateReference(files, destPath);
 });

@@ -1,4 +1,4 @@
-})(FIRE || (FIRE = {}));
+})(FIRE);
 
 if (typeof module !== "undefined" && module) {
     module.exports = FIRE;
