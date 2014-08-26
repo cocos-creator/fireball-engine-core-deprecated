@@ -59,51 +59,6 @@ var _doGetTrimRect = function (pixelBuffer, w, h, trimThreshold) {
     return new FIRE.Rect(tx, ty, tw, th);
 };
 
-/**
- * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null.
- * (modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class)
- * @param {object} obj
- * @returns {string}
- */
-FIRE.getClassName = function (obj) {
-    if (obj && obj.constructor) {
-        if (obj.constructor.prototype && obj.constructor.prototype.hasOwnProperty('__classname__')) {
-            return obj.__classname__;
-        }
-        var retval;
-        //  for browsers which have name property in the constructor of the object, such as chrome 
-        if (obj.constructor.name) {
-            retval = obj.constructor.name;
-        }
-        if (obj.constructor.toString) {
-            var arr, str = obj.constructor.toString();
-            if (str.charAt(0) === '[') {
-                // str is "[object objectClass]"
-                arr = str.match(/\[\w+\s*(\w+)\]/);
-            }
-            else {
-                // str is function objectClass () {} for IE Firefox
-                arr = str.match(/function\s*(\w+)/);
-            }
-            if (arr && arr.length === 2) {
-                retval = arr[1];
-            }
-        }
-        return retval !== 'Object' ? retval : null;
-    }
-    return null;
-};
-
-/**
- * Set the name of a class (constructor)
- * @method FIRE.setClassName
- * @param {function} cls
- * @param {String} className
- */
-FIRE.setClassName = function (cls, className) {
-    cls.prototype.__classname__ = className;
-};
-
 //
 FIRE.getEnumList = function (enumDef) {
     if ( enumDef.__enums__ !== undefined )
