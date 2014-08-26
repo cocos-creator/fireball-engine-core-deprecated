@@ -4,7 +4,7 @@ FIRE.FObject = (function () {
 
     function FObject () {
     }
-    FObject.prototype.__classname__ = "FIRE.FObject";
+    FIRE.setClassName(FObject, "FIRE.FObject");
 
     // static
 
@@ -18,6 +18,17 @@ FIRE.FObject = (function () {
     FObject.isValid = function (object) {
         return !!object && !object._destroyed;
     };
+
+    /**
+     * @method FIRE.FObject#attr
+     * @borrows FIRE.attr
+     * @see FIRE.attr
+     */
+    FObject.attr = function (propertyName, options) {
+        return FIRE.attr(this, propertyName, options);
+    };
+
+    // internal static
 
     var objectsToDestroy = [];
 

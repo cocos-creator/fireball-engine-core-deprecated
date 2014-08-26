@@ -17,7 +17,7 @@ test('test getClassName', function() {
 
     equal(FIRE.getClassName(myAsset), 'Foo', 'can getClassName of user type');
 
-    delete MyAsset.prototype.__classname__;
+    delete MyAsset.prototype.__classname__;  // hack, remove class name
     ok(FIRE.getClassName(myAsset), 'should fallback to constructor name if classname undefined');
     // (constructor's name may renamed by uglify, so we do not test the value exactly)
 

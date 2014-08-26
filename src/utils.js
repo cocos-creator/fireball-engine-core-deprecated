@@ -60,9 +60,10 @@ var _doGetTrimRect = function (pixelBuffer, w, h, trimThreshold) {
 };
 
 /**
- * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null
- * modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class
- * @returns {String}
+ * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null.
+ * (modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class)
+ * @param {object} obj
+ * @returns {string}
  */
 FIRE.getClassName = function (obj) {
     if (obj && obj.constructor) {
