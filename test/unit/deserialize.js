@@ -116,7 +116,7 @@ test('circular reference deserialize test', function () {
 
 test('tmp test', function () {
 
-    var testJson1 = '[[1,{"__id__":0},2],[1,{"__id__":1},2]]';
+    var testJson1 = '[[1,[{"__id__":0},2]],[1,{"__id__":1},2]]';
     var testJson2 = '[{"x":1, "y":{"__id__":1}},{"m":3, "n":{"__id__":0}}]';
 
     var obj1 = JSON.parse(testJson1);
