@@ -39,7 +39,7 @@ var _Serializer = (function () {
             self._referencedObjs.push(obj);
             var data = self._parsingData[parsingIndex];
             if (Array.isArray(obj) === false) {
-                data.__id__ = id;   // also save id in source data, just for debugging
+                //data.__id__ = id;   // also save id in source data, just for debugging
                 var className = FIRE.getClassName(obj);
                 if (className) {
                     data.__type__ = className;

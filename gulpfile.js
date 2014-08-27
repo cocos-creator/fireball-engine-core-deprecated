@@ -16,6 +16,8 @@ var paths = {
         'src/__intro.js',
 
         'src/core.js',
+        'src/attribute.js',
+        'src/class.js',
         'src/utils.js',
         'src/serialize.js',
         'src/object.js',

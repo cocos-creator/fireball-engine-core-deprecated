@@ -130,8 +130,8 @@ test('test circular reference', function () {
     asset = new MyAsset();
 
     expect = [
-        { __id__: 0, num:1, other: {num:2, other: {__id__: 0}} },  // You'll get two copies of dict2
-        { __id__: 1, num:2, other: {num:1, other: {__id__: 1}} },  // You'll get two copies of dict1
+        { /*__id__: 0,*/ num:1, other: {num:2, other: {__id__: 0}} },  // You'll get two copies of dict2
+        { /*__id__: 1,*/ num:2, other: {num:1, other: {__id__: 1}} },  // You'll get two copies of dict1
         {
             __type__: 'MyAsset',
             dict1: { __id__: 0 },

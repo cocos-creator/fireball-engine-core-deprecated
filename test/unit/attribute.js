@@ -1,4 +1,4 @@
-﻿largeModule('Attribute');
+﻿module('Attribute');
 
 test('FIRE.attr', function () {
     var MyCompBase = function () {
