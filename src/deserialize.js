@@ -10,9 +10,8 @@ var _Deserializer = (function () {
 
         if (Array.isArray(this.obj)) {
             var assetObj = this.obj.pop();
-            _unreference(this, this.obj);
-            this.data = _deserializeArray(this, assetObj, this.obj);
-            console.log(this.data);
+            var objs = _unreference(this.obj);
+            this.data = _deserializeArray(this, assetObj, objs);
         }
         else {
             this.data = _deserializeAsset(this, this.obj);
@@ -24,7 +23,22 @@ var _Deserializer = (function () {
     /**
      * @param {Object} obj - The object to unreference
      */
-    var _unreference = function (self, objs) {
+    // var _unreference = function (self, objs) {
+
+    //     for (var i = 0; i < objs.length; i++) {
+    //         if (objs[i].hasOwnProperty('__id__')) {
+    //             delete objs[i]['__id__'];
+    //         }
+    //     }
+
+    //     for (var i = 0; i < objs.length; i++) {
+    //         _objUnreference(objs[i], objs);
+    //     }
+
+    //     return objs;
+    // }
+
+    var _unreference = function (objs) {
 
         for (var i = 0; i < objs.length; i++) {
             if (objs[i].hasOwnProperty('__id__')) {
@@ -32,39 +46,43 @@ var _Deserializer = (function () {
             }
         }
 
-        var _objUnreference = function(obj) {
-            // 递归接引用
-
+        var _unrefer = function(obj) {
             if (Array.isArray(obj)) {
                 for (var i = 0; i < obj.length; i++) {
-                    _objUnreference(obj[i]);
+                    _unrefer(obj[i]);
                 }
             }
-            else {
+
+            var typeVal = typeof obj;
+            if (typeVal === 'object') {
+                
                 if (obj.hasOwnProperty('__id__')) {
                     var idx = obj['__id__'];
-                    obj = objs[idx];
+                    return objs[idx];
                 }
                 else {
                     for (var k in obj) {
-                        _objUnreference(obj[k]);
-                    }
+                        obj[k] = _unrefer(obj[k])
+                    } 
                 }
             }
-        }
+            else{
+                return obj;
+            }
+        };
 
         for (var i = 0; i < objs.length; i++) {
-            _objUnreference(objs[i]);
+            _unrefer(objs[i]);
         }
 
         return objs;
-    }
+    };
 
     /**
      * @param {Object} obj - The object to deserialize
      */
     var _deserializeArray = function (self, assetObj, referenceObjs) {
-        var asset = _unserializeAsset(self, assetObj);
+        var asset = _deserializeAsset(self, assetObj);
 
         for (var k in asset) {
             if (asset[k].hasOwnProperty('__id__')) {
@@ -83,6 +101,7 @@ var _Deserializer = (function () {
 
         // TODO: 放到哪里？
         var ReservedWords = ['__type__', '__id__', '__classname__'];
+
         var asset = eval('new ' + obj.__type__ + '()');
 
         for (var k in obj) {
