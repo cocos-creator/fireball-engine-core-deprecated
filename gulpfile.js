@@ -20,6 +20,7 @@ var paths = {
         'src/class.js',
         'src/utils.js',
         'src/serialize.js',
+        'src/deserialize.js',
         'src/object.js',
         'src/asset.js',
         'src/vec2.js',
