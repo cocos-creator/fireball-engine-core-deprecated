@@ -23,34 +23,14 @@ var _Deserializer = (function () {
     /**
      * @param {Object} obj - The object to unreference
      */
-    // var _unreference = function (self, objs) {
-
-    //     for (var i = 0; i < objs.length; i++) {
-    //         if (objs[i].hasOwnProperty('__id__')) {
-    //             delete objs[i]['__id__'];
-    //         }
-    //     }
-
-    //     for (var i = 0; i < objs.length; i++) {
-    //         _objUnreference(objs[i], objs);
-    //     }
-
-    //     return objs;
-    // }
-
     var _unreference = function (objs) {
-
-        for (var i = 0; i < objs.length; i++) {
-            if (objs[i].hasOwnProperty('__id__')) {
-                delete objs[i]['__id__'];
-            }
-        }
 
         var _unrefer = function(obj) {
             if (Array.isArray(obj)) {
                 for (var i = 0; i < obj.length; i++) {
-                    _unrefer(obj[i]);
+                    obj[i] = _unrefer(obj[i]);
                 }
+                return obj;
             }
 
             var typeVal = typeof obj;
@@ -63,7 +43,8 @@ var _Deserializer = (function () {
                 else {
                     for (var k in obj) {
                         obj[k] = _unrefer(obj[k])
-                    } 
+                    }
+                    return obj;
                 }
             }
             else{
@@ -99,7 +80,7 @@ var _Deserializer = (function () {
      */
     var _deserializeAsset = function (self, obj) {
 
-        // TODO: 放到哪里？
+        // TODO: need refactor
         var ReservedWords = ['__type__', '__id__', '__classname__'];
 
         var asset = eval('new ' + obj.__type__ + '()');
