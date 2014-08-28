@@ -23,47 +23,128 @@ var _prop = function (name, value, attribute) {
         }
     }
     return this;
-}
-var _assignInstanceProperties = function (instance, propList) {
-    for (var i = 0; i < propList.length; i++) {
-        var prop = propList[i];
-        instance[prop] = FIRE.attr(instance.constructor, prop).default;
+};
+
+/*
+//var builder = new PropertyBuilder(this);
+//builder.prop(name, value);
+// declare a special class to avoid polluting user defined class
+var PropertyBuilder = (function () {
+
+    var PropertyBuilder = function (targetClass) {
+        this.targetClass = targetClass;
+        if (!targetClass.__props__) {
+            targetClass.__props__ = [];
+        }
+         * @member {string} current setting property
+        this._current = '';
+    };
+
+    
+    PropertyBuilder.prototype.prop = function (name, value) {
+        this._current = name;
+        this.targetClass.__props__.push(name);
+        FIRE.attr(this.targetClass, name, { 'default': value });
+        return this;
+    };
+    return PropertyBuilder;
+})();
+
+FIRE.PropertyBuilder = PropertyBuilder;
+*/
+
+var _assignInstanceProperties = function (instance, itsClass) {
+    var propList = itsClass.__props__;
+    if (propList) {
+        for (var i = 0; i < propList.length; i++) {
+            var prop = propList[i];
+            instance[prop] = FIRE.attr(itsClass, prop).default;
+        }
     }
 };
 
+//var _isDefinedClass = function (func) {
+//    return func.prop === _prop;
+//};
+
 /**
  * Creates a class and returns a constructor function for instances of the class.
+ * You can also creates a sub-class by supplying a baseClass parameter.
  * 
  * @method FIRE.define
  * @param {string} className - the name of class that is used to deserialize this class
- * @param {function} [constructor] - a constructor function that is used to instantiate this class
+ * @param {function} [baseOrConstructor] - The base class to inherit from.
+ *                                         如果你的父类不是由FIRE.define定义的，那么必须传入第三个参数(constructor)，否则会被当成创建新类而非继承类。
+ *                                         如果你不需要构造函数，可以传入null。
+ * @param {function} [constructor] - a constructor function that is used to instantiate this class, 
+ *                                   if not supplied, the constructor of base class will be called automatically
  * @param {[object[]]} instanceMembers - NYI
  * @param {[object[]]} staticMembers - NYI
  * @returns {function} the defined class
+ * 
+ * @see FIRE.extend
  */
-FIRE.define = function (className, constructor) {
+FIRE.define = function (className, baseOrConstructor, constructor) {
+    // check arguments
+    var isInherit = false;
+    switch (arguments.length) {
+        case 2:
+            var defined = (baseOrConstructor.prop === _prop);
+            isInherit = defined;
+            break;
+        case 3:
+            isInherit = true;
+            break;
+    }
+    if (isInherit) {
+        var baseClass = baseOrConstructor;
+        if (!constructor) {
+            constructor = function () {
+                baseOrConstructor.apply(this, arguments);
+            };
+        }
+    }
+    else {
+        constructor = baseOrConstructor;
+    }
+    // create a new constructor
     function theClass () {
-        _assignInstanceProperties(this, theClass.__props__);
+        _assignInstanceProperties(this, theClass);
         if (constructor) {
             constructor.apply(this, arguments);
         }
     }
-    FIRE.setClassName(theClass, className);
+    // here we occupy 2 static variables: Class.prop and Class.__props__
     theClass.prop = _prop;
+    //
+    if (isInherit) {
+        FIRE.simpleExtend(className, theClass, baseClass);
+        theClass.$super = baseClass;
+    }
+    else {
+        FIRE.setClassName(theClass, className);
+    }
     return theClass;
 };
 
-/**
- * Creates a sub-class based on the supplied baseClass parameter
- * 
- * @method FIRE.derive
- * @param {string} className - the name of class that is used to deserialize this class
- * @param {function} baseClass - the class to inherit from
- * @param {function} [constructor] - a constructor function that is used to instantiate this class
- * @returns {function} the defined class
- */
-FIRE.derive = function (className, baseClass, constructor) {
-    var theClass = FIRE.define(className, constructor);
-    FIRE.extend(className, theClass, baseClass);
-    theClass.$super = baseClass;
-};
+///**
+// * Creates a sub-class based on the supplied baseClass parameter
+// * 
+// * @method FIRE.extend
+// * @param {string} className - the name of class that is used to deserialize this class
+// * @param {function} baseClass - the class to inherit from
+// * @param {function} [constructor] - a constructor function that is used to instantiate this class, 
+// *                                   if not supplied, the constructor of base class will be called automatically
+// * @returns {function} the defined class
+// */
+//FIRE.extend = function (className, constructor) {
+//    if (!constructor) {
+//        constructor = function () {
+//            baseClass.apply(this, arguments);
+//        };
+//    }
+//    var theClass = FIRE.define(className, constructor);
+//    FIRE.simpleExtend(className, theClass, baseClass);
+//    theClass.$super = baseClass;
+//    return theClass;
+//};

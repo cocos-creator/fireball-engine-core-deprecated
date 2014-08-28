@@ -1,9 +1,15 @@
 /**
  * @method FIRE.extend
+ * Derive the class from the supplied base class.
+ * Both classes are just native javascript constructors, not created by FIRE.define, so
+ * usually you will want to inherit using FIRE.define instead.
+ * 
  * @param {string} className
  * @param {function} cls
  * @param {function} base - the baseclass to inherit
  * @returns {function} the base class
+ * 
+ * @see FIRE.define
  */
 FIRE.extend = function (className, cls, base) {
     for (var p in base) if (base.hasOwnProperty(p)) cls[p] = base[p];
@@ -12,25 +18,6 @@ FIRE.extend = function (className, cls, base) {
     cls.prototype = new __();
     FIRE.setClassName(cls, className);
     return base;
-};
-
-/**
- * TODO: replaced with define
- * @method FIRE.simpleExtend
- * @param {function} base
- * @param {function} [cls]
- * @param {string} [className]
- * @returns {function} new created class
- */
-FIRE.simpleExtend = function (base, cls, className) {
-    function theClass () {
-        base.apply(this, arguments);
-        if (cls) {
-            cls.apply(this, arguments);
-        }
-    }
-    FIRE.extend(className, theClass, base);
-    return theClass;
 };
 
 FIRE.enum = function () {

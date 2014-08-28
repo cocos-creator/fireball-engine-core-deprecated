@@ -19,6 +19,8 @@ test('base', function () {
     strictEqual(FIRE.attr(Animal, 'name').serializable, true, 'get name serializable');
     strictEqual(FIRE.attr(Animal, 'weight').serializable, false, 'get attribute');
 });
+
+
 /*
 test('inherit', function () {
     var Animal = FIRE.define('Animal');
