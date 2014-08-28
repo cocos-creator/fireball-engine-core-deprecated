@@ -116,13 +116,13 @@ gulp.task('unit-runner', function() {
 });
 
 gulp.task('test', ['dev', 'unit-runner'], function() {
-    return gulp.src('test/unit/**/*.html')
-    .pipe(qunit())
-    .on('error', function(err) {
-        // Make sure failed tests cause gulp to exit non-zero
-        throw err;
-    })
-    ;
+    return gulp.src(['test/unit/**/*.html', '!**/*.dev.*'])
+                .pipe(qunit())
+                .on('error', function(err) {
+                    // Make sure failed tests cause gulp to exit non-zero
+                    throw err;
+                })
+                ;
 });
 
 /////////////////////////////////////////////////////////////////////////////

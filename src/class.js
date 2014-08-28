@@ -12,9 +12,17 @@
  */
 var _prop = function (name, value, attribute) {
     if (!this.__props__) {
-        this.__props__ = [];
+        this.__props__ = [name];
     }
-    this.__props__.push(name);
+    else {
+        var index = this.__props__.indexOf(name);
+        if (index < 0) {
+            this.__props__.push(name);
+        }
+        else {
+            console.warn(FIRE.getClassName(this) + '.prop("' + name + '", ...) is already defined!');
+        }
+    }
 
     FIRE.attr(this, name, { 'default': value });
     if (attribute) {
@@ -100,7 +108,7 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
         var baseClass = baseOrConstructor;
         if (!constructor) {
             constructor = function () {
-                baseOrConstructor.apply(this, arguments);
+                baseClass.apply(this, arguments);
             };
         }
     }
@@ -114,11 +122,20 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
             constructor.apply(this, arguments);
         }
     }
-    // here we occupy 2 static variables: Class.prop and Class.__props__
+    // occupy the Class.prop static variable
     theClass.prop = _prop;
     //
     if (isInherit) {
-        FIRE.simpleExtend(className, theClass, baseClass);
+        var baseProps = baseClass.__props__;
+        if (baseProps) {
+            // prevent inherit __props__ from base
+            baseClass.__props__ = null;
+        }
+        FIRE.extend(className, theClass, baseClass);
+        if (baseProps) {
+            // restore after extended
+            baseClass.__props__ = baseProps;
+        }
         theClass.$super = baseClass;
     }
     else {
