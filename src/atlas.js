@@ -1,32 +1,7 @@
 FIRE.Atlas = (function () {
-    var _super = FIRE.Asset;
 
-    // constructor
-    function Atlas () {
-        _super.call(this);
-
-        // basic settings
-        this.autoSize = true;
-        this.width = 512;
-        this.height = 512;
-        this.trim = true;
-        this.trimThreshold = 1;
-        this.sprites = [];
-
-        // layout settings
-        this.algorithm = Atlas.Algorithm.MaxRect; 
-        this.sortBy = Atlas.SortBy.UseBest; 
-        this.sortOrder = Atlas.SortOrder.UseBest; 
-        this.allowRotate = true;
-
-        // build settings
-        this.useContourBleed = true;    // also called Reduce border artifacts。应用于sprite内部，只改变全透明像素的颜色
-        this.usePaddingBleed = true;    // also called Extrude。应用于sprite外部，同时复制颜色和透明度
-        this.customPadding = 2;
-        this.customBuildColor = false;
-        this.buildColor = new FIRE.Color( 1,1,1,1 );
-    }
-    FIRE.extend("FIRE.Atlas", Atlas, _super);
+    var Atlas = FIRE.define("FIRE.Atlas", FIRE.Asset, null);  // supply a null constructor to explicitly indicates that 
+                                                              // inherit from Asset, because Asset not defined by FIRE.define
 
     // enum Algorithm
     Atlas.Algorithm = (function (t) {
@@ -54,6 +29,27 @@ FIRE.Atlas = (function () {
         return t;
     })({});
 
+    // basic settings
+    Atlas.prop('autoSize', true)
+         .prop('width', 512, FIRE.Enum('sizeList'))
+         .prop('height', 512, FIRE.Enum('sizeList'))
+         .prop('trim', true, FIRE.EditorOnly)
+         .prop('trimThreshold', 1, FIRE.EditorOnly)
+    // layout settings
+         .prop('algorithm', Atlas.Algorithm.MaxRect, FIRE.Enum(Atlas.Algorithm), FIRE.EditorOnly)
+         .prop('sortBy', Atlas.SortBy.UseBest, FIRE.Enum(Atlas.SortBy), FIRE.EditorOnly)
+         .prop('sortOrder', Atlas.SortOrder.UseBest, FIRE.Enum(Atlas.SortOrder), FIRE.EditorOnly)
+         .prop('allowRotate', true, FIRE.EditorOnly)
+    // build settings
+          // also called Reduce border artifacts。应用于sprite内部，只改变全透明像素的颜色
+         .prop('useContourBleed', true, FIRE.DisplayName('Contour Bleed'), FIRE.EditorOnly)
+          // also called Extrude。应用于sprite外部，同时复制颜色和透明度
+         .prop('usePaddingBleed', true, FIRE.DisplayName('Padding Bleed'), FIRE.EditorOnly)
+          //
+         .prop('customPadding', 2, FIRE.Integer, FIRE.EditorOnly)
+         .prop('customBuildColor', false, FIRE.EditorOnly)
+         .prop('buildColor', new FIRE.Color(1, 1, 1, 1), FIRE.EditorOnly)
+         ;
     //
     Atlas.prototype.add = function ( sprite ) {
         for (var i = 0; i < this.sprites.length; ++i) {
@@ -265,7 +261,7 @@ FIRE.Atlas = (function () {
     var _maxRectLayout = function (atlas) {
         var freeRects = [];
         freeRects.push ( new FIRE.Rect( 0, 0, atlas.width + atlas.customPadding, atlas.height + atlas.customPadding ) );
-        var score1, scroe2;
+        var score1/*, scroe2*/;
         var scoreRect = function (_freeRects, _width, _height, _allowRotate) {
             score1 = Number.MAX_VALUE;
             score2 = Number.MAX_VALUE;
@@ -284,7 +280,7 @@ FIRE.Atlas = (function () {
                     shortSideFit = Math.min(leftoverHoriz, leftoverVert);
                     longSideFit = Math.max(leftoverHoriz, leftoverVert);
 
-                    if (shortSideFit < score1 || (shortSideFit == score1 && longSideFit < score2)) {
+                    if (shortSideFit < score1 || (shortSideFit === score1 && longSideFit < score2)) {
                         newRect.x = _freeRects[i].x;
                         newRect.y = _freeRects[i].y;
                         newRect.width = _width;
@@ -303,7 +299,7 @@ FIRE.Atlas = (function () {
                     shortSideFit = Math.min(leftoverHoriz, leftoverVert);
                     longSideFit = Math.max(leftoverHoriz, leftoverVert);
 
-                    if (shortSideFit < score1 || (shortSideFit == score1 && longSideFit < score2)) {
+                    if (shortSideFit < score1 || (shortSideFit === score1 && longSideFit < score2)) {
                         newRect.x = _freeRects[i].x;
                         newRect.y = _freeRects[i].y;
                         newRect.width = _height;
@@ -384,7 +380,7 @@ FIRE.Atlas = (function () {
                 return;
             }
 
-            if ( this.width == 4096 && this.height == 4096 ) {
+            if ( this.width === 4096 && this.height === 4096 ) {
                 console.error(err.message);
                 return;
             }

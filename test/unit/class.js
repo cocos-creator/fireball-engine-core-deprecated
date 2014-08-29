@@ -2,7 +2,7 @@
 
 test('test', function () {
     var Animal = FIRE.define('Animal')
-                     .prop('name', '...', FIRE.Type('Float'), FIRE.Serializable)
+                     .prop('name', '...', { type: 'Float' }, { serializable: true })
                      .prop('eat', function () {
                          return 'eating';
                      });
@@ -45,7 +45,7 @@ test('test', function () {
 test('Inherit', function () {
     var Animal = FIRE.define('FIRE.Animal').prop('name', 'ann');
     var Dog = FIRE.define('FIRE.Dog', Animal)
-                   .prop('name', 'doge', FIRE.Type('str'));
+                   .prop('name', 'doge', { type: 'str' });
     var Husky = FIRE.define('FIRE.Husky', Dog).prop('weight', 100);
 
     strictEqual(FIRE.getClassName(Animal), 'FIRE.Animal', 'can get class name 1');

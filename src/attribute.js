@@ -27,27 +27,111 @@ FIRE.attr = function (constructor, propertyName, attributes) {
             attrs = {};
             constructor.prototype[key] = attrs;
         }
+        // jshint forin: false
         for (var name in attributes) {
             attrs[name] = attributes[name];
         }
+        // jshint forin: true
     }
     return attrs;
 };
 
-FIRE.Type = function (type) {
-    return { type: type };
+///**
+// * Makes a property show up as the supplied type in Inspector.
+// * @method FIRE.Type
+// * @param {string} type - the type name of property, available value:
+// *                        'enum', 'int'
+// * @param {*} [typeOption] - additional type option, such as enum name ... etc.
+// * @returns {object} the type attribute
+// */
+//FIRE.Type = function (type, typeOption) {
+//    if (!typeOption) {
+//        return { type: type };
+//    }
+//    else {
+//        return 
+//    }
+//};
+///**
+// * Force Fireball to serialize a private field.
+// * @property {object} FIRE.Serializable
+// */
+//FIRE.Serializable = { serializable: true };
+
+/**
+ * The NonSerialized attribute marks a variable to not be serialized,
+ * so you can keep a variable public and Fireball will not attempt to serialize it or show it in the editor.
+ * 
+ * @property {object} FIRE.NonSerialized
+ * @see FIRE.EditorOnly
+ */
+FIRE.NonSerialized = { serializable: false };
+
+/**
+ * The EditorOnly attribute marks a variable to be serialized in editor project, but non-serialized
+ * in exported products.
+ * 
+ * @property {object} FIRE.EditorOnly
+ * @see FIRE.NonSerialized
+ */
+FIRE.EditorOnly = { editorOnly: true };
+
+/**
+ * Specify that the input value must be integer in Inspector
+ * @property {object} FIRE.HideInInspector
+ */
+FIRE.Integer = { type: 'int' };
+
+///**
+// * @deprecated - No need to define FIRE.Float, you should just set default value to any number
+// */
+//FIRE.__defineGetter__('Float', function () {
+//    console.warn('No need to define FIRE.Float, you should just set default value to any number');
+//    return {};
+//});
+
+/**
+ * Makes a property show up as a enum in Inspector.
+ * 
+ * @method FIRE.Enum
+ * @param {object|string} enumTableOrName
+ * @returns {object} the enum attribute
+ */
+FIRE.Enum = function (enumTableOrName) {
+    return { type: 'enum', 'enum': enumTableOrName };
 };
 
 /**
- * @property FIRE.Serializable
- * Force Fireball to serialize a private field.
+ * Makes a property not show up in the Inspector but be serialized.
+ * 
+ * @property {object} FIRE.HideInInspector
  */
-FIRE.Serializable = { serializable: true };
+FIRE.HideInInspector = { hideInInspector: true };
 
 /**
- * @property FIRE.NonSerialized
- * The NonSerialized attribute marks a variable to not be serialized,
- * so you can keep a variable public and Fireball will not attempt to serialize it or show it in the editor.
+ * Set a custom property name for display in the editor
+ * 
+ * @method FIRE.DisplayName
+ * @param {string} name
+ * @returns {object} the attribute
  */
-FIRE.NonSerialized = { serializable: false };
+FIRE.DisplayName = function (name) {
+    return { displayName: name };
+};
+
+//FIRE.serializable = function (serializable) {
+//    if (serializable === undefined) {
+//        serializable = true;
+//    }
+//    return { serializable: serializable };
+//};
+//FIRE.range = function (min, max) {
+//    return { min: min, max: max };
+//};
+//FIRE.min = function (value) {
+//    return { min: value };
+//};
+//FIRE.max = function (value) {
+//    return { max: value };
+//};
 

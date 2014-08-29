@@ -20,10 +20,6 @@ FIRE.extend = function (className, cls, base) {
     return base;
 };
 
-FIRE.enum = function () {
-    // TODO:
-};
-
 /**
  * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null.
  * (modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class)

@@ -2,7 +2,10 @@
 
 
 /**
- * Add new instance field, propertie, or method made available on the class
+ * Add new instance field, propertie, or method made available on the class.
+ * 这里定义的所有变量默认都会被序列化，并且都会在inspector中显示。
+ * 如果传入属性包含FIRE.NonSerialized则不会序列化并且不会在inspector中显示。
+ * 如果传入属性包含FIRE.HideInInspector则仍会序列化但不在inspector中显示。
  * 
  * @method class.prop
  * @param {string} name - the property name
@@ -104,8 +107,9 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
             isInherit = true;
             break;
     }
+    var baseClass;
     if (isInherit) {
-        var baseClass = baseOrConstructor;
+        baseClass = baseOrConstructor;
         if (!constructor) {
             constructor = function () {
                 baseClass.apply(this, arguments);
