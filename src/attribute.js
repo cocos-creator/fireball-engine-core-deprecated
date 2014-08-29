@@ -36,22 +36,17 @@ FIRE.attr = function (constructor, propertyName, attributes) {
     return attrs;
 };
 
-///**
-// * Makes a property show up as the supplied type in Inspector.
-// * @method FIRE.Type
-// * @param {string} type - the type name of property, available value:
-// *                        'enum', 'int'
-// * @param {*} [typeOption] - additional type option, such as enum name ... etc.
-// * @returns {object} the type attribute
-// */
-//FIRE.Type = function (type, typeOption) {
-//    if (!typeOption) {
-//        return { type: type };
-//    }
-//    else {
-//        return 
-//    }
-//};
+/**
+ * Makes a property only accept the supplied object type in Inspector.
+ * 
+ * @method FIRE.ObjectType
+ * @param {function} constructor - the special type you want
+ * @returns {object} the type attribute
+ */
+FIRE.ObjectType = function (constructor) {
+    return { objectType: constructor };
+};
+
 ///**
 // * Force Fireball to serialize a private field.
 // * @property {object} FIRE.Serializable
@@ -120,14 +115,14 @@ FIRE.DisplayName = function (name) {
 };
 
 /**
- * Set a custom property name for display in the editor
+ * Specify a tooltip for a property
  * 
- * @method FIRE.DisplayName
- * @param {string} name
+ * @method FIRE.Tooltip
+ * @param {string} tooltip
  * @returns {object} the attribute
  */
-FIRE.DisplayName = function (name) {
-    return { displayName: name };
+FIRE.Tooltip = function (tooltip) {
+    return { tooltip: tooltip };
 };
 
 //FIRE.serializable = function (serializable) {

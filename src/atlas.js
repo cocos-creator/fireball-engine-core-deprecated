@@ -30,26 +30,30 @@ FIRE.Atlas = (function () {
     })({});
 
     // basic settings
-    Atlas.prop('autoSize', true)
-         .prop('width', 512, FIRE.Enum('sizeList'))
-         .prop('height', 512, FIRE.Enum('sizeList'))
-         .prop('trim', true, FIRE.EditorOnly)
-         .prop('trimThreshold', 1, FIRE.EditorOnly)
+    Atlas.prop('autoSize', true);
+    Atlas.prop('width', 512, FIRE.Enum('sizeList'));
+    Atlas.prop('height', 512, FIRE.Enum('sizeList'));
+    Atlas.prop('trim', true, FIRE.EditorOnly);
+    Atlas.prop('trimThreshold', 1, FIRE.EditorOnly);
+
     // layout settings
-         .prop('algorithm', Atlas.Algorithm.MaxRect, FIRE.Enum(Atlas.Algorithm), FIRE.EditorOnly)
-         .prop('sortBy', Atlas.SortBy.UseBest, FIRE.Enum(Atlas.SortBy), FIRE.EditorOnly)
-         .prop('sortOrder', Atlas.SortOrder.UseBest, FIRE.Enum(Atlas.SortOrder), FIRE.EditorOnly)
-         .prop('allowRotate', true, FIRE.EditorOnly)
+    Atlas.prop('algorithm', Atlas.Algorithm.MaxRect, FIRE.Enum(Atlas.Algorithm), FIRE.EditorOnly);
+    Atlas.prop('sortBy', Atlas.SortBy.UseBest, FIRE.Enum(Atlas.SortBy), FIRE.EditorOnly);
+    Atlas.prop('sortOrder', Atlas.SortOrder.UseBest, FIRE.Enum(Atlas.SortOrder), FIRE.EditorOnly);
+    Atlas.prop('allowRotate', true, FIRE.EditorOnly);
+    
     // build settings
-          // also called Reduce border artifacts。应用于sprite内部，只改变全透明像素的颜色
-         .prop('useContourBleed', true, FIRE.DisplayName('Contour Bleed'), FIRE.EditorOnly)
-          // also called Extrude。应用于sprite外部，同时复制颜色和透明度
-         .prop('usePaddingBleed', true, FIRE.DisplayName('Padding Bleed'), FIRE.EditorOnly)
-          //
-         .prop('customPadding', 2, FIRE.Integer, FIRE.EditorOnly)
-         .prop('customBuildColor', false, FIRE.EditorOnly)
-         .prop('buildColor', new FIRE.Color(1, 1, 1, 1), FIRE.EditorOnly)
-         ;
+    Atlas.prop('useContourBleed', true, FIRE.DisplayName('Contour Bleed'),  // 应用于sprite内部，只改变全透明像素的颜色
+                                        FIRE.EditorOnly,
+                                        FIRE.Tooltip('reduce border artifacts'));
+    
+    Atlas.prop('usePaddingBleed', true, FIRE.DisplayName('Padding Bleed'),  // 应用于sprite外部，同时复制颜色和透明度
+                                        FIRE.EditorOnly,
+                                        FIRE.Tooltip('extrude'));
+    Atlas.prop('customPadding', 2, FIRE.Integer, FIRE.EditorOnly);
+    Atlas.prop('customBuildColor', false, FIRE.EditorOnly);
+    Atlas.prop('buildColor', new FIRE.Color(1, 1, 1, 1), FIRE.EditorOnly);
+    
     //
     Atlas.prototype.add = function ( sprite ) {
         for (var i = 0; i < this.sprites.length; ++i) {

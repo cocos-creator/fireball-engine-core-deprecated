@@ -135,25 +135,20 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
             constructor.apply(this, arguments);
         }
     }
-    // occupy the Class.prop static variable
-    theClass.prop = _prop;
+    
     //
     if (isInherit) {
-        var baseProps = baseClass.__props__;
-        if (baseProps) {
-            // prevent inherit __props__ from base
-            baseClass.__props__ = null;
-        }
         FIRE.extend(className, theClass, baseClass);
-        if (baseProps) {
-            // restore after extended
-            baseClass.__props__ = baseProps;
-        }
         theClass.$super = baseClass;
     }
     else {
         FIRE.setClassName(theClass, className);
     }
+
+    // occupy the Class.prop and Class.__props__ static variables
+    theClass.prop = _prop;
+    theClass.__props__ = null;  // reset __props__ inherited from base
+
     return theClass;
 };
 

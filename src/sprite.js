@@ -12,8 +12,8 @@ FIRE.Sprite = (function () {
     });
     
     // basic settings
-    Sprite.prop('rawTexture', null, FIRE.EditorOnly);        // untrimmed raw texture
-    Sprite.prop('texture', null);           // texture for rendering
+    Sprite.prop('rawTexture', null, FIRE.ObjectType(Image), FIRE.Tooltip('untrimmed raw texture'), FIRE.EditorOnly);
+    Sprite.prop('texture', null, FIRE.ObjectType(Image), FIRE.Tooltip('texture to render'));
     Sprite.prop('rotated', false);
     Sprite.prop('trim', false, FIRE.EditorOnly);
     Sprite.prop('trimThreshold', 1, FIRE.EditorOnly);
@@ -21,8 +21,8 @@ FIRE.Sprite = (function () {
     // trims
     Sprite.prop('trimX', 0, FIRE.Integer);
     Sprite.prop('trimY', 0, FIRE.Integer);
-    Sprite.prop('width', 0, FIRE.Integer);  // trimmed width
-    Sprite.prop('height', 0, FIRE.Integer); // trimmed height
+    Sprite.prop('width', 0, FIRE.Integer, FIRE.Tooltip('trimmed width'));
+    Sprite.prop('height', 0, FIRE.Integer, FIRE.Tooltip('trimmed height'));
     Sprite.prop('x', 0, FIRE.Integer);
     Sprite.prop('y', 0, FIRE.Integer);
     //
