@@ -45,7 +45,7 @@ var _Deserializer = (function () {
             var typeVal = typeof obj;
             if (typeVal === 'object') {
                 
-                if (obj.hasOwnProperty('__id__')) {
+                if (obj.__id__ !== undefined) {
                     return objs[obj['__id__']];
                 }
                 else { 
@@ -76,7 +76,7 @@ var _Deserializer = (function () {
         var asset = _deserializeAsset(self, assetObj);
 
         for (var k in asset) {
-            if (asset[k].hasOwnProperty('__id__')) {
+            if (asset[k].__id__ !== undefined) {
                 var idx = asset[k]['__id__'];
                 asset[k] = referenceObjs[idx];
             }
