@@ -94,7 +94,7 @@ FIRE.Integer = { type: 'int' };
  * Makes a property show up as a enum in Inspector.
  * 
  * @method FIRE.Enum
- * @param {object|string} enumTableOrName
+ * @param {(object|string)} enumTableOrName
  * @returns {object} the enum attribute
  */
 FIRE.Enum = function (enumTableOrName) {
@@ -107,6 +107,17 @@ FIRE.Enum = function (enumTableOrName) {
  * @property {object} FIRE.HideInInspector
  */
 FIRE.HideInInspector = { hideInInspector: true };
+
+/**
+ * Set a custom property name for display in the editor
+ * 
+ * @method FIRE.DisplayName
+ * @param {string} name
+ * @returns {object} the attribute
+ */
+FIRE.DisplayName = function (name) {
+    return { displayName: name };
+};
 
 /**
  * Set a custom property name for display in the editor
