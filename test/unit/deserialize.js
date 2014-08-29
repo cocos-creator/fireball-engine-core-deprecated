@@ -30,7 +30,7 @@ test('basic deserialize test', function () {
     var serializedAsset = FIRE.serialize(asset);
     var deserializedAsset = FIRE.deserialize(serializedAsset);
 
-    equal(FIRE.serialize(deserializedAsset), FIRE.serialize(asset), 'test deserialize');
+    deepEqual(FIRE.serialize(deserializedAsset), FIRE.serialize(asset), 'test deserialize');
 });
 
 test('json deserialize test', function () {
@@ -89,7 +89,8 @@ test('circular reference deserialize test', function () {
     var deserializedAsset = FIRE.deserialize(serializedAssetJson);
 
     deepEqual(deserializedAsset, expectAsset, 'two arrays can circular reference each other');
-
+    strictEqual(deserializedAsset.array1[1][0], deserializedAsset.array1, 'two arrays can circular reference each other 1');
+    strictEqual(deserializedAsset.array2[0][1], deserializedAsset.array2, 'two arrays can circular reference each other 2');
     //////
 
     MyAsset = (function () {
@@ -111,6 +112,8 @@ test('circular reference deserialize test', function () {
     deserializedAsset = FIRE.deserialize(serializedAssetJson);
 
     deepEqual(deserializedAsset, expectAsset, 'two dicts can circular reference each other');
+    strictEqual(deserializedAsset.dict1.other.other, deserializedAsset.dict1, 'two dicts can circular reference each other 1');
+    strictEqual(deserializedAsset.dict2.other.other, deserializedAsset.dict2, 'two dicts can circular reference each other 2');
 });
 
 // jshint ignore: end

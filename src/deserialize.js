@@ -5,9 +5,16 @@ var _Deserializer = (function () {
      * @class
      * @param {String} str - The Json string to deserialize
      */
-    function _Deserializer(str) {
-        this.obj = JSON.parse(str);
+    function _Deserializer(data) {
 
+        var typeVal = typeof data;
+        if (typeVal === 'string') {
+            this.obj = JSON.parse(data);
+        }
+        else if (typeVal === 'object') {
+            this.obj = data;
+        }
+        
         if (Array.isArray(this.obj)) {
             var assetObj = this.obj.pop();
             var objs = _unreference(this.obj);
@@ -28,7 +35,9 @@ var _Deserializer = (function () {
         var _unrefer = function(obj) {
             if (Array.isArray(obj)) {
                 for (var i = 0; i < obj.length; i++) {
-                    obj[i] = _unrefer(obj[i]);
+                    if (typeof obj[i] === 'object') {
+                        obj[i] = _unrefer(obj[i]);
+                    }
                 }
                 return obj;
             }
@@ -37,12 +46,13 @@ var _Deserializer = (function () {
             if (typeVal === 'object') {
                 
                 if (obj.hasOwnProperty('__id__')) {
-                    var idx = obj['__id__'];
-                    return objs[idx];
+                    return objs[obj['__id__']];
                 }
-                else {
+                else { 
                     for (var k in obj) {
-                        obj[k] = _unrefer(obj[k])
+                        if (typeof obj[k] === 'object') {
+                            obj[k] = _unrefer(obj[k]);
+                        }
                     }
                     return obj;
                 }
@@ -52,7 +62,7 @@ var _Deserializer = (function () {
             }
         };
 
-        for (var i = 0; i < objs.length; i++) {
+        for (var i = 0, len = objs.length; i < len; i++) {
             _unrefer(objs[i]);
         }
 
@@ -81,8 +91,9 @@ var _Deserializer = (function () {
     var _deserializeAsset = function (self, obj) {
 
         // TODO: need refactor
-        var ReservedWords = ['__type__', '__id__', '__classname__'];
+        var ReservedWords = ['__type__', '__id__'];
 
+        // TODO: get class from register container
         var asset = eval('new ' + obj.__type__ + '()');
 
         for (var k in obj) {
@@ -99,10 +110,10 @@ var _Deserializer = (function () {
 
 /**
  * Deserialize json string to FIRE.Asset
- * @param str {String} The serialized FIRE.Asset json string
+ * @param data {String} or {Object} The serialized FIRE.Asset json string or object
  * @return {FIRE.Asset} The FIRE.Asset object
  */
-FIRE.deserialize = function (str) {
-    var deserializer = new _Deserializer(str);
+FIRE.deserialize = function (data) {
+    var deserializer = new _Deserializer(data);
     return deserializer.data;
 };
