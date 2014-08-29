@@ -110,7 +110,7 @@ var _Deserializer = (function () {
 
 /**
  * Deserialize json string to FIRE.Asset
- * @param data {String} or {Object} The serialized FIRE.Asset json string or object
+ * @param data {(string|object)} The serialized FIRE.Asset json string or object
  * @return {FIRE.Asset} The FIRE.Asset object
  */
 FIRE.deserialize = function (data) {
