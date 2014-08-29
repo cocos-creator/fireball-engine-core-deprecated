@@ -9,8 +9,11 @@ var _Serializer = (function () {
     /**
      * @class
      * @param {FIRE.FObject} obj - The object to serialize
+     * @param {boolean} [exporting=false] - if true, property with FIRE.EditorOnly will be discarded
      */
-    function _Serializer(obj) {
+    function _Serializer(obj, exporting) {
+        this._exporting = exporting;
+
         this.serializedList = [];  // list of serialized data for all FIRE.FObject objs
         this._parsingObjs = [];    // 记录当前引用对象，防止循环引用
         this._parsingData = [];    // 记录当前引用对象的序列化结果
@@ -59,19 +62,8 @@ var _Serializer = (function () {
     var _enumerateObject = function (self, obj, data) {
         if (Array.isArray(obj)) {
             //var oldSerializedCount = self.serializedList.length;
-
             for (var i = 0; i < obj.length; ++i) {
-                var element = obj[i];
-                var type = typeof element;
-                if (type === 'object') {
-                    data.push(_serializeObj(self, element));
-                }
-                else if (type === 'function') {
-                    data.push(null);
-                }
-                else {
-                    data.push(element);
-                }
+                data.push(_serializeField(self, obj[i]));
             }
             /*
             // check whether obj has been serialized to serializedList, 
@@ -83,22 +75,35 @@ var _Serializer = (function () {
             */
         }
         else {
-            for (var key in obj) {
-                //console.log(key);
-                if (obj.hasOwnProperty(key) === false || key === '__id__')
-                    continue;
+            if (!FIRE._isDefinedClass(obj.constructor)) {
+                // native object
+                for (var key in obj) {
+                    //console.log(key);
+                    if (obj.hasOwnProperty(key) === false || key === '__id__')
+                        continue;
+                    data[key] = _serializeField(self, obj[key]);
+                }
+            }
+            else {
+                // defined by properties, only __props__ will be serialized
+                var klass = obj.constructor;
+                if (klass.__props__) {
+                    for (var p = 0; p < klass.__props__.length; p++) {
+                        var propName = klass.__props__[p];
+                        var attrs = FIRE.attr(klass, propName);
 
-                var val = obj[key];
-                var valType = typeof val;
-                // TODO read attr
-                if (valType === 'object') {
-                    data[key] = _serializeObj(self, val);
-                }
-                else if (valType === 'function') {
-                    data[key] = null;
-                }
-                else {
-                    data[key] = val;
+                        // skip nonSerialized
+                        if (attrs.serializable === false) {
+                            continue;
+                        }
+
+                        // skip editor only when exporting
+                        if (self._exporting && attrs.editorOnly) {
+                            continue;
+                        }
+
+                        data[propName] = _serializeField(self, obj[propName]);
+                    }
                 }
             }
             /*
@@ -115,7 +120,25 @@ var _Serializer = (function () {
     };
 
     /**
-     * @param {Object} obj - The object to serialize
+     * serialize any type
+     * @param {*} val - The element to serialize
+     */
+    var _serializeField = function (self, val) {
+        var type = typeof val;
+        if (type === 'object') {
+            return _serializeObj(self, val);
+        }
+        else if (type !== 'function') {
+            return val;
+        }
+        else {
+            return null;
+        }
+    };
+
+    /**
+     * serialize only object type
+     * @param {object} obj - The object to serialize
      */
     var _serializeObj = function (self, obj) {
         //console.log(obj);
@@ -181,10 +204,11 @@ var _Serializer = (function () {
 /**
  * Serialize FIRE.Asset to a json string
  * @param {FIRE.Asset} obj - The object to serialize
+ * @param {boolean} [exporting=false] - if true, property with FIRE.EditorOnly will be discarded
  * @returns {string} The json string to represent the object
  */
-FIRE.serialize = function (obj) {
-    var serializer = new _Serializer(obj);
+FIRE.serialize = function (obj, exporting) {
+    var serializer = new _Serializer(obj, exporting);
     var serializedList = serializer.serializedList;
     var serializedData = serializer.serializedList.length == 1 ? serializedList[0] : serializedList;
     return JSON.stringify(serializedData, null, 4);

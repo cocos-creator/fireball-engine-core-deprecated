@@ -3,9 +3,10 @@
 
 /**
  * Add new instance field, propertie, or method made available on the class.
- * 这里定义的所有变量默认都会被序列化，并且都会在inspector中显示。
- * 如果传入属性包含FIRE.NonSerialized则不会序列化并且不会在inspector中显示。
+ * 这里定义的所有变量默认情况下都会被序列化也会在inspector中显示。
  * 如果传入属性包含FIRE.HideInInspector则仍会序列化但不在inspector中显示。
+ * 如果传入属性包含FIRE.NonSerialized则不会序列化并且不会在inspector中显示。
+ * 如果传入属性包含FIRE.EditorOnly则只在编辑器下序列化，打包时不序列化。
  * 
  * @method class.prop
  * @param {string} name - the property name
@@ -74,13 +75,22 @@ var _assignInstanceProperties = function (instance, itsClass) {
     }
 };
 
-//var _isDefinedClass = function (func) {
-//    return func.prop === _prop;
-//};
+/**
+ * Checks whether the constructor is created by FIRE.define
+ * 
+ * @method FIRE._isDefinedClass
+ * @param {function} constructor
+ * @returns {boolean}
+ * @private
+ */
+FIRE._isDefinedClass = function (constructor) {
+    return (constructor.prop === _prop);
+};
 
 /**
  * Creates a class and returns a constructor function for instances of the class.
  * You can also creates a sub-class by supplying a baseClass parameter.
+ * 通过这种方式定义出来的类，只有通过调用它的Class.prop方法声明的字段才会被序列化。
  * 
  * @method FIRE.define
  * @param {string} className - the name of class that is used to deserialize this class
@@ -100,8 +110,7 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
     var isInherit = false;
     switch (arguments.length) {
         case 2:
-            var defined = (baseOrConstructor.prop === _prop);
-            isInherit = defined;
+            isInherit = FIRE._isDefinedClass(baseOrConstructor);
             break;
         case 3:
             isInherit = true;

@@ -26,7 +26,7 @@ test('test getClassName', function() {
     notEqual(FIRE.getClassName(myAsset), FIRE.getClassName(asset), 'class name should not achieved from its super');
 });
 
-module('serialize');
+largeModule('serialize');
 
 var match = function (obj, expect, info) {
     deepEqual(JSON.parse(FIRE.serialize(obj)), expect, info);
@@ -143,6 +143,45 @@ test('test circular reference', function () {
     asset.sameRef = asset.dict2;
     expect[2].sameRef = { __id__: 1 };
     match(asset, expect, 'more referenced object just serialize its id');
+});
+
+test('test type created by FIRE.define', function () {
+    var Sprite = FIRE.define('Sprite', function () {
+        this.image = 'sprite.png';
+    })
+    Sprite.prop('size', new FIRE.Vec2(128, 128));
+
+    var sprite = new Sprite();
+    var actual = JSON.parse(FIRE.serialize(sprite));
+
+    strictEqual(actual.image, undefined, 'should not serialize variable which not defined by property');
+
+    var expected = {
+        __type__: 'Sprite',
+        size: {
+            __type__: "FIRE.Vec2",
+            x: 128,
+            y: 128
+        }
+    };
+
+    deepEqual(actual, expected, 'can serialize');
+});
+
+test('test serializable attributes', function () {
+    var Sprite = FIRE.define('Sprite')
+                     .prop('trimThreshold', 2, FIRE.EditorOnly)
+                     .prop('_isValid', true, FIRE.NonSerialized);
+
+    var sprite = new Sprite();
+    var actualInEditor = JSON.parse(FIRE.serialize(sprite));
+    var actualInPlayer = JSON.parse(FIRE.serialize(sprite, true));
+
+    strictEqual(actualInEditor.trimThreshold, 2, 'serialize editor only in editor');
+    strictEqual(actualInPlayer.trimThreshold, undefined, 'should not serialize editor only in player');
+
+    strictEqual(actualInEditor._isValid, undefined, 'should not serialize non-serialized in editor');
+    strictEqual(actualInPlayer._isValid, undefined, 'should not serialize non-serialized in player');
 });
 
 // jshint ignore: end
