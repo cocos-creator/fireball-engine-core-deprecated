@@ -1,26 +1,31 @@
 FIRE.Sprite = (function () {
-    var _super = FIRE.Asset;
 
-    // constructor
-    function Sprite ( img ) {
-        _super.call(this);
+    var Sprite = FIRE.define('FIRE.Sprite', FIRE.Asset, function (img) {
+        Sprite.$super.call(this);
+        
+        // init some properties with constructor argument
 
-        // basic settings
-        this.rawTexture = new FIRE.Texture(img);    // untrimmed raw texture, editor only
-        this.texture = new FIRE.Texture(img);       // texture for rendering
-        this.rotated = false;
-        this.trim = false;          // TODO, editor only ?
-        this.trimThreshold = 1;     // TODO, editor only ?
+        this.rawTexture = new FIRE.Texture(img);
+        this.texture = new FIRE.Texture(img);
+        this.width = img.width;
+        this.height = img.height;
+    });
+    
+    // basic settings
+    Sprite.prop('rawTexture', null, FIRE.EditorOnly);        // untrimmed raw texture
+    Sprite.prop('texture', null);           // texture for rendering
+    Sprite.prop('rotated', false);
+    Sprite.prop('trim', false, FIRE.EditorOnly);
+    Sprite.prop('trimThreshold', 1, FIRE.EditorOnly);
 
-        // trims
-        this.trimX = 0;
-        this.trimY = 0;
-        this.width = img.width;     // trimmed width
-        this.height = img.height;   // trimmed height
-        this.x = 0;
-        this.y = 0;
-    }
-    FIRE.extend("FIRE.Sprite", Sprite, _super);
+    // trims
+    Sprite.prop('trimX', 0, FIRE.Integer);
+    Sprite.prop('trimY', 0, FIRE.Integer);
+    Sprite.prop('width', 0, FIRE.Integer);  // trimmed width
+    Sprite.prop('height', 0, FIRE.Integer); // trimmed height
+    Sprite.prop('x', 0, FIRE.Integer);
+    Sprite.prop('y', 0, FIRE.Integer);
+    //
 
     Sprite.prototype.__defineGetter__('rotatedWidth', function () {
         return this.rotated ? this.height : this.width;

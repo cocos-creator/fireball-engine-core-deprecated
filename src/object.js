@@ -19,19 +19,11 @@ FIRE.FObject = (function () {
         return !!object && !object._destroyed;
     };
 
-    /**
-     * @method FIRE.FObject#attr
-     * @borrows FIRE.attr
-     * @see FIRE.attr
-     */
-    FObject.attr = function (propertyName, options) {
-        return FIRE.attr(this, propertyName, options);
-    };
-
     // internal static
 
     var objectsToDestroy = [];
 
+    // TODO: this static method will copy to all its descendents...
     FObject._deferredDestroy = function () {
         // if we called b.destory() in a.onDestroy(), objectsToDestroy will be resized, 
         // but we only destroy the objects which called destory in this frame.
