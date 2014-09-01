@@ -254,6 +254,22 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
     return theClass;
 };
 
+/**
+ * If you dont need a class (which defined by FIRE.define) anymore, 
+ * you'd better undefine it to reduce memory usage.
+ * Please note that its still your responsibility to free other references to the class.
+ * 
+ * @method FIRE.undefine
+ * @param {...function} [constructor] - the class you will want to undefine, any number of classes can be added
+ *
+ * @see FIRE.define
+ */
+FIRE.undefine = function (constructor) {
+    for (var i = 0; i < arguments.length; i++) {
+        FIRE.unregisterNamedClass(arguments[i]);
+    }
+};
+
 //_toNiceString = function (originalToString) {
 //    var str = originalToString.call(this);
 //    return str.replace('function ', 'function ' + FIRE.getClassName(this));

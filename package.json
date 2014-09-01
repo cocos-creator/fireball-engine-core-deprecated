@@ -13,7 +13,7 @@
     "gulp-clean": "",
     "gulp-util": "",
     "gulp-concat": "",
-    "gulp-fb": "fireball-x/gulp-fb#master",
+    "gulp-fb": "",
     "gulp-jshint": "",
     "gulp-qunit": "",
     "gulp-rename": "",

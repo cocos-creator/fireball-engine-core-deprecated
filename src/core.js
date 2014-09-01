@@ -23,7 +23,7 @@ FIRE.extend = function (className, cls, base) {
 /**
  * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null.
  * (modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class)
- * @param {object|function} obj - instance or constructor
+ * @param {(object|function)} obj - instance or constructor
  * @returns {string}
  */
 FIRE.getClassName = function (obj) {
@@ -58,6 +58,8 @@ FIRE.getClassName = function (obj) {
     return null;
 };
 
+var _nameToClass = {};
+
 /**
  * Set the name of a class
  * @method FIRE.setClassName
@@ -66,4 +68,42 @@ FIRE.getClassName = function (obj) {
  */
 FIRE.setClassName = function (constructor, className) {
     constructor.prototype.__classname__ = className;
+    // register class
+    if (className) {
+        var registered = _nameToClass[className];
+        if (registered && registered !== constructor) {
+            console.error('A Class already exists with that name: "' + className + '".\
+If you dont need serialization, you can set class name to "". You can also call \
+FIRE.undefine or FIRE.unregisterNamedClass to remove the name of unused class');
+            return;
+        }
+        _nameToClass[className] = constructor;
+    }
+};
+
+/**
+ * Get the registered class by name
+ * @method FIRE.getClassByName
+ * @param {string} className
+ * @returns {function} constructor
+ */
+FIRE.getClassByName = function (className) {
+    return _nameToClass[className];
+};
+
+/**
+ * Unregister the classes extended by FIRE.extend. If you dont need it anymore, 
+ * you'd better unregister it to reduce memory usage.
+ * Please note that its still your responsibility to free other references to the class.
+ *
+ * @method FIRE.unregisterNamedClass
+ * @param {function} constructor
+ *
+ * @private
+ */
+FIRE.unregisterNamedClass = function (constructor) {
+    var className = constructor.prototype.__classname__;
+    if (className) {
+        delete _nameToClass[className];
+    }
 };

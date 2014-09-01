@@ -31,6 +31,8 @@ test('basic deserialize test', function () {
     var deserializedAsset = FIRE.deserialize(serializedAsset);
 
     deepEqual(FIRE.serialize(deserializedAsset), FIRE.serialize(asset), 'test deserialize');
+
+    FIRE.unregisterNamedClass(MyAsset);
 });
 
 test('json deserialize test', function () {
@@ -64,6 +66,8 @@ test('json deserialize test', function () {
 
     // TODO: how to deserialized constructor?
     deepEqual(deserializedAsset, expectAsset, 'json deserialize test');
+
+    FIRE.unregisterNamedClass(MyAsset);
 });
 
 test('circular reference deserialize test', function () {
@@ -91,6 +95,9 @@ test('circular reference deserialize test', function () {
     deepEqual(deserializedAsset, expectAsset, 'two arrays can circular reference each other');
     strictEqual(deserializedAsset.array1[1][0], deserializedAsset.array1, 'two arrays can circular reference each other 1');
     strictEqual(deserializedAsset.array2[0][1], deserializedAsset.array2, 'two arrays can circular reference each other 2');
+
+    FIRE.unregisterNamedClass(MyAsset);
+
     //////
 
     MyAsset = (function () {
@@ -114,6 +121,8 @@ test('circular reference deserialize test', function () {
     deepEqual(deserializedAsset, expectAsset, 'two dicts can circular reference each other');
     strictEqual(deserializedAsset.dict1.other.other, deserializedAsset.dict1, 'two dicts can circular reference each other 1');
     strictEqual(deserializedAsset.dict2.other.other, deserializedAsset.dict2, 'two dicts can circular reference each other 2');
+
+    FIRE.unregisterNamedClass(MyAsset);
 });
 
 // jshint ignore: end

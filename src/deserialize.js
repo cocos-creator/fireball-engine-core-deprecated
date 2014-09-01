@@ -25,7 +25,7 @@ var _Deserializer = (function () {
         }
 
         this.obj = null;
-    };
+    }
 
     /**
      * @param {Object} obj - The object to unreference
@@ -46,7 +46,7 @@ var _Deserializer = (function () {
             if (typeVal === 'object') {
                 
                 if (obj.__id__ !== undefined) {
-                    return objs[obj['__id__']];
+                    return objs[obj.__id__];
                 }
                 else { 
                     for (var k in obj) {
@@ -77,7 +77,7 @@ var _Deserializer = (function () {
 
         for (var k in asset) {
             if (asset[k].__id__ !== undefined) {
-                var idx = asset[k]['__id__'];
+                var idx = asset[k].__id__;
                 asset[k] = referenceObjs[idx];
             }
         }
@@ -86,19 +86,16 @@ var _Deserializer = (function () {
     };
 
     /**
-     * @param {Object} obj - The object to unserialize
+     * @param {Object} serialized - The obj to deserialize
      */
-    var _deserializeAsset = function (self, obj) {
+    var _deserializeAsset = function (self, serialized) {
+        var klass = FIRE.getClassByName(serialized.__type__);
+        var asset = new klass();
 
-        // TODO: need refactor
-        var ReservedWords = ['__type__', '__id__'];
-
-        // TODO: get class from register container
-        var asset = eval('new ' + obj.__type__ + '()');
-
-        for (var k in obj) {
-            if (ReservedWords.indexOf(k) === -1) {
-                asset[k] = obj[k];
+        // TODO: check FIRE._isDefinedClass(klass) and __props__
+        for (var k in serialized) {
+            if (serialized.hasOwnProperty(k) && k != '__type__'/* && k != '__id__'*/) {
+                asset[k] = serialized[k];
             }
         }
 

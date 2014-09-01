@@ -47,6 +47,8 @@ test('test', function () {
 
     // constructor
 
+    FIRE.undefine(Animal);
+
     var constructor = new callback();
     Animal = FIRE.define('Animal', constructor)
                  .prop('weight', 100);
@@ -64,6 +66,8 @@ test('test', function () {
 
     var instance3 = new Animal();
     strictEqual(instance3.weight, 100, 'class define not changed');
+
+    FIRE.undefine(Animal);
 });
 
 test('Inherit', function () {
@@ -88,6 +92,8 @@ test('Inherit', function () {
     
     strictEqual(dog.name, 'doge', 'can override property');
     strictEqual(husky.name, 'doge', 'can inherit property');
+
+    FIRE.undefine(Animal, Dog, Husky);
 });
 
 test('Inherit + constructor', function () {
@@ -116,6 +122,8 @@ test('Inherit + constructor', function () {
 
     strictEqual(dog.name, 'doge', 'can override property');
     strictEqual(husky.name, 'doge', 'can inherit property');
+
+    FIRE.undefine(Animal, Dog, Husky);
 });
 
 test('Inherit from native class', 0, function () {
