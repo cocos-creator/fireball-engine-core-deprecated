@@ -73,6 +73,7 @@ gulp.task('jshint', function() {
     return gulp.src(paths.src.concat( ['!**/__intro.js','!**/__outro.js'] ))
     .pipe(jshint({
         forin: false,
+        multistr: true,
     }))
     .pipe(jshint.reporter(stylish))
     ;
