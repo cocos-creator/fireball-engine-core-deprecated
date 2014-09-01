@@ -1,6 +1,6 @@
 var gulp = require('gulp');
-var gulpfilter = require('gulp-filter');
 
+var gutil = require('gulp-util');
 var clean = require('gulp-clean');
 var rename = require('gulp-rename');
 var jshint = require('gulp-jshint');
@@ -69,13 +69,9 @@ gulp.task('clean', function() {
 
 // jshint
 gulp.task('jshint', function() {
-    var filter = gulpfilter( ['!__intro.js','!__outro.js'] );
-    return gulp.src(paths.src)
-    .pipe(filter)
+    return gulp.src(paths.src.concat( ['!**/__intro.js','!**/__outro.js'] ))
     .pipe(jshint())
-    .pipe(filter.restore())
     .pipe(jshint.reporter(stylish))
-    // .pipe(jshint.reporter('fail')) // disabled
     ;
 });
 
@@ -118,10 +114,6 @@ gulp.task('unit-runner', function() {
 gulp.task('test', ['dev', 'unit-runner'], function() {
     return gulp.src(['test/unit/**/*.html', '!**/*.dev.*'])
                 .pipe(qunit())
-                .on('error', function(err) {
-                    // Make sure failed tests cause gulp to exit non-zero
-                    throw err;
-                })
                 ;
 });
 
@@ -139,7 +131,7 @@ gulp.task('ref', function() {
 
 // watch
 gulp.task('watch', function() {
-    gulp.watch(paths.src, ['min']);
+    gulp.watch(paths.src, ['min']).on( 'error', gutil.log );
 });
 
 //
