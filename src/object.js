@@ -85,8 +85,9 @@ FIRE.FObject = (function () {
      * @return {boolean} whether it is not destroyed
      * @see FIRE.FObject#destroy
      */
-    FObject.prototype.__defineGetter__('isValid', function () {
-        return !this._destroyed;
+    Object.defineProperty(FObject.prototype, 'isValid', {
+        get: function () { return !this._destroyed; }
+
     });
 
     return FObject;
