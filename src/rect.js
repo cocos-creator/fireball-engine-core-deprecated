@@ -42,12 +42,12 @@ FIRE.Rect = (function () {
         return new Rect(this.x, this.y, this.width, this.height);
     };
 
-    Rect.prototype.__defineGetter__('xMax', function () {
-        return this.x + this.width;
+    Object.defineProperty(Rect.prototype, 'xMax', {
+        get: function () { return this.x + this.width; }
     });
 
-    Rect.prototype.__defineGetter__('yMax', function () {
-        return this.y + this.height;
+    Object.defineProperty(Rect.prototype, 'yMax', {
+        get: function () { return this.y + this.height; }
     });
 
     return Rect;

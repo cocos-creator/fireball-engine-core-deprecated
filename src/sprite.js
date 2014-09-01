@@ -27,12 +27,12 @@ FIRE.Sprite = (function () {
     Sprite.prop('y', 0, FIRE.Integer);
     //
 
-    Sprite.prototype.__defineGetter__('rotatedWidth', function () {
-        return this.rotated ? this.height : this.width;
+    Object.defineProperty(Sprite.prototype, 'rotatedWidth', {
+        get: function () { return this.rotated ? this.height : this.width; }
     });
 
-    Sprite.prototype.__defineGetter__('rotatedHeight', function () {
-        return this.rotated ? this.width : this.height;
+    Object.defineProperty(Sprite.prototype, 'rotatedHeight', {
+        get: function () { return this.rotated ? this.width : this.height; }
     });
 
     // TODO: add rawWidth/rawHeight getter ?
