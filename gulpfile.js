@@ -70,7 +70,9 @@ gulp.task('clean', function() {
 // jshint
 gulp.task('jshint', function() {
     return gulp.src(paths.src.concat( ['!**/__intro.js','!**/__outro.js'] ))
-    .pipe(jshint())
+    .pipe(jshint({
+        forin: false,
+    }))
     .pipe(jshint.reporter(stylish))
     ;
 });

@@ -19,7 +19,7 @@
  * FIRE.attr(klass, 'value');              // return { default: 0.5, min: 0, max: 1 }
  */
 FIRE.attr = function (constructor, propertyName, attributes) {
-    var key = propertyName + '$attr';
+    var key = '_attr$' + propertyName;
     var attrs = constructor.prototype[key];
     if (attributes) {
         // set
@@ -27,14 +27,18 @@ FIRE.attr = function (constructor, propertyName, attributes) {
             attrs = {};
             constructor.prototype[key] = attrs;
         }
-        // jshint forin: false
         for (var name in attributes) {
             attrs[name] = attributes[name];
         }
-        // jshint forin: true
     }
     return attrs;
 };
+
+/*
+var BuiltinAttributes = {
+    default: defaultValue,
+};
+ */
 
 /**
  * Makes a property only accept the supplied object type in Inspector.
@@ -47,15 +51,10 @@ FIRE.ObjectType = function (constructor) {
     return { objectType: constructor };
 };
 
-///**
-// * Force Fireball to serialize a private field.
-// * @property {object} FIRE.Serializable
-// */
-//FIRE.Serializable = { serializable: true };
-
 /**
+ * By default, all properties declared by "Class.prop" is serializable.
  * The NonSerialized attribute marks a variable to not be serialized,
- * so you can keep a variable public and Fireball will not attempt to serialize it or show it in the editor.
+ * so you can keep a property show in the Editor and Fireball will not attempt to serialize it.
  * 
  * @property {object} FIRE.NonSerialized
  * @see FIRE.EditorOnly
@@ -78,10 +77,19 @@ FIRE.EditorOnly = { editorOnly: true };
 FIRE.Integer = { type: 'int' };
 
 ///**
+// * @property {object} FIRE.Float
 // * @deprecated - No need to define FIRE.Float, you should just set default value to any number
 // */
 //FIRE.__defineGetter__('Float', function () {
-//    console.warn('No need to define FIRE.Float, you should just set default value to any number');
+//    console.warn('No need to use "FIRE.Float", you just need to set default value to any number');
+//    return {};
+//});
+///**
+// * @property {object} FIRE.Serializable
+// * @deprecated - No need to use FIRE.Serializable, all properties defined by "Class.prop" is already serializable.
+// */
+//FIRE.__defineGetter__('Serializable', function () {
+//    console.warn('No need to use "FIRE.Serializable", all properties defined by "Class.prop" is already serializable.');
 //    return {};
 //});
 
@@ -125,12 +133,6 @@ FIRE.Tooltip = function (tooltip) {
     return { tooltip: tooltip };
 };
 
-//FIRE.serializable = function (serializable) {
-//    if (serializable === undefined) {
-//        serializable = true;
-//    }
-//    return { serializable: serializable };
-//};
 //FIRE.range = function (min, max) {
 //    return { min: min, max: max };
 //};

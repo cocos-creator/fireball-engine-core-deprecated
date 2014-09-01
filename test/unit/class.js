@@ -9,6 +9,20 @@ test('test', function () {
     strictEqual(FIRE.getClassName(Animal), 'Animal', 'get class name');
 
     Animal.prop('weight', -1, FIRE.NonSerialized);
+    Animal.set('weight10', function (value) {
+        this.weight = Math.floor(value / 10);
+    });
+    Animal.get('weight10', function () {
+        return this.weight * 10;
+    }, FIRE.Integer);
+    Animal.getset('weight5x',
+        function () {
+            return this.weight * 5;
+        },
+        function (value) {
+            this.weight = value / 5;
+        }
+    );
 
     // property
 
@@ -20,6 +34,16 @@ test('test', function () {
     strictEqual(FIRE.attr(Animal, 'name').type, 'Float', 'get name type');
     strictEqual(FIRE.attr(Animal, 'name').serializable, true, 'get name serializable');
     strictEqual(FIRE.attr(Animal, 'weight').serializable, false, 'get attribute');
+
+    // getter / setter
+
+    strictEqual(instance.weight10, instance.weight * 10, 'define getter');
+    instance.weight10 = 40;
+    strictEqual(instance.weight10, 40, 'define setter');
+
+    strictEqual(instance.weight5x, instance.weight * 5, 'define getter by getset');
+    instance.weight5x = 30;
+    strictEqual(instance.weight5x, 30, 'define setter by getset');
 
     // constructor
 

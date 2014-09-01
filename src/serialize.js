@@ -210,6 +210,6 @@ var _Serializer = (function () {
 FIRE.serialize = function (obj, exporting) {
     var serializer = new _Serializer(obj, exporting);
     var serializedList = serializer.serializedList;
-    var serializedData = serializer.serializedList.length == 1 ? serializedList[0] : serializedList;
+    var serializedData = serializer.serializedList.length === 1 ? serializedList[0] : serializedList;
     return JSON.stringify(serializedData, null, 4);
 };
