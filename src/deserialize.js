@@ -9,34 +9,39 @@ var _Deserializer = (function () {
 
         var typeVal = typeof data;
         if (typeVal === 'string') {
-            this.obj = JSON.parse(data);
+            this.deserializedObj = JSON.parse(data);
         }
         else if (typeVal === 'object') {
-            this.obj = data;
+            this.deserializedObj = data;
         }
         
-        if (Array.isArray(this.obj)) {
-            var assetObj = this.obj.pop();
-            var objs = _unreference(this.obj);
-            this.data = _deserializeArray(this, assetObj, objs);
+        if (Array.isArray(this.deserializedObj)) {
+
+            // get the deserialized root asset object
+            var deserializedAssetObj = this.deserializedObj.pop();
+
+            // spread the deserialized object with dereference objects
+            var referenceObjs = _spreadReference(this.deserializedObj);
+
+            this.deserializedData = _deserializeArray(this, deserializedAssetObj, referenceObjs);
         }
         else {
-            this.data = _deserializeAsset(this, this.obj);
+            this.deserializedData = _deserializeAsset(this, this.deserializedObj);
         }
 
-        this.obj = null;
+        this.deserializedObj = null;
     }
 
     /**
-     * @param {Object} obj - The object to unreference
+     * @param {Object} objs - The objects to reference
      */
-    var _unreference = function (objs) {
+    var _spreadReference = function (dereferenceObjs) {
 
-        var _unrefer = function(obj) {
+        var _direct = function(obj) {
             if (Array.isArray(obj)) {
                 for (var i = 0; i < obj.length; i++) {
                     if (typeof obj[i] === 'object') {
-                        obj[i] = _unrefer(obj[i]);
+                        obj[i] = _direct(obj[i]);
                     }
                 }
                 return obj;
@@ -46,12 +51,12 @@ var _Deserializer = (function () {
             if (typeVal === 'object') {
                 
                 if (obj.__id__ !== undefined) {
-                    return objs[obj.__id__];
+                    return dereferenceObjs[obj.__id__];
                 }
                 else { 
                     for (var k in obj) {
                         if (typeof obj[k] === 'object') {
-                            obj[k] = _unrefer(obj[k]);
+                            obj[k] = _direct(obj[k]);
                         }
                     }
                     return obj;
@@ -62,11 +67,11 @@ var _Deserializer = (function () {
             }
         };
 
-        for (var i = 0, len = objs.length; i < len; i++) {
-            _unrefer(objs[i]);
+        for (var i = 0, len = dereferenceObjs.length; i < len; i++) {
+            _direct(dereferenceObjs[i]);
         }
 
-        return objs;
+        return dereferenceObjs;
     };
 
     /**
@@ -74,12 +79,13 @@ var _Deserializer = (function () {
      */
     var _deserializeArray = function (self, assetObj, referenceObjs) {
 
-        var _unrefer = function(obj) {
+        // a recursive function to refer asset root object with reference objects
+        var _direct = function(obj) {
 
             if (Array.isArray(obj)) {
                 for (var i = 0; i < obj.length; i++) {
                     if (typeof obj[i] === 'object') {
-                        obj[i] = _unrefer(obj[i]);
+                        obj[i] = _direct(obj[i]);
                     }
                 }
                 return obj;
@@ -93,7 +99,7 @@ var _Deserializer = (function () {
                 else { 
                     for (var k in obj) {
                         if (typeof obj[k] === 'object') {
-                            obj[k] = _unrefer(obj[k]);
+                            obj[k] = _direct(obj[k]);
                         }
                     }
                     return obj;
@@ -105,7 +111,7 @@ var _Deserializer = (function () {
 
         };
 
-        assetObj = _unrefer(assetObj);
+        assetObj = _direct(assetObj);
         var asset = _deserializeAsset(self, assetObj);
 
         return asset;
@@ -133,10 +139,10 @@ var _Deserializer = (function () {
 
 /**
  * Deserialize json string to FIRE.Asset
- * @param data {(string|object)} The serialized FIRE.Asset json string or object
+ * @param {(string|object)} data The serialized FIRE.Asset json string or object
  * @return {FIRE.Asset} The FIRE.Asset object
  */
 FIRE.deserialize = function (data) {
     var deserializer = new _Deserializer(data);
-    return deserializer.data;
+    return deserializer.deserializedData;
 };
