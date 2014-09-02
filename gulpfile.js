@@ -115,7 +115,7 @@ gulp.task('unit-runner', function() {
                ;
 });
 
-gulp.task('test', ['dev', 'unit-runner'], function() {
+gulp.task('test', ['min', 'unit-runner'], function() {
     return gulp.src(['test/unit/**/*.html', '!**/*.dev.*'])
                 .pipe(qunit())
                 ;
