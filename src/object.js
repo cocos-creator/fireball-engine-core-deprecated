@@ -3,8 +3,28 @@ FIRE.FObject = (function () {
     // constructor
 
     function FObject () {
+        Object.defineProperty(this, '_objFlags', {
+            value: 0,
+            writable: true,
+            enumerable: false
+        });
     }
     FIRE.setClassName(FObject, "FIRE.FObject");
+
+    // const flags
+
+    var Destroyed = 1 << 0;
+    var ToDestroy = 1 << 1;
+
+    //// enum
+
+    //Object.defineProperty(FObject, 'Flags', {
+    //    value: {
+    //        Destroyed: Destroyed,
+    //        _toDestroy: ToDestroy,
+    //    },
+    //    enumerable: false
+    //});
 
     // static
 
@@ -15,32 +35,37 @@ FIRE.FObject = (function () {
      * @see FIRE.FObject#destroy
      * @static
      */
-    FObject.isValid = function (object) {
-        return !!object && !object._destroyed;
-    };
+    Object.defineProperty(FObject, 'isValid', {
+        value: function (object) {
+            return !!object && !(object._objFlags & Destroyed);
+        },
+        enumerable: false
+    });
 
     // internal static
 
     var objectsToDestroy = [];
 
-    // TODO: this static method will copy to all its descendents...
-    FObject._deferredDestroy = function () {
-        // if we called b.destory() in a.onDestroy(), objectsToDestroy will be resized, 
-        // but we only destroy the objects which called destory in this frame.
-        var deleteCount = objectsToDestroy.length;
-        for (var i = 0; i < deleteCount; ++i) {
-            var obj = objectsToDestroy[i];
-            if (!obj._destroyed) {
-                obj._destroyImmediate();
+    Object.defineProperty(FObject, '_deferredDestroy', {
+        value: function () {
+            // if we called b.destory() in a.onDestroy(), objectsToDestroy will be resized, 
+            // but we only destroy the objects which called destory in this frame.
+            var deleteCount = objectsToDestroy.length;
+            for (var i = 0; i < deleteCount; ++i) {
+                var obj = objectsToDestroy[i];
+                if (!(obj._objFlags & Destroyed)) {
+                    obj._destroyImmediate();
+                }
             }
-        }
-        if (deleteCount === objectsToDestroy.length) {
-            objectsToDestroy.length = 0;
-        }
-        else {
-            objectsToDestroy.splice(0, deleteCount);
-        }
-    };
+            if (deleteCount === objectsToDestroy.length) {
+                objectsToDestroy.length = 0;
+            }
+            else {
+                objectsToDestroy.splice(0, deleteCount);
+            }
+        },
+        enumerable: false
+    });
 
     // instance
 
@@ -53,20 +78,20 @@ FIRE.FObject = (function () {
      * @see FIRE.isValid
      */
     FObject.prototype.destroy = function () {
-        if (this._destroyed) {
+        if (this._objFlags & Destroyed) {
             console.error('object already destroyed');
             return;
         }
-        if (this.toDestroy) {   // TODO: flag
+        if (this._objFlags & ToDestroy) {
             return false;
         }
-        this.toDestroy = true;
+        this._objFlags |= ToDestroy;
         objectsToDestroy.push(this);
         return true;
     };
 
     FObject.prototype._destroyImmediate = function () {
-        if (this._destroyed) {
+        if (this._objFlags & Destroyed) {
             console.error('object already destroyed');
             return;
         }
@@ -77,7 +102,7 @@ FIRE.FObject = (function () {
         // do destroy
             // TODO
         // mark destroyed
-        this._destroyed = true;
+        this._objFlags |= Destroyed;
     };
 
     /**
@@ -86,8 +111,9 @@ FIRE.FObject = (function () {
      * @see FIRE.FObject#destroy
      */
     Object.defineProperty(FObject.prototype, 'isValid', {
-        get: function () { return !this._destroyed; }
-
+        get: function () {
+            return !(this._objFlags & Destroyed);
+        }
     });
 
     return FObject;
