@@ -6,14 +6,13 @@
   "license": "MIT",
   "licenseUrl": "http://opensource.org/licenses/MIT",
   "dependencies": {
-    "connect": ""
   },
   "devDependencies": {
     "gulp": "",
+    "gulp-fb": "",
     "gulp-clean": "",
     "gulp-util": "",
     "gulp-concat": "",
-    "gulp-fb": "",
     "gulp-jshint": "",
     "gulp-qunit": "",
     "gulp-rename": "",

@@ -68,7 +68,7 @@ gulp.task('clean', function() {
     ;
 });
 
-// jshint
+// js-hint
 gulp.task('jshint', function() {
     return gulp.src(paths.src.concat( ['!**/__intro.js','!**/__outro.js'] ))
     .pipe(jshint({
@@ -137,8 +137,9 @@ gulp.task('ref', function() {
 gulp.task('watch', function() {
     gulp.watch(paths.src, ['min']).on( 'error', gutil.log );
 });
+gulp.task('watch-self', ['watch'] );
 
 //
-gulp.task('default', ['min'] );
 gulp.task('all', ['min', 'test', 'ref'] );
 gulp.task('ci', ['min', 'test'] );
+gulp.task('default', ['min'] );
