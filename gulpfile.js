@@ -137,6 +137,7 @@ gulp.task('ref', function() {
 gulp.task('watch', function() {
     gulp.watch(paths.src, ['min']).on( 'error', gutil.log );
 });
+gulp.task('watch-self', ['watch'] );
 
 //
 gulp.task('all', ['min', 'test', 'ref'] );
