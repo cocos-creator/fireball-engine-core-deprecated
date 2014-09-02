@@ -1,4 +1,4 @@
-var _doGetTrimRect = function (pixelBuffer, w, h, trimThreshold) {
+﻿var _doGetTrimRect = function (pixelBuffer, w, h, trimThreshold) {
     // A B C
     // D x F
     // G H I
@@ -173,3 +173,12 @@ FIRE.hsv2rgb = function ( h, s, v ) {
     }
     return rgb;
 };
+
+// Support can be assigned a null value type
+FIRE.Nullable = (function () {
+    function Nullable(hasValue, value) {
+        this.hasValue = haValue;
+        this.value = value;
+    }
+    return Nullable;
+})();
