@@ -80,18 +80,18 @@ FIRE.Integer = { type: 'int' };
 // * @property {object} FIRE.Float
 // * @deprecated - No need to define FIRE.Float, you should just set default value to any number
 // */
-//FIRE.__defineGetter__('Float', function () {
+//Object.defineProperty(FIRE, 'Float', { get: function () {
 //    console.warn('No need to use "FIRE.Float", you just need to set default value to any number');
 //    return {};
-//});
+//}});
 ///**
 // * @property {object} FIRE.Serializable
 // * @deprecated - No need to use FIRE.Serializable, all properties defined by "Class.prop" is already serializable.
 // */
-//FIRE.__defineGetter__('Serializable', function () {
+//Object.defineProperty(FIRE, 'Serializable', { get: function () {
 //    console.warn('No need to use "FIRE.Serializable", all properties defined by "Class.prop" is already serializable.');
 //    return {};
-//});
+//}});
 
 /**
  * Makes a property show up as a enum in Inspector.

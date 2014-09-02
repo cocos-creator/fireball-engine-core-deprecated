@@ -108,8 +108,10 @@ var _metaClass = {
                 return this;
             }
         }
-
-        this.prototype.__defineGetter__(name, getter);
+        Object.defineProperty(this.prototype, name, {
+            get: getter,
+            configurable: true
+        });
         return this;
     },
 
@@ -127,7 +129,10 @@ var _metaClass = {
             console.error(FIRE.getClassName(this) + ': the setter of "' + name + '" is already defined!');
             return this;
         }
-        this.prototype.__defineSetter__(name, setter);
+        Object.defineProperty(this.prototype, name, {
+            set: setter,
+            configurable: true
+        });
         return this;
     },
 
