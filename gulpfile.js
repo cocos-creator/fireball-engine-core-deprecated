@@ -68,7 +68,7 @@ gulp.task('clean', function() {
     ;
 });
 
-// jshint
+// js-hint
 gulp.task('jshint', function() {
     return gulp.src(paths.src.concat( ['!**/__intro.js','!**/__outro.js'] ))
     .pipe(jshint({
