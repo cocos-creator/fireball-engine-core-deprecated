@@ -73,14 +73,40 @@ var _Deserializer = (function () {
      * @param {Object} obj - The object to deserialize
      */
     var _deserializeArray = function (self, assetObj, referenceObjs) {
-        var asset = _deserializeAsset(self, assetObj);
 
-        for (var k in asset) {
-            if (asset[k].__id__ !== undefined) {
-                var idx = asset[k].__id__;
-                asset[k] = referenceObjs[idx];
+        var _unrefer = function(obj) {
+
+            if (Array.isArray(obj)) {
+                for (var i = 0; i < obj.length; i++) {
+                    if (typeof obj[i] === 'object') {
+                        obj[i] = _unrefer(obj[i]);
+                    }
+                }
+                return obj;
             }
-        }
+
+            var typeVal = typeof obj;
+            if (typeVal === 'object') {
+                if (obj.__id__ !== undefined) {
+                    return referenceObjs[obj.__id__];
+                }
+                else { 
+                    for (var k in obj) {
+                        if (typeof obj[k] === 'object') {
+                            obj[k] = _unrefer(obj[k]);
+                        }
+                    }
+                    return obj;
+                }
+            }
+            else{
+                return obj;
+            }
+
+        };
+
+        assetObj = _unrefer(assetObj);
+        var asset = _deserializeAsset(self, assetObj);
 
         return asset;
     };
