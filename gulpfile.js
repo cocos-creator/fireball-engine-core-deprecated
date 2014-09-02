@@ -139,6 +139,6 @@ gulp.task('watch', function() {
 });
 
 //
-gulp.task('default', ['min'] );
 gulp.task('all', ['min', 'test', 'ref'] );
 gulp.task('ci', ['min', 'test'] );
+gulp.task('default', ['min'] );
