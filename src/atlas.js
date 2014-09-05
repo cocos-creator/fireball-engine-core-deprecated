@@ -31,8 +31,8 @@ FIRE.Atlas = (function () {
 
     // basic settings
     Atlas.prop('autoSize', true);
-    Atlas.prop('width', 512, FIRE.Enum('sizeList'));
-    Atlas.prop('height', 512, FIRE.Enum('sizeList'));
+    Atlas.prop('width', 512, FIRE.Custom('Editor.SizeList') );
+    Atlas.prop('height', 512, FIRE.Custom('Editor.SizeList') );
     Atlas.prop('trim', true, FIRE.EditorOnly);
     Atlas.prop('trimThreshold', 1, FIRE.EditorOnly);
 
