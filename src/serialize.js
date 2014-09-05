@@ -22,7 +22,7 @@ var _Serializer = (function () {
         this.serializedList.push(_serializeObj(this, obj));
 
         for (var i = 0; i < this._referencedObjs.length; ++i) {
-            delete this._referencedObjs[i].__id__;     // delete temp id
+            this._referencedObjs[i].__id__ = undefined;
         }
 
         this._parsingObjs = null;
@@ -150,7 +150,7 @@ var _Serializer = (function () {
             return null;
         }
         // has been serialized ?
-        if (!!obj.__id__) {
+        if (obj.__id__) {
             return { __id__: obj.__id__ }; // no need to parse again
         }
         
@@ -210,6 +210,6 @@ var _Serializer = (function () {
 FIRE.serialize = function (obj, exporting) {
     var serializer = new _Serializer(obj, exporting);
     var serializedList = serializer.serializedList;
-    var serializedData = serializer.serializedList.length == 1 ? serializedList[0] : serializedList;
+    var serializedData = serializer.serializedList.length === 1 ? serializedList[0] : serializedList;
     return JSON.stringify(serializedData, null, 4);
 };

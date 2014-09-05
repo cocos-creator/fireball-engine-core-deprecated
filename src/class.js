@@ -1,20 +1,17 @@
 ﻿// helper functions for defining Classes
 
+// both getter and prop must register the name into __props__ array
+var _appendProp = function (name, isGetter) {
+    if (!isGetter) {
+        // checks whether getter/setter defined
+        var d = Object.getOwnPropertyDescriptor(this, name);
+        var hasGetterOrSetter = (d && (d.get || d.set));
+        if (hasGetterOrSetter) {
+            console.error(FIRE.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
+            return;
+        }
+    }
 
-/**
- * Add new instance field, propertie, or method made available on the class.
- * 这里定义的所有变量默认情况下都会被序列化也会在inspector中显示。
- * 如果传入属性包含FIRE.HideInInspector则仍会序列化但不在inspector中显示。
- * 如果传入属性包含FIRE.NonSerialized则不会序列化并且不会在inspector中显示。
- * 如果传入属性包含FIRE.EditorOnly则只在编辑器下序列化，打包时不序列化。
- * 
- * @method class.prop
- * @param {string} name - the property name
- * @param {*} value - the default value
- * @param {...object} attribute - additional property attributes, any number of attributes can be added
- * @returns {function} the class itself
- */
-var _prop = function (name, value, attribute) {
     if (!this.__props__) {
         this.__props__ = [name];
     }
@@ -24,53 +21,148 @@ var _prop = function (name, value, attribute) {
             this.__props__.push(name);
         }
         else {
-            console.warn(FIRE.getClassName(this) + '.prop("' + name + '", ...) is already defined!');
+            console.error(FIRE.getClassName(this) + '.' + name + ' is already defined!');
         }
     }
-
-    FIRE.attr(this, name, { 'default': value });
-    if (attribute) {
-        for (var i = 2; i < arguments.length; i++) {
-            FIRE.attr(this, name, arguments[i]);
-        }
-    }
-    return this;
 };
 
-/*
-//var builder = new PropertyBuilder(this);
-//builder.prop(name, value);
-// declare a special class to avoid polluting user defined class
-var PropertyBuilder = (function () {
+/**
+ * the metaclass of the "fire class" created by FIRE.define, all its static members
+ * will inherited by fire class.
+ */
+var _metaClass = {
 
-    var PropertyBuilder = function (targetClass) {
-        this.targetClass = targetClass;
-        if (!targetClass.__props__) {
-            targetClass.__props__ = [];
+    /**
+     * @property {string[]} class.__props__
+     * @private
+     */
+    __props__: null,
+
+    /**
+     * Add new instance field, propertie, or method made available on the class.
+     * 该方法定义的变量默认情况下都会被序列化，也会在inspector中显示。
+     * 如果传入属性包含FIRE.HideInInspector则仍会序列化但不在inspector中显示。
+     * 如果传入属性包含FIRE.NonSerialized则不会序列化并且不会在inspector中显示。
+     * 如果传入属性包含FIRE.EditorOnly则只在编辑器下序列化，打包时不序列化。
+     * 
+     * @method class.prop
+     * @param {string} name - the property name
+     * @param {*} defaultValue - the default value
+     * @param {...object} attribute - additional property attributes, any number of attributes can be added
+     * @returns {function} the class itself
+     */
+    prop: function (name, defaultValue, attribute) {
+        _appendProp.call(this, name);
+        FIRE.attr(this, name, { 'default': defaultValue });
+        if (attribute) {
+            for (var i = 2; i < arguments.length; i++) {
+                FIRE.attr(this, name, arguments[i]);
+            }
         }
-         * @member {string} current setting property
-        this._current = '';
-    };
-
-    
-    PropertyBuilder.prototype.prop = function (name, value) {
-        this._current = name;
-        this.targetClass.__props__.push(name);
-        FIRE.attr(this.targetClass, name, { 'default': value });
         return this;
-    };
-    return PropertyBuilder;
-})();
+    },
 
-FIRE.PropertyBuilder = PropertyBuilder;
-*/
+    /**
+     * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
+     * 如果传入属性包含FIRE.HideInInspector则不在inspector中显示。
+     * 
+     * @method class.get
+     * @param {string} name - the getter property
+     * @param {function} getter - the getter function which returns the real property
+     * @param {...object} attribute - additional property attributes, any number of attributes can be added
+     * @returns {function} the class itself
+     */
+    get: function (name, getter, attribute) {
+        var d = Object.getOwnPropertyDescriptor(this, name);
+        if (d && d.get) {
+            console.error(FIRE.getClassName(this) + ': the getter of "' + name + '" is already defined!');
+            return this;
+        }
 
-var _assignInstanceProperties = function (instance, itsClass) {
+        var displayInInspector = true;
+        if (attribute) {
+            for (var i = 2; i < arguments.length; i++) {
+                var attr = arguments[i];
+                FIRE.attr(this, name, attr);
+                if (attr.hideInInspector) {
+                    displayInInspector = false;
+                }
+                if (attr.serializable === false || attr.editorOnly === true) {
+                    console.warn('No need to use FIRE.NonSerialized or FIRE.EditorOnly for the getter of ' + 
+                        FIRE.getClassName(this) + '.' + name + ', every getter is actually non-serialized.');
+                }
+                if (attr.hasOwnProperty('default')) {
+                    console.error(FIRE.getClassName(this) + ': Can not set default value of a getter!');
+                    return this;
+                }
+            }
+        }
+
+        if (displayInInspector) {
+            _appendProp.call(this, name, true);
+        }
+        else {
+            var index = this.__props__.indexOf(name);
+            if (index >= 0) {
+                console.error(FIRE.getClassName(this) + '.' + name + ' is already defined!');
+                return this;
+            }
+        }
+        Object.defineProperty(this.prototype, name, {
+            get: getter,
+            configurable: true
+        });
+        return this;
+    },
+
+    /**
+     * 该方法定义的变量**不会**被序列化，除非有对应的getter否则不在inspector中显示。
+     * 
+     * @method class.set
+     * @param {string} name - the setter property
+     * @param {function} setter - the setter function
+     * @returns {function} the class itself
+     */
+    set: function (name, setter) {
+        var d = Object.getOwnPropertyDescriptor(this, name);
+        if (d && d.set) {
+            console.error(FIRE.getClassName(this) + ': the setter of "' + name + '" is already defined!');
+            return this;
+        }
+        Object.defineProperty(this.prototype, name, {
+            set: setter,
+            configurable: true
+        });
+        return this;
+    },
+
+    /**
+     * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
+     * 如果传入属性包含FIRE.HideInInspector则不在inspector中显示。
+     * 
+     * @method class.get
+     * @param {string} name - the getter property
+     * @param {function} getter - the getter function which returns the real property
+     * @param {function} setter - the setter function
+     * @param {...object} attribute - additional property attributes, any number of attributes can be added
+     * @returns {function} the class itself
+     */
+    getset: function (name, getter, setter, attribute) {
+        this.get(name, getter, attribute);
+        this.set(name, setter);
+        return this;
+    },
+};
+
+var _createInstanceProps = function (instance, itsClass) {
     var propList = itsClass.__props__;
     if (propList) {
         for (var i = 0; i < propList.length; i++) {
             var prop = propList[i];
-            instance[prop] = FIRE.attr(itsClass, prop).default;
+            var attrs = FIRE.attr(itsClass, prop);
+            if (attrs && attrs.hasOwnProperty('default')) {  // getter does not have default
+                instance[prop] = attrs.default;
+            }
         }
     }
 };
@@ -84,7 +176,7 @@ var _assignInstanceProperties = function (instance, itsClass) {
  * @private
  */
 FIRE._isDefinedClass = function (constructor) {
-    return (constructor.prop === _prop);
+    return (constructor.prop === _metaClass.prop);
 };
 
 /**
@@ -128,15 +220,22 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
     else {
         constructor = baseOrConstructor;
     }
+
     // create a new constructor
-    function theClass () {
-        _assignInstanceProperties(this, theClass);
-        if (constructor) {
+    var theClass;
+    if (constructor) {
+        theClass = function () {
+            _createInstanceProps(this, theClass);
             constructor.apply(this, arguments);
-        }
+        };
     }
-    
-    //
+    else {
+        theClass = function () {
+            _createInstanceProps(this, theClass);
+        };
+    }
+
+    // isInherit
     if (isInherit) {
         FIRE.extend(className, theClass, baseClass);
         theClass.$super = baseClass;
@@ -145,31 +244,38 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
         FIRE.setClassName(theClass, className);
     }
 
-    // occupy the Class.prop and Class.__props__ static variables
-    theClass.prop = _prop;
-    theClass.__props__ = null;  // reset __props__ inherited from base
+    // occupy some static members, and reset __props__ inherited from base
+    for (var staticMember in _metaClass) {
+        theClass[staticMember] = _metaClass[staticMember];
+    }
 
+    //// nicify constructor name
+    //if (className && theClass.toString) {
+    //    var toString = theClass.toString;
+    //    theClass.toString = function () {
+    //        return _toNiceString.call(this, toString);
+    //    };
+    //}
     return theClass;
 };
 
-///**
-// * Creates a sub-class based on the supplied baseClass parameter
-// * 
-// * @method FIRE.extend
-// * @param {string} className - the name of class that is used to deserialize this class
-// * @param {function} baseClass - the class to inherit from
-// * @param {function} [constructor] - a constructor function that is used to instantiate this class, 
-// *                                   if not supplied, the constructor of base class will be called automatically
-// * @returns {function} the defined class
-// */
-//FIRE.extend = function (className, constructor) {
-//    if (!constructor) {
-//        constructor = function () {
-//            baseClass.apply(this, arguments);
-//        };
-//    }
-//    var theClass = FIRE.define(className, constructor);
-//    FIRE.simpleExtend(className, theClass, baseClass);
-//    theClass.$super = baseClass;
-//    return theClass;
+/**
+ * If you dont need a class (which defined by FIRE.define) anymore, 
+ * you'd better undefine it to reduce memory usage.
+ * Please note that its still your responsibility to free other references to the class.
+ * 
+ * @method FIRE.undefine
+ * @param {...function} [constructor] - the class you will want to undefine, any number of classes can be added
+ *
+ * @see FIRE.define
+ */
+FIRE.undefine = function (constructor) {
+    for (var i = 0; i < arguments.length; i++) {
+        FIRE.unregisterNamedClass(arguments[i]);
+    }
+};
+
+//_toNiceString = function (originalToString) {
+//    var str = originalToString.call(this);
+//    return str.replace('function ', 'function ' + FIRE.getClassName(this));
 //};

@@ -1,31 +1,5 @@
 ﻿// jshint ignore: start
 
-module('getClassName');
-
-test('test getClassName', function() {
-    var MyAsset = (function () {
-        var _super = FIRE.Asset;
-
-        function MyAsset () {
-            _super.call(this);
-        }
-        FIRE.extend('Foo', MyAsset, _super);
-
-        return MyAsset;
-    })();
-    var myAsset = new MyAsset();
-
-    equal(FIRE.getClassName(myAsset), 'Foo', 'can getClassName of user type');
-
-    delete MyAsset.prototype.__classname__;  // hack, remove class name
-    ok(FIRE.getClassName(myAsset), 'should fallback to constructor name if classname undefined');
-    // (constructor's name may renamed by uglify, so we do not test the value exactly)
-
-    var asset = new FIRE.Asset();
-    ok(FIRE.getClassName(asset), 'can getClassName of FIRE type');
-    notEqual(FIRE.getClassName(myAsset), FIRE.getClassName(asset), 'class name should not achieved from its super');
-});
-
 largeModule('serialize');
 
 var match = function (obj, expect, info) {
@@ -83,6 +57,8 @@ test('basic test', function() {
 
     match(asset, expect, 'type test');
     match(asset, expect, 'test re-serialize again');
+
+    FIRE.unregisterNamedClass(MyAsset);
 });
 
 test('test circular reference', function () {
@@ -114,6 +90,8 @@ test('test circular reference', function () {
     ];
     match(asset, expect, 'two arrays can circular reference each other');
     match(asset, expect, 'test re-serialize again');
+    FIRE.unregisterNamedClass(MyAsset);
+
     MyAsset = (function () {
         var _super = FIRE.Asset;
 
@@ -143,6 +121,8 @@ test('test circular reference', function () {
     asset.sameRef = asset.dict2;
     expect[2].sameRef = { __id__: 1 };
     match(asset, expect, 'more referenced object just serialize its id');
+
+    FIRE.unregisterNamedClass(MyAsset);
 });
 
 test('test type created by FIRE.define', function () {
@@ -166,6 +146,8 @@ test('test type created by FIRE.define', function () {
     };
 
     deepEqual(actual, expected, 'can serialize');
+
+    FIRE.undefine(Sprite);
 });
 
 test('test serializable attributes', function () {
@@ -182,6 +164,8 @@ test('test serializable attributes', function () {
 
     strictEqual(actualInEditor._isValid, undefined, 'should not serialize non-serialized in editor');
     strictEqual(actualInPlayer._isValid, undefined, 'should not serialize non-serialized in player');
+
+    FIRE.undefine(Sprite);
 });
 
 // jshint ignore: end

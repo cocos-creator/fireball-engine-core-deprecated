@@ -83,7 +83,7 @@ else {
     };
 }
 
-FIRE.Path.setExtension = function (path, newExtension) {
+FIRE.Path.setExtname = function (path, newExtension) {
     // if (FIRE.isNode) return Path.join(Path.dirname(path), Path.basename(path, Path.extname(path))) + newExtension;
     var dotIndex = (~-path.lastIndexOf(".") >>> 0) + 1;
     return path.substring(0, dotIndex) + newExtension;

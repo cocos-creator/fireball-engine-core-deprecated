@@ -1,19 +1,18 @@
 {
   "name": "fireball-core",
-  "version": "0.1.0",
+  "version": "0.0.2",
   "description": "Fireball Core Module",
   "homepage": "http://fireball-x.github.io",
   "license": "MIT",
   "licenseUrl": "http://opensource.org/licenses/MIT",
   "dependencies": {
-    "connect": ""
   },
   "devDependencies": {
     "gulp": "",
+    "gulp-fb": "",
     "gulp-clean": "",
     "gulp-util": "",
     "gulp-concat": "",
-    "gulp-fb": "fireball-x/gulp-fb#master",
     "gulp-jshint": "",
     "gulp-qunit": "",
     "gulp-rename": "",

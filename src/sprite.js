@@ -12,8 +12,8 @@ FIRE.Sprite = (function () {
     });
     
     // basic settings
-    Sprite.prop('rawTexture', null, FIRE.ObjectType(Image), FIRE.Tooltip('untrimmed raw texture'), FIRE.EditorOnly);
-    Sprite.prop('texture', null, FIRE.ObjectType(Image), FIRE.Tooltip('texture to render'));
+    Sprite.prop('rawTexture', null, FIRE.ObjectType(FIRE.isWeb && Image), FIRE.Tooltip('untrimmed raw texture'), FIRE.EditorOnly);
+    Sprite.prop('texture', null, FIRE.ObjectType(FIRE.isWeb && Image), FIRE.Tooltip('texture to render'));
     Sprite.prop('rotated', false);
     Sprite.prop('trim', false, FIRE.EditorOnly);
     Sprite.prop('trimThreshold', 1, FIRE.EditorOnly);
@@ -27,12 +27,12 @@ FIRE.Sprite = (function () {
     Sprite.prop('y', 0, FIRE.Integer);
     //
 
-    Sprite.prototype.__defineGetter__('rotatedWidth', function () {
-        return this.rotated ? this.height : this.width;
+    Object.defineProperty(Sprite.prototype, 'rotatedWidth', {
+        get: function () { return this.rotated ? this.height : this.width; }
     });
 
-    Sprite.prototype.__defineGetter__('rotatedHeight', function () {
-        return this.rotated ? this.width : this.height;
+    Object.defineProperty(Sprite.prototype, 'rotatedHeight', {
+        get: function () { return this.rotated ? this.width : this.height; }
     });
 
     // TODO: add rawWidth/rawHeight getter ?
