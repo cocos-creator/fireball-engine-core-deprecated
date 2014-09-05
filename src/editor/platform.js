@@ -1,27 +1,8 @@
 //
-FIRE.isNode = !!(typeof process !== 'undefined' && process.versions && process.versions.node);
-FIRE.isWeb = (typeof __dirname === 'undefined' || __dirname === null); // common web browser, or window's render context in node-webkit or atom-shell
-FIRE.isNw = !!(FIRE.isNode && 'node-webkit' in process.versions);       // node-webkit
-//FIRE.isAs = !!(FIRE.isNode && 'atom-shell' in process.versions);      // atom-shell
-FIRE.isApp = FIRE.isNw/* || FIRE.isAs*/;                                // native client
-//FIRE.isPureWeb = !FIRE.isNode && !FIRE.isApp;                         // common web browser
-
-if (FIRE.isNode) {
-    FIRE.isDarwin = process.platform === 'darwin';
-    FIRE.isWin32 = process.platform === 'win32';
-}
-else {
-    // http://stackoverflow.com/questions/19877924/what-is-the-list-of-possible-values-for-navigator-platform-as-of-today
-    var platform = window.navigator.platform;
-    FIRE.isDarwin = platform.substring(0, 3) === 'Mac';
-    FIRE.isWin32 = platform.substring(0, 3) === 'Win';
-}
 
 if (FIRE.isNode) {
     var Fs = require('fs');
     var Path = require('path');
-
-    FIRE.Path = Path;
 
     var _readDirRecursively = function ( dirPath, resultArray ) {
         var fileList = Fs.readdirSync(dirPath);
@@ -73,21 +54,7 @@ else {
         throw "This function can only be used in node-webkit or server";
     };
     FIRE.readDirRecursively = error;
-
-    FIRE.Path = {};
-    FIRE.Path.basename = function (path) {
-        return path.replace(/^.*(\\|\/|\:)/, '');
-    };
-    FIRE.Path.extname = function (path) {
-        return path.substring((~-path.lastIndexOf(".") >>> 0) + 1);
-    };
 }
-
-FIRE.Path.setExtname = function (path, newExtension) {
-    // if (FIRE.isNode) return Path.join(Path.dirname(path), Path.basename(path, Path.extname(path))) + newExtension;
-    var dotIndex = (~-path.lastIndexOf(".") >>> 0) + 1;
-    return path.substring(0, dotIndex) + newExtension;
-};
 
 if (FIRE.isApp && FIRE.isWeb) {
     if (FIRE.isNw) {

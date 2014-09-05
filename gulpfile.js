@@ -15,10 +15,12 @@ var paths = {
     src: [
         'src/__intro.js',
 
+        'src/define.js',
         'src/core.js',
         'src/attribute.js',
         'src/class.js',
         'src/utils.js',
+        'src/path.js',
         'src/serialize.js',
         'src/deserialize.js',
         'src/object.js',
@@ -32,6 +34,7 @@ var paths = {
         'src/atlas.js',
         'src/fontInfo.js',
 
+        'src/editor/utils.js',
         'src/editor/platform.js',
         'src/editor/dom.js',
         'src/editor/fileUtils.js',
