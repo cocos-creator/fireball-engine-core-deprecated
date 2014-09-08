@@ -4,8 +4,10 @@ var _Deserializer = (function () {
     /**
      * @class
      * @param {String} str - The Json string to deserialize
+     * @param {boolean} [editor=true] - if false, property with FIRE.EditorOnly will be discarded
      */
-    function _Deserializer(data) {
+    function _Deserializer(data, editor) {
+        this._editor = editor;
 
         var typeVal = typeof data;
         if (typeVal === 'string') {
@@ -124,10 +126,47 @@ var _Deserializer = (function () {
         var klass = FIRE.getClassByName(serialized.__type__);
         var asset = new klass();
 
-        // TODO: check FIRE._isDefinedClass(klass) and __props__
-        for (var k in serialized) {
-            if (serialized.hasOwnProperty(k) && k != '__type__'/* && k != '__id__'*/) {
-                asset[k] = serialized[k];
+        if (!FIRE._isFireClass(klass)) {
+            // primitive javascript object
+            for (var k in serialized) {
+                if (serialized.hasOwnProperty(k) && k != '__type__'/* && k != '__id__'*/) {
+                    asset[k] = serialized[k];
+                }
+            }
+        }
+        else /*FireClass*/ {
+            if (klass.__props__) {
+                for (var p = 0; p < klass.__props__.length; p++) {
+                    var propName = klass.__props__[p];
+                    var attrs = FIRE.attr(klass, propName);
+
+                    // always load host objects even if property not serialized
+                    var hostType = attrs.hostType;
+                    if (hostType) {
+                        // TODO: load host object
+
+                    }
+                    else {
+                        // skip nonSerialized
+                        if (attrs.serializable === false) {
+                            continue;
+                        }
+
+                        // skip editor only if not editor
+                        if (!self._editor && attrs.editorOnly) {
+                            continue;
+                        }
+
+                        if (propName in obj) {
+                            // todo
+                        }
+                    }
+
+                    data[propName] = _serializeField(self, obj[propName]);
+                }
+            }
+            if (asset.onAfterDeserialize) {
+                asset.onAfterDeserialize();
             }
         }
 
@@ -140,9 +179,10 @@ var _Deserializer = (function () {
 /**
  * Deserialize json string to FIRE.Asset
  * @param {(string|object)} data The serialized FIRE.Asset json string or object
+ * @param {boolean} [editor=true] - if false, property with FIRE.EditorOnly will be discarded
  * @return {FIRE.Asset} The FIRE.Asset object
  */
-FIRE.deserialize = function (data) {
-    var deserializer = new _Deserializer(data);
+FIRE.deserialize = function (data, editor) {
+    var deserializer = new _Deserializer(data, editor);
     return deserializer.deserializedData;
 };

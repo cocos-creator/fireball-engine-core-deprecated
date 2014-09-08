@@ -62,9 +62,7 @@ test('json deserialize test', function () {
     var deserializedAsset = FIRE.deserialize(deserializedAssetJson);
 
     var expectAsset = new MyAsset();
-    expectAsset.dynamicProp = false;
 
-    // TODO: how to deserialized constructor?
     deepEqual(deserializedAsset, expectAsset, 'json deserialize test');
 
     FIRE.unregisterNamedClass(MyAsset);
