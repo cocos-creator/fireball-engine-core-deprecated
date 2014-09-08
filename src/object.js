@@ -30,7 +30,7 @@ FIRE.FObject = (function () {
 
     /**
      * Checks whether the object is not destroyed
-     * @method FIRE.isValid
+     * @method FObject.isValid
      * @return {boolean} whether it is not destroyed
      * @see FIRE.FObject#destroy
      * @static

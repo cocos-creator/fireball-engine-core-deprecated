@@ -10,8 +10,12 @@ test('basic test', function() {
     match({}, {}, 'smoke test1');
     match([], [], 'smoke test2');
 
+    var BaseAsset = function () {
+        this.inheritProp = 321;
+    };
+
     var MyAsset = (function () {
-        var _super = FIRE.Asset;
+        var _super = BaseAsset;
 
         function MyAsset () {
             _super.call(this);
@@ -53,6 +57,7 @@ test('basic test', function() {
         emptyObj: {},
         obj: {},
         dynamicProp: false,
+        inheritProp: 321
     };
 
     match(asset, expect, 'type test');
@@ -61,9 +66,75 @@ test('basic test', function() {
     FIRE.unregisterNamedClass(MyAsset);
 });
 
+test('test type derived by FIRE.define', function() {
+    var MyAsset = FIRE.define('MyAsset', FIRE.Asset)
+                      .prop('emptyArray', [])
+                      .prop('array', [1, '2', {a:3}, [4, [5]], true])
+                      .prop('string', 'unknown')
+                      .prop('number', 1)
+                      .prop('boolean', true)
+                      .prop('emptyObj', {})
+                      .prop('obj', {});
+
+    // should not serialize ----------------------------
+    MyAsset.staticFunc = function () { };
+    MyAsset.staticProp = (function (t) {
+        t[t.UseBest    = 0] = 'UseBest';
+        t[t.Ascending  = 1] = 'Ascending';
+        t[t.Descending = 2] = 'Descending';
+        return t;
+    })({});
+    MyAsset.prototype.protoFunc = function () { };
+    MyAsset.prototype.protoProp = 123;
+    // -------------------------------------------------
+
+    var asset = new MyAsset();
+    asset.dynamicProp = false;  // should not serialize
+
+    var expect = {
+        __type__: 'MyAsset',
+        emptyArray: [],
+        array: [1, '2',  {a:3}, [4, [5]], true],
+        string: 'unknown',
+        number: 1,
+        boolean: true,
+        emptyObj: {},
+        obj: {},
+    };
+
+    match(asset, expect, 'type test');
+
+    FIRE.undefine(MyAsset);
+});
+
+test('test type created by FIRE.define', function () {
+    var Sprite = FIRE.define('Sprite', function () {
+        this.image = 'sprite.png';
+    })
+    Sprite.prop('size', new FIRE.Vec2(128, 128));
+
+    var sprite = new Sprite();
+    var actual = JSON.parse(FIRE.serialize(sprite));
+
+    strictEqual(actual.image, undefined, 'should not serialize variable which not defined by property');
+
+    var expected = {
+        __type__: 'Sprite',
+        size: {
+            __type__: "FIRE.Vec2",
+            x: 128,
+            y: 128
+        }
+    };
+
+    deepEqual(actual, expected, 'can serialize');
+
+    FIRE.undefine(Sprite);
+});
+
 test('test circular reference', function () {
     var MyAsset = (function () {
-        var _super = FIRE.Asset;
+        var _super = function () {};
 
         function MyAsset () {
             _super.call(this);
@@ -93,7 +164,7 @@ test('test circular reference', function () {
     FIRE.unregisterNamedClass(MyAsset);
 
     MyAsset = (function () {
-        var _super = FIRE.Asset;
+        var _super = function () {};
 
         function MyAsset () {
             _super.call(this);
@@ -123,31 +194,6 @@ test('test circular reference', function () {
     match(asset, expect, 'more referenced object just serialize its id');
 
     FIRE.unregisterNamedClass(MyAsset);
-});
-
-test('test type created by FIRE.define', function () {
-    var Sprite = FIRE.define('Sprite', function () {
-        this.image = 'sprite.png';
-    })
-    Sprite.prop('size', new FIRE.Vec2(128, 128));
-
-    var sprite = new Sprite();
-    var actual = JSON.parse(FIRE.serialize(sprite));
-
-    strictEqual(actual.image, undefined, 'should not serialize variable which not defined by property');
-
-    var expected = {
-        __type__: 'Sprite',
-        size: {
-            __type__: "FIRE.Vec2",
-            x: 128,
-            y: 128
-        }
-    };
-
-    deepEqual(actual, expected, 'can serialize');
-
-    FIRE.undefine(Sprite);
 });
 
 test('test serializable attributes', function () {

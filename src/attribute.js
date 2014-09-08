@@ -41,17 +41,6 @@ var BuiltinAttributes = {
  */
 
 /**
- * Makes a property only accept the supplied object type in Inspector.
- * 
- * @method FIRE.ObjectType
- * @param {function} constructor - the special type you want
- * @returns {object} the type attribute
- */
-FIRE.ObjectType = function (constructor) {
-    return { objectType: constructor };
-};
-
-/**
  * By default, all properties declared by "Class.prop" is serializable.
  * The NonSerialized attribute marks a variable to not be serialized,
  * so you can keep a property show in the Editor and Fireball will not attempt to serialize it.
@@ -75,6 +64,43 @@ FIRE.EditorOnly = { editorOnly: true };
  * @property {object} FIRE.HideInInspector
  */
 FIRE.Integer = { type: 'int' };
+
+/**
+ * Makes a property only accept the supplied object type in Inspector.
+ * If the type is derived from FIRE.Asset, it will be serialized to uuid.
+ * 
+ * @method FIRE.ObjectType
+ * @param {function} constructor - the special type you want
+ * @returns {object} the attribute
+ */
+FIRE.ObjectType = function (constructor) {
+    return { objectType: constructor };
+};
+
+/**
+ * Makes a property referenced to a javascript host object which needs to load before deserialzation.
+ * The property will not be serialized but will be referenced to the loaed host object while deserialzation.
+ * 
+ * @method FIRE.HostType
+ * @param {function} [constructor]
+ * @param {string} [suffix] - the identity used to differentiate multi host asset files
+ * @returns {object} the attribute
+ */
+FIRE.HostType = function (constructor, suffix) {
+    if (constructor) {
+        var attr = {
+            hostType: constructor,
+            serializable: false
+        };
+        if (suffix) {
+            attr.hostSuffix = suffix;
+        }
+        return attr;
+    }
+    else {
+        return {};
+    }
+};
 
 ///**
 // * @property {object} FIRE.Float

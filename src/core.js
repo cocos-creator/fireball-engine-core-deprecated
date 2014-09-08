@@ -91,6 +91,8 @@ FIRE.getClassByName = function (className) {
     return _nameToClass[className];
 };
 
+// TODO getClassById
+
 /**
  * Unregister the classes extended by FIRE.extend. If you dont need it anymore, 
  * you'd better unregister it to reduce memory usage.

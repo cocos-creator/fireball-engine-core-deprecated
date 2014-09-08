@@ -75,8 +75,9 @@ var _Serializer = (function () {
             */
         }
         else {
-            if (!FIRE._isDefinedClass(obj.constructor)) {
-                // native object
+            var klass = obj.constructor;
+            if (!FIRE._isFireClass(klass)) {
+                // primitive javascript object
                 for (var key in obj) {
                     //console.log(key);
                     if (obj.hasOwnProperty(key) === false || key === '__id__')
@@ -84,9 +85,11 @@ var _Serializer = (function () {
                     data[key] = _serializeField(self, obj[key]);
                 }
             }
-            else {
-                // defined by properties, only __props__ will be serialized
-                var klass = obj.constructor;
+            else /*FireClass*/ {
+                if (obj.onBeforeSerialize) {
+                    obj.onBeforeSerialize();
+                }
+                // only __props__ will be serialized
                 if (klass.__props__) {
                     for (var p = 0; p < klass.__props__.length; p++) {
                         var propName = klass.__props__[p];

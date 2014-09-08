@@ -1,19 +1,22 @@
 FIRE.Sprite = (function () {
 
+    /**
+     * @param {Image} [img] - Specify the html image element to render so you can create Sprite dynamically.
+     */
     var Sprite = FIRE.define('FIRE.Sprite', FIRE.Asset, function (img) {
         Sprite.$super.call(this);
         
-        // init some properties with constructor argument
-
-        this.rawTexture = new FIRE.Texture(img);
-        this.texture = new FIRE.Texture(img);
-        this.width = img.width;
-        this.height = img.height;
+        if (img) {
+            this.rawTexture = new FIRE.Texture(img);
+            this.texture = new FIRE.Texture(img);
+            this.width = img.width;
+            this.height = img.height;
+        }
     });
     
     // basic settings
-    Sprite.prop('rawTexture', null, FIRE.ObjectType(FIRE.isWeb && Image), FIRE.Tooltip('untrimmed raw texture'), FIRE.EditorOnly);
-    Sprite.prop('texture', null, FIRE.ObjectType(FIRE.isWeb && Image), FIRE.Tooltip('texture to render'));
+    Sprite.prop('rawTexture', null, FIRE.ObjectType(FIRE.Texture), FIRE.Tooltip('untrimmed raw texture'), FIRE.EditorOnly);
+    Sprite.prop('texture', null, FIRE.ObjectType(FIRE.Texture), FIRE.Tooltip('texture to render'));
     Sprite.prop('rotated', false);
     Sprite.prop('trim', false, FIRE.EditorOnly);
     Sprite.prop('trimThreshold', 1, FIRE.EditorOnly);

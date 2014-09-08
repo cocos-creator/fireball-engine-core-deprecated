@@ -64,7 +64,7 @@ var _metaClass = {
 
     /**
      * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
-     * 如果传入属性包含FIRE.HideInInspector则不在inspector中显示。
+     * 如果传入参数包含FIRE.HideInInspector则不在inspector中显示。
      * 
      * @method class.get
      * @param {string} name - the getter property
@@ -84,6 +84,7 @@ var _metaClass = {
             for (var i = 2; i < arguments.length; i++) {
                 var attr = arguments[i];
                 FIRE.attr(this, name, attr);
+                // check attributes
                 if (attr.hideInInspector) {
                     displayInInspector = false;
                 }
@@ -97,6 +98,7 @@ var _metaClass = {
                 }
             }
         }
+        FIRE.attr(this, name, FIRE.NonSerialized);
 
         if (displayInInspector) {
             _appendProp.call(this, name, true);
@@ -138,7 +140,7 @@ var _metaClass = {
 
     /**
      * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
-     * 如果传入属性包含FIRE.HideInInspector则不在inspector中显示。
+     * 如果传入参数包含FIRE.HideInInspector则不在inspector中显示。
      * 
      * @method class.get
      * @param {string} name - the getter property
@@ -170,12 +172,12 @@ var _createInstanceProps = function (instance, itsClass) {
 /**
  * Checks whether the constructor is created by FIRE.define
  * 
- * @method FIRE._isDefinedClass
+ * @method FIRE._isFireClass
  * @param {function} constructor
  * @returns {boolean}
  * @private
  */
-FIRE._isDefinedClass = function (constructor) {
+FIRE._isFireClass = function (constructor) {
     return (constructor.prop === _metaClass.prop);
 };
 
@@ -202,7 +204,7 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
     var isInherit = false;
     switch (arguments.length) {
         case 2:
-            isInherit = FIRE._isDefinedClass(baseOrConstructor);
+            isInherit = FIRE._isFireClass(baseOrConstructor);
             break;
         case 3:
             isInherit = true;
