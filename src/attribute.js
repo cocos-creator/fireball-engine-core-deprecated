@@ -120,14 +120,25 @@ FIRE.HostType = function (constructor, suffix) {
 //}});
 
 /**
+ * Makes a custom property 
+ * 
+ * @method FIRE.Custom
+ * @param {(string)} name
+ * @returns {object} the enum attribute
+ */
+FIRE.Custom = function (type) {
+    return { custom: true, customType: type };
+};
+
+/**
  * Makes a property show up as a enum in Inspector.
  * 
  * @method FIRE.Enum
- * @param {(object|string)} enumTableOrName
+ * @param {(string)} enumType
  * @returns {object} the enum attribute
  */
-FIRE.Enum = function (enumTableOrName) {
-    return { type: 'enum', 'enum': enumTableOrName };
+FIRE.Enum = function (enumType) {
+    return { type: 'enum', enumList: FIRE.getEnumList(enumType) };
 };
 
 /**
