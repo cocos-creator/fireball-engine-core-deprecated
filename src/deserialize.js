@@ -3,7 +3,7 @@ var _Deserializer = (function () {
 
     /**
      * @class
-     * @param {String} str - The Json string to deserialize
+     * @param {(string|object)} data - The Json string or object to deserialize
      * @param {boolean} [editor=true] - if false, property with FIRE.EditorOnly will be discarded
      */
     function _Deserializer(data, editor) {
@@ -165,8 +165,9 @@ var _Deserializer = (function () {
                     data[propName] = _serializeField(self, obj[propName]);
                 }
             }
-            if (asset.onAfterDeserialize) {
-                asset.onAfterDeserialize();
+            var onAfterDeserialize = asset.onAfterDeserialize;
+            if (onAfterDeserialize) {
+                onAfterDeserialize();
             }
         }
 

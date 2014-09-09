@@ -10,7 +10,7 @@ FIRE.Asset = (function () {
         });
     });
 
-    /*
+    /* These callbacks available for all FireClass
     Asset.prototype.onBeforeSerialize = function () {};
     Asset.prototype.onAfterDeserialize = function () {};
      */

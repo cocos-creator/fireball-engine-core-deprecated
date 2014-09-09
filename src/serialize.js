@@ -6,12 +6,10 @@ function _isDomNode(obj) {
 }
 
 var _Serializer = (function () {
-    /**
-     * @class
-     * @param {FIRE.FObject} obj - The object to serialize
-     * @param {boolean} [exporting=false] - if true, property with FIRE.EditorOnly will be discarded
-     */
-    function _Serializer(obj, exporting) {
+
+    function _Serializer(obj, exporting, canBindProp) {
+        canBindProp = (typeof canBindProp !== 'undefined') ? canBindProp : true;
+
         this._exporting = exporting;
 
         this.serializedList = [];  // list of serialized data for all FIRE.FObject objs
@@ -21,8 +19,15 @@ var _Serializer = (function () {
 
         this.serializedList.push(_serializeObj(this, obj));
 
-        for (var i = 0; i < this._referencedObjs.length; ++i) {
-            this._referencedObjs[i].__id__ = undefined;
+        if (canBindProp) {
+            for (var i = 0; i < this._referencedObjs.length; ++i) {
+                this._referencedObjs[i].__id__ = undefined;
+            }
+        }
+        else {
+            for (var i = 0; i < this._referencedObjs.length; ++i) {
+                delete this._referencedObjs[i].__id__;
+            }
         }
 
         this._parsingObjs = null;
@@ -86,8 +91,9 @@ var _Serializer = (function () {
                 }
             }
             else /*FireClass*/ {
-                if (obj.onBeforeSerialize) {
-                    obj.onBeforeSerialize();
+                onBeforeSerialize = obj.onBeforeSerialize;
+                if (onBeforeSerialize) {
+                    onBeforeSerialize();
                 }
                 // only __props__ will be serialized
                 if (klass.__props__) {
@@ -208,10 +214,12 @@ var _Serializer = (function () {
  * Serialize FIRE.Asset to a json string
  * @param {FIRE.Asset} obj - The object to serialize
  * @param {boolean} [exporting=false] - if true, property with FIRE.EditorOnly will be discarded
+ * @param {boolean} [canBindProp=true] - if false, temporarily binded property will be deleted, 
+ *                                       may leading to performance degradations
  * @returns {string} The json string to represent the object
  */
-FIRE.serialize = function (obj, exporting) {
-    var serializer = new _Serializer(obj, exporting);
+FIRE.serialize = function (obj, exporting, canBindProp) {
+    var serializer = new _Serializer(obj, exporting, canBindProp);
     var serializedList = serializer.serializedList;
     var serializedData = serializer.serializedList.length === 1 ? serializedList[0] : serializedList;
     return JSON.stringify(serializedData, null, 4);

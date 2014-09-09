@@ -178,7 +178,7 @@ var _createInstanceProps = function (instance, itsClass) {
  * @private
  */
 FIRE._isFireClass = function (constructor) {
-    return (constructor.prop === _metaClass.prop);
+    return !!constructor && (constructor.prop === _metaClass.prop);
 };
 
 /**
@@ -237,6 +237,15 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
         };
     }
 
+    // occupy some non-inherited static members
+    for (var staticMember in _metaClass) {
+        Object.defineProperty(theClass, staticMember, {
+            value: _metaClass[staticMember],
+            writable: staticMember === '__props__',
+            enumerable: false,
+        });
+    }
+
     // isInherit
     if (isInherit) {
         FIRE.extend(className, theClass, baseClass);
@@ -244,11 +253,6 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
     }
     else {
         FIRE.setClassName(theClass, className);
-    }
-
-    // occupy some static members, and reset __props__ inherited from base
-    for (var staticMember in _metaClass) {
-        theClass[staticMember] = _metaClass[staticMember];
     }
 
     //// nicify constructor name

@@ -3,6 +3,8 @@
 module('deserialize');
 
 test('basic deserialize test', function () {
+    deepEqual(FIRE.deserialize({}), {}, 'smoke test1');
+    deepEqual(FIRE.deserialize([]), [], 'smoke test2');
 
     // TODO:
     MyAsset = (function () {
@@ -30,7 +32,7 @@ test('basic deserialize test', function () {
     var serializedAsset = FIRE.serialize(asset);
     var deserializedAsset = FIRE.deserialize(serializedAsset);
 
-    deepEqual(FIRE.serialize(deserializedAsset), FIRE.serialize(asset), 'test deserialize');
+    deepEqual(deserializedAsset, asset, 'test deserialize');
 
     FIRE.unregisterNamedClass(MyAsset);
 });
@@ -69,6 +71,7 @@ test('json deserialize test', function () {
 });
 
 test('circular reference deserialize test', function () {
+test('circular reference by array', function () {
     MyAsset = (function () {
         var _super = FIRE.Asset;
 
@@ -95,9 +98,9 @@ test('circular reference deserialize test', function () {
     strictEqual(deserializedAsset.array2[0][1], deserializedAsset.array2, 'two arrays can circular reference each other 2');
 
     FIRE.unregisterNamedClass(MyAsset);
+});
 
-    //////
-
+test('circular reference by dict', function () {
     MyAsset = (function () {
         var _super = FIRE.Asset;
 
