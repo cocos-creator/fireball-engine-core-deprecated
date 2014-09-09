@@ -7,129 +7,96 @@ var _Deserializer = (function () {
      * @param {boolean} [editor=true] - if false, property with FIRE.EditorOnly will be discarded
      */
     function _Deserializer(data, editor) {
-        this._editor = editor;
-
-        var typeVal = typeof data;
-        if (typeVal === 'string') {
-            this.deserializedObj = JSON.parse(data);
-        }
-        else if (typeVal === 'object') {
-            this.deserializedObj = data;
-        }
+        this._editor = (typeof editor !== 'undefined') ? editor : true;
         
-        if (Array.isArray(this.deserializedObj)) {
-
-            // get the deserialized root asset object
-            var deserializedAssetObj = this.deserializedObj.pop();
-
-            // spread the deserialized object with dereference objects
-            var referenceObjs = _spreadReference(this.deserializedObj);
-
-            this.deserializedData = _deserializeArray(this, deserializedAssetObj, referenceObjs);
+        var jsonObj = null;
+        if (typeof data === 'string') {
+            jsonObj = JSON.parse(data);
         }
         else {
-            this.deserializedData = _deserializeAsset(this, this.deserializedObj);
+            jsonObj = data;
         }
-
-        this.deserializedObj = null;
+        
+        if (Array.isArray(jsonObj)) {
+            var referencedList = jsonObj;
+            // deserialize
+            for (var i = 0, len = referencedList.length; i < len; i++) {
+                referencedList[i] = _deserializeAsset(this, referencedList[i]);
+            }
+            // dereference
+            referencedList = _dereference(referencedList, referencedList);
+            // 
+            this.deserializedData = referencedList.pop() || [];
+        }
+        else {
+            //jsonObj = jsonObj || {};
+            this.deserializedData = _deserializeAsset(this, jsonObj);
+        }
     }
 
     /**
-     * @param {Object} objs - The objects to reference
+     * @param {object} obj - The object to dereference, must be object type, non-nil, not a reference
+     * @param {object[]} referenceList - The referenced list to get reference from
+     * @returns {object} the referenced object
      */
-    var _spreadReference = function (dereferenceObjs) {
-
-        var _direct = function(obj) {
-            if (Array.isArray(obj)) {
-                for (var i = 0; i < obj.length; i++) {
-                    if (typeof obj[i] === 'object') {
-                        obj[i] = _direct(obj[i]);
+    var _dereference = function (obj, referenceList) {
+        if (Array.isArray(obj)) {
+            for (var i = 0; i < obj.length; i++) {
+                if (obj[i] && typeof obj[i] === 'object') {
+                    var id1 = obj[i].__id__;
+                    if (id1 !== undefined) {
+                        // set real reference
+                        obj[i] = referenceList[id1];
+                    }
+                    else {
+                        obj[i] = _dereference(obj[i], referenceList);
                     }
                 }
-                return obj;
             }
-
-            var typeVal = typeof obj;
-            if (typeVal === 'object') {
-                
-                if (obj.__id__ !== undefined) {
-                    return dereferenceObjs[obj.__id__];
-                }
-                else { 
-                    for (var k in obj) {
-                        if (typeof obj[k] === 'object') {
-                            obj[k] = _direct(obj[k]);
-                        }
-                    }
-                    return obj;
-                }
-            }
-            else{
-                return obj;
-            }
-        };
-
-        for (var i = 0, len = dereferenceObjs.length; i < len; i++) {
-            _direct(dereferenceObjs[i]);
         }
-
-        return dereferenceObjs;
-    };
-
-    /**
-     * @param {Object} obj - The object to deserialize
-     */
-    var _deserializeArray = function (self, assetObj, referenceObjs) {
-
-        // a recursive function to refer asset root object with reference objects
-        var _direct = function(obj) {
-
-            if (Array.isArray(obj)) {
-                for (var i = 0; i < obj.length; i++) {
-                    if (typeof obj[i] === 'object') {
-                        obj[i] = _direct(obj[i]);
+        else {
+            for (var k in obj) {
+                var val = obj[k];
+                if (val && typeof val === 'object') {
+                    var id2 = val.__id__;
+                    if (id2 !== undefined) {
+                        obj[k] = referenceList[id2];
+                    }
+                    else {
+                        obj[k] = _dereference(val, referenceList);
                     }
                 }
-                return obj;
             }
-
-            var typeVal = typeof obj;
-            if (typeVal === 'object') {
-                if (obj.__id__ !== undefined) {
-                    return referenceObjs[obj.__id__];
-                }
-                else { 
-                    for (var k in obj) {
-                        if (typeof obj[k] === 'object') {
-                            obj[k] = _direct(obj[k]);
-                        }
-                    }
-                    return obj;
-                }
-            }
-            else{
-                return obj;
-            }
-
-        };
-
-        assetObj = _direct(assetObj);
-        var asset = _deserializeAsset(self, assetObj);
-
-        return asset;
+        }
+        return obj;
     };
 
     /**
      * @param {Object} serialized - The obj to deserialize
      */
     var _deserializeAsset = function (self, serialized) {
+        if (!serialized) {
+            return null;
+        }
+        if (!serialized.__type__) {
+            // TODO: uuid
+            return serialized;
+        }
         var klass = FIRE.getClassByName(serialized.__type__);
-        var asset = new klass();
+        if (!klass) {
+            console.warn('FIRE.deserialize: unknown type: ' + serialized.__type__);
+            return null;
+            //// jshint -W010
+            //asset = new Object();
+            //// jshint +W010
+        }
 
+        // instantiate a new object
+        var asset = new klass();
         if (!FIRE._isFireClass(klass)) {
             // primitive javascript object
-            for (var k in serialized) {
-                if (serialized.hasOwnProperty(k) && k != '__type__'/* && k != '__id__'*/) {
+            for (var k in asset) {
+                if (serialized.hasOwnProperty(k)) {
                     asset[k] = serialized[k];
                 }
             }
@@ -157,12 +124,12 @@ var _Deserializer = (function () {
                             continue;
                         }
 
-                        if (propName in obj) {
-                            // todo
+                        var prop = serialized[propName];
+                        if (prop !== undefined) {
+                            // TODO: uuid
+                            asset[propName] = prop;
                         }
                     }
-
-                    data[propName] = _serializeField(self, obj[propName]);
                 }
             }
             var onAfterDeserialize = asset.onAfterDeserialize;
