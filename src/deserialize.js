@@ -1,18 +1,10 @@
 
 var _Deserializer = (function () {
 
-    /**
-     * @class
-     * @param {(string|object)} data - The json string or object to deserialize
-     * @param {boolean} [editor=true] - if false, property with FIRE.EditorOnly will be discarded
-     */
-    function _Deserializer(data, editor) {
+    function _Deserializer(data, context, editor) {
         this._editor = (typeof editor !== 'undefined') ? editor : true;
         
-        this.uuidObjList = [];   // the obj list whose field needs to load asset by uuid
-        this.uuidPropList = [];  // the corresponding field name
-        this.hostObjList = [];   // the obj list whose field needs to load host object
-        this.hostPropList = [];  // the corresponding field name
+        this.context = context || new FIRE._LoadingContext();
 
         var jsonObj = null;
         if (typeof data === 'string') {
@@ -88,8 +80,9 @@ var _Deserializer = (function () {
             for (var key in serialized) {
                 var val = serialized[key];
                 if (val && val.__uid__) {
-                    self.uuidObjList.push(serialized);
-                    self.uuidPropList.push(key);
+                    self.context.uuidList.push(val.__uid__);
+                    self.context.uuidObjList.push(serialized);
+                    self.context.uuidPropList.push(key);
                 }
             }
             return serialized;
@@ -118,8 +111,8 @@ var _Deserializer = (function () {
                     // always load host objects even if property not serialized
                     var hostType = attrs.hostType;
                     if (hostType) {
-                        self.hostObjList.push(asset);
-                        self.hostPropList.push(propName);
+                        self.context.hostObjList.push(asset);
+                        self.context.hostPropList.push(propName);
                     }
                     else {
                         // skip nonSerialized
@@ -136,8 +129,9 @@ var _Deserializer = (function () {
                         if (typeof prop !== 'undefined') {        
                             asset[propName] = prop;
                             if (prop && prop.__uid__) {
-                                self.uuidObjList.push(asset);
-                                self.uuidPropList.push(propName);
+                                self.context.uuidList.push(prop.__uid__);
+                                self.context.uuidObjList.push(asset);
+                                self.context.uuidPropList.push(propName);
                             }
                         }
                     }
@@ -154,8 +148,9 @@ var _Deserializer = (function () {
                 if (typeof v !== 'undefined' && serialized.hasOwnProperty(k)) {
                     asset[k] = v;
                     if (v && v.__uid__) {
-                        self.uuidObjList.push(asset);
-                        self.uuidPropList.push(k);
+                        self.context.uuidList.push(v.__uid__);
+                        self.context.uuidObjList.push(asset);
+                        self.context.uuidPropList.push(k);
                     }
                 }
             }
@@ -169,31 +164,53 @@ var _Deserializer = (function () {
 /**
  * Deserialize json to FIRE.Asset
  * @param {(string|object)} data - the serialized FIRE.Asset json string or json object
+ * @param {FIRE._LoadingContext} [context] - the loading context info
  * @param {boolean} [editor=true] - if false, property with FIRE.EditorOnly will be discarded
- * @returns {object} the deserialized results: 
- *  {
- *      mainData: {object},
- *      uuidToLoad: {
- *          objList: {object[]},
- *          propNameList: {string[]},
- *      },
- *      hostObjToLoad: {
- *          objList: {object[]},
- *          propNameList: {string[]},
- *      }
- *  }
+ * @returns {object} the main data(asset)
  */
-FIRE.deserialize = function (data, editor) {
-    var deserializer = new _Deserializer(data, editor);
-    return {
-        mainData: deserializer.deserializedData,
-        uuidToLoad: {
-            objList: deserializer.uuidObjList,
-            propNameList: deserializer.uuidPropList,
-        },
-        hostObjToLoad: {
-            objList: deserializer.hostObjList,
-            propNameList: deserializer.hostPropList,
-        }
-    };
+FIRE.deserialize = function (data, context, editor) {
+    var deserializer = new _Deserializer(data, context, editor);
+    return deserializer.deserializedData;
+};
+
+/**
+ * contains all loading context info
+ * @class FIRE._LoadingContext
+ */
+FIRE._LoadingContext = function () {
+
+    // uuids(assets) need to load
+
+    /**
+     * @property {string[]} uuidList - the uuid to load
+     */
+    this.uuidList = [];
+    /**
+     * @property {object[]} uuidObjList - the obj list whose field needs to load asset by uuid
+     */
+    this.uuidObjList = [];
+    /**
+     * @property {string[]} uuidPropList - the corresponding field name which referenced to the asset
+     */
+    this.uuidPropList = [];
+    /**
+     * @property {int} uuidLoaded - the loaded count
+     */
+    this.uuidLoaded = 0;
+
+    // host objects need to load
+    // (不用存hostList因为它的uuid可以从asset上获得)
+
+    /**
+     * @property {FIRE.Asset[]} hostObjList - the obj list whose corresponding host object needs to load
+     */
+    this.hostObjList = [];
+    /**
+     * @property {string[]} hostPropList - the corresponding field name which referenced to the host object
+     */
+    this.hostPropList = [];
+    /**
+     * @property {int} hostLoaded - the loaded count
+     */
+    this.hostLoaded = 0;
 };

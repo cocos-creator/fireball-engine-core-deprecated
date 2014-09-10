@@ -3,8 +3,8 @@
 module('deserialize');
 
 test('basic deserialize test', function () {
-    deepEqual(FIRE.deserialize({}).mainData, {}, 'smoke test1');
-    deepEqual(FIRE.deserialize([]).mainData, [], 'smoke test2');
+    deepEqual(FIRE.deserialize({}), {}, 'smoke test1');
+    deepEqual(FIRE.deserialize([]), [], 'smoke test2');
 
     // TODO:
     MyAsset = (function () {
@@ -28,7 +28,7 @@ test('basic deserialize test', function () {
 
     var asset = new MyAsset();
     var serializedAsset = FIRE.serialize(asset);
-    var deserializedAsset = FIRE.deserialize(serializedAsset).mainData;
+    var deserializedAsset = FIRE.deserialize(serializedAsset);
 
     deepEqual(deserializedAsset, asset, 'test deserialize');
 
@@ -59,7 +59,7 @@ test('json deserialize test', function () {
 
     var jsonStr = '{"__type__":"MyAsset","emptyArray":[],"array":[1,"2",{"a":3},[4,[5]],true],"string":"unknown","number":1,"boolean":true,"emptyObj":{},"obj":{},"dynamicProp":false}';
 
-    var deserializedAsset = FIRE.deserialize(jsonStr).mainData;
+    var deserializedAsset = FIRE.deserialize(jsonStr);
 
     var expectAsset = new MyAsset();
 
@@ -84,7 +84,7 @@ test('reference to main asset', function () {
      */
 
     var serializedAsset = FIRE.serialize(asset);
-    var deserializedAsset = FIRE.deserialize(serializedAsset).mainData;
+    var deserializedAsset = FIRE.deserialize(serializedAsset);
     
     ok(deserializedAsset.refSelf === deserializedAsset, 'should ref to self');
     //deepEqual(FIRE.serialize(deserializedAsset), serializedAsset, 'test deserialize');
@@ -106,7 +106,7 @@ test('circular reference by object', function () {
     asset.refToMain = mainAsset;
 
     var serializedAsset = FIRE.serialize(mainAsset, false, false);
-    var deserializedAsset = FIRE.deserialize(serializedAsset).mainData;
+    var deserializedAsset = FIRE.deserialize(serializedAsset);
     
     ok(deserializedAsset.myAsset.refSelf === deserializedAsset.myAsset, 'sub asset should ref to itself');
     ok(deserializedAsset.myAsset.refToMain === deserializedAsset, 'sub asset should ref to main');
@@ -135,7 +135,7 @@ test('circular reference by array', function () {
 
     var expectAsset = new MyAsset();
     var json = '[[1,[{"__id__":0},2]],[[1,{"__id__":1}],2],{"__type__":"MyAsset","array1":{"__id__":0},"array2":{"__id__":1}}]';
-    var deserializedAsset = FIRE.deserialize(json).mainData;
+    var deserializedAsset = FIRE.deserialize(json);
 
     deepEqual(deserializedAsset, expectAsset, 'two arrays can circular reference each other');
     strictEqual(deserializedAsset.array1[1][0], deserializedAsset.array1, 'two arrays can circular reference each other 1');
@@ -161,7 +161,7 @@ test('circular reference by dict', function () {
     expectAsset = new MyAsset();
 
     serializedAssetJson = '[{"num":1,"other":{"num":2,"other":{"__id__":0}}},{"num":2,"other":{"num":1,"other":{"__id__":1}}},{"__type__":"MyAsset","dict1":{"__id__":0},"dict2":{"__id__":1}}]';
-    deserializedAsset = FIRE.deserialize(serializedAssetJson).mainData;
+    deserializedAsset = FIRE.deserialize(serializedAssetJson);
 
     deepEqual(deserializedAsset, expectAsset, 'two dicts can circular reference each other');
     strictEqual(deserializedAsset.dict1.other.other, deserializedAsset.dict1, 'two dicts can circular reference each other 1');

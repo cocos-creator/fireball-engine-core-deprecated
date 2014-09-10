@@ -87,12 +87,11 @@ FIRE.ObjectType = function (constructor) {
  */
 FIRE.HostType = function (constructor) {
     if (constructor) {
-        var attr = {
+        return {
             type: 'host',
             hostType: constructor,
             serializable: false
         };
-        return attr;
     }
     else {
         return {};
