@@ -127,7 +127,7 @@ FIRE.HostType = function (constructor, suffix) {
  * @returns {object} the enum attribute
  */
 FIRE.Custom = function (type) {
-    return { custom: true, customType: type };
+    return { custom: type };
 };
 
 /**

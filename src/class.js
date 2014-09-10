@@ -54,6 +54,14 @@ var _metaClass = {
     prop: function (name, defaultValue, attribute) {
         _appendProp.call(this, name);
         FIRE.attr(this, name, { 'default': defaultValue });
+
+        // apply default type (NOTE: if user provide type attribute, this one will be overwrote)
+        var mytype = typeof defaultValue;
+        if ( mytype === 'number' ) {
+            mytype = 'float';
+        }
+        FIRE.attr( this, name, { 'type': mytype } );
+
         if (attribute) {
             for (var i = 2; i < arguments.length; i++) {
                 FIRE.attr(this, name, arguments[i]);
