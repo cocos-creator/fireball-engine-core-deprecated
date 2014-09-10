@@ -25,8 +25,8 @@ var _Serializer = (function () {
             }
         }
         else {
-            for (var i = 0; i < this._referencedObjs.length; ++i) {
-                delete this._referencedObjs[i].__id__;
+            for (var j = 0; j < this._referencedObjs.length; ++j) {
+                delete this._referencedObjs[j].__id__;
             }
         }
 

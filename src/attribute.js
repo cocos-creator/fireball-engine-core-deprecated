@@ -83,18 +83,14 @@ FIRE.ObjectType = function (constructor) {
  * 
  * @method FIRE.HostType
  * @param {function} [constructor]
- * @param {string} [suffix] - the identity used to differentiate multi host asset files
  * @returns {object} the attribute
  */
-FIRE.HostType = function (constructor, suffix) {
+FIRE.HostType = function (constructor) {
     if (constructor) {
         var attr = {
             hostType: constructor,
             serializable: false
         };
-        if (suffix) {
-            attr.hostSuffix = suffix;
-        }
         return attr;
     }
     else {
