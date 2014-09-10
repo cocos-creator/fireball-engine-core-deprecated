@@ -74,7 +74,7 @@ FIRE.Integer = { type: 'int' };
  * @returns {object} the attribute
  */
 FIRE.ObjectType = function (constructor) {
-    return { objectType: constructor };
+    return { type: 'object', objectType: constructor };
 };
 
 /**
@@ -88,6 +88,7 @@ FIRE.ObjectType = function (constructor) {
 FIRE.HostType = function (constructor) {
     if (constructor) {
         var attr = {
+            type: 'host',
             hostType: constructor,
             serializable: false
         };
@@ -123,7 +124,7 @@ FIRE.HostType = function (constructor) {
  * @returns {object} the enum attribute
  */
 FIRE.Custom = function (type) {
-    return { custom: true, customType: type };
+    return { custom: type };
 };
 
 /**
