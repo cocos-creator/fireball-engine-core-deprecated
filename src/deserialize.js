@@ -174,15 +174,18 @@ FIRE.deserialize = function (data, context, editor) {
 };
 
 /**
- * contains all loading context info
+ * contains asset's loading context info
  * @class FIRE._LoadingContext
  */
 FIRE._LoadingContext = function () {
 
+    //this.urlList = [];
+    //this.callbackList = [];
+
     // uuids(assets) need to load
 
     /**
-     * @property {string[]} uuidList - the uuid to load
+     * @property {string[]} uuidList - list of the depends assets' uuid
      */
     this.uuidList = [];
     /**
@@ -213,4 +216,12 @@ FIRE._LoadingContext = function () {
      * @property {int} hostLoaded - the loaded count
      */
     this.hostLoaded = 0;
+};
+
+FIRE._LoadingContext.prototype.reset = function () {
+    this.uuidList.length = 0;
+    this.uuidObjList.length = 0;
+    this.uuidPropList.length = 0;
+    this.hostObjList.length = 0;
+    this.hostPropList.length = 0;
 };

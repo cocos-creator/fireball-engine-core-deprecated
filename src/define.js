@@ -6,6 +6,7 @@ FIRE.isNw = !!(FIRE.isNode && 'node-webkit' in process.versions);       // node-
 //FIRE.isAs = !!(FIRE.isNode && 'atom-shell' in process.versions);      // atom-shell
 FIRE.isApp = FIRE.isNw/* || FIRE.isAs*/;                                // native client
 //FIRE.isPureWeb = !FIRE.isNode && !FIRE.isApp;                         // common web browser
+FIRE.isEditor = FIRE.isApp;     // by far there is no standalone client version, so app == editor
 
 if (FIRE.isNode) {
     FIRE.isDarwin = process.platform === 'darwin';

@@ -122,3 +122,91 @@ FIRE.Nullable = (function () {
     }
     return Nullable;
 })();
+
+FIRE.CallbacksInvoker = (function () {
+
+    /**
+     * The callbacks invoker to register and invoke multi callbacks by key
+     * @class
+     */
+    var CallbacksInvoker = function () {
+        this._callbackTable = {};
+    };
+
+    /**
+     * @param {string} key
+     * @param {function} [callback]
+     * @returns {boolean} whether the key is new
+     */
+    CallbacksInvoker.prototype.add = function (key, callback) {
+        var callbackList = this._callbackTable[key];
+        if (typeof callbackList !== 'undefined') {
+            if (callback) {
+                if (callbackList !== null) {
+                    callbackList.push(callback);
+                }
+                else {
+                    callbackList = [callback];
+                    this._callbackTable[key] = callbackList;
+                }
+            }
+            return false;
+        }
+        else {
+            callbackList = callback ? [callback] : null;
+            this._callbackTable[key] = callbackList;
+            return true;
+        }
+    };
+
+    /**
+     * @param {string} key
+     * @param {*} [param1]
+     * @param {*} [param2]
+     */
+    CallbacksInvoker.prototype.invoke = function (key, param1, param2) {
+        var callbackList = this._callbackTable[key];
+        if (typeof callbackList === 'undefined') {
+            console.error('[CallbackInvoker] the key to invoke does not exists: ' + key);
+            return;
+        }
+        if (callbackList !== null) {
+            for (var i = 0; i < callbackList.length; i++) {
+                callbackList[i](param1, param2);
+            }
+        }
+    };
+
+    /**
+     * @param {string} key
+     * @param {*} [param1]
+     * @param {*} [param2]
+     */
+    CallbacksInvoker.prototype.invokeAndRemove = function (key, param1, param2) {
+        this.invoke(key, param1, param2);
+        this.remove(key);
+    };
+
+    /**
+     * @param {string} key
+     */
+    CallbacksInvoker.prototype.remove = function (key) {
+        delete this._callbackTable[key];
+    };
+
+    /**
+     * @param {string} key
+     * @param {boolean} [remove=false] - remove callbacks after invoked
+     */
+    CallbacksInvoker.prototype.bind = function (key, remove) {
+        var self = this;
+        return function (param1, param2) {
+            self.invoke(key, param1, param2);
+            if (remove) {
+                self.remove(key);
+            }
+        };
+    };
+
+    return CallbacksInvoker;
+})();
