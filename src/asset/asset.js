@@ -6,6 +6,7 @@ FIRE.Asset = (function () {
         // define uuid, uuid can not destory
         Object.defineProperty(this, '_uuid', {
             value: '',
+            writable: true,
             enumerable: false   // avoid uuid being assigned to empty string during destory
         });
     });

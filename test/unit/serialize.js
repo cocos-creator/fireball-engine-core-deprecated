@@ -28,7 +28,8 @@ test('basic test', function() {
             this.emptyObj = {};
             this.obj = {};
         }
-        FIRE.extend('MyAsset', MyAsset, _super);
+        FIRE.extend(MyAsset, _super);
+        FIRE.registerClass('MyAsset', MyAsset);
 
         // should not serialize ----------------------------
         MyAsset.staticFunc = function () { };
@@ -63,7 +64,7 @@ test('basic test', function() {
     match(asset, expect, 'type test');
     match(asset, expect, 'test re-serialize again');
 
-    FIRE.unregisterNamedClass(MyAsset);
+    FIRE.unregisterClass(MyAsset);
 });
 
 test('test type derived by FIRE.define', function() {
@@ -144,7 +145,8 @@ test('test circular reference', function () {
             // array1 = [1, array2]
             // array2 = [array1, 2]
         }
-        FIRE.extend('MyAsset', MyAsset, _super);
+        FIRE.extend(MyAsset, _super);
+        FIRE.registerClass('MyAsset', MyAsset);
 
         return MyAsset;
     })();
@@ -161,7 +163,7 @@ test('test circular reference', function () {
     ];
     match(asset, expect, 'two arrays can circular reference each other');
     match(asset, expect, 'test re-serialize again');
-    FIRE.unregisterNamedClass(MyAsset);
+    FIRE.unregisterClass(MyAsset);
 
     MyAsset = (function () {
         var _super = function () {};
@@ -172,7 +174,8 @@ test('test circular reference', function () {
             this.dict2 = {num: 2, other: this.dict1};
             this.dict1.other = this.dict2;
         }
-        FIRE.extend('MyAsset', MyAsset, _super);
+        FIRE.extend(MyAsset, _super);
+        FIRE.registerClass('MyAsset', MyAsset);
 
         return MyAsset;
     })();
@@ -193,7 +196,7 @@ test('test circular reference', function () {
     expect[2].sameRef = { __id__: 1 };
     match(asset, expect, 'more referenced object just serialize its id');
 
-    FIRE.unregisterNamedClass(MyAsset);
+    FIRE.unregisterClass(MyAsset);
 });
 
 test('test serializable attributes', function () {

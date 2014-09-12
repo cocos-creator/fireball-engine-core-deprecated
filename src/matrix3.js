@@ -6,7 +6,7 @@
     this.tx = 0;
     this.ty = 0;
 };
-FIRE.setClassName(Matrix3, 'FIRE.Matrix3');
+FIRE.registerClass('FIRE.Matrix3', Matrix3);
 FIRE.Matrix3 = Matrix3;
 
 Matrix3.identity = new Matrix3();

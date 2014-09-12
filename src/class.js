@@ -256,12 +256,10 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
 
     // isInherit
     if (isInherit) {
-        FIRE.extend(className, theClass, baseClass);
+        FIRE.extend(theClass, baseClass);
         theClass.$super = baseClass;
     }
-    else {
-        FIRE.setClassName(theClass, className);
-    }
+    FIRE.registerClass(className, theClass);
 
     //// nicify constructor name
     //if (className && theClass.toString) {
@@ -285,7 +283,7 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
  */
 FIRE.undefine = function (constructor) {
     for (var i = 0; i < arguments.length; i++) {
-        FIRE.unregisterNamedClass(arguments[i]);
+        FIRE.unregisterClass(arguments[i]);
     }
 };
 

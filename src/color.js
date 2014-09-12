@@ -1,15 +1,11 @@
 FIRE.Color = (function () {
-    var _super = FIRE.FObject;
-
     function Color( r, g, b, a ) {
-        _super.call(this);
-
         this.r = r;
         this.g = g;
         this.b = b;
         this.a = a;
     }
-    FIRE.extend("FIRE.Color", Color, _super);
+    FIRE.registerClass('FIRE.Color', Color);
 
     Color.prototype.clone = function () {
         return new Color(this.r, this.g, this.b, this.a);

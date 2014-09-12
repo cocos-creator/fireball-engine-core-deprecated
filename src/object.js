@@ -9,7 +9,7 @@ FIRE.FObject = (function () {
             enumerable: false
         });
     }
-    FIRE.setClassName(FObject, "FIRE.FObject");
+    FIRE.registerClass("FIRE.FObject", FObject);
 
     // const flags
 

@@ -22,7 +22,8 @@ test('basic deserialize test', function () {
             this.obj = {};
 
         }
-        FIRE.extend('MyAsset', MyAsset, _super);
+        FIRE.extend(MyAsset, _super);
+        FIRE.registerClass('MyAsset', MyAsset);
         return MyAsset;
     })();
 
@@ -32,7 +33,7 @@ test('basic deserialize test', function () {
 
     deepEqual(deserializedAsset, asset, 'test deserialize');
 
-    FIRE.unregisterNamedClass(MyAsset);
+    FIRE.unregisterClass(MyAsset);
 });
 
 test('json deserialize test', function () {
@@ -53,7 +54,8 @@ test('json deserialize test', function () {
             this.obj = {};
 
         }
-        FIRE.extend('MyAsset', MyAsset, _super);
+        FIRE.extend(MyAsset, _super);
+        FIRE.registerClass('MyAsset', MyAsset);
         return MyAsset;
     })();
 
@@ -65,7 +67,7 @@ test('json deserialize test', function () {
 
     deepEqual(deserializedAsset, expectAsset, 'json deserialize test');
 
-    FIRE.unregisterNamedClass(MyAsset);
+    FIRE.unregisterClass(MyAsset);
 });
 
 test('reference to main asset', function () {
@@ -97,7 +99,8 @@ test('circular reference by object', function () {
             this.refSelf = this;
             this.refToMain = null;
         }
-        var _super = FIRE.extend('MyAsset', MyAsset, FIRE.Asset);
+        var _super = FIRE.extend(MyAsset, FIRE.Asset);
+        FIRE.registerClass('MyAsset', MyAsset);
         return MyAsset;
     })();
     
@@ -113,7 +116,7 @@ test('circular reference by object', function () {
 
     deepEqual(deserializedAsset, mainAsset, 'can ref');
 
-    FIRE.unregisterNamedClass(MyAsset);
+    FIRE.unregisterClass(MyAsset);
 });
 
 test('circular reference by array', function () {
@@ -128,7 +131,8 @@ test('circular reference by array', function () {
             // array1 = [1, array2]
             // array2 = [array1, 2]
         }
-        FIRE.extend('MyAsset', MyAsset, _super);
+        FIRE.extend(MyAsset, _super);
+        FIRE.registerClass('MyAsset', MyAsset);
 
         return MyAsset;
     })();
@@ -141,7 +145,7 @@ test('circular reference by array', function () {
     strictEqual(deserializedAsset.array1[1][0], deserializedAsset.array1, 'two arrays can circular reference each other 1');
     strictEqual(deserializedAsset.array2[0][1], deserializedAsset.array2, 'two arrays can circular reference each other 2');
 
-    FIRE.unregisterNamedClass(MyAsset);
+    FIRE.unregisterClass(MyAsset);
 });
 
 test('circular reference by dict', function () {
@@ -154,7 +158,8 @@ test('circular reference by dict', function () {
             this.dict2 = {num: 2, other: this.dict1};
             this.dict1.other = this.dict2;
         }
-        FIRE.extend('MyAsset', MyAsset, _super);
+        FIRE.extend(MyAsset, _super);
+        FIRE.registerClass('MyAsset', MyAsset);
 
         return MyAsset;
     })();
@@ -167,7 +172,7 @@ test('circular reference by dict', function () {
     strictEqual(deserializedAsset.dict1.other.other, deserializedAsset.dict1, 'two dicts can circular reference each other 1');
     strictEqual(deserializedAsset.dict2.other.other, deserializedAsset.dict2, 'two dicts can circular reference each other 2');
 
-    FIRE.unregisterNamedClass(MyAsset);
+    FIRE.unregisterClass(MyAsset);
 });
 
 // jshint ignore: end

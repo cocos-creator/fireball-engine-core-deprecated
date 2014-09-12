@@ -9,7 +9,8 @@ test('test', function() {
         function MyAsset () {
             _super.call(this);
         }
-        FIRE.extend('Foo', MyAsset, _super);
+        FIRE.extend(MyAsset, _super);
+        FIRE.registerClass('Foo', MyAsset);
 
         return MyAsset;
     })();
@@ -25,7 +26,7 @@ test('test', function() {
     ok(FIRE.getClassName(asset), 'can getClassName of FIRE type');
     notEqual(FIRE.getClassName(myAsset), FIRE.getClassName(asset), 'class name should not achieved from its super');
 
-    FIRE.unregisterNamedClass(MyAsset);
+    FIRE.unregisterClass(MyAsset);
 });
 
 // jshint ignore: end
