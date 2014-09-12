@@ -93,6 +93,9 @@ test('Inherit', function () {
     strictEqual(dog.name, 'doge', 'can override property');
     strictEqual(husky.name, 'doge', 'can inherit property');
 
+    deepEqual(Husky.__props__, ['name', 'weight'], 'can inherit prop list')
+    deepEqual(Dog.__props__, ['name'], 'base prop list not changed')
+
     FIRE.undefine(Animal, Dog, Husky);
 });
 

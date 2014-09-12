@@ -1,16 +1,16 @@
 ﻿// helper functions for defining Classes
 
 // both getter and prop must register the name into __props__ array
-var _appendProp = function (name, isGetter) {
-    if (!isGetter) {
-        // checks whether getter/setter defined
-        var d = Object.getOwnPropertyDescriptor(this, name);
-        var hasGetterOrSetter = (d && (d.get || d.set));
-        if (hasGetterOrSetter) {
-            console.error(FIRE.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
-            return;
-        }
-    }
+var _appendProp = function (name/*, isGetter*/) {
+    //if (!isGetter) {
+    //    // checks whether getter/setter defined
+    //    var d = Object.getOwnPropertyDescriptor(this, name);
+    //    var hasGetterOrSetter = (d && (d.get || d.set));
+    //    if (hasGetterOrSetter) {
+    //        console.error(FIRE.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
+    //        return;
+    //    }
+    //}
 
     if (!this.__props__) {
         this.__props__ = [name];
@@ -20,9 +20,9 @@ var _appendProp = function (name, isGetter) {
         if (index < 0) {
             this.__props__.push(name);
         }
-        else {
-            console.error(FIRE.getClassName(this) + '.' + name + ' is already defined!');
-        }
+        //else {
+        //    console.error(FIRE.getClassName(this) + '.' + name + ' is already defined!');
+        //}
     }
 };
 
@@ -109,7 +109,7 @@ var _metaClass = {
         FIRE.attr(this, name, FIRE.NonSerialized);
 
         if (displayInInspector) {
-            _appendProp.call(this, name, true);
+            _appendProp.call(this, name/*, true*/);
         }
         else {
             var index = this.__props__.indexOf(name);
@@ -249,15 +249,25 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
     for (var staticMember in _metaClass) {
         Object.defineProperty(theClass, staticMember, {
             value: _metaClass[staticMember],
+            // __props__ is writable
             writable: staticMember === '__props__',
-            enumerable: false,
+            // __props__ is enumerable so it can be inherited by FIRE.extend
+            enumerable: staticMember === '__props__',
         });
     }
 
-    // isInherit
+    // inherit
     if (isInherit) {
         FIRE.extend(theClass, baseClass);
         theClass.$super = baseClass;
+        if (baseClass.__props__) {
+            // copy __props__
+            var len = baseClass.__props__.length;
+            theClass.__props__ = new Array(len);
+            for (var i = 0; i < len; i++) {
+                theClass.__props__[i] = baseClass.__props__[i];
+            }
+        }
     }
     FIRE.registerClass(className, theClass);
 
