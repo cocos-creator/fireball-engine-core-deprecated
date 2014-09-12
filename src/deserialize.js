@@ -1,10 +1,10 @@
 
 var _Deserializer = (function () {
 
-    function _Deserializer(data, context, editor) {
+    function _Deserializer(data, result, editor) {
         this._editor = (typeof editor !== 'undefined') ? editor : true;
         
-        this.context = context || new FIRE._LoadingContext();
+        this.result = result || new FIRE._DeserializeInfo();
 
         var jsonObj = null;
         if (typeof data === 'string') {
@@ -76,13 +76,13 @@ var _Deserializer = (function () {
             return null;
         }
         if (!serialized.__type__) {
-            // embedded primitive javascript object, not asset, can not serialize host resource
+            // embedded primitive javascript object, not asset
             for (var key in serialized) {
                 var val = serialized[key];
                 if (val && val.__uid__) {
-                    self.context.uuidList.push(val.__uid__);
-                    self.context.uuidObjList.push(serialized);
-                    self.context.uuidPropList.push(key);
+                    self.result.uuidList.push(val.__uid__);
+                    self.result.uuidObjList.push(serialized);
+                    self.result.uuidPropList.push(key);
                 }
             }
             return serialized;
@@ -107,14 +107,8 @@ var _Deserializer = (function () {
                 for (var p = 0; p < klass.__props__.length; p++) {
                     var propName = klass.__props__[p];
                     var attrs = FIRE.attr(klass, propName);
-
-                    // always load host objects even if property not serialized
                     var hostType = attrs.hostType;
-                    if (hostType) {
-                        self.context.hostObjList.push(asset);
-                        self.context.hostPropList.push(propName);
-                    }
-                    else {
+                    if (!hostType) {
                         // skip nonSerialized
                         if (attrs.serializable === false) {
                             continue;
@@ -129,11 +123,19 @@ var _Deserializer = (function () {
                         if (typeof prop !== 'undefined') {        
                             asset[propName] = prop;
                             if (prop && prop.__uid__) {
-                                self.context.uuidList.push(prop.__uid__);
-                                self.context.uuidObjList.push(asset);
-                                self.context.uuidPropList.push(propName);
+                                self.result.uuidList.push(prop.__uid__);
+                                self.result.uuidObjList.push(asset);
+                                self.result.uuidPropList.push(propName);
                             }
                         }
+                    }
+                    else {
+                        // always load host objects even if property not serialized
+                        if (self.result.hostProp) {
+                            console.error('not support multi host object in a file');
+                            // 这里假定每个asset都有uuid，每个json只能包含一个asset，只能包含一个hostProp
+                        }
+                        self.result.hostProp = propName;
                     }
                 }
             }
@@ -148,9 +150,9 @@ var _Deserializer = (function () {
                 if (typeof v !== 'undefined' && serialized.hasOwnProperty(k)) {
                     asset[k] = v;
                     if (v && v.__uid__) {
-                        self.context.uuidList.push(v.__uid__);
-                        self.context.uuidObjList.push(asset);
-                        self.context.uuidPropList.push(k);
+                        self.result.uuidList.push(v.__uid__);
+                        self.result.uuidObjList.push(asset);
+                        self.result.uuidPropList.push(k);
                     }
                 }
             }
@@ -164,20 +166,20 @@ var _Deserializer = (function () {
 /**
  * Deserialize json to FIRE.Asset
  * @param {(string|object)} data - the serialized FIRE.Asset json string or json object
- * @param {FIRE._LoadingContext} [context] - the loading context info
+ * @param {FIRE._DeserializeInfo} [result] - additional loading result
  * @param {boolean} [editor=true] - if false, property with FIRE.EditorOnly will be discarded
  * @returns {object} the main data(asset)
  */
-FIRE.deserialize = function (data, context, editor) {
-    var deserializer = new _Deserializer(data, context, editor);
+FIRE.deserialize = function (data, result, editor) {
+    var deserializer = new _Deserializer(data, result, editor);
     return deserializer.deserializedData;
 };
 
 /**
- * contains asset's loading context info
- * @class FIRE._LoadingContext
+ * 包含反序列化时的一些信息
+ * @class FIRE._DeserializeInfo
  */
-FIRE._LoadingContext = function () {
+FIRE._DeserializeInfo = function () {
 
     //this.urlList = [];
     //this.callbackList = [];
@@ -196,32 +198,29 @@ FIRE._LoadingContext = function () {
      * @property {string[]} uuidPropList - the corresponding field name which referenced to the asset
      */
     this.uuidPropList = [];
-    /**
-     * @property {int} uuidLoaded - the loaded count
-     */
-    this.uuidLoaded = 0;
 
     // host objects need to load
     // (不用存hostList因为它的uuid可以从asset上获得)
 
     /**
-     * @property {FIRE.Asset[]} hostObjList - the obj list whose corresponding host object needs to load
+     * @property {string} hostProp - the corresponding field name which referenced to the host object
      */
-    this.hostObjList = [];
-    /**
-     * @property {string[]} hostPropList - the corresponding field name which referenced to the host object
-     */
-    this.hostPropList = [];
-    /**
-     * @property {int} hostLoaded - the loaded count
-     */
-    this.hostLoaded = 0;
+    this.hostProp = '';
+    ///**
+    // * @property {FIRE.Asset[]} hostObjList - the obj list whose corresponding host object needs to load
+    // */
+    //this.hostObjList = [];
+    ///**
+    // * @property {string[]} hostPropList - the corresponding field name which referenced to the host object
+    // */
+    //this.hostPropList = [];
 };
 
-FIRE._LoadingContext.prototype.reset = function () {
+FIRE._DeserializeInfo.prototype.reset = function () {
     this.uuidList.length = 0;
     this.uuidObjList.length = 0;
     this.uuidPropList.length = 0;
-    this.hostObjList.length = 0;
-    this.hostPropList.length = 0;
+    this.hostProp = '';
+    //this.hostObjList.length = 0;
+    //this.hostPropList.length = 0;
 };

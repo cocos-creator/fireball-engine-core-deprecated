@@ -161,29 +161,31 @@ FIRE.CallbacksInvoker = (function () {
 
     /**
      * @param {string} key
-     * @param {*} [param1]
-     * @param {*} [param2]
+     * @param {*} [p1]
+     * @param {*} [p2]
+     * @param {*} [p3]
+     * @param {*} [p4]
+     * @param {*} [p5]
      */
-    CallbacksInvoker.prototype.invoke = function (key, param1, param2) {
+    CallbacksInvoker.prototype.invoke = function (key, p1, p2, p3, p4, p5) {
         var callbackList = this._callbackTable[key];
-        if (typeof callbackList === 'undefined') {
-            console.error('[CallbackInvoker] the key to invoke does not exists: ' + key);
-            return;
-        }
-        if (callbackList !== null) {
+        if (callbackList) {
             for (var i = 0; i < callbackList.length; i++) {
-                callbackList[i](param1, param2);
+                callbackList[i](p1, p2, p3, p4, p5);
             }
         }
     };
 
     /**
      * @param {string} key
-     * @param {*} [param1]
-     * @param {*} [param2]
+     * @param {*} [p1]
+     * @param {*} [p2]
+     * @param {*} [p3]
+     * @param {*} [p4]
+     * @param {*} [p5]
      */
-    CallbacksInvoker.prototype.invokeAndRemove = function (key, param1, param2) {
-        this.invoke(key, param1, param2);
+    CallbacksInvoker.prototype.invokeAndRemove = function (key, p1, p2, p3, p4, p5) {
+        this.invoke(key, p1, p2, p3, p4, p5);
         this.remove(key);
     };
 
@@ -200,8 +202,8 @@ FIRE.CallbacksInvoker = (function () {
      */
     CallbacksInvoker.prototype.bind = function (key, remove) {
         var self = this;
-        return function (param1, param2) {
-            self.invoke(key, param1, param2);
+        return function (p1, p2, p3, p4, p5) {
+            self.invoke(key, p1, p2, p3, p4, p5);
             if (remove) {
                 self.remove(key);
             }

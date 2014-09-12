@@ -34,3 +34,32 @@ test('enum', function () {
                ],
                "The value must be same" ); 
 });
+
+test('CallbacksInvoker', function () {
+    var ci = new FIRE.CallbacksInvoker();
+    
+    var cb1 = new callback();
+    var cb2 = new callback();
+    var cb3 = new callback();
+    strictEqual(ci.add('a', cb1), true, 'first cb key');
+    strictEqual(ci.add('a', cb2), false, 'not first key');
+    strictEqual(ci.add('b', cb3), true, 'another first key');
+
+    cb1.enable();
+    cb2.enable();
+    ci.invoke('a');
+    cb1.once('1 should be called');
+    cb2.once('2 should be called');
+
+    var invokeA = ci.bind('a');
+    invokeA();
+    cb1.once('1 should be called again').disable();
+    cb2.once('2 should be called again').disable();
+
+    cb3.enable();
+    ci.invoke('b');
+    cb3.once('3 should be called');
+
+    ci.remove('a');
+    ci.invoke('a'); // should not be called after removed
+});
