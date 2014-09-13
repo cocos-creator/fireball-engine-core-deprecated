@@ -190,6 +190,52 @@ FIRE._isFireClass = function (constructor) {
 };
 
 /**
+ * Checks whether myclass is child of superclass
+ * 
+ * @method FIRE._childof
+ * @param {function} myclass
+ * @param {function} superclass
+ * @returns {boolean}
+ * @private
+ */
+
+FIRE._childof = function (myclass, superclass) {
+    var mysuper = myclass.$super;
+    while ( mysuper ) {
+        if ( mysuper === superclass )
+            return true;
+        mysuper = mysuper.$super;
+    }
+    return false;
+};
+
+/**
+ * Checks whether myclass is child of superclass
+ * 
+ * @method FIRE.childof
+ * @param {function} myclass
+ * @param {function} superclass
+ * @returns {boolean}
+ */
+
+FIRE.childof = function (myclass, superclass) {
+    return FIRE._childof(myclass, superclass);
+};
+
+/**
+ * Checks whether myclass is super of childclass
+ * 
+ * @method FIRE.childof
+ * @param {function} myclass
+ * @param {function} childclass
+ * @returns {boolean}
+ */
+
+FIRE.superof = function (myclass, childclass) {
+    return FIRE._childof(childclass, myclass);
+};
+
+/**
  * Creates a class and returns a constructor function for instances of the class.
  * You can also creates a sub-class by supplying a baseClass parameter.
  * 通过这种方式定义出来的类，只有通过调用它的Class.prop方法声明的字段才会被序列化。
