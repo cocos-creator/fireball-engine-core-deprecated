@@ -1,16 +1,16 @@
 ﻿// helper functions for defining Classes
 
 // both getter and prop must register the name into __props__ array
-var _appendProp = function (name, isGetter) {
-    if (!isGetter) {
-        // checks whether getter/setter defined
-        var d = Object.getOwnPropertyDescriptor(this, name);
-        var hasGetterOrSetter = (d && (d.get || d.set));
-        if (hasGetterOrSetter) {
-            console.error(FIRE.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
-            return;
-        }
-    }
+var _appendProp = function (name/*, isGetter*/) {
+    //if (!isGetter) {
+    //    // checks whether getter/setter defined
+    //    var d = Object.getOwnPropertyDescriptor(this, name);
+    //    var hasGetterOrSetter = (d && (d.get || d.set));
+    //    if (hasGetterOrSetter) {
+    //        console.error(FIRE.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
+    //        return;
+    //    }
+    //}
 
     if (!this.__props__) {
         this.__props__ = [name];
@@ -20,9 +20,9 @@ var _appendProp = function (name, isGetter) {
         if (index < 0) {
             this.__props__.push(name);
         }
-        else {
-            console.error(FIRE.getClassName(this) + '.' + name + ' is already defined!');
-        }
+        //else {
+        //    console.error(FIRE.getClassName(this) + '.' + name + ' is already defined!');
+        //}
     }
 };
 
@@ -109,7 +109,7 @@ var _metaClass = {
         FIRE.attr(this, name, FIRE.NonSerialized);
 
         if (displayInInspector) {
-            _appendProp.call(this, name, true);
+            _appendProp.call(this, name/*, true*/);
         }
         else {
             var index = this.__props__.indexOf(name);
@@ -190,6 +190,52 @@ FIRE._isFireClass = function (constructor) {
 };
 
 /**
+ * Checks whether myclass is child of superclass
+ * 
+ * @method FIRE._childof
+ * @param {function} myclass
+ * @param {function} superclass
+ * @returns {boolean}
+ * @private
+ */
+
+FIRE._childof = function (myclass, superclass) {
+    var mysuper = myclass.$super;
+    while ( mysuper ) {
+        if ( mysuper === superclass )
+            return true;
+        mysuper = mysuper.$super;
+    }
+    return false;
+};
+
+/**
+ * Checks whether myclass is child of superclass
+ * 
+ * @method FIRE.childof
+ * @param {function} myclass
+ * @param {function} superclass
+ * @returns {boolean}
+ */
+
+FIRE.childof = function (myclass, superclass) {
+    return FIRE._childof(myclass, superclass);
+};
+
+/**
+ * Checks whether myclass is super of childclass
+ * 
+ * @method FIRE.childof
+ * @param {function} myclass
+ * @param {function} childclass
+ * @returns {boolean}
+ */
+
+FIRE.superof = function (myclass, childclass) {
+    return FIRE._childof(childclass, myclass);
+};
+
+/**
  * Creates a class and returns a constructor function for instances of the class.
  * You can also creates a sub-class by supplying a baseClass parameter.
  * 通过这种方式定义出来的类，只有通过调用它的Class.prop方法声明的字段才会被序列化。
@@ -249,19 +295,27 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
     for (var staticMember in _metaClass) {
         Object.defineProperty(theClass, staticMember, {
             value: _metaClass[staticMember],
+            // __props__ is writable
             writable: staticMember === '__props__',
-            enumerable: false,
+            // __props__ is enumerable so it can be inherited by FIRE.extend
+            enumerable: staticMember === '__props__',
         });
     }
 
-    // isInherit
+    // inherit
     if (isInherit) {
-        FIRE.extend(className, theClass, baseClass);
+        FIRE.extend(theClass, baseClass);
         theClass.$super = baseClass;
+        if (baseClass.__props__) {
+            // copy __props__
+            var len = baseClass.__props__.length;
+            theClass.__props__ = new Array(len);
+            for (var i = 0; i < len; i++) {
+                theClass.__props__[i] = baseClass.__props__[i];
+            }
+        }
     }
-    else {
-        FIRE.setClassName(theClass, className);
-    }
+    FIRE.registerClass(className, theClass);
 
     //// nicify constructor name
     //if (className && theClass.toString) {
@@ -285,7 +339,7 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
  */
 FIRE.undefine = function (constructor) {
     for (var i = 0; i < arguments.length; i++) {
-        FIRE.unregisterNamedClass(arguments[i]);
+        FIRE.unregisterClass(arguments[i]);
     }
 };
 

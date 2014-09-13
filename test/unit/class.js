@@ -87,11 +87,22 @@ test('Inherit', function () {
     strictEqual(FIRE.attr(Dog, 'name').type, 'str', 'can modify attribute');
     strictEqual(FIRE.attr(Dog, 'weight'), undefined, 'base property not added');
 
+    strictEqual(FIRE.superof( Animal, Dog),  true, 'Animal is super of Dog');
+    strictEqual(FIRE.superof( Animal, Husky),  true, 'Animal is super of Husky');
+    strictEqual(FIRE.superof( Dog, Husky),  true, 'Dog is super of Husky');
+
+    strictEqual(FIRE.childof( Dog, Animal),  true, 'Animal is child of Dog');
+    strictEqual(FIRE.childof( Husky, Animal),  true, 'Animal is child of Husky');
+    strictEqual(FIRE.childof( Dog, Husky),  false, 'Dog is not child of Husky');
+
     var husky = new Husky();
     var dog = new Dog();
     
     strictEqual(dog.name, 'doge', 'can override property');
     strictEqual(husky.name, 'doge', 'can inherit property');
+
+    deepEqual(Husky.__props__, ['name', 'weight'], 'can inherit prop list');
+    deepEqual(Dog.__props__, ['name'], 'base prop list not changed');
 
     FIRE.undefine(Animal, Dog, Husky);
 });

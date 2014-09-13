@@ -4,19 +4,17 @@
  * Both classes are just native javascript constructors, not created by FIRE.define, so
  * usually you will want to inherit using FIRE.define instead.
  * 
- * @param {string} className
  * @param {function} cls
  * @param {function} base - the baseclass to inherit
  * @returns {function} the base class
  * 
  * @see FIRE.define
  */
-FIRE.extend = function (className, cls, base) {
+FIRE.extend = function (cls, base) {
     for (var p in base) if (base.hasOwnProperty(p)) cls[p] = base[p];
     function __() { this.constructor = cls; }
     __.prototype = base.prototype;
     cls.prototype = new __();
-    FIRE.setClassName(cls, className);
     return base;
 };
 
@@ -62,11 +60,11 @@ var _nameToClass = {};
 
 /**
  * Set the name of a class
- * @method FIRE.setClassName
- * @param {function} constructor
+ * @method FIRE.registerClass
  * @param {string} className
+ * @param {function} constructor
  */
-FIRE.setClassName = function (constructor, className) {
+FIRE.registerClass = function (className, constructor) {
     constructor.prototype.__classname__ = className;
     // register class
     if (className) {
@@ -74,10 +72,27 @@ FIRE.setClassName = function (constructor, className) {
         if (registered && registered !== constructor) {
             console.error('A Class already exists with that name: "' + className + '".\
 If you dont need serialization, you can set class name to "". You can also call \
-FIRE.undefine or FIRE.unregisterNamedClass to remove the name of unused class');
+FIRE.undefine or FIRE.unregisterClass to remove the name of unused class');
             return;
         }
         _nameToClass[className] = constructor;
+    }
+};
+
+/**
+ * Unregister the classes extended by FIRE.extend. If you dont need it anymore, 
+ * you'd better unregister it to reduce memory usage.
+ * Please note that its still your responsibility to free other references to the class.
+ *
+ * @method FIRE.unregisterClass
+ * @param {function} constructor
+ *
+ * @private
+ */
+FIRE.unregisterClass = function (constructor) {
+    var className = constructor.prototype.__classname__;
+    if (className) {
+        delete _nameToClass[className];
     }
 };
 
@@ -92,20 +107,3 @@ FIRE.getClassByName = function (className) {
 };
 
 // TODO getClassById
-
-/**
- * Unregister the classes extended by FIRE.extend. If you dont need it anymore, 
- * you'd better unregister it to reduce memory usage.
- * Please note that its still your responsibility to free other references to the class.
- *
- * @method FIRE.unregisterNamedClass
- * @param {function} constructor
- *
- * @private
- */
-FIRE.unregisterNamedClass = function (constructor) {
-    var className = constructor.prototype.__classname__;
-    if (className) {
-        delete _nameToClass[className];
-    }
-};

@@ -61,7 +61,7 @@ FIRE.FontInfo = (function () {
          */
         // this.dashArray = null;
     }
-    FIRE.extend("FIRE.FontInfo", FontInfo, _super);
+    FIRE.extend(FontInfo, _super);
 
     return FontInfo;
 })();
