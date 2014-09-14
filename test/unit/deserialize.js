@@ -1,6 +1,6 @@
 // jshint ignore: start
 
-module('deserialize');
+largeModule('deserialize');
 
 test('basic deserialize test', function () {
     deepEqual(FIRE.deserialize({}), {}, 'smoke test1');
@@ -28,7 +28,7 @@ test('basic deserialize test', function () {
     })();
 
     var asset = new MyAsset();
-    var serializedAsset = FIRE.serialize(asset);
+    var serializedAsset = FIRE.serialize(asset, false, false);
     var deserializedAsset = FIRE.deserialize(serializedAsset);
 
     deepEqual(deserializedAsset, asset, 'test deserialize');

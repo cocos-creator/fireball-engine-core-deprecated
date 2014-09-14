@@ -154,11 +154,10 @@ test('test circular reference', function () {
 
     var expect = [
         [ 1,  [{ __id__: 0 }, 2] ],  // You'll get two copies of array2
-        [ [1, {__id__: 1}],  2 ],    // You'll get two copies of array1
         {
             __type__: 'MyAsset',
             array1: { __id__: 0 },
-            array2: { __id__: 1 },
+            array2: [ { __id__: 0 },  2 ],
         }
     ];
     match(asset, expect, 'two arrays can circular reference each other');
@@ -183,18 +182,17 @@ test('test circular reference', function () {
 
     expect = [
         { /*__id__: 0,*/ num:1, other: {num:2, other: {__id__: 0}} },  // You'll get two copies of dict2
-        { /*__id__: 1,*/ num:2, other: {num:1, other: {__id__: 1}} },  // You'll get two copies of dict1
         {
             __type__: 'MyAsset',
             dict1: { __id__: 0 },
-            dict2: { __id__: 1 },
+            dict2: { /*__id__: 1,*/ num:2, other: {__id__: 0} },
         }
     ];
     match(asset, expect, 'two dicts can circular reference each other');
 
-    asset.sameRef = asset.dict2;
-    expect[2].sameRef = { __id__: 1 };
-    match(asset, expect, 'more referenced object just serialize its id');
+    //asset.sameRef = asset.dict2;
+    //expect[1].sameRef = { __id__: 1 };
+    //match(asset, expect, 'more referenced object just serialize its id');
 
     FIRE.unregisterClass(MyAsset);
 });
@@ -226,6 +224,19 @@ test('test asset property', function () {
     var result = JSON.parse(FIRE.serialize(sprite));
 
     deepEqual(result.texture, {__uuid__: uuid}, 'serialize asset as uuid reference');
+});
+
+test('test FObject reference', function () {
+    var fobj = new FIRE.FObject();
+    var asset = { ref1: fobj, ref2: fobj };
+    var expected = [
+        { "__type__": "FIRE.FObject" },
+        {
+          "ref1": { "__id__": 0 },
+          "ref2": { "__id__": 0 }
+        }
+    ];
+    match(asset, expected, 'references should the same');
 });
 
 // jshint ignore: end

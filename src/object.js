@@ -1,4 +1,4 @@
-FIRE.FObject = (function () {
+FObject = (function () {
     
     // constructor
 
@@ -119,4 +119,4 @@ FIRE.FObject = (function () {
     return FObject;
 })();
 
-
+FIRE.FObject = FObject;

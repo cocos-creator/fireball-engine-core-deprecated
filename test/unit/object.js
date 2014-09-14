@@ -1,4 +1,4 @@
-﻿module('fobject');
+﻿largeModule('fobject');
 
 var FObject = FIRE.FObject;
 

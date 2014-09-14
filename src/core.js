@@ -71,9 +71,9 @@ FIRE.registerClass = function (className, constructor) {
         var registered = _nameToClass[className];
         if (registered && registered !== constructor) {
             console.error('A Class already exists with that name: "' + className + '".\
+这个错误可能是单元测试未通过引起的。\
 If you dont need serialization, you can set class name to "". You can also call \
 FIRE.undefine or FIRE.unregisterClass to remove the name of unused class');
-            return;
         }
         _nameToClass[className] = constructor;
     }
