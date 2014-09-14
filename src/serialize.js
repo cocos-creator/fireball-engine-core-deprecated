@@ -96,9 +96,10 @@ var _Serializer = (function () {
                     onBeforeSerialize();
                 }
                 // only __props__ will be serialized
-                if (klass.__props__) {
-                    for (var p = 0; p < klass.__props__.length; p++) {
-                        var propName = klass.__props__[p];
+                var props = klass.__props__;
+                if (props) {
+                    for (var p = 0; p < props.length; p++) {
+                        var propName = props[p];
                         var attrs = FIRE.attr(klass, propName);
 
                         // skip nonSerialized
@@ -159,14 +160,21 @@ var _Serializer = (function () {
             return null;
         }
         // has been serialized ?
-        if (obj.__id__) {
-            return { __id__: obj.__id__ }; // no need to parse again
+        var id = obj.__id__;
+        if (id) {
+            return { __id__: id }; // no need to parse again
+        }
+        // is asset ?
+        var uuid = obj._uuid;
+        if (uuid) {
+            return { __uuid__: uuid };
         }
         
         var referencedData = _checkCircularReference(self, obj);
         if (referencedData) {
             // already referenced
-            return { __id__: obj.__id__ };
+            id = obj.__id__;
+            return { __id__: id };
         }
 
         // get data:

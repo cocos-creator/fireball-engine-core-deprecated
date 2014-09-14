@@ -79,8 +79,8 @@ var _Deserializer = (function () {
             // embedded primitive javascript object, not asset
             for (var key in serialized) {
                 var val = serialized[key];
-                if (val && val.__uid__) {
-                    self.result.uuidList.push(val.__uid__);
+                if (val && val.__uuid__) {
+                    self.result.uuidList.push(val.__uuid__);
                     self.result.uuidObjList.push(serialized);
                     self.result.uuidPropList.push(key);
                 }
@@ -122,8 +122,8 @@ var _Deserializer = (function () {
                         var prop = serialized[propName];
                         if (typeof prop !== 'undefined') {        
                             asset[propName] = prop;
-                            if (prop && prop.__uid__) {
-                                self.result.uuidList.push(prop.__uid__);
+                            if (prop && prop.__uuid__) {
+                                self.result.uuidList.push(prop.__uuid__);
                                 self.result.uuidObjList.push(asset);
                                 self.result.uuidPropList.push(propName);
                             }
@@ -149,8 +149,8 @@ var _Deserializer = (function () {
                 var v = serialized[k];
                 if (typeof v !== 'undefined' && serialized.hasOwnProperty(k)) {
                     asset[k] = v;
-                    if (v && v.__uid__) {
-                        self.result.uuidList.push(v.__uid__);
+                    if (v && v.__uuid__) {
+                        self.result.uuidList.push(v.__uuid__);
                         self.result.uuidObjList.push(asset);
                         self.result.uuidPropList.push(k);
                     }

@@ -205,16 +205,27 @@ test('test serializable attributes', function () {
                      .prop('_isValid', true, FIRE.NonSerialized);
 
     var sprite = new Sprite();
-    var actualInEditor = JSON.parse(FIRE.serialize(sprite));
-    var actualInPlayer = JSON.parse(FIRE.serialize(sprite, true));
+    var resultInEditor = JSON.parse(FIRE.serialize(sprite));
+    var resultInPlayer = JSON.parse(FIRE.serialize(sprite, true));
 
-    strictEqual(actualInEditor.trimThreshold, 2, 'serialize editor only in editor');
-    strictEqual(actualInPlayer.trimThreshold, undefined, 'should not serialize editor only in player');
+    strictEqual(resultInEditor.trimThreshold, 2, 'serialize editor only in editor');
+    strictEqual(resultInPlayer.trimThreshold, undefined, 'should not serialize editor only in player');
 
-    strictEqual(actualInEditor._isValid, undefined, 'should not serialize non-serialized in editor');
-    strictEqual(actualInPlayer._isValid, undefined, 'should not serialize non-serialized in player');
+    strictEqual(resultInEditor._isValid, undefined, 'should not serialize non-serialized in editor');
+    strictEqual(resultInPlayer._isValid, undefined, 'should not serialize non-serialized in player');
 
     FIRE.undefine(Sprite);
+});
+
+test('test asset property', function () {
+    var sprite = new FIRE.Sprite();
+    sprite.texture = new FIRE.Texture();
+    var uuid = '541020432560';
+    sprite.texture._uuid = uuid;
+
+    var result = JSON.parse(FIRE.serialize(sprite));
+
+    deepEqual(result.texture, {__uuid__: uuid}, 'serialize asset as uuid reference');
 });
 
 // jshint ignore: end
