@@ -236,9 +236,8 @@ FIRE.superof = function (myclass, childclass) {
 };
 
 /**
- * Creates a class and returns a constructor function for instances of the class.
+ * Creates a FireClass and returns its constructor function.
  * You can also creates a sub-class by supplying a baseClass parameter.
- * 通过这种方式定义出来的类，只有通过调用它的Class.prop方法声明的字段才会被序列化。
  * 
  * @method FIRE.define
  * @param {string} className - the name of class that is used to deserialize this class
@@ -278,22 +277,22 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
     }
 
     // create a new constructor
-    var theClass;
+    var fireClass;
     if (constructor) {
-        theClass = function () {
-            _createInstanceProps(this, theClass);
+        fireClass = function () {
+            _createInstanceProps(this, fireClass);
             constructor.apply(this, arguments);
         };
     }
     else {
-        theClass = function () {
-            _createInstanceProps(this, theClass);
+        fireClass = function () {
+            _createInstanceProps(this, fireClass);
         };
     }
 
     // occupy some non-inherited static members
     for (var staticMember in _metaClass) {
-        Object.defineProperty(theClass, staticMember, {
+        Object.defineProperty(fireClass, staticMember, {
             value: _metaClass[staticMember],
             // __props__ is writable
             writable: staticMember === '__props__',
@@ -304,27 +303,27 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
 
     // inherit
     if (isInherit) {
-        FIRE.extend(theClass, baseClass);
-        theClass.$super = baseClass;
+        FIRE.extend(fireClass, baseClass);
+        fireClass.$super = baseClass;
         if (baseClass.__props__) {
             // copy __props__
             var len = baseClass.__props__.length;
-            theClass.__props__ = new Array(len);
+            fireClass.__props__ = new Array(len);
             for (var i = 0; i < len; i++) {
-                theClass.__props__[i] = baseClass.__props__[i];
+                fireClass.__props__[i] = baseClass.__props__[i];
             }
         }
     }
-    FIRE.registerClass(className, theClass);
+    FIRE.registerClass(className, fireClass);
 
     //// nicify constructor name
-    //if (className && theClass.toString) {
-    //    var toString = theClass.toString;
-    //    theClass.toString = function () {
+    //if (className && fireClass.toString) {
+    //    var toString = fireClass.toString;
+    //    fireClass.toString = function () {
     //        return _toNiceString.call(this, toString);
     //    };
     //}
-    return theClass;
+    return fireClass;
 };
 
 /**

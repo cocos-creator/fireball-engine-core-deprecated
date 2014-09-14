@@ -76,8 +76,34 @@ else {
     })();
 }
 
+/**
+ * @method FIRE.Path.setExtname
+ * @param {string} path
+ * @param {string} newExtension - extension to replace with
+ * @returns {string} result
+ */
 FIRE.Path.setExtname = function (path, newExtension) {
     // if (FIRE.isNode) return Path.join(Path.dirname(path), Path.basename(path, Path.extname(path))) + newExtension;
     var dotIndex = (~-path.lastIndexOf(".") >>> 0) + 1;
     return path.substring(0, dotIndex) + newExtension;
+};
+
+/**
+ * @method FIRE.Path.setEndWithSep
+ * @param {string} path
+ * @param {boolean} [endWithSep = true]
+ * @returns {string} result
+ */
+FIRE.Path.setEndWithSep = function (path, endWithSep) {
+    endWithSep = (typeof endWithSep !== 'undefined') ? endWithSep : true;
+
+    var endChar = path[path.length - 1];
+    var oldEndWithSep = (endChar === '\\' || endChar === '/');
+    if (!oldEndWithSep && endWithSep) {
+        path += FIRE.Path.sep;
+    }
+    else if (oldEndWithSep && !endWithSep) {
+        path = path.substring(0, path.length - 1);
+    }
+    return path;
 };
