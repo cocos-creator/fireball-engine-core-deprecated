@@ -90,7 +90,8 @@ FIRE.HostType = function (constructor) {
         return {
             type: 'host',
             hostType: constructor,
-            serializable: false
+            serializable: false,
+            hideInInspector: true,
         };
     }
     else {

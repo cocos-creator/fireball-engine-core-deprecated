@@ -27,6 +27,25 @@ var _appendProp = function (name/*, isGetter*/) {
 };
 
 /**
+ * @param {object} obj
+ * @returns {boolean} is {} ?
+ */
+var _isPlainEmptyObj = function (obj) {
+    if (obj.constructor !== ({}).constructor) {
+        return false;
+    }
+    var k;
+    for (k in obj) {
+        return false;
+    }
+    return true;
+};
+
+var _cloneable = function (obj) {
+    return obj && typeof obj.clone === 'function' && (obj.constructor.prototype.hasOwnProperty('clone') || obj.hasOwnProperty('clone'));
+};
+
+/**
  * the metaclass of the "fire class" created by FIRE.define, all its static members
  * will inherited by fire class.
  */
@@ -52,8 +71,34 @@ var _metaClass = {
      * @returns {function} the class itself
      */
     prop: function (name, defaultValue, attribute) {
-        _appendProp.call(this, name);
+        'use strict';
+        // check default object value
+        if (typeof defaultValue === 'object' && defaultValue) {
+            if (Array.isArray(defaultValue)) {
+                // check array empty
+                if (defaultValue.length > 0) {
+                    console.error('Default array must be empty, set default value of ' + FIRE.getClassName(this) + '.prop("' + name + 
+                        '", ...) to null or [], and initialize in constructor please. (just like "this.' + 
+                        name + ' = [...];")');
+                    return this;
+                }
+            }
+            else if (!_isPlainEmptyObj(defaultValue)) {
+                // check cloneable
+                if (!_cloneable(defaultValue)) {
+                    console.error('Do not set default value to non-empty object, unless the object defines its own "clone" function. Set default value of ' + FIRE.getClassName(this) + '.prop("' + name + 
+                        '", ...) to null or {}, and initialize in constructor please. (just like "this.' + 
+                        name + ' = {foo: bar};")');
+                    return this;
+                }
+            }
+        }
+
+        // set default value
         FIRE.attr(this, name, { 'default': defaultValue });
+
+        // register property
+        _appendProp.call(this, name);
 
         // apply default type (NOTE: if user provide type attribute, this one will be overwrote)
         var mytype = typeof defaultValue;
@@ -81,6 +126,7 @@ var _metaClass = {
      * @returns {function} the class itself
      */
     get: function (name, getter, attribute) {
+        'use strict';
         var d = Object.getOwnPropertyDescriptor(this, name);
         if (d && d.get) {
             console.error(FIRE.getClassName(this) + ': the getter of "' + name + '" is already defined!');
@@ -171,7 +217,20 @@ var _createInstanceProps = function (instance, itsClass) {
             var prop = propList[i];
             var attrs = FIRE.attr(itsClass, prop);
             if (attrs && attrs.hasOwnProperty('default')) {  // getter does not have default
-                instance[prop] = attrs.default;
+                var def = attrs.default;
+                if (typeof def === 'object' && def) {
+                    // 防止多个实例引用相同对象
+                    if (def.clone) {
+                        def = def.clone();
+                    }
+                    else if (Array.isArray(def)) {
+                        def = [];
+                    }
+                    else {
+                        def = {};
+                    }
+                }
+                instance[prop] = def;
             }
         }
     }
@@ -253,6 +312,7 @@ FIRE.superof = function (myclass, childclass) {
  * @see FIRE.extend
  */
 FIRE.define = function (className, baseOrConstructor, constructor) {
+    'use strict';
     // check arguments
     var isInherit = false;
     switch (arguments.length) {
@@ -337,6 +397,7 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
  * @see FIRE.define
  */
 FIRE.undefine = function (constructor) {
+    'use strict';
     for (var i = 0; i < arguments.length; i++) {
         FIRE.unregisterClass(arguments[i]);
     }
