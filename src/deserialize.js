@@ -139,9 +139,8 @@ var _Deserializer = (function () {
                     }
                 }
             }
-            var onAfterDeserialize = asset.onAfterDeserialize;
-            if (onAfterDeserialize) {
-                onAfterDeserialize();
+            if (asset.onAfterDeserialize) {
+                asset.onAfterDeserialize();
             }
         }
         else /*javascript object instance*/ {

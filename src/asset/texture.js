@@ -30,7 +30,7 @@ FIRE.Texture = (function () {
     })({});
 
     Texture.prop('name', '', FIRE.EditorOnly);
-    Texture.prop('image', null, FIRE.HostType(FIRE.isWeb && Image), FIRE.HideInInspector);
+    Texture.prop('image', null, FIRE.HostType(FIRE.isWeb && Image));
     Texture.prop('width', 0, FIRE.Integer);
     Texture.prop('height', 0, FIRE.Integer);
     Texture.prop('wrapMode', Texture.WrapMode.Clamp, FIRE.Enum(Texture.WrapMode));

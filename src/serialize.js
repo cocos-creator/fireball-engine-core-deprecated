@@ -96,9 +96,8 @@ var _Serializer = (function () {
                 }
             }
             else /*FireClass*/ {
-                onBeforeSerialize = obj.onBeforeSerialize;
-                if (onBeforeSerialize) {
-                    onBeforeSerialize();
+                if (obj.onBeforeSerialize) {
+                    obj.onBeforeSerialize();
                 }
                 // only __props__ will be serialized
                 var props = klass.__props__;

@@ -137,10 +137,17 @@ test('Inherit + constructor', function () {
     FIRE.undefine(Animal, Dog, Husky);
 });
 
-test('Inherit from native class', 0, function () {
-    // TODO
-});
+test('prop reference', function () {
+    var type = FIRE.define('FIRE.MyType')
+                   .prop('ary', [])
+                   .prop('vec2', new FIRE.Vec2(10, 20))
+                   .prop('dict', {});
+    var obj1 = new type();
+    var obj2 = new type();
 
-test('Inherit by FIRE.extend', 0, function () {
-    // TODO
+    notStrictEqual(obj1.vec2, obj2.vec2, 'cloneable object reference not equal');
+    notStrictEqual(obj1.ary, obj2.ary, 'empty array reference not equal');
+    notStrictEqual(obj1.dict, obj2.dict, 'empty dict reference not equal');
+
+    FIRE.undefine(type);
 });

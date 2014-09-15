@@ -22,7 +22,7 @@ test('basic test', function() {
 
             this.emptyArray = [];
             this.array = [1, '2', {a:3}, [4, [5]], true];
-            this.string = 'unknown'; 
+            this.string = 'unknown';    
             this.number = 1;
             this.boolean = true;
             this.emptyObj = {};
@@ -68,9 +68,11 @@ test('basic test', function() {
 });
 
 test('test type derived by FIRE.define', function() {
-    var MyAsset = FIRE.define('MyAsset', FIRE.Asset)
+    var MyAsset = FIRE.define('MyAsset', FIRE.Asset, function () {
+                  this.array = [1, '2', {a:3}, [4, [5]], true];
+                  })
                       .prop('emptyArray', [])
-                      .prop('array', [1, '2', {a:3}, [4, [5]], true])
+                      .prop('array', null)
                       .prop('string', 'unknown')
                       .prop('number', 1)
                       .prop('boolean', true)
