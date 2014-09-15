@@ -73,16 +73,11 @@ test('json deserialize test', function () {
 test('reference to main asset', function () {
     var asset = {};
     asset.refSelf = asset;
-    /*  [
-            {
-                "refSelf": {
-                    "__id__": 0
-                }
-            },
-            {
+    /*  {
+            "refSelf": {
                 "__id__": 0
             }
-        ] 
+        }
      */
 
     var serializedAsset = FIRE.serialize(asset);
@@ -138,7 +133,8 @@ test('circular reference by array', function () {
     })();
 
     var expectAsset = new MyAsset();
-    var json = '[[1,[{"__id__":0},2]],[[1,{"__id__":1}],2],{"__type__":"MyAsset","array1":{"__id__":0},"array2":{"__id__":1}}]';
+    //console.log(FIRE.serialize(expectAsset));
+    var json = '[{"__type__":"MyAsset","array1":{"__id__":1},"array2":{"__id__":2}},[1,{"__id__":2}],[{"__id__":1},2]]';
     var deserializedAsset = FIRE.deserialize(json);
 
     deepEqual(deserializedAsset, expectAsset, 'two arrays can circular reference each other');
@@ -165,7 +161,7 @@ test('circular reference by dict', function () {
     })();
     expectAsset = new MyAsset();
 
-    serializedAssetJson = '[{"num":1,"other":{"num":2,"other":{"__id__":0}}},{"num":2,"other":{"num":1,"other":{"__id__":1}}},{"__type__":"MyAsset","dict1":{"__id__":0},"dict2":{"__id__":1}}]';
+    serializedAssetJson = '[{"__type__":"MyAsset","dict1":{"__id__":1},"dict2":{"__id__":2}},{"num":1,"other":{"__id__":2}},{"num":2,"other":{"__id__":1}}]';
     deserializedAsset = FIRE.deserialize(serializedAssetJson);
 
     deepEqual(deserializedAsset, expectAsset, 'two dicts can circular reference each other');

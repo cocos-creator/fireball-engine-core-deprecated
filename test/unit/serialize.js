@@ -155,12 +155,12 @@ test('test circular reference', function () {
     var asset = new MyAsset();
 
     var expect = [
-        [ 1,  [{ __id__: 0 }, 2] ],  // You'll get two copies of array2
         {
             __type__: 'MyAsset',
-            array1: { __id__: 0 },
-            array2: [ { __id__: 0 },  2 ],
-        }
+            array1: { __id__: 1 },
+            array2: [ { __id__: 1 },  2 ],
+        },
+        [ 1,  [{ __id__: 1 }, 2] ],  // You'll get two copies of array2
     ];
     match(asset, expect, 'two arrays can circular reference each other');
     match(asset, expect, 'test re-serialize again');
@@ -183,12 +183,12 @@ test('test circular reference', function () {
     asset = new MyAsset();
 
     expect = [
-        { /*__id__: 0,*/ num:1, other: {num:2, other: {__id__: 0}} },  // You'll get two copies of dict2
         {
             __type__: 'MyAsset',
-            dict1: { __id__: 0 },
-            dict2: { /*__id__: 1,*/ num:2, other: {__id__: 0} },
-        }
+            dict1: { __id__: 1 },
+            dict2: { /*__id__: 2,*/ num:2, other: {__id__: 1} },
+        },
+        { /*__id__: 1,*/ num:1, other: {num:2, other: {__id__: 1}} },  // You'll get two copies of dict2
     ];
     match(asset, expect, 'two dicts can circular reference each other');
 
@@ -232,11 +232,11 @@ test('test FObject reference', function () {
     var fobj = new FIRE.FObject();
     var asset = { ref1: fobj, ref2: fobj };
     var expected = [
-        { "__type__": "FIRE.FObject" },
         {
-          "ref1": { "__id__": 0 },
-          "ref2": { "__id__": 0 }
-        }
+          "ref1": { "__id__": 1 },
+          "ref2": { "__id__": 1 }
+        },
+        { "__type__": "FIRE.FObject" },
     ];
     match(asset, expected, 'references should the same');
 });

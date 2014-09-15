@@ -17,12 +17,7 @@ var _Serializer = (function () {
         this._parsingData = [];    // 记录当前引用对象的序列化结果
         this._objsToResetId = [];
 
-        if (obj instanceof FObject) {
-            _serializeObj(this, obj);
-        }
-        else {
-            this.serializedList.push(_serializeObj(this, obj));
-        }
+        _serializeMainObj(this, obj);
 
         if (canBindProp) {
             for (var i = 0; i < this._objsToResetId.length; ++i) {
@@ -256,6 +251,56 @@ var _Serializer = (function () {
         }
     };
 
+    /**
+     * serialize main object
+     * 这个方法主要是对 main object 做特殊处理，虽然和 _serializeObj 很接近，但为了
+     * 避免增加 _serializeObj 的额外开销并不和它合并到一起。
+     * @param {object} obj - The object to serialize
+     */
+    var _serializeMainObj = function (self, obj) {
+        if (obj instanceof FObject) {
+            var uuid = obj._uuid;
+            if (typeof uuid !== 'undefined') {
+                // force Asset serializable, or _serializeObj will just return { __uuid__: ... }
+                obj._uuid = null;
+            }
+
+            _serializeObj(self, obj);
+
+            if (typeof uuid !== 'undefined') {
+                // restore uuid
+                obj._uuid = uuid;
+            }
+        }
+        else if (typeof obj === 'object' && obj) {
+            if (_isDomNode(obj)) {
+                console.warn("" + obj + " won't be serialized");
+                self.serializedList.push(null);
+                return;
+            }
+            
+            var data;
+            if (Array.isArray(obj)) {
+                data = [];
+            }
+            else {
+                data = {};
+                var className = FIRE.getClassName(obj);
+                if (className) {
+                    data.__type__ = className;
+                }
+            }
+            
+            obj.__id__ = 0;
+            self._objsToResetId.push(obj);
+            self.serializedList.push(data);
+            _enumerateObject(self, obj, data);
+        }
+        else {
+            self.serializedList.push(_serializeObj(self, obj));
+        }
+    };
+
     return _Serializer;
 })();
 
@@ -270,6 +315,6 @@ var _Serializer = (function () {
 FIRE.serialize = function (obj, exporting, canBindProp) {
     var serializer = new _Serializer(obj, exporting, canBindProp);
     var serializedList = serializer.serializedList;
-    var serializedData = serializer.serializedList.length === 1 ? serializedList[0] : serializedList;
+    var serializedData = serializedList.length === 1 ? serializedList[0] : serializedList;
     return JSON.stringify(serializedData, null, 4);
 };

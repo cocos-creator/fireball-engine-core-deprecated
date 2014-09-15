@@ -23,11 +23,12 @@ var _Deserializer = (function () {
             // dereference
             referencedList = _dereference(referencedList, referencedList);
             // 
-            this.deserializedData = referencedList.pop() || [];
+            this.deserializedData = referencedList.length > 0 ? referencedList[0] : [];
         }
         else {
             //jsonObj = jsonObj || {};
             this.deserializedData = _deserializeAsset(this, jsonObj);
+            this.deserializedData = _dereference(this.deserializedData, [this.deserializedData]);
         }
     }
 
