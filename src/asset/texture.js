@@ -6,7 +6,6 @@ FIRE.Texture = (function () {
     var Texture = FIRE.define('FIRE.Texture', FIRE.Asset, function (img) {
         Texture.$super.call(this);
 
-        this.name = "";
         if (img) {
             this.image = img;
             this.width = img.width;
@@ -29,7 +28,6 @@ FIRE.Texture = (function () {
         return t;
     })({});
 
-    Texture.prop('name', '', FIRE.EditorOnly);
     Texture.prop('image', null, FIRE.HostType(FIRE.isWeb && Image));
     Texture.prop('width', 0, FIRE.Integer);
     Texture.prop('height', 0, FIRE.Integer);

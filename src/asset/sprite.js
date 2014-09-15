@@ -15,6 +15,7 @@ FIRE.Sprite = (function () {
     });
     
     // basic settings
+    Sprite.prop('name', '', FIRE.EditorOnly);
     Sprite.prop('rawTexture', null, FIRE.ObjectType(FIRE.Texture), FIRE.Tooltip('untrimmed raw texture'), FIRE.EditorOnly);
     Sprite.prop('texture', null, FIRE.ObjectType(FIRE.Texture), FIRE.Tooltip('texture to render'));
     Sprite.prop('rotated', false);
