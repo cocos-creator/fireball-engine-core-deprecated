@@ -14,10 +14,27 @@ FIRE.Texture = (function () {
         }
     });
 
+    // enum WrapMode
+    Texture.WrapMode = (function (t) {
+        t[t.Repeat = 0] = 'Repeat';
+        t[t.Clamp  = 1] = 'Clamp';
+        return t;
+    })({});
+
+    // enum FilterMode
+    Texture.FilterMode = (function (t) {
+        t[t.Point       = 0] = 'Point';
+        t[t.Bilinear    = 1] = 'Bilinear';
+        t[t.Trilinear   = 2] = 'Trilinear';
+        return t;
+    })({});
+
     Texture.prop('name', '', FIRE.EditorOnly);
     Texture.prop('image', null, FIRE.HostType(FIRE.isWeb && Image), FIRE.HideInInspector);
     Texture.prop('width', 0, FIRE.Integer);
     Texture.prop('height', 0, FIRE.Integer);
+    Texture.prop('wrapMode', Texture.WrapMode.Clamp, FIRE.Enum(Texture.WrapMode));
+    Texture.prop('filterMode', Texture.FilterMode.Bilinear, FIRE.Enum(Texture.FilterMode));
 
     //Texture.prototype.onAfterDeserialize = function () {
     //    this.width = this.image.width;
