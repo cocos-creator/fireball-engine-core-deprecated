@@ -11,11 +11,6 @@ FObject = (function () {
     }
     FIRE.registerClass("FIRE.FObject", FObject);
 
-    // const flags
-
-    var Destroyed = 1 << 0;
-    var ToDestroy = 1 << 1;
-
     //// enum
 
     //Object.defineProperty(FObject, 'Flags', {

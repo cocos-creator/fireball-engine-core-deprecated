@@ -18,3 +18,20 @@ else {
     FIRE.isDarwin = platform.substring(0, 3) === 'Mac';
     FIRE.isWin32 = platform.substring(0, 3) === 'Win';
 }
+
+// const flags
+
+var Destroyed = 1 << 0;
+var ToDestroy = 1 << 1;
+var DontSave = 1 << 2;
+var EditorOnly  = 1 << 3;       // dont save in build
+
+FIRE.ObjectFlags = {
+    DontSave: DontSave,
+    EditorOnly: EditorOnly,
+};
+
+FIRE._ObjFlagIndex = {
+    Engine: 9,  // engine start
+    Editor: 18, // editor start
+};

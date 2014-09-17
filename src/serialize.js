@@ -68,7 +68,10 @@ var _Serializer = (function () {
         if (Array.isArray(obj)) {
             //var oldSerializedCount = self.serializedList.length;
             for (var i = 0; i < obj.length; ++i) {
-                data.push(_serializeField(self, obj[i]));
+                var item = _serializeField(self, obj[i]);
+                if (typeof item !== 'undefined') {     // strip undefined item (dont save)
+                    data.push(item);
+                }
             }
             /*
             // check whether obj has been serialized to serializedList, 
@@ -87,6 +90,7 @@ var _Serializer = (function () {
                     //console.log(key);
                     if (obj.hasOwnProperty(key) === false || key === '__id__')
                         continue;
+                    // undefined value (if dont save) will be stripped from JSON
                     data[key] = _serializeField(self, obj[key]);
                 }
             }
@@ -111,6 +115,7 @@ var _Serializer = (function () {
                             continue;
                         }
 
+                        // undefined value (if dont save) will be stripped from JSON
                         data[propName] = _serializeField(self, obj[propName]);
                     }
                 }
@@ -135,12 +140,21 @@ var _Serializer = (function () {
     var _serializeField = function (self, val) {
         var type = typeof val;
         if (type === 'object') {
+            if (val instanceof FObject) {
+                var objFlags = val._objFlags;
+                if (objFlags & DontSave) {
+                    return undefined;
+                }
+                else if (self._exporting && (objFlags & EditorOnly)) {
+                    return undefined;
+                }
+            }
             return _serializeObj(self, val);
         }
         else if (type !== 'function') {
             return val;
         }
-        else {
+        else /*function*/ {
             return null;
         }
     };
