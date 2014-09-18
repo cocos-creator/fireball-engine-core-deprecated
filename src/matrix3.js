@@ -27,3 +27,48 @@ Matrix3.prototype.toString = function () {
         '|\n|' + this.c.toFixed(2) + ' ' + this.d.toFixed(2) + ' ' + this.ty.toFixed(2) + 
         '|\n|0.00 0.00 1.00|';
 };
+
+Matrix3.prototype.identity = function () {
+    this.a = 1;
+    this.b = 0;
+    this.c = 0;
+    this.d = 1;
+    this.tx = 0;
+    this.ty = 0;
+    return this;
+};
+
+Matrix3.prototype.prepend = function (other) {
+    var a = other.a;
+    var b = other.b;
+    var c = other.c;
+    var d = other.d;
+    if (a !== 1 || b !== 0 || c !== 0 || d !== 1) {
+        var oa = this.a;
+        var oc = this.c;
+        this.a = oa * a + this.b * c;
+        this.b = oa * b + this.b * d;
+        this.c = oc * a + this.d * c;
+        this.d = oc * b + this.d * d;
+    }
+    var otx = this.tx;
+    this.tx = otx * a + this.ty * c + other.tx;
+    this.ty = otx * b + this.ty * d + other.ty;
+    return this;
+};
+
+Matrix3.prototype.invert = function () {
+    var a = this.a;
+    var b = this.b;
+    var c = this.c;
+    var d = this.d;
+    var tx = this.tx;
+    var determinant = 1 / (a * d - b * c);
+    this.a = d * determinant;
+    this.b = -b * determinant;
+    this.c = -c * determinant;
+    this.d = a * determinant;
+    this.tx = (c * this.ty - d * tx) * determinant;
+    this.ty = (b * tx - a * this.ty) * determinant;
+    return this;
+};        
