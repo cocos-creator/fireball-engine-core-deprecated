@@ -9,7 +9,10 @@ FIRE.Asset = (function () {
             writable: true,
             enumerable: false   // avoid uuid being assigned to empty string during destory
         });
+
     });
+
+    Asset.prop('debugName', '', FIRE.HideInInspector );
 
     /* These callbacks available for all FireClass
     Asset.prototype.onBeforeSerialize = function () {};
