@@ -96,6 +96,7 @@ test('test type derived by FIRE.define', function() {
 
     var expect = {
         __type__: 'MyAsset',
+        debugName: "",
         emptyArray: [],
         array: [1, '2',  {a:3}, [4, [5]], true],
         string: 'unknown',
