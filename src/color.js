@@ -98,6 +98,10 @@ FIRE.Color = (function () {
         return hex.join('');
     };
 
+    Color.prototype.toRGBValue = function () {
+        return (this.r * 255 << 16) + (this.g * 255 << 8) + this.b * 255;
+    };
+
     Color.prototype.fromHSV = function ( h, s, v ) {
         var rgb = FIRE.hsv2rgb( h, s, v ); 
         this.r = rgb.r;
