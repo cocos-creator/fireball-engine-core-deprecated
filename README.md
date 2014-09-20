@@ -8,7 +8,6 @@ The basic classes used in fireball engine and editors
 
 ```bash
 npm install
-bower install
 ```
 
 ## Build

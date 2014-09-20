@@ -51,7 +51,7 @@ if (FIRE.isNode) {
 }
 else {
     var error = function () {
-        throw "This function can only be used in node-webkit or server";
+        throw new Error("This function can only be used in node-webkit or server");
     };
     FIRE.readDirRecursively = error;
 }
@@ -215,7 +215,7 @@ if (FIRE.isApp && FIRE.isWeb) {
 }
 else {
     var error = function () {
-        throw "This function can only be used in node-webkit or atom-shell";
+        throw new Error("This function can only be used in node-webkit or atom-shell");
     };
     FIRE.getSavePath = error;
     FIRE.showItemInFolder = error;

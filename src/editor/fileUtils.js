@@ -31,7 +31,7 @@ FIRE.buildPng = function (canvas, filename, pixelBuffer, returnBinOrBase64, call
     if ( getLibpng (encodeByLibpng) === false ) {
         // encode by canvas
         if (!canvas) {
-            throw 'no png encoder nor canvas';
+            throw new Error('no png encoder nor canvas');
         }
         if (returnBinOrBase64 || FIRE.isNode) {
             var dataUrl = canvas.toDataURL('image/png');
