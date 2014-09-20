@@ -72,3 +72,10 @@ Matrix3.prototype.invert = function () {
     this.ty = (b * tx - a * this.ty) * determinant;
     return this;
 };        
+
+Matrix3.prototype.transformPoint = function (vector, out) {
+    out = out || new Vec2();
+    out.x = this.a * vector.x + this.c * vector.y + this.tx;
+    out.y = this.b * vector.x + this.d * vector.y + this.ty;
+    return out;
+};
