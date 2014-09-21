@@ -71,7 +71,7 @@ Matrix3.prototype.invert = function () {
     this.tx = (c * this.ty - d * tx) * determinant;
     this.ty = (b * tx - a * this.ty) * determinant;
     return this;
-};        
+};
 
 Matrix3.prototype.transformPoint = function (vector, out) {
     out = out || new Vec2();
@@ -79,3 +79,32 @@ Matrix3.prototype.transformPoint = function (vector, out) {
     out.y = this.b * vector.x + this.d * vector.y + this.ty;
     return out;
 };
+
+// negative scaling (mirroring) is not supported
+Matrix3.prototype.getScale = function (out) {
+    out = out || new Vec2();
+    out.x = Math.sqrt(this.a * this.a + this.b * this.b);
+    out.y = Math.sqrt(this.c * this.c + this.d * this.d);
+    return out;
+};
+
+Matrix3.prototype.setScale = function (x, y) {
+    var s = this.getScale();
+    x /= s.x;
+    y /= s.y;
+    this.a *= x;
+    this.b *= x;
+    this.c *= y;
+    this.d *= y;
+    return this;
+};
+
+/*Matrix3.prototype.scale = function (x, y) {
+    this.a *= x;
+    this.b *= x;
+    this.c *= y;
+    this.d *= y;
+    this.tx *= x;
+    this.ty *= y;
+    return this;
+};*/

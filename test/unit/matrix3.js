@@ -36,3 +36,14 @@ test('identity', function () {
     strictEqual(mat.ty, 0);
 });
 
+test('scale', function () {
+    var mat = new FIRE.Matrix3();
+    var s = mat.getScale();
+    strictEqual(s.x, 1);
+    strictEqual(s.y, 1);
+
+    mat.setScale(321, 0.4);
+    s = mat.getScale();
+    strictEqual(s.x, 321);
+    strictEqual(s.y, 0.4);
+});

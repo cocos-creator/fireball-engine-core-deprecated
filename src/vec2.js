@@ -1,4 +1,4 @@
-FIRE.Vec2 = (function () {
+Vec2 = (function () {
     function Vec2( x, y ) {
         this.x = x;
         this.y = y;
@@ -193,3 +193,4 @@ FIRE.Vec2 = (function () {
     return Vec2;
 })();
 
+FIRE.Vec2 = Vec2;
