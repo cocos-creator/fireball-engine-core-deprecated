@@ -1,7 +1,8 @@
 Vec2 = (function () {
+
     function Vec2( x, y ) {
-        this.x = x;
-        this.y = y;
+        this.x = (typeof x === 'number' ? x : 0.0);
+        this.y = (typeof y === 'number' ? y : 0.0);
     }
     FIRE.registerClass('FIRE.Vec2', Vec2);
 

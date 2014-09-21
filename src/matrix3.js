@@ -50,10 +50,14 @@ Matrix3.prototype.prepend = function (other) {
         this.b = oa * b + this.b * d;
         this.c = oc * a + this.d * c;
         this.d = oc * b + this.d * d;
+        var otx = this.tx;
+        this.tx = otx * a + this.ty * c + other.tx;
+        this.ty = otx * b + this.ty * d + other.ty;
     }
-    var otx = this.tx;
-    this.tx = otx * a + this.ty * c + other.tx;
-    this.ty = otx * b + this.ty * d + other.ty;
+    else {
+        this.tx += other.tx;
+        this.ty += other.ty;
+    }
     return this;
 };
 
@@ -75,8 +79,9 @@ Matrix3.prototype.invert = function () {
 
 Matrix3.prototype.transformPoint = function (vector, out) {
     out = out || new Vec2();
-    out.x = this.a * vector.x + this.c * vector.y + this.tx;
-    out.y = this.b * vector.x + this.d * vector.y + this.ty;
+    var x = vector.x;   // vector may === out
+    out.x = this.a * x + this.c * vector.y + this.tx;
+    out.y = this.b * x + this.d * vector.y + this.ty;
     return out;
 };
 
@@ -99,7 +104,17 @@ Matrix3.prototype.setScale = function (x, y) {
     return this;
 };
 
-/*Matrix3.prototype.scale = function (x, y) {
+/*
+Matrix3.prototype.getRotation = function () {
+    return Math.atan2(this.c, this.d);
+};
+
+Matrix3.prototype.translate = function (x, y) {
+    this.tx += x;
+    this.ty += y;
+};
+
+Matrix3.prototype.scale = function (x, y) {
     this.a *= x;
     this.b *= x;
     this.c *= y;
@@ -107,4 +122,5 @@ Matrix3.prototype.setScale = function (x, y) {
     this.tx *= x;
     this.ty *= y;
     return this;
-};*/
+};
+*/
