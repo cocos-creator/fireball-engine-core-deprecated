@@ -1,12 +1,17 @@
 ﻿// global definitions
 
 FIRE.isNode = !!(typeof process !== 'undefined' && process.versions && process.versions.node);
-FIRE.isWeb = (typeof __dirname === 'undefined' || __dirname === null); // common web browser, or window's render context in node-webkit or atom-shell
-FIRE.isNw = !!(FIRE.isNode && 'node-webkit' in process.versions);       // node-webkit
-//FIRE.isAs = !!(FIRE.isNode && 'atom-shell' in process.versions);      // atom-shell
-FIRE.isApp = FIRE.isNw/* || FIRE.isAs*/;                                // native client
-//FIRE.isPureWeb = !FIRE.isNode && !FIRE.isApp;                         // common web browser
+FIRE.isNw = !!(FIRE.isNode && 'node-webkit' in process.versions);     // node-webkit
+FIRE.isAs = !!(FIRE.isNode && 'atom-shell' in process.versions);      // atom-shell
+FIRE.isApp = FIRE.isNw || FIRE.isAs;                                  // native client
+FIRE.isPureWeb = !FIRE.isNode && !FIRE.isApp;                         // common web browser
 FIRE.isEditor = FIRE.isApp;     // by far there is no standalone client version, so app == editor
+if (FIRE.isAs) {
+    FIRE.isWeb = typeof process !== 'undefined' && process.type === 'renderer';
+}
+else {
+    FIRE.isWeb = (typeof __dirname === 'undefined' || __dirname === null); // common web browser, or window's render context in node-webkit or atom-shell
+}
 
 if (FIRE.isNode) {
     FIRE.isDarwin = process.platform === 'darwin';

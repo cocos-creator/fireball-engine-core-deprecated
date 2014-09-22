@@ -82,21 +82,16 @@ FIRE.ObjectType = function (constructor) {
  * The property will not be serialized but will be referenced to the loaed host object while deserialzation.
  * 
  * @method FIRE.HostType
- * @param {function} [constructor]
+ * @param {string} [typename]
  * @returns {object} the attribute
  */
-FIRE.HostType = function (constructor) {
-    if (constructor) {
-        return {
-            type: 'host',
-            hostType: constructor,
-            serializable: false,
-            hideInInspector: true,
-        };
-    }
-    else {
-        return {};
-    }
+FIRE.HostType = function (typename) {
+    return {
+        type: 'host',
+        hostType: typename,
+        serializable: false,
+        hideInInspector: true,
+    };
 };
 
 ///**
