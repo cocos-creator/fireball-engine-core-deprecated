@@ -1,19 +1,19 @@
-﻿module('matrix3');
+﻿module('matrix2x3');
 
 test('basic', function () {
-    var mat = new FIRE.Matrix3();
+    var mat = new FIRE.Matrix2x3();
     strictEqual(mat.a, 1);
     strictEqual(mat.b, 0);
     strictEqual(mat.c, 0);
     strictEqual(mat.d, 1);
     strictEqual(mat.tx, 0);
     strictEqual(mat.ty, 0);
-    strictEqual(FIRE.getClassName(mat), 'FIRE.Matrix3');
+    strictEqual(FIRE.getClassName(mat), 'FIRE.Matrix2x3');
     //console.log(mat);
 });
 
 test('clone', function () {
-    var mat1 = new FIRE.Matrix3();
+    var mat1 = new FIRE.Matrix2x3();
     mat1.a = 123;
     mat1.b = 0;
     mat1.c = 1;
@@ -27,7 +27,7 @@ test('clone', function () {
 });
 
 test('identity', function () {
-    var mat = FIRE.Matrix3.identity;
+    var mat = FIRE.Matrix2x3.identity;
     strictEqual(mat.a, 1);
     strictEqual(mat.b, 0);
     strictEqual(mat.c, 0);
@@ -37,7 +37,7 @@ test('identity', function () {
 });
 
 test('scale', function () {
-    var mat = new FIRE.Matrix3();
+    var mat = new FIRE.Matrix2x3();
     var s = mat.getScale();
     strictEqual(s.x, 1);
     strictEqual(s.y, 1);
