@@ -109,11 +109,23 @@ Matrix2x3.prototype.setScale = function (x, y) {
     return this;
 };
 
-/*
 Matrix2x3.prototype.getRotation = function () {
     return Math.atan2(this.c, this.d);  // or atan2(-b, a);
 };
 
+Matrix2x3.prototype.rotate = function (angle) {
+    var sin = Math.sin(angle);
+    var cos = Math.cos(angle);
+    var a = this.a;
+    var b = this.b;
+    this.a = (a * cos + this.c * sin);
+    this.b = (b * cos + this.d * sin);
+    this.c = (this.c * cos - a * sin);
+    this.d = (this.d * cos - b * sin);
+    return this;
+};
+
+/*
 Matrix2x3.prototype.translate = function (x, y) {
     this.tx += x;
     this.ty += y;
