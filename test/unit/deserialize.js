@@ -1,6 +1,6 @@
 // jshint ignore: start
 
-largeModule('deserialize');
+largeModule('Deserialize');
 
 test('basic deserialize test', function () {
     deepEqual(FIRE.deserialize({}), {}, 'smoke test1');
@@ -32,6 +32,29 @@ test('basic deserialize test', function () {
     var deserializedAsset = FIRE.deserialize(serializedAsset);
 
     deepEqual(deserializedAsset, asset, 'test deserialize');
+
+    FIRE.unregisterClass(MyAsset);
+});
+
+test('nil', function () {
+    var obj = {
+        'null': null,
+    };
+    var str = '{ "null": null }'
+    deepEqual(FIRE.deserialize(str), obj, 'can deserialize null');
+
+    var MyAsset = FIRE.define('MyAsset', function () {
+        this.foo = 'bar';
+    }).prop('nil', 1234);
+
+    str = '{ "__type__": "MyAsset" }'
+    obj = new MyAsset();
+    deepEqual(FIRE.deserialize(str), obj, 'use default value');
+
+    str = '{ "__type__": "MyAsset", "nil": null }'
+    obj = new MyAsset();
+    obj.nil = null;
+    deepEqual(FIRE.deserialize(str), obj, 'can override as null');
 
     FIRE.unregisterClass(MyAsset);
 });

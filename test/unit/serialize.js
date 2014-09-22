@@ -1,6 +1,6 @@
 ﻿// jshint ignore: start
 
-largeModule('serialize');
+largeModule('Serialize');
 
 var match = function (obj, expect, info) {
     deepEqual(JSON.parse(FIRE.serialize(obj)), expect, info);
@@ -65,6 +65,17 @@ test('basic test', function() {
     match(asset, expect, 'test re-serialize again');
 
     FIRE.unregisterClass(MyAsset);
+});
+
+test('nil', function () {
+    var obj = {
+        'null': null,
+        'undefined': undefined,
+    };
+    var expect = '{\n\
+    "null": null\n\
+}'
+    equal(FIRE.serialize(obj), expect);
 });
 
 test('test type derived by FIRE.define', function() {
