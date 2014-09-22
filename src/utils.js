@@ -114,15 +114,6 @@ FIRE.hsv2rgb = function ( h, s, v ) {
     return rgb;
 };
 
-// Support can be assigned a null value type
-FIRE.Nullable = (function () {
-    function Nullable(hasValue, value) {
-        this.hasValue = haValue;
-        this.value = value;
-    }
-    return Nullable;
-})();
-
 FIRE.CallbacksInvoker = (function () {
 
     /**

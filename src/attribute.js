@@ -6,6 +6,7 @@
  * @param {function} constructor - the class
  * @param {string} propertyName - the name of property or function, used to retrieve the attributes
  * @param {object} [attributes] - the attribute table to mark, new attributes will merged with existed attributes.
+ *                                Attribute whose key starts with '_' will be ignored.
  * @returns {object|undefined} return all attributes associated with the property. if none undefined will be returned
  * 
  * @example
@@ -28,16 +29,22 @@ FIRE.attr = function (constructor, propertyName, attributes) {
             constructor.prototype[key] = attrs;
         }
         for (var name in attributes) {
-            attrs[name] = attributes[name];
+            if (name[0] !== '_') {
+                attrs[name] = attributes[name];
+            }
         }
     }
     return attrs;
 };
 
 /*
-var BuiltinAttributes = {
+
+BuiltinAttributes: {
     default: defaultValue,
-};
+}
+Callbacks: {
+    _onAfterProp: function (constructor, propName) {},
+}
  */
 
 /**
@@ -160,6 +167,30 @@ FIRE.DisplayName = function (name) {
  */
 FIRE.Tooltip = function (tooltip) {
     return { tooltip: tooltip };
+};
+
+/**
+ * @param {string} boolPropName
+ * @param {boolean} hasValueByDefault
+ * @returns {object} the attribute
+ */
+FIRE.Nullable = function (boolPropName, hasValueByDefault) {
+    return {
+        nullable: boolPropName,
+
+        _onAfterProp: function (constructor, mainPropName) {
+            // declare boolean
+            constructor.prop(boolPropName, hasValueByDefault, FIRE.HideInInspector);
+            // copy attributes from main property
+            var mainPropAttr = FIRE.attr(constructor, mainPropName) || {};
+            if (mainPropAttr.serializable === false) {
+                FIRE.attr(constructor, boolPropName, FIRE.NonSerialized);
+            }
+            else if (mainPropAttr.editorOnly) {
+                FIRE.attr(constructor, boolPropName, FIRE.EditorOnly);
+            }
+        }
+    };
 };
 
 //FIRE.range = function (min, max) {

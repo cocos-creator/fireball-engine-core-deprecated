@@ -107,9 +107,23 @@ var _metaClass = {
         }
         FIRE.attr( this, name, { 'type': mytype } );
 
+        // apply attributes
         if (attribute) {
+            var onAfterProp = null;
             for (var i = 2; i < arguments.length; i++) {
-                FIRE.attr(this, name, arguments[i]);
+                var attr = arguments[i];
+                FIRE.attr(this, name, attr);
+                // register callback
+                if (attr._onAfterProp) {
+                    onAfterProp = onAfterProp || [];
+                    onAfterProp.push(attr._onAfterProp);
+                }
+            }
+            // call callback
+            if (onAfterProp) {
+                for (var c = 0; c < onAfterProp.length; c++) {
+                    onAfterProp[c](this, name);
+                }
             }
         }
         return this;

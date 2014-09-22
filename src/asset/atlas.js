@@ -51,8 +51,7 @@ FIRE.Atlas = (function () {
                                         FIRE.EditorOnly,
                                         FIRE.Tooltip('extrude'));
     Atlas.prop('customPadding', 2, FIRE.Integer, FIRE.EditorOnly);
-    Atlas.prop('customBuildColor', false, FIRE.EditorOnly);
-    Atlas.prop('buildColor', new FIRE.Color(1, 1, 1, 1), FIRE.EditorOnly);
+    Atlas.prop('buildColor', new FIRE.Color(1, 1, 1, 1), FIRE.Nullable('customBuildColor', false), FIRE.EditorOnly);
     
     //
     Atlas.prototype.add = function ( sprite ) {
