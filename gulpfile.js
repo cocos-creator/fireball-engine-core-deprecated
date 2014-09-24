@@ -24,6 +24,7 @@ var paths = {
         'src/serialize.js',
         'src/deserialize.js',
         'src/object.js',
+        'src/hashObject.js',
         'src/vec2.js',
         'src/matrix2x3.js',
         'src/rect.js',
