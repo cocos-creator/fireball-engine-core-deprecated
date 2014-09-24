@@ -126,3 +126,24 @@ test('destroy other at destroy callback', 3, function () {
 
     strictEqual(obj2.isValid, false, 'other should destroyed at the end of next frame');
 });
+
+module('HashObject');
+
+test('test', function () {
+    var obj1 = new FIRE.HashObject();
+    var obj2 = new FIRE.HashObject();
+
+    strictEqual(typeof obj1.hashID, 'number', 'id is number');
+    strictEqual(typeof obj2.hashKey, 'string', 'key is string');
+
+    notEqual(obj1.hashKey, obj2.hashKey, 'unique hashKey');
+    notEqual(obj1.hashID, obj2.hashID, 'unique hashID');
+
+    var id1 = obj1.hashID;
+    var key2 = obj2.hashKey;
+
+    var obj3 = new FIRE.HashObject();
+
+    strictEqual(obj1.hashID, id1, 'id not changed');
+    strictEqual(obj2.hashKey, key2, 'key not changed');
+});

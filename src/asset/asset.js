@@ -1,7 +1,7 @@
 FIRE.Asset = (function () {
 
-    var Asset = FIRE.define('FIRE.Asset', FIRE.FObject, function () {
-        Asset.$super.call(this);
+    var Asset = FIRE.define('FIRE.Asset', FIRE.HashObject, function () {
+        FIRE.HashObject.call(this);
 
         // define uuid, uuid can not destory
         Object.defineProperty(this, '_uuid', {
@@ -21,5 +21,3 @@ FIRE.Asset = (function () {
 
     return Asset;
 })();
-
-
