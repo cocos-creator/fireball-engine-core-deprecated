@@ -141,7 +141,9 @@ gulp.task('ref', function() {
 gulp.task('watch', function() {
     gulp.watch(paths.src, ['dev']).on( 'error', gutil.log );
 });
-gulp.task('watch-self', ['watch'] );
+gulp.task('watch-self', function() {
+    gulp.watch(paths.src, ['dev']).on( 'error', gutil.log );
+});
 
 //
 gulp.task('all', ['min', 'test', 'ref'] );
