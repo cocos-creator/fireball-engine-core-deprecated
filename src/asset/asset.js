@@ -14,7 +14,7 @@ FIRE.Asset = (function () {
 
     Asset.prop('debugName', '', FIRE.HideInInspector );
 
-    /* These callbacks available for all FireClass
+    /* These callbacks available for all sub-classes of FObject
     Asset.prototype.onBeforeSerialize = function () {};
     Asset.prototype.onAfterDeserialize = function () {};
      */

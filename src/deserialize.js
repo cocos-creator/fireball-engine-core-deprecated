@@ -16,26 +16,39 @@ var _Deserializer = (function () {
         
         if (Array.isArray(jsonObj)) {
             var referencedList = jsonObj;
+            var refCount = referencedList.length;
             // deserialize
-            for (var i = 0, len = referencedList.length; i < len; i++) {
+            for (var i = 0; i < refCount; i++) {
                 referencedList[i] = _deserializeAsset(this, referencedList[i]);
             }
             // dereference
-            referencedList = _dereference(referencedList, referencedList);
+            _dereference(referencedList, referencedList);
             // 
-            this.deserializedData = referencedList.length > 0 ? referencedList[0] : [];
+            this.deserializedData = refCount > 0 ? referencedList[0] : [];
+
+            // callback
+            for (var j = 0; j < refCount; j++) {
+                if (referencedList[j].onAfterDeserialize) {
+                    referencedList[j].onAfterDeserialize();
+                }
+            }
         }
         else {
             //jsonObj = jsonObj || {};
-            this.deserializedData = _deserializeAsset(this, jsonObj);
-            this.deserializedData = _dereference(this.deserializedData, [this.deserializedData]);
+            var deserializedData = _deserializeAsset(this, jsonObj);
+            _dereference(deserializedData, [deserializedData]);
+            this.deserializedData = deserializedData;
+
+            // callback
+            if (deserializedData.onAfterDeserialize) {
+                deserializedData.onAfterDeserialize();
+            }
         }
     }
 
     /**
      * @param {object} obj - The object to dereference, must be object type, non-nil, not a reference
      * @param {object[]} referenceList - The referenced list to get reference from
-     * @returns {object} the referenced object
      */
     var _dereference = function (obj, referenceList) {
         if (Array.isArray(obj)) {
@@ -47,7 +60,7 @@ var _Deserializer = (function () {
                         obj[i] = referenceList[id1];
                     }
                     else {
-                        obj[i] = _dereference(obj[i], referenceList);
+                        _dereference(obj[i], referenceList);
                     }
                 }
             }
@@ -61,12 +74,11 @@ var _Deserializer = (function () {
                         obj[k] = referenceList[id2];
                     }
                     else {
-                        obj[k] = _dereference(val, referenceList);
+                        _dereference(val, referenceList);
                     }
                 }
             }
         }
-        return obj;
     };
 
     /**
@@ -140,9 +152,6 @@ var _Deserializer = (function () {
                     }
                 }
             }
-            if (asset.onAfterDeserialize) {
-                asset.onAfterDeserialize();
-            }
         }
         else /*javascript object instance*/ {
             for (var k in asset) {
@@ -164,6 +173,11 @@ var _Deserializer = (function () {
 })();
 
 /**
+ * @property {boolean} FIRE.deserializing
+ */
+FIRE._isDeserializing = false;
+
+/**
  * Deserialize json to FIRE.Asset
  * @param {(string|object)} data - the serialized FIRE.Asset json string or json object
  * @param {FIRE._DeserializeInfo} [result] - additional loading result
@@ -171,7 +185,9 @@ var _Deserializer = (function () {
  * @returns {object} the main data(asset)
  */
 FIRE.deserialize = function (data, result, editor) {
+    FIRE._isDeserializing = true;
     var deserializer = new _Deserializer(data, result, editor);
+    FIRE._isDeserializing = false;
     return deserializer.deserializedData;
 };
 
