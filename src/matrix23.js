@@ -1,9 +1,9 @@
 ﻿/**
  * Simple matrix to do 2D affine transformations.
  * It is actually 3x3 but the last row is [0 0 1].
- * @class Fire.Matrix2x3
+ * @class Fire.Matrix23
  */
-var Matrix2x3 = function () {
+var Matrix23 = function () {
     this.a = 1;
     this.b = 0;
     this.c = 0;
@@ -11,13 +11,13 @@ var Matrix2x3 = function () {
     this.tx = 0;
     this.ty = 0;
 };
-Fire.registerClass('Fire.Matrix2x3', Matrix2x3);
-Fire.Matrix2x3 = Matrix2x3;
+Fire.registerClass('Fire.Matrix23', Matrix23);
+Fire.Matrix23 = Matrix23;
 
-Matrix2x3.identity = new Matrix2x3();
+Matrix23.identity = new Matrix23();
 
-Matrix2x3.prototype.clone = function () {
-    var mat = new Matrix2x3();
+Matrix23.prototype.clone = function () {
+    var mat = new Matrix23();
     mat.a = this.a;
     mat.b = this.b;
     mat.c = this.c;
@@ -27,13 +27,13 @@ Matrix2x3.prototype.clone = function () {
     return mat;
 };
 
-Matrix2x3.prototype.toString = function () {
+Matrix23.prototype.toString = function () {
     return '|' + this.a.toFixed(2) + ' ' + this.b.toFixed(2) + ' ' + this.tx.toFixed(2) + 
         '|\n|' + this.c.toFixed(2) + ' ' + this.d.toFixed(2) + ' ' + this.ty.toFixed(2) + 
         '|\n|0.00 0.00 1.00|';
 };
 
-Matrix2x3.prototype.identity = function () {
+Matrix23.prototype.identity = function () {
     this.a = 1;
     this.b = 0;
     this.c = 0;
@@ -43,7 +43,7 @@ Matrix2x3.prototype.identity = function () {
     return this;
 };
 
-Matrix2x3.prototype.prepend = function (other) {
+Matrix23.prototype.prepend = function (other) {
     var a = other.a;
     var b = other.b;
     var c = other.c;
@@ -66,7 +66,7 @@ Matrix2x3.prototype.prepend = function (other) {
     return this;
 };
 
-Matrix2x3.prototype.invert = function () {
+Matrix23.prototype.invert = function () {
     var a = this.a;
     var b = this.b;
     var c = this.c;
@@ -82,7 +82,7 @@ Matrix2x3.prototype.invert = function () {
     return this;
 };
 
-Matrix2x3.prototype.transformPoint = function (vector, out) {
+Matrix23.prototype.transformPoint = function (vector, out) {
     out = out || new Vec2();
     var x = vector.x;   // vector may === out
     out.x = this.a * x + this.c * vector.y + this.tx;
@@ -91,14 +91,14 @@ Matrix2x3.prototype.transformPoint = function (vector, out) {
 };
 
 // negative scaling (mirroring) is not supported
-Matrix2x3.prototype.getScale = function (out) {
+Matrix23.prototype.getScale = function (out) {
     out = out || new Vec2();
     out.x = Math.sqrt(this.a * this.a + this.b * this.b);
     out.y = Math.sqrt(this.c * this.c + this.d * this.d);
     return out;
 };
 
-Matrix2x3.prototype.setScale = function (x, y) {
+Matrix23.prototype.setScale = function (x, y) {
     var s = this.getScale();
     x /= s.x;
     y /= s.y;
@@ -109,11 +109,11 @@ Matrix2x3.prototype.setScale = function (x, y) {
     return this;
 };
 
-Matrix2x3.prototype.getRotation = function () {
+Matrix23.prototype.getRotation = function () {
     return Math.atan2(this.c, this.d);  // or atan2(-b, a);
 };
 
-Matrix2x3.prototype.rotate = function (angle) {
+Matrix23.prototype.rotate = function (angle) {
     var sin = Math.sin(angle);
     var cos = Math.cos(angle);
     var a = this.a;
@@ -126,12 +126,12 @@ Matrix2x3.prototype.rotate = function (angle) {
 };
 
 /*
-Matrix2x3.prototype.translate = function (x, y) {
+Matrix23.prototype.translate = function (x, y) {
     this.tx += x;
     this.ty += y;
 };
 
-Matrix2x3.prototype.scale = function (x, y) {
+Matrix23.prototype.scale = function (x, y) {
     this.a *= x;
     this.b *= x;
     this.c *= y;

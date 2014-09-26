@@ -26,7 +26,7 @@ var paths = {
         'src/object.js',
         'src/hashObject.js',
         'src/vec2.js',
-        'src/matrix2x3.js',
+        'src/matrix23.js',
         'src/rect.js',
         'src/color.js',
 
