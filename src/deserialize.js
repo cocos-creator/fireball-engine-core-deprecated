@@ -26,12 +26,12 @@ var _Deserializer = (function () {
             // 
             this.deserializedData = refCount > 0 ? referencedList[0] : [];
 
-            // callback
-            for (var j = 0; j < refCount; j++) {
-                if (referencedList[j].onAfterDeserialize) {
-                    referencedList[j].onAfterDeserialize();
-                }
-            }
+            //// callback
+            //for (var j = 0; j < refCount; j++) {
+            //    if (referencedList[j].onAfterDeserialize) {
+            //        referencedList[j].onAfterDeserialize();
+            //    }
+            //}
         }
         else {
             //jsonObj = jsonObj || {};
@@ -39,10 +39,10 @@ var _Deserializer = (function () {
             _dereference(deserializedData, [deserializedData]);
             this.deserializedData = deserializedData;
 
-            // callback
-            if (deserializedData.onAfterDeserialize) {
-                deserializedData.onAfterDeserialize();
-            }
+            //// callback
+            //if (deserializedData.onAfterDeserialize) {
+            //    deserializedData.onAfterDeserialize();
+            //}
         }
     }
 
