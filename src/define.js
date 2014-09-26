@@ -31,7 +31,7 @@ var ToDestroy = 1 << 1;
 var DontSave = 1 << 2;
 var EditorOnly  = 1 << 3;       // dont save in build
 
-FIRE.ObjectFlags = {
+FIRE._ObjectFlags = {
     DontSave: DontSave,
     EditorOnly: EditorOnly,
 };
