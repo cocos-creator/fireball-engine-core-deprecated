@@ -1,9 +1,9 @@
-FIRE.Texture = (function () {
+Fire.Texture = (function () {
 
     /**
      * @param {Image} [img] - the html image element to render
      */
-    var Texture = FIRE.define('FIRE.Texture', FIRE.Asset, function (img) {
+    var Texture = Fire.define('Fire.Texture', Fire.Asset, function (img) {
         Texture.$super.call(this);
 
         if (img) {
@@ -28,11 +28,11 @@ FIRE.Texture = (function () {
         return t;
     })({});
 
-    Texture.prop('image', null, FIRE.HostType('Image'));
-    Texture.prop('width', 0, FIRE.Integer);
-    Texture.prop('height', 0, FIRE.Integer);
-    Texture.prop('wrapMode', Texture.WrapMode.Clamp, FIRE.Enum(Texture.WrapMode));
-    Texture.prop('filterMode', Texture.FilterMode.Bilinear, FIRE.Enum(Texture.FilterMode));
+    Texture.prop('image', null, Fire.HostType('Image'));
+    Texture.prop('width', 0, Fire.Integer);
+    Texture.prop('height', 0, Fire.Integer);
+    Texture.prop('wrapMode', Texture.WrapMode.Clamp, Fire.Enum(Texture.WrapMode));
+    Texture.prop('filterMode', Texture.FilterMode.Bilinear, Fire.Enum(Texture.FilterMode));
 
     //Texture.prototype.onAfterDeserialize = function () {
     //    this.width = this.image.width;

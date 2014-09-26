@@ -9,7 +9,7 @@ FObject = (function () {
             enumerable: false
         });
     }
-    FIRE.registerClass("FIRE.FObject", FObject);
+    Fire.registerClass("Fire.FObject", FObject);
 
     //// enum
 
@@ -27,7 +27,7 @@ FObject = (function () {
      * Checks whether the object is not destroyed
      * @method FObject.isValid
      * @return {boolean} whether it is not destroyed
-     * @see FIRE.FObject#destroy
+     * @see Fire.FObject#destroy
      * @static
      */
     Object.defineProperty(FObject, 'isValid', {
@@ -67,10 +67,10 @@ FObject = (function () {
     /**
      * Destroy this FObject, and release all its own references to other resources.
      * After destory, this FObject is not usable any more.
-     * You can use FIRE.isValid(obj) (or obj.isValid if obj is non-nil) to check whether the object is destroyed before accessing it.
-     * @method FIRE.FObject#destroy
+     * You can use Fire.isValid(obj) (or obj.isValid if obj is non-nil) to check whether the object is destroyed before accessing it.
+     * @method Fire.FObject#destroy
      * @return {boolean} whether it is the first time the destroy being called
-     * @see FIRE.isValid
+     * @see Fire.isValid
      */
     FObject.prototype.destroy = function () {
         if (this._objFlags & Destroyed) {
@@ -103,7 +103,7 @@ FObject = (function () {
     /**
      * Checks whether the object is not destroyed
      * @return {boolean} whether it is not destroyed
-     * @see FIRE.FObject#destroy
+     * @see Fire.FObject#destroy
      */
     Object.defineProperty(FObject.prototype, 'isValid', {
         get: function () {
@@ -114,4 +114,4 @@ FObject = (function () {
     return FObject;
 })();
 
-FIRE.FObject = FObject;
+Fire.FObject = FObject;

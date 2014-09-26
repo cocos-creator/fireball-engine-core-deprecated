@@ -1,20 +1,20 @@
 ﻿largeModule('Class');
 
 test('test', function () {
-    var Animal = FIRE.define('Animal')
+    var Animal = Fire.define('Animal')
                      .prop('name', '...', { type: 'Float' }, { serializable: true })
                      .prop('eat', function () {
                          return 'eating';
                      });
-    strictEqual(FIRE.getClassName(Animal), 'Animal', 'get class name');
+    strictEqual(Fire.getClassName(Animal), 'Animal', 'get class name');
 
-    Animal.prop('weight', -1, FIRE.NonSerialized);
+    Animal.prop('weight', -1, Fire.NonSerialized);
     Animal.set('weight10', function (value) {
         this.weight = Math.floor(value / 10);
     });
     Animal.get('weight10', function () {
         return this.weight * 10;
-    }, FIRE.Integer);
+    }, Fire.Integer);
     Animal.getset('weight5x',
         function () {
             return this.weight * 5;
@@ -31,9 +31,9 @@ test('test', function () {
     strictEqual(instance.eat(), 'eating', 'get chained property');
     strictEqual(instance.weight, -1, 'get partial property');
 
-    strictEqual(FIRE.attr(Animal, 'name').type, 'Float', 'get name type');
-    strictEqual(FIRE.attr(Animal, 'name').serializable, true, 'get name serializable');
-    strictEqual(FIRE.attr(Animal, 'weight').serializable, false, 'get attribute');
+    strictEqual(Fire.attr(Animal, 'name').type, 'Float', 'get name type');
+    strictEqual(Fire.attr(Animal, 'name').serializable, true, 'get name serializable');
+    strictEqual(Fire.attr(Animal, 'weight').serializable, false, 'get attribute');
 
     // getter / setter
 
@@ -47,17 +47,17 @@ test('test', function () {
 
     // constructor
 
-    FIRE.undefine(Animal);
+    Fire.undefine(Animal);
 
     var constructor = new callback();
-    Animal = FIRE.define('Animal', constructor)
+    Animal = Fire.define('Animal', constructor)
                  .prop('weight', 100);
 
     constructor.enable();
     var instance1 = new Animal();
     constructor.once('call constructor');
 
-    strictEqual(FIRE.attr(Animal, 'weight').default, 100, 'can get attribute even has constructor');
+    strictEqual(Fire.attr(Animal, 'weight').default, 100, 'can get attribute even has constructor');
     strictEqual(instance1.weight, 100, 'property inited even has constructor');
 
     var instance2 = new Animal();
@@ -67,33 +67,33 @@ test('test', function () {
     var instance3 = new Animal();
     strictEqual(instance3.weight, 100, 'class define not changed');
 
-    FIRE.undefine(Animal);
+    Fire.undefine(Animal);
 });
 
 test('Inherit', function () {
-    var Animal = FIRE.define('FIRE.Animal').prop('name', 'ann');
-    var Dog = FIRE.define('FIRE.Dog', Animal)
+    var Animal = Fire.define('Fire.Animal').prop('name', 'ann');
+    var Dog = Fire.define('Fire.Dog', Animal)
                    .prop('name', 'doge', { type: 'str' });
-    var Husky = FIRE.define('FIRE.Husky', Dog).prop('weight', 100);
+    var Husky = Fire.define('Fire.Husky', Dog).prop('weight', 100);
 
-    strictEqual(FIRE.getClassName(Animal), 'FIRE.Animal', 'can get class name 1');
-    strictEqual(FIRE.getClassName(Dog), 'FIRE.Dog', 'can get class name 2');
-    strictEqual(FIRE.getClassName(Husky), 'FIRE.Husky', 'can get class name 3');
+    strictEqual(Fire.getClassName(Animal), 'Fire.Animal', 'can get class name 1');
+    strictEqual(Fire.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
+    strictEqual(Fire.getClassName(Husky), 'Fire.Husky', 'can get class name 3');
     
     strictEqual(Dog.$super, Animal, 'can get super');
 
-    strictEqual(FIRE.attr(Animal, 'name'), FIRE.attr(Dog, 'name'), 
+    strictEqual(Fire.attr(Animal, 'name'), Fire.attr(Dog, 'name'), 
                 "inheritance chain shares the same property's attribute");
-    strictEqual(FIRE.attr(Dog, 'name').type, 'str', 'can modify attribute');
-    strictEqual(FIRE.attr(Dog, 'weight'), undefined, 'base property not added');
+    strictEqual(Fire.attr(Dog, 'name').type, 'str', 'can modify attribute');
+    strictEqual(Fire.attr(Dog, 'weight'), undefined, 'base property not added');
 
-    strictEqual(FIRE.superof( Animal, Dog),  true, 'Animal is super of Dog');
-    strictEqual(FIRE.superof( Animal, Husky),  true, 'Animal is super of Husky');
-    strictEqual(FIRE.superof( Dog, Husky),  true, 'Dog is super of Husky');
+    strictEqual(Fire.superof( Animal, Dog),  true, 'Animal is super of Dog');
+    strictEqual(Fire.superof( Animal, Husky),  true, 'Animal is super of Husky');
+    strictEqual(Fire.superof( Dog, Husky),  true, 'Dog is super of Husky');
 
-    strictEqual(FIRE.childof( Dog, Animal),  true, 'Animal is child of Dog');
-    strictEqual(FIRE.childof( Husky, Animal),  true, 'Animal is child of Husky');
-    strictEqual(FIRE.childof( Dog, Husky),  false, 'Dog is not child of Husky');
+    strictEqual(Fire.childof( Dog, Animal),  true, 'Animal is child of Dog');
+    strictEqual(Fire.childof( Husky, Animal),  true, 'Animal is child of Husky');
+    strictEqual(Fire.childof( Dog, Husky),  false, 'Dog is not child of Husky');
 
     var husky = new Husky();
     var dog = new Dog();
@@ -104,19 +104,19 @@ test('Inherit', function () {
     deepEqual(Husky.__props__, ['name', 'weight'], 'can inherit prop list');
     deepEqual(Dog.__props__, ['name'], 'base prop list not changed');
 
-    FIRE.undefine(Animal, Dog, Husky);
+    Fire.undefine(Animal, Dog, Husky);
 });
 
 test('Inherit + constructor', function () {
     var animalConstructor = callback();
     var huskyConstructor = callback();
-    var Animal = FIRE.define('FIRE.Animal', animalConstructor)
+    var Animal = Fire.define('Fire.Animal', animalConstructor)
                       .prop('name', 'ann');
-    var Dog = FIRE.define('FIRE.Dog', Animal)
+    var Dog = Fire.define('Fire.Dog', Animal)
                   .prop('name', 'doge');
-    var Husky = FIRE.define('FIRE.Husky', Dog, huskyConstructor);
+    var Husky = Fire.define('Fire.Husky', Dog, huskyConstructor);
 
-    strictEqual(FIRE.getClassName(Dog), 'FIRE.Dog', 'can get class name 2');
+    strictEqual(Fire.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
 
     animalConstructor.disable('base construct should called by sub construct');
     huskyConstructor.enable();
@@ -134,13 +134,13 @@ test('Inherit + constructor', function () {
     strictEqual(dog.name, 'doge', 'can override property');
     strictEqual(husky.name, 'doge', 'can inherit property');
 
-    FIRE.undefine(Animal, Dog, Husky);
+    Fire.undefine(Animal, Dog, Husky);
 });
 
 test('prop reference', function () {
-    var type = FIRE.define('FIRE.MyType')
+    var type = Fire.define('Fire.MyType')
                    .prop('ary', [])
-                   .prop('vec2', new FIRE.Vec2(10, 20))
+                   .prop('vec2', new Fire.Vec2(10, 20))
                    .prop('dict', {});
     var obj1 = new type();
     var obj2 = new type();
@@ -149,5 +149,5 @@ test('prop reference', function () {
     notStrictEqual(obj1.ary, obj2.ary, 'empty array reference not equal');
     notStrictEqual(obj1.dict, obj2.dict, 'empty dict reference not equal');
 
-    FIRE.undefine(type);
+    Fire.undefine(type);
 });

@@ -3,7 +3,7 @@
 largeModule('Serialize');
 
 var match = function (obj, expect, info) {
-    deepEqual(JSON.parse(FIRE.serialize(obj)), expect, info);
+    deepEqual(JSON.parse(Fire.serialize(obj)), expect, info);
 };
 
 test('basic test', function() {
@@ -28,8 +28,8 @@ test('basic test', function() {
             this.emptyObj = {};
             this.obj = {};
         }
-        FIRE.extend(MyAsset, _super);
-        FIRE.registerClass('MyAsset', MyAsset);
+        Fire.extend(MyAsset, _super);
+        Fire.registerClass('MyAsset', MyAsset);
 
         // should not serialize ----------------------------
         MyAsset.staticFunc = function () { };
@@ -64,7 +64,7 @@ test('basic test', function() {
     match(asset, expect, 'type test');
     match(asset, expect, 'test re-serialize again');
 
-    FIRE.unregisterClass(MyAsset);
+    Fire.unregisterClass(MyAsset);
 });
 
 test('nil', function () {
@@ -75,11 +75,11 @@ test('nil', function () {
     var expect = '{\n\
     "null": null\n\
 }'
-    equal(FIRE.serialize(obj), expect);
+    equal(Fire.serialize(obj), expect);
 });
 
-test('test type derived by FIRE.define', function() {
-    var MyAsset = FIRE.define('MyAsset', FIRE.Asset, function () {
+test('test type derived by Fire.define', function() {
+    var MyAsset = Fire.define('MyAsset', Fire.Asset, function () {
                   this.array = [1, '2', {a:3}, [4, [5]], true];
                   })
                       .prop('emptyArray', [])
@@ -119,24 +119,24 @@ test('test type derived by FIRE.define', function() {
 
     match(asset, expect, 'type test');
 
-    FIRE.undefine(MyAsset);
+    Fire.undefine(MyAsset);
 });
 
-test('test type created by FIRE.define', function () {
-    var Sprite = FIRE.define('Sprite', function () {
+test('test type created by Fire.define', function () {
+    var Sprite = Fire.define('Sprite', function () {
         this.image = 'sprite.png';
     })
-    Sprite.prop('size', new FIRE.Vec2(128, 128));
+    Sprite.prop('size', new Fire.Vec2(128, 128));
 
     var sprite = new Sprite();
-    var actual = JSON.parse(FIRE.serialize(sprite));
+    var actual = JSON.parse(Fire.serialize(sprite));
 
     strictEqual(actual.image, undefined, 'should not serialize variable which not defined by property');
 
     var expected = {
         __type__: 'Sprite',
         size: {
-            __type__: "FIRE.Vec2",
+            __type__: "Fire.Vec2",
             x: 128,
             y: 128
         }
@@ -144,7 +144,7 @@ test('test type created by FIRE.define', function () {
 
     deepEqual(actual, expected, 'can serialize');
 
-    FIRE.undefine(Sprite);
+    Fire.undefine(Sprite);
 });
 
 test('test circular reference', function () {
@@ -159,8 +159,8 @@ test('test circular reference', function () {
             // array1 = [1, array2]
             // array2 = [array1, 2]
         }
-        FIRE.extend(MyAsset, _super);
-        FIRE.registerClass('MyAsset', MyAsset);
+        Fire.extend(MyAsset, _super);
+        Fire.registerClass('MyAsset', MyAsset);
 
         return MyAsset;
     })();
@@ -176,7 +176,7 @@ test('test circular reference', function () {
     ];
     match(asset, expect, 'two arrays can circular reference each other');
     match(asset, expect, 'test re-serialize again');
-    FIRE.unregisterClass(MyAsset);
+    Fire.unregisterClass(MyAsset);
 
     MyAsset = (function () {
         var _super = function () {};
@@ -187,8 +187,8 @@ test('test circular reference', function () {
             this.dict2 = {num: 2, other: this.dict1};
             this.dict1.other = this.dict2;
         }
-        FIRE.extend(MyAsset, _super);
-        FIRE.registerClass('MyAsset', MyAsset);
+        Fire.extend(MyAsset, _super);
+        Fire.registerClass('MyAsset', MyAsset);
 
         return MyAsset;
     })();
@@ -208,17 +208,17 @@ test('test circular reference', function () {
     //expect[1].sameRef = { __id__: 1 };
     //match(asset, expect, 'more referenced object just serialize its id');
 
-    FIRE.unregisterClass(MyAsset);
+    Fire.unregisterClass(MyAsset);
 });
 
 test('test serializable attributes', function () {
-    var Sprite = FIRE.define('Sprite')
-                     .prop('trimThreshold', 2, FIRE.EditorOnly)
-                     .prop('_isValid', true, FIRE.NonSerialized);
+    var Sprite = Fire.define('Sprite')
+                     .prop('trimThreshold', 2, Fire.EditorOnly)
+                     .prop('_isValid', true, Fire.NonSerialized);
 
     var sprite = new Sprite();
-    var resultInEditor = JSON.parse(FIRE.serialize(sprite));
-    var resultInPlayer = JSON.parse(FIRE.serialize(sprite, true));
+    var resultInEditor = JSON.parse(Fire.serialize(sprite));
+    var resultInPlayer = JSON.parse(Fire.serialize(sprite, true));
 
     strictEqual(resultInEditor.trimThreshold, 2, 'serialize editor only in editor');
     strictEqual(resultInPlayer.trimThreshold, undefined, 'should not serialize editor only in player');
@@ -226,29 +226,29 @@ test('test serializable attributes', function () {
     strictEqual(resultInEditor._isValid, undefined, 'should not serialize non-serialized in editor');
     strictEqual(resultInPlayer._isValid, undefined, 'should not serialize non-serialized in player');
 
-    FIRE.undefine(Sprite);
+    Fire.undefine(Sprite);
 });
 
 test('test asset property', function () {
-    var sprite = new FIRE.Sprite();
-    sprite.texture = new FIRE.Texture();
+    var sprite = new Fire.Sprite();
+    sprite.texture = new Fire.Texture();
     var uuid = '541020432560';
     sprite.texture._uuid = uuid;
 
-    var result = JSON.parse(FIRE.serialize(sprite));
+    var result = JSON.parse(Fire.serialize(sprite));
 
     deepEqual(result.texture, {__uuid__: uuid}, 'serialize asset as uuid reference');
 });
 
 test('test FObject reference', function () {
-    var fobj = new FIRE.FObject();
+    var fobj = new Fire.FObject();
     var asset = { ref1: fobj, ref2: fobj };
     var expected = [
         {
           "ref1": { "__id__": 1 },
           "ref2": { "__id__": 1 }
         },
-        { "__type__": "FIRE.FObject" },
+        { "__type__": "Fire.FObject" },
     ];
     match(asset, expected, 'references should the same');
 });

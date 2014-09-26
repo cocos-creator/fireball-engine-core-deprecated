@@ -1,7 +1,7 @@
-FIRE.Atlas = (function () {
+Fire.Atlas = (function () {
 
-    var Atlas = FIRE.define("FIRE.Atlas", FIRE.Asset, null);  // supply a null constructor to explicitly indicates that 
-                                                              // inherit from Asset, because Asset not defined by FIRE.define
+    var Atlas = Fire.define("Fire.Atlas", Fire.Asset, null);  // supply a null constructor to explicitly indicates that 
+                                                              // inherit from Asset, because Asset not defined by Fire.define
 
     // enum Algorithm
     Atlas.Algorithm = (function (t) {
@@ -31,27 +31,27 @@ FIRE.Atlas = (function () {
 
     // basic settings
     Atlas.prop('autoSize', true);
-    Atlas.prop('width', 512, FIRE.Integer, FIRE.Custom('Editor.SizeList') );
-    Atlas.prop('height', 512, FIRE.Integer, FIRE.Custom('Editor.SizeList') );
-    Atlas.prop('trim', true, FIRE.EditorOnly);
-    Atlas.prop('trimThreshold', 1, FIRE.Integer, FIRE.EditorOnly);
+    Atlas.prop('width', 512, Fire.Integer, Fire.Custom('Editor.SizeList') );
+    Atlas.prop('height', 512, Fire.Integer, Fire.Custom('Editor.SizeList') );
+    Atlas.prop('trim', true, Fire.EditorOnly);
+    Atlas.prop('trimThreshold', 1, Fire.Integer, Fire.EditorOnly);
 
     // layout settings
-    Atlas.prop('algorithm', Atlas.Algorithm.MaxRect, FIRE.Enum(Atlas.Algorithm), FIRE.EditorOnly);
-    Atlas.prop('sortBy', Atlas.SortBy.UseBest, FIRE.Enum(Atlas.SortBy), FIRE.EditorOnly);
-    Atlas.prop('sortOrder', Atlas.SortOrder.UseBest, FIRE.Enum(Atlas.SortOrder), FIRE.EditorOnly);
-    Atlas.prop('allowRotate', true, FIRE.EditorOnly);
+    Atlas.prop('algorithm', Atlas.Algorithm.MaxRect, Fire.Enum(Atlas.Algorithm), Fire.EditorOnly);
+    Atlas.prop('sortBy', Atlas.SortBy.UseBest, Fire.Enum(Atlas.SortBy), Fire.EditorOnly);
+    Atlas.prop('sortOrder', Atlas.SortOrder.UseBest, Fire.Enum(Atlas.SortOrder), Fire.EditorOnly);
+    Atlas.prop('allowRotate', true, Fire.EditorOnly);
     
     // build settings
-    Atlas.prop('useContourBleed', true, FIRE.DisplayName('Contour Bleed'),  // 应用于sprite内部，只改变全透明像素的颜色
-                                        FIRE.EditorOnly,
-                                        FIRE.Tooltip('reduce border artifacts'));
+    Atlas.prop('useContourBleed', true, Fire.DisplayName('Contour Bleed'),  // 应用于sprite内部，只改变全透明像素的颜色
+                                        Fire.EditorOnly,
+                                        Fire.Tooltip('reduce border artifacts'));
     
-    Atlas.prop('usePaddingBleed', true, FIRE.DisplayName('Padding Bleed'),  // 应用于sprite外部，同时复制颜色和透明度
-                                        FIRE.EditorOnly,
-                                        FIRE.Tooltip('extrude'));
-    Atlas.prop('customPadding', 2, FIRE.Integer, FIRE.EditorOnly);
-    Atlas.prop('buildColor', new FIRE.Color(1, 1, 1, 1), FIRE.Nullable('customBuildColor', false), FIRE.EditorOnly);
+    Atlas.prop('usePaddingBleed', true, Fire.DisplayName('Padding Bleed'),  // 应用于sprite外部，同时复制颜色和透明度
+                                        Fire.EditorOnly,
+                                        Fire.Tooltip('extrude'));
+    Atlas.prop('customPadding', 2, Fire.Integer, Fire.EditorOnly);
+    Atlas.prop('buildColor', new Fire.Color(1, 1, 1, 1), Fire.Nullable('customBuildColor', false), Fire.EditorOnly);
     
     //
     Atlas.prototype.add = function ( sprite ) {
@@ -146,7 +146,7 @@ FIRE.Atlas = (function () {
         // (we do not use paddedHeight, because the padding area is reserved and should
         // never be occupied)
         node.right = { 
-            rect: new FIRE.Rect (
+            rect: new Fire.Rect (
                 rect.x + paddedWidth, 
                 rect.y,
                 rect.width - paddedWidth, 
@@ -158,7 +158,7 @@ FIRE.Atlas = (function () {
         
         // create second child node in remaining space at the bottom, occupying the entire width
         node.bottom = {
-            rect: new FIRE.Rect ( 
+            rect: new Fire.Rect ( 
                 rect.x,
                 rect.y + paddedHeight,
                 rect.width, 
@@ -173,7 +173,7 @@ FIRE.Atlas = (function () {
     };
     var _treeLayout = function (atlas) {
         var root = {
-            rect: new FIRE.Rect( 
+            rect: new Fire.Rect( 
                 0,
                 0,
                 atlas.width,
@@ -247,12 +247,12 @@ FIRE.Atlas = (function () {
         // cleanUpFreeRects
         for ( i = 0; i < freeRects.length; ++i ) {
             for ( var j = i + 1; j < freeRects.length; ++j ) {
-                if ( FIRE.Rect.contains(freeRects[i], freeRects[j]) === -1 ) {
+                if ( Fire.Rect.contains(freeRects[i], freeRects[j]) === -1 ) {
                     freeRects.splice(i, 1);
                     --i;
                     break;
                 }
-                if ( FIRE.Rect.contains(freeRects[j], freeRects[i]) === -1 ) {
+                if ( Fire.Rect.contains(freeRects[j], freeRects[i]) === -1 ) {
                     freeRects.splice(j, 1);
                     --j;
                 }
@@ -263,12 +263,12 @@ FIRE.Atlas = (function () {
     //
     var _maxRectLayout = function (atlas) {
         var freeRects = [];
-        freeRects.push ( new FIRE.Rect( 0, 0, atlas.width + atlas.customPadding, atlas.height + atlas.customPadding ) );
+        freeRects.push ( new Fire.Rect( 0, 0, atlas.width + atlas.customPadding, atlas.height + atlas.customPadding ) );
         var score1/*, scroe2*/;
         var scoreRect = function (_freeRects, _width, _height, _allowRotate) {
             score1 = Number.MAX_VALUE;
             score2 = Number.MAX_VALUE;
-            var newRect = new FIRE.Rect(0, 0, 1, 1);
+            var newRect = new Fire.Rect(0, 0, 1, 1);
             var found = false;
 
             //
@@ -329,7 +329,7 @@ FIRE.Atlas = (function () {
             var bestScore1 = Number.MAX_VALUE;
             var bestScore2 = Number.MAX_VALUE;
             var bestElementIdx = -1;
-            var bestRect = new FIRE.Rect( 0, 0, 1, 1 );
+            var bestRect = new Fire.Rect( 0, 0, 1, 1 );
 
             for ( var i = 0; i < processElements.length; ++i ) {
                 var newRect = scoreRect ( freeRects, 

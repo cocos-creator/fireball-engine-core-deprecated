@@ -1,6 +1,6 @@
 
 //
-FIRE.getEnumList = function (enumDef) {
+Fire.getEnumList = function (enumDef) {
     if ( enumDef.__enums__ !== undefined )
         return enumDef.__enums__;
 
@@ -20,7 +20,7 @@ FIRE.getEnumList = function (enumDef) {
 };
 
 //
-FIRE.getVarFrom = function ( obj, text ) {
+Fire.getVarFrom = function ( obj, text ) {
     var res = text.split('.');
     var curObj = obj; 
     for ( var i = 0; i < res.length; ++i ) {
@@ -33,7 +33,7 @@ FIRE.getVarFrom = function ( obj, text ) {
 };
 
 // r, g, b must be [0.0, 1.0]
-FIRE.rgb2hsv = function ( r, g, b ) {
+Fire.rgb2hsv = function ( r, g, b ) {
     var hsv = { h: 0, s: 0, v: 0 };
     var max = Math.max(r,g,b);
     var min = Math.min(r,g,b);
@@ -53,7 +53,7 @@ FIRE.rgb2hsv = function ( r, g, b ) {
 };
 
 // the return rgb will be in [0.0, 1.0]
-FIRE.hsv2rgb = function ( h, s, v ) {
+Fire.hsv2rgb = function ( h, s, v ) {
     var rgb = { r: 0, g: 0, b: 0 };
     if (s === 0) {
         rgb.r = rgb.g = rgb.b = v;
@@ -114,7 +114,7 @@ FIRE.hsv2rgb = function ( h, s, v ) {
     return rgb;
 };
 
-FIRE.CallbacksInvoker = (function () {
+Fire.CallbacksInvoker = (function () {
 
     /**
      * The callbacks invoker to register and invoke multi callbacks by key

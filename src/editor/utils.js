@@ -56,5 +56,5 @@
         }
     }
 
-    return new FIRE.Rect(tx, ty, tw, th);
+    return new Fire.Rect(tx, ty, tw, th);
 };

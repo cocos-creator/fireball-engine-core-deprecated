@@ -1,11 +1,11 @@
-FIRE.Color = (function () {
+Fire.Color = (function () {
     function Color( r, g, b, a ) {
         this.r = r;
         this.g = g;
         this.b = b;
         this.a = a;
     }
-    FIRE.registerClass('FIRE.Color', Color);
+    Fire.registerClass('Fire.Color', Color);
 
     Color.prototype.clone = function () {
         return new Color(this.r, this.g, this.b, this.a);
@@ -43,7 +43,7 @@ FIRE.Color = (function () {
     };
 
     Color.prototype.equalTo = function ( rhs ) {
-        if ( !(rhs instanceof FIRE.Color) )
+        if ( !(rhs instanceof Fire.Color) )
             return false;
 
         if ( this.r !== rhs.r )
@@ -103,7 +103,7 @@ FIRE.Color = (function () {
     };
 
     Color.prototype.fromHSV = function ( h, s, v ) {
-        var rgb = FIRE.hsv2rgb( h, s, v ); 
+        var rgb = Fire.hsv2rgb( h, s, v ); 
         this.r = rgb.r;
         this.g = rgb.g;
         this.b = rgb.b;
@@ -111,7 +111,7 @@ FIRE.Color = (function () {
     };
 
     Color.prototype.toHSV = function () {
-        return FIRE.rgb2hsv( this.r, this.g, this.b );
+        return Fire.rgb2hsv( this.r, this.g, this.b );
     };
 
     return Color;

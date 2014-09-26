@@ -4,7 +4,7 @@ var _Deserializer = (function () {
     function _Deserializer(data, result, editor) {
         this._editor = (typeof editor !== 'undefined') ? editor : true;
         
-        this.result = result || new FIRE._DeserializeInfo();
+        this.result = result || new Fire._DeserializeInfo();
 
         var jsonObj = null;
         if (typeof data === 'string') {
@@ -103,9 +103,9 @@ var _Deserializer = (function () {
         
         var asset = null;
         var klass = null;
-        klass = FIRE.getClassByName(serialized.__type__);
+        klass = Fire.getClassByName(serialized.__type__);
         if (!klass) {
-            console.warn('FIRE.deserialize: unknown type: ' + serialized.__type__);
+            console.warn('Fire.deserialize: unknown type: ' + serialized.__type__);
             return null;
             //// jshint -W010
             //asset = new Object();
@@ -115,11 +115,11 @@ var _Deserializer = (function () {
         asset = new klass();
 
         // parse property
-        if (klass && FIRE._isFireClass(klass)) {
+        if (klass && Fire._isFireClass(klass)) {
             if (klass.__props__) {
                 for (var p = 0; p < klass.__props__.length; p++) {
                     var propName = klass.__props__[p];
-                    var attrs = FIRE.attr(klass, propName);
+                    var attrs = Fire.attr(klass, propName);
                     var hostType = attrs.hostType;
                     if (!hostType) {
                         // skip nonSerialized
@@ -173,29 +173,29 @@ var _Deserializer = (function () {
 })();
 
 /**
- * @property {boolean} FIRE.deserializing
+ * @property {boolean} Fire.deserializing
  */
-FIRE._isDeserializing = false;
+Fire._isDeserializing = false;
 
 /**
- * Deserialize json to FIRE.Asset
- * @param {(string|object)} data - the serialized FIRE.Asset json string or json object
- * @param {FIRE._DeserializeInfo} [result] - additional loading result
- * @param {boolean} [editor=true] - if false, property with FIRE.EditorOnly will be discarded
+ * Deserialize json to Fire.Asset
+ * @param {(string|object)} data - the serialized Fire.Asset json string or json object
+ * @param {Fire._DeserializeInfo} [result] - additional loading result
+ * @param {boolean} [editor=true] - if false, property with Fire.EditorOnly will be discarded
  * @returns {object} the main data(asset)
  */
-FIRE.deserialize = function (data, result, editor) {
-    FIRE._isDeserializing = true;
+Fire.deserialize = function (data, result, editor) {
+    Fire._isDeserializing = true;
     var deserializer = new _Deserializer(data, result, editor);
-    FIRE._isDeserializing = false;
+    Fire._isDeserializing = false;
     return deserializer.deserializedData;
 };
 
 /**
  * 包含反序列化时的一些信息
- * @class FIRE._DeserializeInfo
+ * @class Fire._DeserializeInfo
  */
-FIRE._DeserializeInfo = function () {
+Fire._DeserializeInfo = function () {
 
     //this.urlList = [];
     //this.callbackList = [];
@@ -223,7 +223,7 @@ FIRE._DeserializeInfo = function () {
      */
     this.hostProp = '';
     ///**
-    // * @property {FIRE.Asset[]} hostObjList - the obj list whose corresponding host object needs to load
+    // * @property {Fire.Asset[]} hostObjList - the obj list whose corresponding host object needs to load
     // */
     //this.hostObjList = [];
     ///**
@@ -232,7 +232,7 @@ FIRE._DeserializeInfo = function () {
     //this.hostPropList = [];
 };
 
-FIRE._DeserializeInfo.prototype.reset = function () {
+Fire._DeserializeInfo.prototype.reset = function () {
     this.uuidList.length = 0;
     this.uuidObjList.length = 0;
     this.uuidPropList.length = 0;

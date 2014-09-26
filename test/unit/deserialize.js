@@ -3,12 +3,12 @@
 largeModule('Deserialize');
 
 test('basic deserialize test', function () {
-    deepEqual(FIRE.deserialize({}), {}, 'smoke test1');
-    deepEqual(FIRE.deserialize([]), [], 'smoke test2');
+    deepEqual(Fire.deserialize({}), {}, 'smoke test1');
+    deepEqual(Fire.deserialize([]), [], 'smoke test2');
 
     // TODO:
     MyAsset = (function () {
-        var _super = FIRE.Asset;
+        var _super = Fire.Asset;
 
         function MyAsset () {
             _super.call(this);
@@ -22,18 +22,18 @@ test('basic deserialize test', function () {
             this.obj = {};
 
         }
-        FIRE.extend(MyAsset, _super);
-        FIRE.registerClass('MyAsset', MyAsset);
+        Fire.extend(MyAsset, _super);
+        Fire.registerClass('MyAsset', MyAsset);
         return MyAsset;
     })();
 
     var asset = new MyAsset();
-    var serializedAsset = FIRE.serialize(asset, false, false);
-    var deserializedAsset = FIRE.deserialize(serializedAsset);
+    var serializedAsset = Fire.serialize(asset, false, false);
+    var deserializedAsset = Fire.deserialize(serializedAsset);
 
     deepEqual(deserializedAsset, asset, 'test deserialize');
 
-    FIRE.unregisterClass(MyAsset);
+    Fire.unregisterClass(MyAsset);
 });
 
 test('nil', function () {
@@ -41,29 +41,29 @@ test('nil', function () {
         'null': null,
     };
     var str = '{ "null": null }'
-    deepEqual(FIRE.deserialize(str), obj, 'can deserialize null');
+    deepEqual(Fire.deserialize(str), obj, 'can deserialize null');
 
-    var MyAsset = FIRE.define('MyAsset', function () {
+    var MyAsset = Fire.define('MyAsset', function () {
         this.foo = 'bar';
     }).prop('nil', 1234);
 
     str = '{ "__type__": "MyAsset" }'
     obj = new MyAsset();
-    deepEqual(FIRE.deserialize(str), obj, 'use default value');
+    deepEqual(Fire.deserialize(str), obj, 'use default value');
 
     str = '{ "__type__": "MyAsset", "nil": null }'
     obj = new MyAsset();
     obj.nil = null;
-    deepEqual(FIRE.deserialize(str), obj, 'can override as null');
+    deepEqual(Fire.deserialize(str), obj, 'can override as null');
 
-    FIRE.unregisterClass(MyAsset);
+    Fire.unregisterClass(MyAsset);
 });
 
 test('json deserialize test', function () {
 
     // TODO:
     MyAsset = (function () {
-        var _super = FIRE.Asset;
+        var _super = Fire.Asset;
 
         function MyAsset () {
             _super.call(this);
@@ -77,20 +77,20 @@ test('json deserialize test', function () {
             this.obj = {};
 
         }
-        FIRE.extend(MyAsset, _super);
-        FIRE.registerClass('MyAsset', MyAsset);
+        Fire.extend(MyAsset, _super);
+        Fire.registerClass('MyAsset', MyAsset);
         return MyAsset;
     })();
 
     var jsonStr = '{"__type__":"MyAsset","emptyArray":[],"array":[1,"2",{"a":3},[4,[5]],true],"string":"unknown","number":1,"boolean":true,"emptyObj":{},"obj":{},"dynamicProp":false}';
 
-    var deserializedAsset = FIRE.deserialize(jsonStr);
+    var deserializedAsset = Fire.deserialize(jsonStr);
 
     var expectAsset = new MyAsset();
 
     deepEqual(deserializedAsset, expectAsset, 'json deserialize test');
 
-    FIRE.unregisterClass(MyAsset);
+    Fire.unregisterClass(MyAsset);
 });
 
 test('reference to main asset', function () {
@@ -103,11 +103,11 @@ test('reference to main asset', function () {
         }
      */
 
-    var serializedAsset = FIRE.serialize(asset);
-    var deserializedAsset = FIRE.deserialize(serializedAsset);
+    var serializedAsset = Fire.serialize(asset);
+    var deserializedAsset = Fire.deserialize(serializedAsset);
     
     ok(deserializedAsset.refSelf === deserializedAsset, 'should ref to self');
-    //deepEqual(FIRE.serialize(deserializedAsset), serializedAsset, 'test deserialize');
+    //deepEqual(Fire.serialize(deserializedAsset), serializedAsset, 'test deserialize');
 });
 
 test('circular reference by object', function () {
@@ -117,8 +117,8 @@ test('circular reference by object', function () {
             this.refSelf = this;
             this.refToMain = null;
         }
-        var _super = FIRE.extend(MyAsset, FIRE.Asset);
-        FIRE.registerClass('MyAsset', MyAsset);
+        var _super = Fire.extend(MyAsset, Fire.Asset);
+        Fire.registerClass('MyAsset', MyAsset);
         return MyAsset;
     })();
     
@@ -126,20 +126,20 @@ test('circular reference by object', function () {
     var mainAsset = { myAsset: asset };
     asset.refToMain = mainAsset;
 
-    var serializedAsset = FIRE.serialize(mainAsset, false, false);
-    var deserializedAsset = FIRE.deserialize(serializedAsset);
+    var serializedAsset = Fire.serialize(mainAsset, false, false);
+    var deserializedAsset = Fire.deserialize(serializedAsset);
     
     ok(deserializedAsset.myAsset.refSelf === deserializedAsset.myAsset, 'sub asset should ref to itself');
     ok(deserializedAsset.myAsset.refToMain === deserializedAsset, 'sub asset should ref to main');
 
     deepEqual(deserializedAsset, mainAsset, 'can ref');
 
-    FIRE.unregisterClass(MyAsset);
+    Fire.unregisterClass(MyAsset);
 });
 
 test('circular reference by array', function () {
     MyAsset = (function () {
-        var _super = FIRE.Asset;
+        var _super = Fire.Asset;
 
         function MyAsset () {
             _super.call(this);
@@ -149,27 +149,27 @@ test('circular reference by array', function () {
             // array1 = [1, array2]
             // array2 = [array1, 2]
         }
-        FIRE.extend(MyAsset, _super);
-        FIRE.registerClass('MyAsset', MyAsset);
+        Fire.extend(MyAsset, _super);
+        Fire.registerClass('MyAsset', MyAsset);
 
         return MyAsset;
     })();
 
     var expectAsset = new MyAsset();
-    //console.log(FIRE.serialize(expectAsset));
+    //console.log(Fire.serialize(expectAsset));
     var json = '[{"__type__":"MyAsset","array1":{"__id__":1},"array2":{"__id__":2}},[1,{"__id__":2}],[{"__id__":1},2]]';
-    var deserializedAsset = FIRE.deserialize(json);
+    var deserializedAsset = Fire.deserialize(json);
 
     deepEqual(deserializedAsset, expectAsset, 'two arrays can circular reference each other');
     strictEqual(deserializedAsset.array1[1][0], deserializedAsset.array1, 'two arrays can circular reference each other 1');
     strictEqual(deserializedAsset.array2[0][1], deserializedAsset.array2, 'two arrays can circular reference each other 2');
 
-    FIRE.unregisterClass(MyAsset);
+    Fire.unregisterClass(MyAsset);
 });
 
 test('circular reference by dict', function () {
     MyAsset = (function () {
-        var _super = FIRE.Asset;
+        var _super = Fire.Asset;
 
         function MyAsset () {
             _super.call(this);
@@ -177,21 +177,21 @@ test('circular reference by dict', function () {
             this.dict2 = {num: 2, other: this.dict1};
             this.dict1.other = this.dict2;
         }
-        FIRE.extend(MyAsset, _super);
-        FIRE.registerClass('MyAsset', MyAsset);
+        Fire.extend(MyAsset, _super);
+        Fire.registerClass('MyAsset', MyAsset);
 
         return MyAsset;
     })();
     expectAsset = new MyAsset();
 
     serializedAssetJson = '[{"__type__":"MyAsset","dict1":{"__id__":1},"dict2":{"__id__":2}},{"num":1,"other":{"__id__":2}},{"num":2,"other":{"__id__":1}}]';
-    deserializedAsset = FIRE.deserialize(serializedAssetJson);
+    deserializedAsset = Fire.deserialize(serializedAssetJson);
 
     deepEqual(deserializedAsset, expectAsset, 'two dicts can circular reference each other');
     strictEqual(deserializedAsset.dict1.other.other, deserializedAsset.dict1, 'two dicts can circular reference each other 1');
     strictEqual(deserializedAsset.dict2.other.other, deserializedAsset.dict2, 'two dicts can circular reference each other 2');
 
-    FIRE.unregisterClass(MyAsset);
+    Fire.unregisterClass(MyAsset);
 });
 
 // jshint ignore: end

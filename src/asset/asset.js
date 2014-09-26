@@ -1,7 +1,7 @@
-FIRE.Asset = (function () {
+Fire.Asset = (function () {
 
-    var Asset = FIRE.define('FIRE.Asset', FIRE.HashObject, function () {
-        FIRE.HashObject.call(this);
+    var Asset = Fire.define('Fire.Asset', Fire.HashObject, function () {
+        Fire.HashObject.call(this);
 
         // define uuid, uuid can not destory
         Object.defineProperty(this, '_uuid', {
@@ -12,7 +12,7 @@ FIRE.Asset = (function () {
 
     });
 
-    Asset.prop('debugName', '', FIRE.HideInInspector );
+    Asset.prop('debugName', '', Fire.HideInInspector );
 
     /* TODO: These callbacks available for ?
     Asset.prototype.onBeforeSerialize = function () {};

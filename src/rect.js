@@ -1,17 +1,17 @@
-FIRE.Rect = (function () {
+Fire.Rect = (function () {
     function Rect( x, y, w, h ) {
         this.x = x;
         this.y = y;
         this.width = w;
         this.height = h;
     }
-    FIRE.registerClass('FIRE.Rect', Rect);
+    Fire.registerClass('Fire.Rect', Rect);
 
     /**
      * Check if rect contains
      *
-     * @param a {FIRE.Rect} Rect a
-     * @param b {FIRE.Rect} Rect b
+     * @param a {Fire.Rect} Rect a
+     * @param b {Fire.Rect} Rect b
      * @return {Number} The contains result, 1 is a contains b, -1 is b contains a, 0 is no contains 
      */
     Rect.contains = function _Contains ( a, b ) {

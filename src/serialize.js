@@ -12,7 +12,7 @@ var _Serializer = (function () {
 
         this._exporting = exporting;
 
-        this.serializedList = [];  // list of serialized data for all FIRE.FObject objs
+        this.serializedList = [];  // list of serialized data for all Fire.FObject objs
         this._parsingObjs = [];    // 记录当前引用对象，防止循环引用
         this._parsingData = [];    // 记录当前引用对象的序列化结果
         this._objsToResetId = [];
@@ -48,7 +48,7 @@ var _Serializer = (function () {
             var data = self._parsingData[parsingIndex];
             if (Array.isArray(obj) === false) {
                 //data.__id__ = id;   // also save id in source data, just for debugging
-                var className = FIRE.getClassName(obj);
+                var className = Fire.getClassName(obj);
                 if (className) {
                     data.__type__ = className;
                 }
@@ -84,7 +84,7 @@ var _Serializer = (function () {
         }
         else {
             var klass = obj.constructor;
-            if (!FIRE._isFireClass(klass)) {
+            if (!Fire._isFireClass(klass)) {
                 // primitive javascript object
                 for (var key in obj) {
                     //console.log(key);
@@ -103,7 +103,7 @@ var _Serializer = (function () {
                 if (props) {
                     for (var p = 0; p < props.length; p++) {
                         var propName = props[p];
-                        var attrs = FIRE.attr(klass, propName);
+                        var attrs = Fire.attr(klass, propName);
 
                         // skip nonSerialized
                         if (attrs.serializable === false) {
@@ -170,7 +170,7 @@ var _Serializer = (function () {
         }
         else {  // 'object'
             data = {};
-            var className = FIRE.getClassName(obj);
+            var className = Fire.getClassName(obj);
             if (className) {
                 data.__type__ = className;
             }
@@ -234,7 +234,7 @@ var _Serializer = (function () {
             self.serializedList.push(data);
 
             // get FObject data
-            var className = FIRE.getClassName(obj);
+            var className = Fire.getClassName(obj);
             if (className) {
                 data.__type__ = className;
             }
@@ -299,7 +299,7 @@ var _Serializer = (function () {
             }
             else {
                 data = {};
-                var className = FIRE.getClassName(obj);
+                var className = Fire.getClassName(obj);
                 if (className) {
                     data.__type__ = className;
                 }
@@ -319,14 +319,14 @@ var _Serializer = (function () {
 })();
 
 /**
- * Serialize FIRE.Asset to a json string
- * @param {FIRE.Asset} obj - The object to serialize
- * @param {boolean} [exporting=false] - if true, property with FIRE.EditorOnly will be discarded
+ * Serialize Fire.Asset to a json string
+ * @param {Fire.Asset} obj - The object to serialize
+ * @param {boolean} [exporting=false] - if true, property with Fire.EditorOnly will be discarded
  * @param {boolean} [canBindProp=true] - if false, temporarily binded property will be deleted, 
  *                                       may leading to performance degradations
  * @returns {string} The json string to represent the object
  */
-FIRE.serialize = function (obj, exporting, canBindProp) {
+Fire.serialize = function (obj, exporting, canBindProp) {
     var serializer = new _Serializer(obj, exporting, canBindProp);
     var serializedList = serializer.serializedList;
     var serializedData = serializedList.length === 1 ? serializedList[0] : serializedList;

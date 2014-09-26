@@ -8,10 +8,10 @@ test('getVarFrom', function() {
     };
     var foobar = foo;
     foobar.value = foo.bar.value;
-    equal( FIRE.getVarFrom(foo,'bar.value'), "I'm foo.bar.value", "The value must be same" );
-    equal( FIRE.getVarFrom(foobar,'bar.value'), "I'm foo.bar.value", "The value must be same" );
-    equal( FIRE.getVarFrom(foobar,'value'), "I'm foo.bar.value", "The value must be same" );
-    equal( FIRE.getVarFrom(foobar,'hello.world'), null, "The value must be same" );
+    equal( Fire.getVarFrom(foo,'bar.value'), "I'm foo.bar.value", "The value must be same" );
+    equal( Fire.getVarFrom(foobar,'bar.value'), "I'm foo.bar.value", "The value must be same" );
+    equal( Fire.getVarFrom(foobar,'value'), "I'm foo.bar.value", "The value must be same" );
+    equal( Fire.getVarFrom(foobar,'hello.world'), null, "The value must be same" );
 });
 
 test('enum', function () {
@@ -24,7 +24,7 @@ test('enum', function () {
         return t;
     })({});
 
-    deepEqual ( FIRE.getEnumList(TestEnum), 
+    deepEqual ( Fire.getEnumList(TestEnum), 
                [
                    { name: "UseBest", value: 0 },
                    { name: "Width", value: 1 },
@@ -36,7 +36,7 @@ test('enum', function () {
 });
 
 test('CallbacksInvoker', function () {
-    var ci = new FIRE.CallbacksInvoker();
+    var ci = new Fire.CallbacksInvoker();
     
     var cb1 = new callback();
     var cb2 = new callback();

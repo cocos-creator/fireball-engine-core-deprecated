@@ -1,16 +1,16 @@
 /**
- * @method FIRE.extend
+ * @method Fire.extend
  * Derive the class from the supplied base class.
- * Both classes are just native javascript constructors, not created by FIRE.define, so
- * usually you will want to inherit using FIRE.define instead.
+ * Both classes are just native javascript constructors, not created by Fire.define, so
+ * usually you will want to inherit using Fire.define instead.
  * 
  * @param {function} cls
  * @param {function} base - the baseclass to inherit
  * @returns {function} the base class
  * 
- * @see FIRE.define
+ * @see Fire.define
  */
-FIRE.extend = function (cls, base) {
+Fire.extend = function (cls, base) {
     for (var p in base) if (base.hasOwnProperty(p)) cls[p] = base[p];
     function __() { this.constructor = cls; }
     __.prototype = base.prototype;
@@ -24,7 +24,7 @@ FIRE.extend = function (cls, base) {
  * @param {(object|function)} obj - instance or constructor
  * @returns {string}
  */
-FIRE.getClassName = function (obj) {
+Fire.getClassName = function (obj) {
     if (typeof obj === 'function' && obj.prototype.__classname__) {
         return obj.prototype.__classname__;
     }
@@ -60,11 +60,11 @@ var _nameToClass = {};
 
 /**
  * Set the name of a class
- * @method FIRE.registerClass
+ * @method Fire.registerClass
  * @param {string} className
  * @param {function} constructor
  */
-FIRE.registerClass = function (className, constructor) {
+Fire.registerClass = function (className, constructor) {
     constructor.prototype.__classname__ = className;
     // register class
     if (className) {
@@ -73,23 +73,23 @@ FIRE.registerClass = function (className, constructor) {
             console.error('A Class already exists with that name: "' + className + '".\
  (这个错误可能是单元测试未通过引起的.) \
 If you dont need serialization, you can set class name to "". You can also call \
-FIRE.undefine or FIRE.unregisterClass to remove the name of unused class');
+Fire.undefine or Fire.unregisterClass to remove the name of unused class');
         }
         _nameToClass[className] = constructor;
     }
 };
 
 /**
- * Unregister the classes extended by FIRE.extend. If you dont need it anymore, 
+ * Unregister the classes extended by Fire.extend. If you dont need it anymore, 
  * you'd better unregister it to reduce memory usage.
  * Please note that its still your responsibility to free other references to the class.
  *
- * @method FIRE.unregisterClass
+ * @method Fire.unregisterClass
  * @param {function} constructor
  *
  * @private
  */
-FIRE.unregisterClass = function (constructor) {
+Fire.unregisterClass = function (constructor) {
     var className = constructor.prototype.__classname__;
     if (className) {
         delete _nameToClass[className];
@@ -98,11 +98,11 @@ FIRE.unregisterClass = function (constructor) {
 
 /**
  * Get the registered class by name
- * @method FIRE.getClassByName
+ * @method Fire.getClassByName
  * @param {string} className
  * @returns {function} constructor
  */
-FIRE.getClassByName = function (className) {
+Fire.getClassByName = function (className) {
     return _nameToClass[className];
 };
 

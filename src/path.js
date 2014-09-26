@@ -1,14 +1,14 @@
 ﻿// The utils for path operation
 
-if (FIRE.isNode) {
-    FIRE.Path = require('path');
+if (Fire.isNode) {
+    Fire.Path = require('path');
 }
 else {
     // implement a simple fallback if node not available
-    FIRE.Path = (function () {
+    Fire.Path = (function () {
 
         var splitPath;
-        if (FIRE.isWin32) {
+        if (Fire.isWin32) {
             // copied from node.js/lib/path.js
             // Regex to split a windows path into three parts: [*, device, slash,
             // tail] windows-only
@@ -70,37 +70,37 @@ else {
 
                 return root + dir;
             },
-            sep: (FIRE.isWin32 ? '\\' : '/'),
+            sep: (Fire.isWin32 ? '\\' : '/'),
         };
         return path;
     })();
 }
 
 /**
- * @method FIRE.Path.setExtname
+ * @method Fire.Path.setExtname
  * @param {string} path
  * @param {string} newExtension - extension to replace with
  * @returns {string} result
  */
-FIRE.Path.setExtname = function (path, newExtension) {
-    // if (FIRE.isNode) return Path.join(Path.dirname(path), Path.basename(path, Path.extname(path))) + newExtension;
+Fire.Path.setExtname = function (path, newExtension) {
+    // if (Fire.isNode) return Path.join(Path.dirname(path), Path.basename(path, Path.extname(path))) + newExtension;
     var dotIndex = (~-path.lastIndexOf(".") >>> 0) + 1;
     return path.substring(0, dotIndex) + newExtension;
 };
 
 /**
- * @method FIRE.Path.setEndWithSep
+ * @method Fire.Path.setEndWithSep
  * @param {string} path
  * @param {boolean} [endWithSep = true]
  * @returns {string} result
  */
-FIRE.Path.setEndWithSep = function (path, endWithSep) {
+Fire.Path.setEndWithSep = function (path, endWithSep) {
     endWithSep = (typeof endWithSep !== 'undefined') ? endWithSep : true;
 
     var endChar = path[path.length - 1];
     var oldEndWithSep = (endChar === '\\' || endChar === '/');
     if (!oldEndWithSep && endWithSep) {
-        path += FIRE.Path.sep;
+        path += Fire.Path.sep;
     }
     else if (oldEndWithSep && !endWithSep) {
         path = path.substring(0, path.length - 1);

@@ -1,10 +1,10 @@
-﻿FIRE.HashObject = (function () {
+﻿Fire.HashObject = (function () {
     
     /**
      * 提供获取对象ID的功能，该ID全局唯一但不会被序列化，可用于索引对象。
-     * @class FIRE.HashObject
+     * @class Fire.HashObject
      */
-    var HashObject = FIRE.define('FIRE.HashObject', FIRE.FObject, function () {
+    var HashObject = Fire.define('Fire.HashObject', Fire.FObject, function () {
         FObject.call(this);
 
         this._hashID = 0;
@@ -14,7 +14,7 @@
     var id = 0;
     
     /**
-     * @member {string} FIRE.HashObject#hashID
+     * @member {string} Fire.HashObject#hashID
      */
     Object.defineProperty ( HashObject.prototype, 'hashID', {
         get: function () {
@@ -23,7 +23,7 @@
     });
 
     /**
-     * @member {string} FIRE.HashObject#hashKey
+     * @member {string} Fire.HashObject#hashKey
      */
     Object.defineProperty ( HashObject.prototype, 'hashKey', {
         get: function () {

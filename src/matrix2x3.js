@@ -1,7 +1,7 @@
 ﻿/**
  * Simple matrix to do 2D affine transformations.
  * It is actually 3x3 but the last row is [0 0 1].
- * @class FIRE.Matrix2x3
+ * @class Fire.Matrix2x3
  */
 var Matrix2x3 = function () {
     this.a = 1;
@@ -11,8 +11,8 @@ var Matrix2x3 = function () {
     this.tx = 0;
     this.ty = 0;
 };
-FIRE.registerClass('FIRE.Matrix2x3', Matrix2x3);
-FIRE.Matrix2x3 = Matrix2x3;
+Fire.registerClass('Fire.Matrix2x3', Matrix2x3);
+Fire.Matrix2x3 = Matrix2x3;
 
 Matrix2x3.identity = new Matrix2x3();
 

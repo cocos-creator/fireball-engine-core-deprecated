@@ -1,6 +1,6 @@
 //
 
-if (FIRE.isNode) {
+if (Fire.isNode) {
     var Fs = require('fs');
     var Path = require('path');
 
@@ -24,11 +24,11 @@ if (FIRE.isNode) {
             }
         }
     };
-    FIRE.readDirRecursively = function ( path ) {
+    Fire.readDirRecursively = function ( path ) {
         var retval = [];
         if (Array.isArray(path)) {
             for (var i = 0; i < path.length; i++) {
-                retval = retval.concat(FIRE.readDirRecursively(path[i]));
+                retval = retval.concat(Fire.readDirRecursively(path[i]));
             }
             return retval;
         }
@@ -53,12 +53,12 @@ else {
     var error = function () {
         throw new Error("This function can only be used in node-webkit or server");
     };
-    FIRE.readDirRecursively = error;
+    Fire.readDirRecursively = error;
 }
 
-if (FIRE.isApp && FIRE.isWeb) {
-    if (FIRE.isNw) {
-        FIRE.getSavePath = function (defaultFilename, preserveDirKey, callback) {
+if (Fire.isApp && Fire.isWeb) {
+    if (Fire.isNw) {
+        Fire.getSavePath = function (defaultFilename, preserveDirKey, callback) {
             var persistentId = 'SaveFileDialog';
             var chooser = document.getElementById(persistentId);
             if (chooser) {
@@ -183,15 +183,15 @@ if (FIRE.isApp && FIRE.isWeb) {
             //chooser.files = null;
         };
         var nwgui = require('nw.gui');
-        FIRE.showItemInFolder = nwgui.Shell.showItemInFolder;
+        Fire.showItemInFolder = nwgui.Shell.showItemInFolder;
     }
-    /*else if (FIRE.isAs) {
-        FIRE.getSavePath = function (defaultFilename, preserveDirKey, callback, title, browserWindow) {
+    /*else if (Fire.isAs) {
+        Fire.getSavePath = function (defaultFilename, preserveDirKey, callback, title, browserWindow) {
             var defaultDir = localStorage[preserveDirKey];
             var defaultPath = null;
             if (defaultDir && typeof defaultDir === 'string') {
-                defaultDir = FIRE.Path.dirname(defaultDir);
-                defaultPath = FIRE.Path.join(defaultDir, defaultFilename);
+                defaultDir = Fire.Path.dirname(defaultDir);
+                defaultPath = Fire.Path.join(defaultDir, defaultFilename);
             }
             var remote = require('remote');
             var dialog = remote.require('dialog');
@@ -210,13 +210,13 @@ if (FIRE.isApp && FIRE.isWeb) {
             });
         };
         var shell = require('shell');
-        FIRE.showItemInFolder = shell.showItemInFolder;
+        Fire.showItemInFolder = shell.showItemInFolder;
     }*/
 }
 else {
     var error = function () {
         throw new Error("This function can only be used in node-webkit or atom-shell");
     };
-    FIRE.getSavePath = error;
-    FIRE.showItemInFolder = error;
+    Fire.getSavePath = error;
+    Fire.showItemInFolder = error;
 }

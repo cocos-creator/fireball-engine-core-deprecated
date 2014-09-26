@@ -1,10 +1,10 @@
 ﻿largeModule('fobject');
 
-var FObject = FIRE.FObject;
+var FObject = Fire.FObject;
 
 test('basic test', function () {
     var obj = new FObject();
-    strictEqual(obj.__classname__, 'FIRE.FObject', 'class name');
+    strictEqual(obj.__classname__, 'Fire.FObject', 'class name');
     strictEqual(obj.isValid, true, 'valid');
 });
 
@@ -130,8 +130,8 @@ test('destroy other at destroy callback', 3, function () {
 module('HashObject');
 
 test('test', function () {
-    var obj1 = new FIRE.HashObject();
-    var obj2 = new FIRE.HashObject();
+    var obj1 = new Fire.HashObject();
+    var obj2 = new Fire.HashObject();
 
     strictEqual(typeof obj1.hashID, 'number', 'id is number');
     strictEqual(typeof obj2.hashKey, 'string', 'key is string');
@@ -142,7 +142,7 @@ test('test', function () {
     var id1 = obj1.hashID;
     var key2 = obj2.hashKey;
 
-    var obj3 = new FIRE.HashObject();
+    var obj3 = new Fire.HashObject();
 
     strictEqual(obj1.hashID, id1, 'id not changed');
     strictEqual(obj2.hashKey, key2, 'key not changed');

@@ -1,10 +1,10 @@
-})(FIRE);
+})(Fire);
 
 if (typeof module !== "undefined" && module) {
-    module.exports = FIRE;
+    module.exports = Fire;
 }
 else if (typeof define === "function" && define && define.amd) {
     define([], function() {
-        return FIRE;
+        return Fire;
     });
 }

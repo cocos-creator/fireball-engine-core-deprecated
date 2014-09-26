@@ -1,11 +1,11 @@
-FIRE.FontInfo = (function () {
-    var _super = FIRE.Asset;
+Fire.FontInfo = (function () {
+    var _super = Fire.Asset;
 
     // constructor
     function FontInfo () {
         _super.call(this);
 
-        this.atlas = new FIRE.Atlas();
+        this.atlas = new Fire.Atlas();
 
         // TODO: this.spacing = get this.atlas.customPadding 
 
@@ -22,11 +22,11 @@ FIRE.FontInfo = (function () {
 
         // color --------------------------------
 
-        this.fillColor = new FIRE.Color( 0.0, 0.0, 0.0, 1.0 );
+        this.fillColor = new Fire.Color( 0.0, 0.0, 0.0, 1.0 );
 
         // stroke --------------------------------
 
-        this.strokeColor = new FIRE.Color( 1.0, 1.0, 1.0, 1.0 );
+        this.strokeColor = new Fire.Color( 1.0, 1.0, 1.0, 1.0 );
         this.strokeWidth = 2;
 
         /**
@@ -44,9 +44,9 @@ FIRE.FontInfo = (function () {
 
         // shadow --------------------------------
 
-        this.shadowColor = new FIRE.Color( 0.0, 0.0, 0.0, 0.5 );
+        this.shadowColor = new Fire.Color( 0.0, 0.0, 0.0, 0.5 );
         this.shadowBlur = 2;
-        this.shadowOffset = new FIRE.Vec2( 2, 2 );
+        this.shadowOffset = new Fire.Vec2( 2, 2 );
 
         // TODO:
         // dash --------------------------------
@@ -61,7 +61,7 @@ FIRE.FontInfo = (function () {
          */
         // this.dashArray = null;
     }
-    FIRE.extend(FontInfo, _super);
+    Fire.extend(FontInfo, _super);
 
     return FontInfo;
 })();

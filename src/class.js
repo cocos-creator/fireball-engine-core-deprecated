@@ -7,7 +7,7 @@ var _appendProp = function (name/*, isGetter*/) {
     //    var d = Object.getOwnPropertyDescriptor(this, name);
     //    var hasGetterOrSetter = (d && (d.get || d.set));
     //    if (hasGetterOrSetter) {
-    //        console.error(FIRE.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
+    //        console.error(Fire.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
     //        return;
     //    }
     //}
@@ -21,7 +21,7 @@ var _appendProp = function (name/*, isGetter*/) {
             this.__props__.push(name);
         }
         //else {
-        //    console.error(FIRE.getClassName(this) + '.' + name + ' is already defined!');
+        //    console.error(Fire.getClassName(this) + '.' + name + ' is already defined!');
         //}
     }
 };
@@ -46,7 +46,7 @@ var _cloneable = function (obj) {
 };
 
 /**
- * the metaclass of the "fire class" created by FIRE.define, all its static members
+ * the metaclass of the "fire class" created by Fire.define, all its static members
  * will inherited by fire class.
  */
 var _metaClass = {
@@ -60,9 +60,9 @@ var _metaClass = {
     /**
      * Add new instance field, propertie, or method made available on the class.
      * 该方法定义的变量默认情况下都会被序列化，也会在inspector中显示。
-     * 如果传入属性包含FIRE.HideInInspector则仍会序列化但不在inspector中显示。
-     * 如果传入属性包含FIRE.NonSerialized则不会序列化并且不会在inspector中显示。
-     * 如果传入属性包含FIRE.EditorOnly则只在编辑器下序列化，打包时不序列化。
+     * 如果传入属性包含Fire.HideInInspector则仍会序列化但不在inspector中显示。
+     * 如果传入属性包含Fire.NonSerialized则不会序列化并且不会在inspector中显示。
+     * 如果传入属性包含Fire.EditorOnly则只在编辑器下序列化，打包时不序列化。
      * 
      * @method class.prop
      * @param {string} name - the property name
@@ -77,7 +77,7 @@ var _metaClass = {
             if (Array.isArray(defaultValue)) {
                 // check array empty
                 if (defaultValue.length > 0) {
-                    console.error('Default array must be empty, set default value of ' + FIRE.getClassName(this) + '.prop("' + name + 
+                    console.error('Default array must be empty, set default value of ' + Fire.getClassName(this) + '.prop("' + name + 
                         '", ...) to null or [], and initialize in constructor please. (just like "this.' + 
                         name + ' = [...];")');
                     return this;
@@ -86,7 +86,7 @@ var _metaClass = {
             else if (!_isPlainEmptyObj(defaultValue)) {
                 // check cloneable
                 if (!_cloneable(defaultValue)) {
-                    console.error('Do not set default value to non-empty object, unless the object defines its own "clone" function. Set default value of ' + FIRE.getClassName(this) + '.prop("' + name + 
+                    console.error('Do not set default value to non-empty object, unless the object defines its own "clone" function. Set default value of ' + Fire.getClassName(this) + '.prop("' + name + 
                         '", ...) to null or {}, and initialize in constructor please. (just like "this.' + 
                         name + ' = {foo: bar};")');
                     return this;
@@ -95,7 +95,7 @@ var _metaClass = {
         }
 
         // set default value
-        FIRE.attr(this, name, { 'default': defaultValue });
+        Fire.attr(this, name, { 'default': defaultValue });
 
         // register property
         _appendProp.call(this, name);
@@ -105,14 +105,14 @@ var _metaClass = {
         if ( mytype === 'number' ) {
             mytype = 'float';
         }
-        FIRE.attr( this, name, { 'type': mytype } );
+        Fire.attr( this, name, { 'type': mytype } );
 
         // apply attributes
         if (attribute) {
             var onAfterProp = null;
             for (var i = 2; i < arguments.length; i++) {
                 var attr = arguments[i];
-                FIRE.attr(this, name, attr);
+                Fire.attr(this, name, attr);
                 // register callback
                 if (attr._onAfterProp) {
                     onAfterProp = onAfterProp || [];
@@ -131,7 +131,7 @@ var _metaClass = {
 
     /**
      * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
-     * 如果传入参数包含FIRE.HideInInspector则不在inspector中显示。
+     * 如果传入参数包含Fire.HideInInspector则不在inspector中显示。
      * 
      * @method class.get
      * @param {string} name - the getter property
@@ -143,7 +143,7 @@ var _metaClass = {
         'use strict';
         var d = Object.getOwnPropertyDescriptor(this, name);
         if (d && d.get) {
-            console.error(FIRE.getClassName(this) + ': the getter of "' + name + '" is already defined!');
+            console.error(Fire.getClassName(this) + ': the getter of "' + name + '" is already defined!');
             return this;
         }
 
@@ -151,22 +151,22 @@ var _metaClass = {
         if (attribute) {
             for (var i = 2; i < arguments.length; i++) {
                 var attr = arguments[i];
-                FIRE.attr(this, name, attr);
+                Fire.attr(this, name, attr);
                 // check attributes
                 if (attr.hideInInspector) {
                     displayInInspector = false;
                 }
                 if (attr.serializable === false || attr.editorOnly === true) {
-                    console.warn('No need to use FIRE.NonSerialized or FIRE.EditorOnly for the getter of ' + 
-                        FIRE.getClassName(this) + '.' + name + ', every getter is actually non-serialized.');
+                    console.warn('No need to use Fire.NonSerialized or Fire.EditorOnly for the getter of ' + 
+                        Fire.getClassName(this) + '.' + name + ', every getter is actually non-serialized.');
                 }
                 if (attr.hasOwnProperty('default')) {
-                    console.error(FIRE.getClassName(this) + ': Can not set default value of a getter!');
+                    console.error(Fire.getClassName(this) + ': Can not set default value of a getter!');
                     return this;
                 }
             }
         }
-        FIRE.attr(this, name, FIRE.NonSerialized);
+        Fire.attr(this, name, Fire.NonSerialized);
 
         if (displayInInspector) {
             _appendProp.call(this, name/*, true*/);
@@ -174,7 +174,7 @@ var _metaClass = {
         else {
             var index = this.__props__.indexOf(name);
             if (index >= 0) {
-                console.error(FIRE.getClassName(this) + '.' + name + ' is already defined!');
+                console.error(Fire.getClassName(this) + '.' + name + ' is already defined!');
                 return this;
             }
         }
@@ -196,7 +196,7 @@ var _metaClass = {
     set: function (name, setter) {
         var d = Object.getOwnPropertyDescriptor(this, name);
         if (d && d.set) {
-            console.error(FIRE.getClassName(this) + ': the setter of "' + name + '" is already defined!');
+            console.error(Fire.getClassName(this) + ': the setter of "' + name + '" is already defined!');
             return this;
         }
         Object.defineProperty(this.prototype, name, {
@@ -208,7 +208,7 @@ var _metaClass = {
 
     /**
      * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
-     * 如果传入参数包含FIRE.HideInInspector则不在inspector中显示。
+     * 如果传入参数包含Fire.HideInInspector则不在inspector中显示。
      * 
      * @method class.get
      * @param {string} name - the getter property
@@ -229,7 +229,7 @@ var _createInstanceProps = function (instance, itsClass) {
     if (propList) {
         for (var i = 0; i < propList.length; i++) {
             var prop = propList[i];
-            var attrs = FIRE.attr(itsClass, prop);
+            var attrs = Fire.attr(itsClass, prop);
             if (attrs && attrs.hasOwnProperty('default')) {  // getter does not have default
                 var def = attrs.default;
                 if (typeof def === 'object' && def) {
@@ -251,28 +251,28 @@ var _createInstanceProps = function (instance, itsClass) {
 };
 
 /**
- * Checks whether the constructor is created by FIRE.define
+ * Checks whether the constructor is created by Fire.define
  * 
- * @method FIRE._isFireClass
+ * @method Fire._isFireClass
  * @param {function} constructor
  * @returns {boolean}
  * @private
  */
-FIRE._isFireClass = function (constructor) {
+Fire._isFireClass = function (constructor) {
     return !!constructor && (constructor.prop === _metaClass.prop);
 };
 
 /**
  * Checks whether myclass is child of superclass
  * 
- * @method FIRE._childof
+ * @method Fire._childof
  * @param {function} myclass
  * @param {function} superclass
  * @returns {boolean}
  * @private
  */
 
-FIRE._childof = function (myclass, superclass) {
+Fire._childof = function (myclass, superclass) {
     var mysuper = myclass.$super;
     while ( mysuper ) {
         if ( mysuper === superclass )
@@ -285,37 +285,37 @@ FIRE._childof = function (myclass, superclass) {
 /**
  * Checks whether myclass is child of superclass
  * 
- * @method FIRE.childof
+ * @method Fire.childof
  * @param {function} myclass
  * @param {function} superclass
  * @returns {boolean}
  */
 
-FIRE.childof = function (myclass, superclass) {
-    return FIRE._childof(myclass, superclass);
+Fire.childof = function (myclass, superclass) {
+    return Fire._childof(myclass, superclass);
 };
 
 /**
  * Checks whether myclass is super of childclass
  * 
- * @method FIRE.childof
+ * @method Fire.childof
  * @param {function} myclass
  * @param {function} childclass
  * @returns {boolean}
  */
 
-FIRE.superof = function (myclass, childclass) {
-    return FIRE._childof(childclass, myclass);
+Fire.superof = function (myclass, childclass) {
+    return Fire._childof(childclass, myclass);
 };
 
 /**
  * Creates a FireClass and returns its constructor function.
  * You can also creates a sub-class by supplying a baseClass parameter.
  * 
- * @method FIRE.define
+ * @method Fire.define
  * @param {string} className - the name of class that is used to deserialize this class
  * @param {function} [baseOrConstructor] - The base class to inherit from.
- *                                         如果你的父类不是由FIRE.define定义的，那么必须传入第三个参数(constructor)，否则会被当成创建新类而非继承类。
+ *                                         如果你的父类不是由Fire.define定义的，那么必须传入第三个参数(constructor)，否则会被当成创建新类而非继承类。
  *                                         如果你不需要构造函数，可以传入null。
  * @param {function} [constructor] - a constructor function that is used to instantiate this class, 
  *                                   if not supplied, the constructor of base class will be called automatically
@@ -323,15 +323,15 @@ FIRE.superof = function (myclass, childclass) {
  * @param {[object[]]} staticMembers - NYI
  * @returns {function} the defined class
  * 
- * @see FIRE.extend
+ * @see Fire.extend
  */
-FIRE.define = function (className, baseOrConstructor, constructor) {
+Fire.define = function (className, baseOrConstructor, constructor) {
     'use strict';
     // check arguments
     var isInherit = false;
     switch (arguments.length) {
         case 2:
-            isInherit = FIRE._isFireClass(baseOrConstructor);
+            isInherit = Fire._isFireClass(baseOrConstructor);
             break;
         case 3:
             isInherit = true;
@@ -370,14 +370,14 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
             value: _metaClass[staticMember],
             // __props__ is writable
             writable: staticMember === '__props__',
-            // __props__ is enumerable so it can be inherited by FIRE.extend
+            // __props__ is enumerable so it can be inherited by Fire.extend
             enumerable: staticMember === '__props__',
         });
     }
 
     // inherit
     if (isInherit) {
-        FIRE.extend(fireClass, baseClass);
+        Fire.extend(fireClass, baseClass);
         fireClass.$super = baseClass;
         if (baseClass.__props__) {
             // copy __props__
@@ -388,7 +388,7 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
             }
         }
     }
-    FIRE.registerClass(className, fireClass);
+    Fire.registerClass(className, fireClass);
 
     //// nicify constructor name
     //if (className && fireClass.toString) {
@@ -401,23 +401,23 @@ FIRE.define = function (className, baseOrConstructor, constructor) {
 };
 
 /**
- * If you dont need a class (which defined by FIRE.define) anymore, 
+ * If you dont need a class (which defined by Fire.define) anymore, 
  * you'd better undefine it to reduce memory usage.
  * Please note that its still your responsibility to free other references to the class.
  * 
- * @method FIRE.undefine
+ * @method Fire.undefine
  * @param {...function} [constructor] - the class you will want to undefine, any number of classes can be added
  *
- * @see FIRE.define
+ * @see Fire.define
  */
-FIRE.undefine = function (constructor) {
+Fire.undefine = function (constructor) {
     'use strict';
     for (var i = 0; i < arguments.length; i++) {
-        FIRE.unregisterClass(arguments[i]);
+        Fire.unregisterClass(arguments[i]);
     }
 };
 
 //_toNiceString = function (originalToString) {
 //    var str = originalToString.call(this);
-//    return str.replace('function ', 'function ' + FIRE.getClassName(this));
+//    return str.replace('function ', 'function ' + Fire.getClassName(this));
 //};
