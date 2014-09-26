@@ -1,4 +1,24 @@
 /**
+ * @method Fire.merge
+ * copy all properties from arguments[1...n] to obj 
+ * 
+ * @param {object} obj
+ * @param 1...n {object} 
+ * @returns {function} the result obj
+ * 
+ */
+Fire.merge = function (obj) {
+    var source, prop;
+    for (var i = 1, length = arguments.length; i < length; i++) {
+        source = arguments[i];
+        for (prop in source) {
+            obj[prop] = source[prop];
+        }
+    }
+    return obj;
+};
+
+/**
  * @method Fire.extend
  * Derive the class from the supplied base class.
  * Both classes are just native javascript constructors, not created by Fire.define, so
@@ -6,7 +26,7 @@
  * 
  * @param {function} cls
  * @param {function} base - the baseclass to inherit
- * @returns {function} the base class
+ * @returns {function} the result class
  * 
  * @see Fire.define
  */
@@ -15,7 +35,7 @@ Fire.extend = function (cls, base) {
     function __() { this.constructor = cls; }
     __.prototype = base.prototype;
     cls.prototype = new __();
-    return base;
+    return cls;
 };
 
 /**

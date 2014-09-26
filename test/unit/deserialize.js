@@ -112,12 +112,13 @@ test('reference to main asset', function () {
 
 test('circular reference by object', function () {
     var MyAsset = (function () {
+        var _super = Fire.Asset;
         function MyAsset () {
             _super.call(this);
             this.refSelf = this;
             this.refToMain = null;
         }
-        var _super = Fire.extend(MyAsset, Fire.Asset);
+        Fire.extend(MyAsset, Fire.Asset);
         Fire.registerClass('MyAsset', MyAsset);
         return MyAsset;
     })();
