@@ -134,9 +134,10 @@ Fire.getClassByName = function (className) {
 Fire.log = function () {
     console.log.apply(console, arguments);
 };
-Fire.hint = function (text) {
-    console.log('%c' + text, "color: blue");
-};
+// hint 无法使用 format 功能，这里不太统一，因此留给上层应用去实现。
+//Fire.hint = function (text) {
+//    console.log('%c' + text, "color: blue");
+//};
 Fire.warn = function () {
     console.warn.apply(console, arguments);
 };

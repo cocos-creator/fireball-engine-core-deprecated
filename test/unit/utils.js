@@ -51,7 +51,7 @@ test('CallbacksInvoker', function () {
     cb1.once('1 should be called');
     cb2.once('2 should be called');
 
-    var invokeA = ci.bind('a');
+    var invokeA = ci.bindKey('a');
     invokeA();
     cb1.once('1 should be called again').disable();
     cb2.once('2 should be called again').disable();

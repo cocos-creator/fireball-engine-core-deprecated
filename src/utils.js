@@ -190,8 +190,9 @@ Fire.CallbacksInvoker = (function () {
     /**
      * @param {string} key
      * @param {boolean} [remove=false] - remove callbacks after invoked
+     * @returns {function} the new callback which will invoke all the callbacks binded with the same supplied key
      */
-    CallbacksInvoker.prototype.bind = function (key, remove) {
+    CallbacksInvoker.prototype.bindKey = function (key, remove) {
         var self = this;
         return function (p1, p2, p3, p4, p5) {
             self.invoke(key, p1, p2, p3, p4, p5);
