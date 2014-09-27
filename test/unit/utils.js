@@ -38,12 +38,13 @@ test('enum', function () {
 test('CallbacksInvoker', function () {
     var ci = new Fire.CallbacksInvoker();
     
-    var cb1 = new callback();
-    var cb2 = new callback();
-    var cb3 = new callback();
+    var cb1 = new Callback();
+    var cb2 = new Callback();
+    var cb3 = new Callback();
     strictEqual(ci.add('a', cb1), true, 'first cb key');
     strictEqual(ci.add('a', cb2), false, 'not first key');
     strictEqual(ci.add('b', cb3), true, 'another first key');
+    strictEqual(ci.add('nil', undefined), true, 'null callback should also return true');
 
     cb1.enable();
     cb2.enable();

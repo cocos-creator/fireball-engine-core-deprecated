@@ -12,23 +12,23 @@
 
 /**
  * Create and return a new callback wrapper for handling assertion.
- * By default, the callback is not allowed to call unless you call its enable method first.
+ * By default, the Callback is not allowed to call unless you call its enable method first.
  * 
  * @example
- *     obj.onDown = assert.callback();          // disabled by default
+ *     obj.onDown = assert.Callback();          // disabled by default
  *     var foo = function() { obj.onDown() };
  *     foo();   // Assertion failed! onDown should not be called in foo!
  *
  * @example
- *     obj.onDown = assert.callback().enable(); // enabled this time ;)
+ *     obj.onDown = assert.Callback().enable(); // enabled this time ;)
  *     var foo = function() { obj.onDown() };
  *     foo();   // No error this time ;)
  *     obj.onDown.once('onDown should be called once');   // Assertion succeeded! 
  *
  * @param {function} [callbackFunction_opt] - the real callback you want to register (@see wrapper.callbackFunction)
  * @example Example usage of callbackFunction_opt
- *     obj.onUp = assert.callback().enable();
- *     obj.onDown = assert.callback( function(val) {
+ *     obj.onUp = assert.Callback().enable();
+ *     obj.onDown = assert.Callback( function(val) {
  *         equal(this, obj,     'Can test this');
  *         equal(val,  520,     'Can test argument');
  *         equal(obj.onUp.calledCount, 1, 'Can test call order');
@@ -37,7 +37,7 @@
  *     obj.upAndDown();
  *     obj.onDown.expect(1);    // Okey!
  */
-function callback(callbackFunction_opt) {
+function Callback(callbackFunction_opt) {
     var enabled = false;
 
     var callbackName_ = 'Callback';
@@ -71,8 +71,8 @@ function callback(callbackFunction_opt) {
      * Use this method to register a callback when the wrapper is called
      *
      * @example
-     *     obj.onUp = assert.callback().enable();
-     *     obj.onDown = assert.callback().enable();
+     *     obj.onUp = assert.Callback().enable();
+     *     obj.onDown = assert.Callback().enable();
      *     obj.onDown.callbackFunction( function(val) {
      *         equal(this, obj,     'Can test this');
      *         equal(val,  520,     'Can test argument');
@@ -102,7 +102,7 @@ function callback(callbackFunction_opt) {
      * You can enable and disable repeatedly.
      *
      * @example
-     *     obj.onDown = assert.callback().enable();
+     *     obj.onDown = assert.Callback().enable();
      *     var foo = function() { obj.onDown() };
      *     foo();
      *     obj.onDown.once('onDown should be called')
@@ -124,7 +124,7 @@ function callback(callbackFunction_opt) {
      * Expect the callback to be called any times you wish
      *
      * @example
-     *     obj.onDown = assert.callback().enable();
+     *     obj.onDown = assert.Callback().enable();
      *     vaf down = function() { obj.onDown() };
      *     down();
      *     obj.onDown.expect(1);    // Okey!
@@ -146,7 +146,7 @@ function callback(callbackFunction_opt) {
      * so that you can do this repeatedly.
      *
      * @example
-     *     obj.onDown = assert.callback().enable();
+     *     obj.onDown = assert.Callback().enable();
      *     obj.down = function() { obj.onDown() };
      *     obj.down();
      *     obj.onDown.once();    // Okey!
@@ -166,5 +166,5 @@ function callback(callbackFunction_opt) {
 }
 
 QUnit.extend(QUnit.assert, {
-    callback: callback
+    Callback: Callback
 });

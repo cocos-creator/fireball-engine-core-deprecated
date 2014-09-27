@@ -144,6 +144,7 @@ Fire.CallbacksInvoker = (function () {
             return false;
         }
         else {
+            // new key
             callbackList = callback ? [callback] : null;
             this._callbackTable[key] = callbackList;
             return true;
@@ -176,7 +177,14 @@ Fire.CallbacksInvoker = (function () {
      * @param {*} [p5]
      */
     CallbacksInvoker.prototype.invokeAndRemove = function (key, p1, p2, p3, p4, p5) {
-        this.invoke(key, p1, p2, p3, p4, p5);
+        // this.invoke(key, p1, p2, p3, p4, p5);
+        // 这里不直接调用invoke仅仅是为了减少调用堆栈的深度，方便调试
+        var callbackList = this._callbackTable[key];
+        if (callbackList) {
+            for (var i = 0; i < callbackList.length; i++) {
+                callbackList[i](p1, p2, p3, p4, p5);
+            }
+        }
         this.remove(key);
     };
 
@@ -194,8 +202,15 @@ Fire.CallbacksInvoker = (function () {
      */
     CallbacksInvoker.prototype.bindKey = function (key, remove) {
         var self = this;
-        return function (p1, p2, p3, p4, p5) {
-            self.invoke(key, p1, p2, p3, p4, p5);
+        return function bindedInvocation (p1, p2, p3, p4, p5) {
+            // this.invoke(key, p1, p2, p3, p4, p5);
+            // 这里不直接调用invoke仅仅是为了减少调用堆栈的深度，方便调试
+            var callbackList = self._callbackTable[key];
+            if (callbackList) {
+                for (var i = 0; i < callbackList.length; i++) {
+                    callbackList[i](p1, p2, p3, p4, p5);
+                }
+            }
             if (remove) {
                 self.remove(key);
             }

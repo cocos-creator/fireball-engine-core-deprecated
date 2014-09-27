@@ -49,7 +49,7 @@ test('test', function () {
 
     Fire.undefine(Animal);
 
-    var constructor = new callback();
+    var constructor = new Callback();
     Animal = Fire.define('Animal', constructor)
                  .prop('weight', 100);
 
@@ -108,8 +108,8 @@ test('Inherit', function () {
 });
 
 test('Inherit + constructor', function () {
-    var animalConstructor = callback();
-    var huskyConstructor = callback();
+    var animalConstructor = Callback();
+    var huskyConstructor = Callback();
     var Animal = Fire.define('Fire.Animal', animalConstructor)
                       .prop('name', 'ann');
     var Dog = Fire.define('Fire.Dog', Animal)
