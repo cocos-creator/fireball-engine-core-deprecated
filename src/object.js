@@ -74,7 +74,7 @@ FObject = (function () {
      */
     FObject.prototype.destroy = function () {
         if (this._objFlags & Destroyed) {
-            console.error('object already destroyed');
+            Fire.error('object already destroyed');
             return;
         }
         if (this._objFlags & ToDestroy) {
@@ -87,7 +87,7 @@ FObject = (function () {
 
     FObject.prototype._destroyImmediate = function () {
         if (this._objFlags & Destroyed) {
-            console.error('object already destroyed');
+            Fire.error('object already destroyed');
             return;
         }
         // engine internal callback

@@ -379,12 +379,12 @@ Fire.Atlas = (function () {
         }
         catch ( err ) {
             if ( this.autoSize === false ) {
-                console.error(err.message);
+                Fire.error(err.message);
                 return;
             }
 
             if ( this.width === 4096 && this.height === 4096 ) {
-                console.error(err.message);
+                Fire.error(err.message);
                 return;
             }
 

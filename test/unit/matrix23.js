@@ -9,7 +9,7 @@ test('basic', function () {
     strictEqual(mat.tx, 0);
     strictEqual(mat.ty, 0);
     strictEqual(Fire.getClassName(mat), 'Fire.Matrix23');
-    //console.log(mat);
+    //Fire.log(mat);
 });
 
 test('clone', function () {

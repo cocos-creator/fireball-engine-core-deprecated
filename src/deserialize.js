@@ -105,7 +105,7 @@ var _Deserializer = (function () {
         var klass = null;
         klass = Fire.getClassByName(serialized.__type__);
         if (!klass) {
-            console.warn('Fire.deserialize: unknown type: ' + serialized.__type__);
+            Fire.warn('Fire.deserialize: unknown type: ' + serialized.__type__);
             return null;
             //// jshint -W010
             //asset = new Object();
@@ -145,7 +145,7 @@ var _Deserializer = (function () {
                     else {
                         // always load host objects even if property not serialized
                         if (self.result.hostProp) {
-                            console.error('not support multi host object in a file');
+                            Fire.error('not support multi host object in a file');
                             // 这里假定每个asset都有uuid，每个json只能包含一个asset，只能包含一个hostProp
                         }
                         self.result.hostProp = propName;

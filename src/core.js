@@ -3,12 +3,13 @@
  * copy all properties from arguments[1...n] to obj 
  * 
  * @param {object} obj
- * @param 1...n {object} 
- * @returns {function} the result obj
+ * @param {...object} source
+ * @returns {object} the result obj
  * 
  */
-Fire.merge = function (obj) {
-    var source, prop;
+Fire.merge = function (obj, source) {
+    'use strict';
+    var prop;
     for (var i = 1, length = arguments.length; i < length; i++) {
         source = arguments[i];
         for (prop in source) {
@@ -19,11 +20,11 @@ Fire.merge = function (obj) {
 };
 
 /**
- * @method Fire.extend
  * Derive the class from the supplied base class.
  * Both classes are just native javascript constructors, not created by Fire.define, so
  * usually you will want to inherit using Fire.define instead.
  * 
+ * @method Fire.extend
  * @param {function} cls
  * @param {function} base - the baseclass to inherit
  * @returns {function} the result class
@@ -127,3 +128,24 @@ Fire.getClassByName = function (className) {
 };
 
 // TODO getClassById
+
+// logs
+
+Fire.log = function () {
+    console.log.apply(console, arguments);
+};
+Fire.hint = function (text) {
+    console.log('%c' + text, "color: blue");
+};
+Fire.warn = function () {
+    console.warn.apply(console, arguments);
+};
+if (console.error.bind) {
+    // error会dump call stack，用bind可以避免dump Fire.error自己。
+    Fire.error = console.error.bind(console);
+}
+else {
+    Fire.error = function () {
+        console.error.apply(console, arguments);
+    };
+}

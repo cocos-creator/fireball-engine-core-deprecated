@@ -106,7 +106,7 @@ Fire.HostType = function (typename) {
 // * @deprecated - No need to define Fire.Float, you should just set default value to any number
 // */
 //Object.defineProperty(Fire, 'Float', { get: function () {
-//    console.warn('No need to use "Fire.Float", you just need to set default value to any number');
+//    Fire.warn('No need to use "Fire.Float", you just need to set default value to any number');
 //    return {};
 //}});
 ///**
@@ -114,7 +114,7 @@ Fire.HostType = function (typename) {
 // * @deprecated - No need to use Fire.Serializable, all properties defined by "Class.prop" is already serializable.
 // */
 //Object.defineProperty(Fire, 'Serializable', { get: function () {
-//    console.warn('No need to use "Fire.Serializable", all properties defined by "Class.prop" is already serializable.');
+//    Fire.warn('No need to use "Fire.Serializable", all properties defined by "Class.prop" is already serializable.');
 //    return {};
 //}});
 

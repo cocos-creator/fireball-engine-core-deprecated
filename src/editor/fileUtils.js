@@ -19,7 +19,7 @@ Fire.buildPng = function (canvas, filename, pixelBuffer, returnBinOrBase64, call
         png.write_imageData(pixelBuffer);
         png.write_end();
         console.timeEnd('png');
-        //console.log('Bytes: ' + png.data.length);
+        //Fire.log('Bytes: ' + png.data.length);
         if (returnBinOrBase64 || Fire.isNode) {
             callback( { bin: png.data } );
         }
@@ -55,7 +55,7 @@ Fire.savePng = function (data, filename, path, zip) {
             zip.file(filename, value, { base64: true });
         }
         else {
-            console.error('unknown data type to zip');
+            Fire.error('unknown data type to zip');
         }
         return;
     }
@@ -67,7 +67,7 @@ Fire.savePng = function (data, filename, path, zip) {
             Fs.writeFileSync(path, value, {'encoding': 'base64'});
         }
         else {
-            console.warn('unknown node type: ' + type);
+            Fire.warn('unknown node type: ' + type);
         }
     }
     else {
@@ -78,7 +78,7 @@ Fire.savePng = function (data, filename, path, zip) {
             Fire.downloadCanvas(value, filename);
         }
         else {
-            console.warn('unknown browser type: ' + type);
+            Fire.warn('unknown browser type: ' + type);
         }
     }
 };

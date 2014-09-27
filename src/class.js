@@ -7,7 +7,7 @@ var _appendProp = function (name/*, isGetter*/) {
     //    var d = Object.getOwnPropertyDescriptor(this, name);
     //    var hasGetterOrSetter = (d && (d.get || d.set));
     //    if (hasGetterOrSetter) {
-    //        console.error(Fire.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
+    //        Fire.error(Fire.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
     //        return;
     //    }
     //}
@@ -21,7 +21,7 @@ var _appendProp = function (name/*, isGetter*/) {
             this.__props__.push(name);
         }
         //else {
-        //    console.error(Fire.getClassName(this) + '.' + name + ' is already defined!');
+        //    Fire.error(Fire.getClassName(this) + '.' + name + ' is already defined!');
         //}
     }
 };
@@ -77,7 +77,7 @@ var _metaClass = {
             if (Array.isArray(defaultValue)) {
                 // check array empty
                 if (defaultValue.length > 0) {
-                    console.error('Default array must be empty, set default value of ' + Fire.getClassName(this) + '.prop("' + name + 
+                    Fire.error('Default array must be empty, set default value of ' + Fire.getClassName(this) + '.prop("' + name + 
                         '", ...) to null or [], and initialize in constructor please. (just like "this.' + 
                         name + ' = [...];")');
                     return this;
@@ -86,7 +86,7 @@ var _metaClass = {
             else if (!_isPlainEmptyObj(defaultValue)) {
                 // check cloneable
                 if (!_cloneable(defaultValue)) {
-                    console.error('Do not set default value to non-empty object, unless the object defines its own "clone" function. Set default value of ' + Fire.getClassName(this) + '.prop("' + name + 
+                    Fire.error('Do not set default value to non-empty object, unless the object defines its own "clone" function. Set default value of ' + Fire.getClassName(this) + '.prop("' + name + 
                         '", ...) to null or {}, and initialize in constructor please. (just like "this.' + 
                         name + ' = {foo: bar};")');
                     return this;
@@ -143,7 +143,7 @@ var _metaClass = {
         'use strict';
         var d = Object.getOwnPropertyDescriptor(this, name);
         if (d && d.get) {
-            console.error(Fire.getClassName(this) + ': the getter of "' + name + '" is already defined!');
+            Fire.error(Fire.getClassName(this) + ': the getter of "' + name + '" is already defined!');
             return this;
         }
 
@@ -157,11 +157,11 @@ var _metaClass = {
                     displayInInspector = false;
                 }
                 if (attr.serializable === false || attr.editorOnly === true) {
-                    console.warn('No need to use Fire.NonSerialized or Fire.EditorOnly for the getter of ' + 
+                    Fire.warn('No need to use Fire.NonSerialized or Fire.EditorOnly for the getter of ' + 
                         Fire.getClassName(this) + '.' + name + ', every getter is actually non-serialized.');
                 }
                 if (attr.hasOwnProperty('default')) {
-                    console.error(Fire.getClassName(this) + ': Can not set default value of a getter!');
+                    Fire.error(Fire.getClassName(this) + ': Can not set default value of a getter!');
                     return this;
                 }
             }
@@ -174,7 +174,7 @@ var _metaClass = {
         else {
             var index = this.__props__.indexOf(name);
             if (index >= 0) {
-                console.error(Fire.getClassName(this) + '.' + name + ' is already defined!');
+                Fire.error(Fire.getClassName(this) + '.' + name + ' is already defined!');
                 return this;
             }
         }
@@ -196,7 +196,7 @@ var _metaClass = {
     set: function (name, setter) {
         var d = Object.getOwnPropertyDescriptor(this, name);
         if (d && d.set) {
-            console.error(Fire.getClassName(this) + ': the setter of "' + name + '" is already defined!');
+            Fire.error(Fire.getClassName(this) + ': the setter of "' + name + '" is already defined!');
             return this;
         }
         Object.defineProperty(this.prototype, name, {

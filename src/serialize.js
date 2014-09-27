@@ -87,7 +87,7 @@ var _Serializer = (function () {
             if (!Fire._isFireClass(klass)) {
                 // primitive javascript object
                 for (var key in obj) {
-                    //console.log(key);
+                    //Fire.log(key);
                     if (obj.hasOwnProperty(key) === false || key === '__id__')
                         continue;
                     // undefined value (if dont save) will be stripped from JSON
@@ -205,7 +205,7 @@ var _Serializer = (function () {
      * @param {object} obj - The object to serialize
      */
     var _serializeObj = function (self, obj) {
-        //console.log(obj);
+        //Fire.log(obj);
         if (!obj) {
             return null;
         }
@@ -245,7 +245,7 @@ var _Serializer = (function () {
         }
         else if (_isDomNode(obj)) {
             // host obj
-            //console.warn("" + obj + " won't be serialized");
+            //Fire.warn("" + obj + " won't be serialized");
             return null;
         }
         else {
@@ -288,7 +288,7 @@ var _Serializer = (function () {
         }
         else if (typeof obj === 'object' && obj) {
             if (_isDomNode(obj)) {
-                console.warn("" + obj + " won't be serialized");
+                Fire.warn("" + obj + " won't be serialized");
                 self.serializedList.push(null);
                 return;
             }

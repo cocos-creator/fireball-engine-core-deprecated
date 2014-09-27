@@ -79,102 +79,102 @@ if (Fire.isApp && Fire.isWeb) {
                 document.body.removeChild(chooser);
                 //chooser.removeEventListener("change", arguments.callee);
                 chooser.onchange = null;
-                //console.log('value ' + this.value);
+                //Fire.log('value ' + this.value);
                 localStorage[preserveDirKey] = this.value;
                 callback(this.value);
             };
 
             //chooser.addEventListener("change", function (evt) {
-            //    console.log('change');
+            //    Fire.log('change');
             //}, false);
             //chooser.addEventListener("blur", function (evt) {
-            //    console.log('blur');
+            //    Fire.log('blur');
             //}, false);
             //chooser.addEventListener("load", function (evt) {
-            //    console.log('load');
+            //    Fire.log('load');
             //}, false);
             //chooser.addEventListener("unload", function (evt) {
-            //    console.log('unload');
+            //    Fire.log('unload');
             //}, false);
             //chooser.addEventListener("abort", function (evt) {
-            //    console.log('abort');
+            //    Fire.log('abort');
             //}, false);
             //chooser.addEventListener("click", function (evt) {
-            //    console.log('click');
+            //    Fire.log('click');
             //}, false);
             //chooser.addEventListener("error", function (evt) {
-            //    console.log('error');
+            //    Fire.log('error');
             //}, false);
             //chooser.addEventListener("resize", function (evt) {
-            //    console.log('resize');
+            //    Fire.log('resize');
             //}, false);
             //chooser.addEventListener("select", function (evt) {
-            //    console.log('select');
+            //    Fire.log('select');
             //}, false);
             //chooser.addEventListener("submit", function (evt) {
-            //    console.log('submit');
+            //    Fire.log('submit');
             //}, false);
             //chooser.addEventListener("reset", function (evt) {
-            //    console.log('reset');
+            //    Fire.log('reset');
             //}, false);
             //chooser.addEventListener("focus", function (evt) {
-            //    console.log('focus');
+            //    Fire.log('focus');
             //}, false);
             //chooser.addEventListener("focusin", function (evt) {
-            //    console.log('focusin');
+            //    Fire.log('focusin');
             //}, false);
             //chooser.addEventListener("focusout", function (evt) {
-            //    console.log('focusout');
+            //    Fire.log('focusout');
             //}, false);
             //chooser.addEventListener("error", function (evt) {
-            //    console.log('error');
+            //    Fire.log('error');
             //}, false);
 
 
             //chooser.addEventListener("change", function (evt) {
-            //    console.log('change');
+            //    Fire.log('change');
             //}, true);
             //chooser.addEventListener("blur", function (evt) {
-            //    console.log('blur');
+            //    Fire.log('blur');
             //}, true);
             //chooser.addEventListener("load", function (evt) {
-            //    console.log('load');
+            //    Fire.log('load');
             //}, true);
             //chooser.addEventListener("unload", function (evt) {
-            //    console.log('unload');
+            //    Fire.log('unload');
             //}, true);
             //chooser.addEventListener("abort", function (evt) {
-            //    console.log('abort');
+            //    Fire.log('abort');
             //}, true);
             //chooser.addEventListener("click", function (evt) {
-            //    console.log('click');
+            //    Fire.log('click');
             //}, true);
             //chooser.addEventListener("error", function (evt) {
-            //    console.log('error');
+            //    Fire.log('error');
             //}, true);
             //chooser.addEventListener("resize", function (evt) {
-            //    console.log('resize');
+            //    Fire.log('resize');
             //}, true);
             //chooser.addEventListener("select", function (evt) {
-            //    console.log('select');
+            //    Fire.log('select');
             //}, true);
             //chooser.addEventListener("submit", function (evt) {
-            //    console.log('submit');
+            //    Fire.log('submit');
             //}, true);
             //chooser.addEventListener("reset", function (evt) {
-            //    console.log('reset');
+            //    Fire.log('reset');
             //}, true);
             //chooser.addEventListener("focus", function (evt) {
-            //    console.log('focus');
+            //    Fire.log('focus');
             //}, true);
             //chooser.addEventListener("focusin", function (evt) {
-            //    console.log('focusin');
+            //    Fire.log('focusin');
             //}, true);
             //chooser.addEventListener("focusout", function (evt) {
-            //    console.log('focusout');
+            //    Fire.log('focusout');
             //}, true);
             //chooser.addEventListener("error", function (evt) {
-            //    console.log('error');
+            //    Fire.log('error');
             //}, true);
             chooser.click();
             //chooser.value = '';

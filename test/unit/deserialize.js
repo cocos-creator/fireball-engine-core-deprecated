@@ -7,7 +7,7 @@ test('basic deserialize test', function () {
     deepEqual(Fire.deserialize([]), [], 'smoke test2');
 
     // TODO:
-    MyAsset = (function () {
+    var MyAsset = (function () {
         var _super = Fire.Asset;
 
         function MyAsset () {
@@ -62,7 +62,7 @@ test('nil', function () {
 test('json deserialize test', function () {
 
     // TODO:
-    MyAsset = (function () {
+    var MyAsset = (function () {
         var _super = Fire.Asset;
 
         function MyAsset () {
@@ -139,7 +139,7 @@ test('circular reference by object', function () {
 });
 
 test('circular reference by array', function () {
-    MyAsset = (function () {
+    var MyAsset = (function () {
         var _super = Fire.Asset;
 
         function MyAsset () {
@@ -157,7 +157,7 @@ test('circular reference by array', function () {
     })();
 
     var expectAsset = new MyAsset();
-    //console.log(Fire.serialize(expectAsset));
+    //Fire.log(Fire.serialize(expectAsset));
     var json = '[{"__type__":"MyAsset","array1":{"__id__":1},"array2":{"__id__":2}},[1,{"__id__":2}],[{"__id__":1},2]]';
     var deserializedAsset = Fire.deserialize(json);
 
@@ -169,7 +169,7 @@ test('circular reference by array', function () {
 });
 
 test('circular reference by dict', function () {
-    MyAsset = (function () {
+    var MyAsset = (function () {
         var _super = Fire.Asset;
 
         function MyAsset () {
@@ -183,10 +183,10 @@ test('circular reference by dict', function () {
 
         return MyAsset;
     })();
-    expectAsset = new MyAsset();
+    var expectAsset = new MyAsset();
 
-    serializedAssetJson = '[{"__type__":"MyAsset","dict1":{"__id__":1},"dict2":{"__id__":2}},{"num":1,"other":{"__id__":2}},{"num":2,"other":{"__id__":1}}]';
-    deserializedAsset = Fire.deserialize(serializedAssetJson);
+    var serializedAssetJson = '[{"__type__":"MyAsset","dict1":{"__id__":1},"dict2":{"__id__":2}},{"num":1,"other":{"__id__":2}},{"num":2,"other":{"__id__":1}}]';
+    var deserializedAsset = Fire.deserialize(serializedAssetJson);
 
     deepEqual(deserializedAsset, expectAsset, 'two dicts can circular reference each other');
     strictEqual(deserializedAsset.dict1.other.other, deserializedAsset.dict1, 'two dicts can circular reference each other 1');
