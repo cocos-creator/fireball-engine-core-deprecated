@@ -1,12 +1,12 @@
 ﻿// global definitions
 
 Fire.isNode = !!(typeof process !== 'undefined' && process.versions && process.versions.node);
-Fire.isNw = !!(Fire.isNode && 'node-webkit' in process.versions);     // node-webkit
-Fire.isAs = !!(Fire.isNode && 'atom-shell' in process.versions);      // atom-shell
-Fire.isApp = Fire.isNw || Fire.isAs;                                  // native client
+Fire.isNodeWebkit = !!(Fire.isNode && 'node-webkit' in process.versions);     // node-webkit
+Fire.isAtomShell = !!(Fire.isNode && 'atom-shell' in process.versions);      // atom-shell
+Fire.isApp = Fire.isNodeWebkit || Fire.isAtomShell;                                  // native client
 Fire.isPureWeb = !Fire.isNode && !Fire.isApp;                         // common web browser
 Fire.isEditor = Fire.isApp;     // by far there is no standalone client version, so app == editor
-if (Fire.isAs) {
+if (Fire.isAtomShell) {
     Fire.isWeb = typeof process !== 'undefined' && process.type === 'renderer';
 }
 else {

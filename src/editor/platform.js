@@ -57,7 +57,7 @@ else {
 }
 
 if (Fire.isApp && Fire.isWeb) {
-    if (Fire.isNw) {
+    if (Fire.isNodeWebkit) {
         Fire.getSavePath = function (defaultFilename, preserveDirKey, callback) {
             var persistentId = 'SaveFileDialog';
             var chooser = document.getElementById(persistentId);
@@ -185,7 +185,7 @@ if (Fire.isApp && Fire.isWeb) {
         var nwgui = require('nw.gui');
         Fire.showItemInFolder = nwgui.Shell.showItemInFolder;
     }
-    /*else if (Fire.isAs) {
+    /*else if (Fire.isAtomShell) {
         Fire.getSavePath = function (defaultFilename, preserveDirKey, callback, title, browserWindow) {
             var defaultDir = localStorage[preserveDirKey];
             var defaultPath = null;
