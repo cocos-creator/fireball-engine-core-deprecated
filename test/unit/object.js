@@ -133,17 +133,17 @@ test('test', function () {
     var obj1 = new Fire.HashObject();
     var obj2 = new Fire.HashObject();
 
-    strictEqual(typeof obj1.hashID, 'number', 'id is number');
+    strictEqual(typeof obj1.hashId, 'number', 'id is number');
     strictEqual(typeof obj2.hashKey, 'string', 'key is string');
 
     notEqual(obj1.hashKey, obj2.hashKey, 'unique hashKey');
-    notEqual(obj1.hashID, obj2.hashID, 'unique hashID');
+    notEqual(obj1.hashId, obj2.hashId, 'unique hashId');
 
-    var id1 = obj1.hashID;
+    var id1 = obj1.hashId;
     var key2 = obj2.hashKey;
 
     var obj3 = new Fire.HashObject();
 
-    strictEqual(obj1.hashID, id1, 'id not changed');
+    strictEqual(obj1.hashId, id1, 'id not changed');
     strictEqual(obj2.hashKey, key2, 'key not changed');
 });

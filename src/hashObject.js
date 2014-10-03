@@ -7,7 +7,7 @@
     var HashObject = Fire.define('Fire.HashObject', Fire.FObject, function () {
         FObject.call(this);
 
-        Object.defineProperty(this, '_hashID', {
+        Object.defineProperty(this, '_hashId', {
             value: 0,
             writable: true,
             enumerable: false
@@ -22,11 +22,11 @@
     var id = 0;
     
     /**
-     * @member {string} Fire.HashObject#hashID
+     * @member {number} Fire.HashObject#hashId
      */
-    Object.defineProperty ( HashObject.prototype, 'hashID', {
+    Object.defineProperty ( HashObject.prototype, 'hashId', {
         get: function () {
-            return this._hashID || (this._hashID = ++id);
+            return this._hashId || (this._hashId = ++id);
         }
     });
 
@@ -35,7 +35,7 @@
      */
     Object.defineProperty ( HashObject.prototype, 'hashKey', {
         get: function () {
-            return this._hashKey || (this._hashKey = '' + this.hashID);
+            return this._hashKey || (this._hashKey = '' + this.hashId);
         }
     });
 
