@@ -88,7 +88,7 @@ var _Serializer = (function () {
                 // primitive javascript object
                 for (var key in obj) {
                     //Fire.log(key);
-                    if (obj.hasOwnProperty(key) === false || key === '__id__')
+                    if (obj.hasOwnProperty(key) === false || (key.charCodeAt(0) === 95 && key.charCodeAt(1) === 95))    // starts with __
                         continue;
                     // undefined value (if dont save) will be stripped from JSON
                     data[key] = _serializeField(self, obj[key]);

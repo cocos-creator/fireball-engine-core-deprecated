@@ -7,8 +7,16 @@
     var HashObject = Fire.define('Fire.HashObject', Fire.FObject, function () {
         FObject.call(this);
 
-        this._hashID = 0;
-        this._hashKey = '';
+        Object.defineProperty(this, '_hashID', {
+            value: 0,
+            writable: true,
+            enumerable: false
+        });
+        Object.defineProperty(this, '_hashKey', {
+            value: '',
+            writable: true,
+            enumerable: false
+        });
     });
 
     var id = 0;

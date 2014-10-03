@@ -3,23 +3,9 @@ FObject = (function () {
     // constructor
 
     function FObject () {
-        Object.defineProperty(this, '_objFlags', {
-            value: 0,
-            writable: true,
-            enumerable: false
-        });
+        this._objFlags = 0;
     }
     Fire.registerClass("Fire.FObject", FObject);
-
-    //// enum
-
-    //Object.defineProperty(FObject, 'Flags', {
-    //    value: {
-    //        Destroyed: Destroyed,
-    //        _toDestroy: ToDestroy,
-    //    },
-    //    enumerable: false
-    //});
 
     // static
 
@@ -94,8 +80,8 @@ FObject = (function () {
         if (this._onPreDestroy) {
             this._onPreDestroy();
         }
-        // do destroy
-            // TODO
+        // TODO do destroy，允许重载destroy
+            // 所有可枚举到的属性，都会被清空
         // mark destroyed
         this._objFlags |= Destroyed;
     };
