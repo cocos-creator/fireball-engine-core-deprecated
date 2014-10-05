@@ -10,13 +10,13 @@
   "devDependencies": {
     "gulp": "",
     "gulp-fb": "",
-    "gulp-clean": "",
     "gulp-util": "",
     "gulp-concat": "",
     "gulp-jshint": "",
     "gulp-qunit": "",
     "gulp-rename": "",
     "gulp-uglify": "",
-    "jshint-stylish": ""
+    "jshint-stylish": "",
+    "del": ""
   }
 }

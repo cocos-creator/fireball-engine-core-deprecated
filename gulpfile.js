@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 
 var gutil = require('gulp-util');
-var clean = require('gulp-clean');
+var del = require('del');
 var rename = require('gulp-rename');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
@@ -68,9 +68,7 @@ var paths = {
 
 // clean
 gulp.task('clean', function() {
-    return gulp.src('bin/**/*', {read: false})
-    .pipe(clean())
-    ;
+    del('bin/');
 });
 
 // js-hint
