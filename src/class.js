@@ -100,12 +100,13 @@ var _metaClass = {
         // register property
         _appendProp.call(this, name);
 
-        // apply default type (NOTE: if user provide type attribute, this one will be overwrote)
-        var mytype = typeof defaultValue;
-        if ( mytype === 'number' ) {
-            mytype = 'float';
-        }
-        Fire.attr( this, name, { 'type': mytype } );
+        // 禁用，因为getter/setter需要动态获得类型，所以类型统一由上层处理
+        //// apply default type (NOTE: if user provide type attribute, this one will be overwrote)
+        //var mytype = typeof defaultValue;
+        //if ( mytype === 'number' ) {
+        //    mytype = 'float';
+        //}
+        //Fire.attr( this, name, { 'type': mytype } );
 
         // apply attributes
         if (attribute) {
