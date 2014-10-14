@@ -203,14 +203,14 @@ var _metaClass = {
         }
         Object.defineProperty(this.prototype, name, {
             set: function (value) {
-                // TODO: move to engine
                 if (this._observing) {
                      Object.getNotifier(this).notify({
                         type: 'update',
-                        name: 'name',
+                        name: name,
                         oldValue: this[name]
                     });
                 }
+
                 //
                 setter.call(this, value);
             },

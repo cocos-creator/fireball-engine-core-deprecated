@@ -26,6 +26,11 @@ Vec2 = (function () {
         return new Vec2(this.x, this.y);
     };
 
+    Vec2.prototype.set = function ( newValue ) {
+        this.x = newValue.x;
+        this.y = newValue.y;
+    };
+
     Vec2.prototype.equals = function (other) {
         return this.x === other.x && this.y === other.y;
     };
