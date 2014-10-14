@@ -4,7 +4,7 @@
 var _appendProp = function (name/*, isGetter*/) {
     //if (!isGetter) {
     //    // checks whether getter/setter defined
-    //    var d = Object.getOwnPropertyDescriptor(this, name);
+    //    var d = Object.getOwnPropertyDescriptor(this.prototype, name);
     //    var hasGetterOrSetter = (d && (d.get || d.set));
     //    if (hasGetterOrSetter) {
     //        Fire.error(Fire.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
@@ -142,7 +142,7 @@ var _metaClass = {
      */
     get: function (name, getter, attribute) {
         'use strict';
-        var d = Object.getOwnPropertyDescriptor(this, name);
+        var d = Object.getOwnPropertyDescriptor(this.prototype, name);
         if (d && d.get) {
             Fire.error(Fire.getClassName(this) + ': the getter of "' + name + '" is already defined!');
             return this;
@@ -183,6 +183,7 @@ var _metaClass = {
             get: getter,
             configurable: true
         });
+        Fire.attr(this, name, { hasGetter: true }); // 方便 editor 做判断
         return this;
     },
 
@@ -195,7 +196,7 @@ var _metaClass = {
      * @returns {function} the class itself
      */
     set: function (name, setter) {
-        var d = Object.getOwnPropertyDescriptor(this, name);
+        var d = Object.getOwnPropertyDescriptor(this.prototype, name);
         if (d && d.set) {
             Fire.error(Fire.getClassName(this) + ': the setter of "' + name + '" is already defined!');
             return this;
@@ -215,6 +216,7 @@ var _metaClass = {
             },
             configurable: true
         });
+        Fire.attr(this, name, { hasSetter: true }); // 方便 editor 做判断
         return this;
     },
 

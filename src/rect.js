@@ -38,6 +38,13 @@ Fire.Rect = (function () {
         return new Rect(this.x, this.y, this.width, this.height);
     };
 
+    Rect.prototype.equals = function (other) {
+        return this.x === other.x && 
+               this.y === other.y &&
+               this.width === other.width &&
+               this.height === other.height;
+    };
+
     Object.defineProperty(Rect.prototype, 'xMax', {
         get: function () { return this.x + this.width; }
     });

@@ -27,6 +27,15 @@ Matrix23.prototype.clone = function () {
     return mat;
 };
 
+Matrix23.prototype.equals = function (other) {
+    return this.a === other.a &&
+           this.b === other.b &&
+           this.c === other.c &&
+           this.d === other.d &&
+           this.tx === other.tx &&
+           this.ty === other.ty;
+};
+
 Matrix23.prototype.toString = function () {
     return '|' + this.a.toFixed(2) + ' ' + this.b.toFixed(2) + ' ' + this.tx.toFixed(2) + 
         '|\n|' + this.c.toFixed(2) + ' ' + this.d.toFixed(2) + ' ' + this.ty.toFixed(2) + 
@@ -89,6 +98,13 @@ Matrix23.prototype.transformPoint = function (vector, out) {
     out.y = this.b * x + this.d * vector.y + this.ty;
     return out;
 };
+
+//Matrix23.prototype.transformPointXY = function (x, y, out) {
+//    out = out || new Vec2();
+//    out.x = this.a * x + this.c * y + this.tx;
+//    out.y = this.b * x + this.d * y + this.ty;
+//    return out;
+//};
 
 // negative scaling (mirroring) is not supported
 Matrix23.prototype.getScale = function (out) {

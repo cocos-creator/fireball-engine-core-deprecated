@@ -11,6 +11,13 @@ Fire.Color = (function () {
         return new Color(this.r, this.g, this.b, this.a);
     };
 
+    Color.prototype.equals = function (other) {
+        return this.r === other.r &&
+               this.g === other.g &&
+               this.b === other.b &&
+               this.a === other.a;
+    };
+
     Color.prototype.toString = function () {
         return "rgba(" + 
             this.r.toFixed(2) + ", " + 

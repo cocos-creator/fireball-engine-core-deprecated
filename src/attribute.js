@@ -42,6 +42,10 @@ Fire.attr = function (constructor, propertyName, attributes) {
 BuiltinAttributes: {
     default: defaultValue,
 }
+Getter or Setter: {
+    hasGetter: true,
+    hasSetter: true,
+}
 Callbacks: {
     _onAfterProp: function (constructor, propName) {},
 }
