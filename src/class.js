@@ -201,7 +201,18 @@ var _metaClass = {
             return this;
         }
         Object.defineProperty(this.prototype, name, {
-            set: setter,
+            set: function (value) {
+                // TODO: move to engine
+                if (this._observing) {
+                     Object.getNotifier(this).notify({
+                        type: 'update',
+                        name: 'name',
+                        oldValue: this[name]
+                    });
+                }
+                //
+                setter.call(this, value);
+            },
             configurable: true
         });
         return this;
@@ -355,12 +366,14 @@ Fire.define = function (className, baseOrConstructor, constructor) {
     var fireClass;
     if (constructor) {
         fireClass = function () {
+            this._observing = false; // TODO: move to engine
             _createInstanceProps(this, fireClass);
             constructor.apply(this, arguments);
         };
     }
     else {
         fireClass = function () {
+            this._observing = false; // TODO: move to engine
             _createInstanceProps(this, fireClass);
         };
     }
