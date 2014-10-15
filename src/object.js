@@ -3,6 +3,7 @@ FObject = (function () {
     // constructor
 
     function FObject () {
+        this.name = '';
         this._objFlags = 0;
     }
     Fire.registerClass("Fire.FObject", FObject);

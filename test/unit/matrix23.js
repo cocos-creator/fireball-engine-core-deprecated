@@ -17,13 +17,13 @@ test('clone', function () {
     mat1.a = 123;
     mat1.b = 0;
     mat1.c = 1;
-    mat1.d = .123;
+    mat1.d = 0.123;
     mat1.tx = 1.23;
     mat1.ty = 12.3;
     var mat2 = mat1.clone();
     deepEqual(mat1, mat2);
     mat1.d = 321;
-    strictEqual(mat2.d, .123);
+    strictEqual(mat2.d, 0.123);
 });
 
 test('identity', function () {
@@ -42,7 +42,7 @@ test('scale', function () {
     strictEqual(s.x, 1);
     strictEqual(s.y, 1);
 
-    mat.setScale(321, 0.4);
+    mat.setScale(new Vec2(321, 0.4));
     s = mat.getScale();
     strictEqual(s.x, 321);
     strictEqual(s.y, 0.4);

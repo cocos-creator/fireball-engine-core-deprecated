@@ -45,6 +45,11 @@ Fire.Rect = (function () {
                this.height === other.height;
     };
 
+    Rect.prototype.toString = function () {
+        return '(' + this.x.toFixed(2) + ', ' + this.y.toFixed(2) + ', ' + this.width.toFixed(2) +
+               ', ' + this.height.toFixed(2) + ')';
+    };
+
     Object.defineProperty(Rect.prototype, 'xMax', {
         get: function () { return this.x + this.width; }
     });

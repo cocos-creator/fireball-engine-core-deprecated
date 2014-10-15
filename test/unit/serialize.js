@@ -107,7 +107,6 @@ test('test type derived by Fire.define', function() {
 
     var expect = {
         __type__: 'MyAsset',
-        debugName: "",
         emptyArray: [],
         array: [1, '2',  {a:3}, [4, [5]], true],
         string: 'unknown',
@@ -248,7 +247,7 @@ test('test FObject reference', function () {
           "ref1": { "__id__": 1 },
           "ref2": { "__id__": 1 }
         },
-        { "__type__": "Fire.FObject", "_objFlags": 0 },
+        { "__type__": "Fire.FObject", "_objFlags": 0, "name": "" },
     ];
     match(asset, expected, 'references should the same');
 });

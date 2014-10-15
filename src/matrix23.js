@@ -114,10 +114,10 @@ Matrix23.prototype.getScale = function (out) {
     return out;
 };
 
-Matrix23.prototype.setScale = function (x, y) {
+Matrix23.prototype.setScale = function (scale) {
     var s = this.getScale();
-    x /= s.x;
-    y /= s.y;
+    var x = scale.x / s.x;
+    var y = scale.y / s.y;
     this.a *= x;
     this.b *= x;
     this.c *= y;

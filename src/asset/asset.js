@@ -12,8 +12,6 @@ Fire.Asset = (function () {
 
     });
 
-    Asset.prop('debugName', '', Fire.HideInInspector );
-
     /* TODO: These callbacks available for ?
     Asset.prototype.onBeforeSerialize = function () {};
     Asset.prototype.onAfterDeserialize = function () {};
