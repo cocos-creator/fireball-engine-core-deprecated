@@ -247,7 +247,7 @@ test('test FObject reference', function () {
           "ref1": { "__id__": 1 },
           "ref2": { "__id__": 1 }
         },
-        { "__type__": "Fire.FObject", "_objFlags": 0, "name": "" },
+        { "__type__": "Fire.FObject", "_objFlags": 0, "_name": "" },
     ];
     match(asset, expected, 'references should the same');
 });

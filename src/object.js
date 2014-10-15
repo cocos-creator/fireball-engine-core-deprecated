@@ -3,7 +3,7 @@ FObject = (function () {
     // constructor
 
     function FObject () {
-        this.name = '';
+        this._name = '';
         this._objFlags = 0;
     }
     Fire.registerClass("Fire.FObject", FObject);
@@ -52,6 +52,30 @@ FObject = (function () {
     // instance
 
     /**
+     * @property {boolean} Fire.FObject#name
+     */
+    Object.defineProperty(FObject.prototype, 'name', {
+        get: function () {
+            return this._name;
+        },
+        set: function (value) {
+            this._name = value;
+        },
+        enumerable: false
+    });
+
+    /**
+     * Checks whether the object is not destroyed
+     * @property {boolean} Fire.FObject#isValid
+     * @see Fire.FObject#destroy
+     */
+    Object.defineProperty(FObject.prototype, 'isValid', {
+        get: function () {
+            return !(this._objFlags & Destroyed);
+        }
+    });
+
+    /**
      * Destroy this FObject, and release all its own references to other resources.
      * After destory, this FObject is not usable any more.
      * You can use Fire.isValid(obj) (or obj.isValid if obj is non-nil) to check whether the object is destroyed before accessing it.
@@ -86,17 +110,6 @@ FObject = (function () {
         // mark destroyed
         this._objFlags |= Destroyed;
     };
-
-    /**
-     * Checks whether the object is not destroyed
-     * @return {boolean} whether it is not destroyed
-     * @see Fire.FObject#destroy
-     */
-    Object.defineProperty(FObject.prototype, 'isValid', {
-        get: function () {
-            return !(this._objFlags & Destroyed);
-        }
-    });
 
     return FObject;
 })();
