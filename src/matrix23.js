@@ -27,6 +27,15 @@ Matrix23.prototype.clone = function () {
     return mat;
 };
 
+Matrix23.prototype.set = function (other) {
+    this.a = other.a;
+    this.b = other.b;
+    this.c = other.c;
+    this.d = other.d;
+    this.tx = other.tx;
+    this.ty = other.ty;
+};
+
 Matrix23.prototype.equals = function (other) {
     return this.a === other.a &&
            this.b === other.b &&
@@ -37,8 +46,8 @@ Matrix23.prototype.equals = function (other) {
 };
 
 Matrix23.prototype.toString = function () {
-    return '|' + this.a.toFixed(2) + ' ' + this.b.toFixed(2) + ' ' + this.tx.toFixed(2) + 
-        '|\n|' + this.c.toFixed(2) + ' ' + this.d.toFixed(2) + ' ' + this.ty.toFixed(2) + 
+    return '|' + this.a.toFixed(2) + ' ' + this.c.toFixed(2) + ' ' + this.tx.toFixed(2) + 
+        '|\n|' + this.b.toFixed(2) + ' ' + this.d.toFixed(2) + ' ' + this.ty.toFixed(2) + 
         '|\n|0.00 0.00 1.00|';
 };
 
@@ -126,12 +135,13 @@ Matrix23.prototype.setScale = function (scale) {
 };
 
 Matrix23.prototype.getRotation = function () {
-    return Math.atan2(this.c, this.d);  // or atan2(-b, a);
+    return Math.atan2(-this.c, this.d);
 };
 
-Matrix23.prototype.rotate = function (angle) {
-    var sin = Math.sin(angle);
-    var cos = Math.cos(angle);
+// rotate counterclockwise
+Matrix23.prototype.rotate = function (radians) {
+    var sin = Math.sin(radians);
+    var cos = Math.cos(radians);
     var a = this.a;
     var b = this.b;
     this.a = (a * cos + this.c * sin);

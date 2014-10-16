@@ -47,3 +47,52 @@ test('scale', function () {
     strictEqual(s.x, 321);
     strictEqual(s.y, 0.4);
 });
+
+test('invert', function () {
+    var mat = new Fire.Matrix23();
+    mat.setScale(new Vec2(321, 0.4));
+    mat.rotate(Math.PI * 0.5);
+    mat.tx = 10;  mat.ty = 22;
+    var expected = mat.clone();
+    mat.invert();
+    mat.invert();
+    deepClose(mat, expected, 0.0001, 'can invert');
+});
+
+test('rotate', function () {
+    var mat = new Fire.Matrix23();
+    mat.rotate(Math.PI * 0.5);
+    strictEqual(mat.getRotation(), Math.PI * 0.5, 'can get set rotation');
+});
+
+test('transform', function () {
+    var rm = new Fire.Matrix23();
+    rm.rotate(Math.PI * 0.5);
+    
+    var sm = new Fire.Matrix23();
+    sm.setScale(new Fire.Vec2(7, 2));
+
+    var point = new Vec2(10, -5);
+    var expected = new Vec2(10, 70);
+
+    var scaled = sm.transformPoint(point);
+    var scaledRotated = rm.transformPoint(scaled);
+
+    deepClose(scaledRotated, expected, 0.0001, 'scale then rotate');
+});
+
+test('prepend', function () {
+    var rm = new Fire.Matrix23();
+    rm.rotate(Math.PI * 0.5);
+    
+    var sm = new Fire.Matrix23();
+    sm.setScale(new Fire.Vec2(7, 2));
+
+    var point = new Vec2(10, -5);
+    var expected = new Vec2(10, 70);
+
+    var mat = sm.prepend(rm);
+    var actual = mat.transformPoint(point);
+
+    deepClose(actual, expected, 0.0001, 'use preMultiplied matrix to scale then rotate');
+});
