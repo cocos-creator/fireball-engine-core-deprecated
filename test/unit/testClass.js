@@ -151,3 +151,18 @@ test('prop reference', function () {
 
     Fire.undefine(type);
 });
+
+test('serialization if inherited from FObject', function () {
+    var type = Fire.define('Fire.MyType', FObject, null);
+    type.__props__.push('_name');
+    
+    var obj = new type();
+    obj.name = '阿加西';
+
+    var json = JSON.parse(Fire.serialize(obj));
+    var expected = { "__type__": "Fire.MyType", "_name": "阿加西", "_objFlags": 0 };
+
+    deepEqual(json, expected, 'can serialize FObject.name');
+
+    Fire.undefine(type);
+});

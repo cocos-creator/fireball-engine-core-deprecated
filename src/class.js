@@ -279,26 +279,6 @@ Fire._isFireClass = function (constructor) {
 /**
  * Checks whether myclass is child of superclass
  * 
- * @method Fire._childof
- * @param {function} myclass
- * @param {function} superclass
- * @returns {boolean}
- * @private
- */
-
-Fire._childof = function (myclass, superclass) {
-    var mysuper = myclass.$super;
-    while ( mysuper ) {
-        if ( mysuper === superclass )
-            return true;
-        mysuper = mysuper.$super;
-    }
-    return false;
-};
-
-/**
- * Checks whether myclass is child of superclass
- * 
  * @method Fire.childof
  * @param {function} myclass
  * @param {function} superclass
@@ -306,7 +286,11 @@ Fire._childof = function (myclass, superclass) {
  */
 
 Fire.childof = function (myclass, superclass) {
-    return Fire._childof(myclass, superclass);
+    for ( var mysuper = myclass.$super; mysuper; mysuper = mysuper.$super ) {
+        if ( mysuper === superclass )
+            return true;
+    }
+    return false;
 };
 
 /**
@@ -319,7 +303,7 @@ Fire.childof = function (myclass, superclass) {
  */
 
 Fire.superof = function (myclass, childclass) {
-    return Fire._childof(childclass, myclass);
+    return Fire.childof(childclass, myclass);
 };
 
 /**
@@ -354,11 +338,6 @@ Fire.define = function (className, baseOrConstructor, constructor) {
     var baseClass;
     if (isInherit) {
         baseClass = baseOrConstructor;
-        if (!constructor) {
-            constructor = function () {
-                baseClass.apply(this, arguments);
-            };
-        }
     }
     else {
         constructor = baseOrConstructor;
@@ -367,17 +346,29 @@ Fire.define = function (className, baseOrConstructor, constructor) {
     // create a new constructor
     var fireClass;
     if (constructor) {
+        // constructor provided
         fireClass = function () {
-            this._observing = false; // TODO: move to engine
+            this._observing = false;
             _createInstanceProps(this, fireClass);
             constructor.apply(this, arguments);
         };
     }
     else {
-        fireClass = function () {
-            this._observing = false; // TODO: move to engine
-            _createInstanceProps(this, fireClass);
-        };
+        if (isInherit) {
+            // auto call base constructor
+            fireClass = function () {
+                this._observing = false;
+                _createInstanceProps(this, fireClass);
+                baseClass.apply(this, arguments);
+            };
+        }
+        else {
+            // no constructor
+            fireClass = function () {
+                this._observing = false;
+                _createInstanceProps(this, fireClass);
+            };
+        }
     }
 
     // occupy some non-inherited static members

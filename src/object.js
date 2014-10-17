@@ -8,6 +8,11 @@ FObject = (function () {
     }
     Fire.registerClass("Fire.FObject", FObject);
 
+    // HACK: define serializable properties manually to make it workable with Fire.define
+    FObject.__props__ = ['_name', '_objFlags'];
+    Fire.attr(FObject, '_name', {});
+    Fire.attr(FObject, '_objFlags', {});
+
     // static
 
     /**

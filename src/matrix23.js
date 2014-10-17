@@ -138,6 +138,13 @@ Matrix23.prototype.getRotation = function () {
     return Math.atan2(-this.c, this.d);
 };
 
+Matrix23.prototype.getTranslation = function (out) {
+    out = out || new Vec2();
+    out.x = this.tx;
+    out.y = this.ty;
+    return out;
+};
+
 // rotate counterclockwise
 Matrix23.prototype.rotate = function (radians) {
     var sin = Math.sin(radians);

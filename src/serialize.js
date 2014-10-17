@@ -104,6 +104,7 @@ var _Serializer = (function () {
                     for (var p = 0; p < props.length; p++) {
                         var propName = props[p];
                         var attrs = Fire.attr(klass, propName);
+                        // assume all prop in __props__ must have attr
 
                         // skip nonSerialized
                         if (attrs.serializable === false) {

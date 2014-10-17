@@ -120,6 +120,7 @@ var _Deserializer = (function () {
                 for (var p = 0; p < klass.__props__.length; p++) {
                     var propName = klass.__props__[p];
                     var attrs = Fire.attr(klass, propName);
+                    // assume all prop in __props__ must have attr
                     var hostType = attrs.hostType;
                     if (!hostType) {
                         // skip nonSerialized
