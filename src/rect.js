@@ -58,6 +58,13 @@ Fire.Rect = (function () {
         get: function () { return this.y + this.height; }
     });
 
+    Object.defineProperty(Rect.prototype, 'center', {
+        get: function () { 
+            return new Fire.Vec2( this.x + this.width * 0.5,
+                                  this.y + this.height * 0.5 ); 
+        }
+    });
+
     return Rect;
 })();
 
