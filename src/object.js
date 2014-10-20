@@ -6,12 +6,9 @@ FObject = (function () {
         this._name = '';
         this._objFlags = 0;
     }
-    Fire.registerClass("Fire.FObject", FObject);
-
-    // HACK: define serializable properties manually to make it workable with Fire.define
-    FObject.__props__ = ['_name', '_objFlags'];
-    Fire.attr(FObject, '_name', {});
-    Fire.attr(FObject, '_objFlags', {});
+    
+    // TODO: 统一FireClass和FObject
+    Fire._fastDefine('Fire.FObject', FObject, ['_name', '_objFlags']);
 
     // static
 

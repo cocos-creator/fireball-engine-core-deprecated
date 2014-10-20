@@ -428,3 +428,15 @@ Fire.undefine = function (constructor) {
 //    var str = originalToString.call(this);
 //    return str.replace('function ', 'function ' + Fire.getClassName(this));
 //};
+
+/**
+ * Specially optimized define function only for internal base classes
+ * @private
+ */
+Fire._fastDefine = function (className, constructor, attributes) {
+    Fire.registerClass(className, constructor);
+    constructor.__props__ = attributes;
+    for (var i = 0; i < attributes.length; i++) {
+        Fire.attr(constructor, attributes[i], Fire.HideInInspector);
+    }
+};
