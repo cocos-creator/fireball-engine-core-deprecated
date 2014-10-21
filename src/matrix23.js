@@ -135,7 +135,13 @@ Matrix23.prototype.setScale = function (scale) {
 };
 
 Matrix23.prototype.getRotation = function () {
-    return Math.atan2(-this.c, this.d);
+    var hasSkew = this.b / this.a !== -this.c / this.d;
+    if ( !hasSkew ) {
+        return Math.atan2(-this.c, this.d);
+    }
+    else {
+        return (Math.atan2(this.b, this.a) + Math.atan2(-this.c, this.d)) * 0.5;
+    }
 };
 
 Matrix23.prototype.getTranslation = function (out) {
