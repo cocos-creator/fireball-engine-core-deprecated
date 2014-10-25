@@ -195,6 +195,133 @@ Vec2 = (function () {
         out.y = -this.y;
         return out;
     };
+
+    /**
+     * Dot product
+     * @method Fire.Vec2#dot
+     * @param {Fire.Vec2} [vector]
+     * @returns {number} the result
+     */
+    Vec2.prototype.dot = function (vector) {
+        return this.x * vector.x + this.y * vector.y;
+    };
+
+    /**
+     * Cross product
+     * @method Fire.Vec2#cross
+     * @param {Fire.Vec2} [vector]
+     * @returns {number} the result
+     */
+    Vec2.prototype.cross = function (vector) {
+        return this.y * vector.x - this.x * vector.y;
+    };
+
+    /**
+     * Magnitude
+     * @method Fire.Vec2#mag
+     * @returns {number} the result
+     */
+    Vec2.prototype.mag = function () {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    };
+
+    /**
+     * Magnitude Sqaure
+     * @method Fire.Vec2#magSqr
+     * @returns {number} the result
+     */
+    Vec2.prototype.magSqr = function () {
+        return this.x * this.x + this.y * this.y;
+    };
+
+    /**
+     * Normalize self
+     * @method Fire.Vec2#normalizeSelf
+     * @returns {vector} this
+     */
+    Vec2.prototype.normalizeSelf = function () {
+        var magSqr = this.x * this.x + this.y * this.y;
+        if ( magSqr === 1.0 )
+            return this;
+
+        if ( magSqr === 0.0 ) {
+            console.warn( "Can't normalize zero vector" );
+            return this;
+        }
+        
+        var invsqrt = 1.0 / Math.sqrt(magSqr); 
+        this.x *= invsqrt;
+        this.y *= invsqrt;
+
+        return this;
+    };
+
+    /**
+     * Get normalized vector 
+     * @method Fire.Vec2#normalize
+     * @param {Fire.Vec2} [out] - optional, the receiving vector
+     * @returns {vector} result
+     */
+    Vec2.prototype.normalize = function (out) {
+        out = out || new Fire.Vec2();
+
+        var magSqr = this.x * this.x + this.y * this.y;
+        if ( magSqr === 1.0 ) {
+            out.x = this.x;
+            out.y = this.y;
+            return out;
+        }
+
+        if ( magSqr === 0.0 ) {
+            console.warn( "Can't normalize zero vector" );
+            return out;
+        }
+        
+        var invsqrt = 1.0 / Math.sqrt(magSqr); 
+        out.x = this.x * invsqrt;
+        out.y = this.y * invsqrt;
+
+        return out;
+    };
+
+    /**
+     * Get angle between this and vector 
+     * @method Fire.Vec2#angle
+     * @param {Fire.Vec2} [vector]
+     * @returns {number} from 0 to Math.PI
+     */
+    Vec2.prototype.angle = function (vector) {
+        var magSqr1 = this.magSqr();
+        var magSqr2 = vector.magSqr();
+
+        if ( magSqr1 === 0 || magSqr2 === 0 ) {
+            console.warn( "Can't get angle between zero vector" );
+            return 0.0;
+        }
+
+        var dot = this.dot(vector);
+        return Math.acos( dot / (Math.sqrt(magSqr1 * magSqr2)) );
+    };
+
+    /**
+     * Get angle between this and vector with direction 
+     * @method Fire.Vec2#signAngle
+     * @param {Fire.Vec2} [vector]
+     * @returns {number} from -MathPI to Math.PI
+     */
+    Vec2.prototype.singAngle = function (vector) {
+        var magSqr1 = this.magSqr();
+        var magSqr2 = vector.magSqr();
+
+        if ( magSqr1 === 0 || magSqr2 === 0 ) {
+            console.warn( "Can't get angle between zero vector" );
+            return 0.0;
+        }
+
+        var dot = this.dot(vector);
+        var cross = this.cross(vector);
+        return Math.sign(cross) * Math.acos( dot / (Math.sqrt(magSqr1 * magSqr2)) );
+    };
     
     return Vec2;
 })();
