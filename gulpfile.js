@@ -15,8 +15,12 @@ var paths = {
     src: [
         'src/__intro.js',
 
+        // javascript extends
         'src/define.js',
         'src/core.js',
+        'src/math.js',
+
+        // basic classes
         'src/attribute.js',
         'src/class.js',
         'src/utils.js',
@@ -30,12 +34,14 @@ var paths = {
         'src/rect.js',
         'src/color.js',
 
+        // assets
         'src/asset/asset.js',
         'src/asset/texture.js',
         'src/asset/sprite.js',
         'src/asset/atlas.js',
         'src/asset/font-info.js',
 
+        // editor utils
         'src/editor/utils.js',
         'src/editor/platform.js',
         'src/editor/dom.js',
