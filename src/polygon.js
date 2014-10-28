@@ -8,6 +8,10 @@ Fire.Polygon = (function () {
     }
     Fire.registerClass('Fire.Polygon', Polygon);
 
+    Polygon.prototype.intersects = function ( polygon ) {
+        return Intersection.polygonPolygon( this, polygon );
+    };
+
     Polygon.prototype.contains = function ( point ) {
         var inside = false;
         var x = point.x;

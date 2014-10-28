@@ -19,5 +19,21 @@ Fire.Intersection = (function () {
                ;
     };
 
+    Intersection.polygonPolygon = function ( a, b ) {
+        var i;
+
+        for ( i = 0; i < b.points.length; ++i ) {
+            if ( a.contains( b.points[i] ) )
+                return true;
+        }
+
+        for ( i = 0; i < a.points.length; ++i ) {
+            if ( b.contains( a.points[i] ) )
+                return true;
+        }
+
+        return false;
+    };
+
     return Intersection;
 })();
