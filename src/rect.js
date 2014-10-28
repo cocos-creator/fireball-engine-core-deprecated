@@ -7,6 +7,15 @@ Fire.Rect = (function () {
     }
     Fire.registerClass('Fire.Rect', Rect);
 
+    Rect.fromVec2 = function ( v1, v2 ) {
+        var min_x = Math.min( v1.x, v2.x );
+        var min_y = Math.min( v1.y, v2.y );
+        var max_x = Math.max( v1.x, v2.x );
+        var max_y = Math.max( v1.y, v2.y );
+
+        return new Rect ( min_x, min_y, max_x - min_x, max_y - min_y );
+    };
+
     /**
      * Check if rect contains
      *
@@ -14,7 +23,7 @@ Fire.Rect = (function () {
      * @param b {Fire.Rect} Rect b
      * @return {Number} The contains result, 1 is a contains b, -1 is b contains a, 0 is no contains 
      */
-    Rect.contains = function _Contains ( a, b ) {
+    Rect.contain = function _Contain ( a, b ) {
         if ( a.x <= b.x &&
              a.x + a.width >= b.x + b.width &&
              a.y <= b.y &&
@@ -64,6 +73,32 @@ Fire.Rect = (function () {
                                   this.y + this.height * 0.5 ); 
         }
     });
+
+    Rect.prototype.intersects = function ( rect ) {
+        return Intersection.rectRect( this, rect );
+    };
+
+    Rect.prototype.contains = function ( point ) {
+        if ( this.x <= point.x &&
+             this.x + this.width >= point.x &&
+             this.y <= point.y &&
+             this.y + this.height >= point.y )
+        {
+            return true;
+        }
+        return false;
+    };
+
+    Rect.prototype.containsRect = function ( rect ) {
+        if ( this.x <= rect.x &&
+             this.x + this.width >= rect.x + rect.width &&
+             this.y <= rect.y &&
+             this.y + this.height >= rect.y + rect.height )
+        {
+            return true;
+        }
+        return false;
+    };
 
     return Rect;
 })();

@@ -32,6 +32,7 @@ var paths = {
         'src/vec2.js',
         'src/matrix23.js',
         'src/rect.js',
+        'src/polygon.js',
         'src/color.js',
 
         // assets

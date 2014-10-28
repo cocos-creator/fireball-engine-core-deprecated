@@ -247,12 +247,12 @@ Fire.Atlas = (function () {
         // cleanUpFreeRects
         for ( i = 0; i < freeRects.length; ++i ) {
             for ( var j = i + 1; j < freeRects.length; ++j ) {
-                if ( Fire.Rect.contains(freeRects[i], freeRects[j]) === -1 ) {
+                if ( freeRects[j].containsRect(freeRects[i]) ) {
                     freeRects.splice(i, 1);
                     --i;
                     break;
                 }
-                if ( Fire.Rect.contains(freeRects[j], freeRects[i]) === -1 ) {
+                if ( freeRects[i].containsRect(freeRects[j]) ) {
                     freeRects.splice(j, 1);
                     --j;
                 }
