@@ -2,6 +2,10 @@
     var _d2r = Math.PI/180.0;
     var _r2d = 180.0/Math.PI;
 
+    function _randomRange (min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
     Fire.merge ( Math, {
         TWO_PI: 2.0 * Math.PI,
         HALF_PI: 0.5 * Math.PI,
@@ -48,6 +52,12 @@
             else if ( degree < 0.0 )
                 return 360.0 + degree % 360.0;
             return degree;
+        },
+
+        randomRange: _randomRange,
+
+        randomRangeInt: function (min, max) {
+            return Math.floor(_randomRange(min,max));
         },
     } );
 
