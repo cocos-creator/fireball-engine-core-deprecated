@@ -19,6 +19,7 @@ var paths = {
         'src/define.js',
         'src/core.js',
         'src/math.js',
+        'src/intersection.js',
 
         // basic classes
         'src/attribute.js',

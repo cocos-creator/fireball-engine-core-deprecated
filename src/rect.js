@@ -75,7 +75,7 @@ Fire.Rect = (function () {
     });
 
     Rect.prototype.intersects = function ( rect ) {
-        return Intersection.rectRect( this, rect );
+        return Fire.Intersection.rectRect( this, rect );
     };
 
     Rect.prototype.contains = function ( point ) {
