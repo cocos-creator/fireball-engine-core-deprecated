@@ -53,6 +53,8 @@ Fire.Atlas = (function () {
     Atlas.prop('customPadding', 2, Fire.Integer, Fire.EditorOnly);
     Atlas.prop('buildColor', new Fire.Color(1, 1, 1, 1), Fire.Nullable('customBuildColor', false), Fire.EditorOnly);
     
+    Atlas.prop('sprites', [], Fire.HideInInspector);
+
     //
     Atlas.prototype.add = function ( sprite ) {
         for (var i = 0; i < this.sprites.length; ++i) {
