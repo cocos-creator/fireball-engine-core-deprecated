@@ -24,19 +24,42 @@ else {
     Fire.isWin32 = platform.substring(0, 3) === 'Win';
 }
 
-// const flags
+// definitions for FObject._objFlags
 
 var Destroyed = 1 << 0;
 var ToDestroy = 1 << 1;
 var DontSave = 1 << 2;
 var EditorOnly  = 1 << 3;       // dont save in build
 
-Fire._ObjectFlags = {
+var ObjectFlags = {
     DontSave: DontSave,
     EditorOnly: EditorOnly,
 };
 
-Fire._ObjFlagIndex = {
-    Engine: 9,  // engine start
-    Editor: 18, // editor start
-};
+Fire._ObjectFlags = ObjectFlags;
+
+// for engine
+
+ObjectFlags.Destroying = 1 << 9;
+
+/**
+ * Hide in game and hierarchy.
+ * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
+ * @property {number} ObjectFlags.HideInGame
+ */
+ObjectFlags.HideInGame = 1 << 10;
+
+// for editor
+
+/**
+ * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
+ * @property {number} ObjectFlags.HideInEditor
+ */
+ObjectFlags.HideInEditor = 1 << 11;
+
+/**
+ * Hide in game view, hierarchy, and scene view... etc.
+ * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
+ * @property {number} ObjectFlags.Hide
+ */
+ObjectFlags.Hide = ObjectFlags.HideInGame | ObjectFlags.HideInEditor;
