@@ -8,35 +8,37 @@
     var HashObject = Fire.define('Fire.HashObject', Fire.FObject, function () {
         FObject.call(this);
 
-        Object.defineProperty(this, '_hashId', {
+        Object.defineProperty(this, '_hashCode', {
             value: 0,
             writable: true,
             enumerable: false
         });
-        Object.defineProperty(this, '_hashKey', {
+        Object.defineProperty(this, '_id', {
             value: '',
             writable: true,
             enumerable: false
         });
     });
 
-    var id = 0;
+    // Yes, the id might have a conflict problem once every 365 days
+    // if the game runs at 60 FPS and each frame 4760273 counts of new HashObject's id are requested.
+    var globalId = 0;
     
     /**
-     * @member {number} Fire.HashObject#hashId
+     * @member {number} Fire.HashObject#hashCode
      */
-    Object.defineProperty ( HashObject.prototype, 'hashId', {
+    Object.defineProperty ( HashObject.prototype, 'hashCode', {
         get: function () {
-            return this._hashId || (this._hashId = ++id);
+            return this._hashCode || (this._hashCode = ++globalId);
         }
     });
 
     /**
-     * @member {string} Fire.HashObject#hashKey
+     * @member {string} Fire.HashObject#id
      */
-    Object.defineProperty ( HashObject.prototype, 'hashKey', {
+    Object.defineProperty ( HashObject.prototype, 'id', {
         get: function () {
-            return this._hashKey || (this._hashKey = '' + this.hashId);
+            return this._id || (this._id = '' + this.hashCode);
         }
     });
 
