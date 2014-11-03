@@ -21,6 +21,9 @@ Fire.Sprite = (function () {
     Sprite.prop('rotated', false);
     Sprite.prop('trim', false, Fire.EditorOnly);
     Sprite.prop('trimThreshold', 1, Fire.EditorOnly);
+    Sprite.prop('pivot', new Fire.Vec2(0.5, 0.5), Fire.Tooltip('The pivot is normalized, like a percentage.\n' + 
+                                                               '(0,0) means the bottom-left corner and (1,1) means the top-right corner.\n' + 
+                                                               'But you can use values higher than (1,1) and lower than (0,0) too.'));
 
     // trims
     Sprite.prop('trimX', 0, Fire.Integer);
