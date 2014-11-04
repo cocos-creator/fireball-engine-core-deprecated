@@ -237,7 +237,7 @@ Vec2 = (function () {
     /**
      * Normalize self
      * @method Fire.Vec2#normalizeSelf
-     * @returns {vector} this
+     * @returns {Fire.Vec2} this
      */
     Vec2.prototype.normalizeSelf = function () {
         var magSqr = this.x * this.x + this.y * this.y;
@@ -260,34 +260,20 @@ Vec2 = (function () {
      * Get normalized vector 
      * @method Fire.Vec2#normalize
      * @param {Fire.Vec2} [out] - optional, the receiving vector
-     * @returns {vector} result
+     * @returns {Fire.Vec2} result
      */
     Vec2.prototype.normalize = function (out) {
         out = out || new Fire.Vec2();
-
-        var magSqr = this.x * this.x + this.y * this.y;
-        if ( magSqr === 1.0 ) {
-            out.x = this.x;
-            out.y = this.y;
-            return out;
-        }
-
-        if ( magSqr === 0.0 ) {
-            console.warn( "Can't normalize zero vector" );
-            return out;
-        }
-        
-        var invsqrt = 1.0 / Math.sqrt(magSqr); 
-        out.x = this.x * invsqrt;
-        out.y = this.y * invsqrt;
-
+        out.x = this.x;
+        out.y = this.y;
+        out.normalizeSelf();
         return out;
     };
 
     /**
      * Get angle between this and vector 
      * @method Fire.Vec2#angle
-     * @param {Fire.Vec2} [vector]
+     * @param {Fire.Vec2} vector
      * @returns {number} from 0 to Math.PI
      */
     Vec2.prototype.angle = function (vector) {
@@ -306,21 +292,27 @@ Vec2 = (function () {
     /**
      * Get angle between this and vector with direction 
      * @method Fire.Vec2#signAngle
-     * @param {Fire.Vec2} [vector]
+     * @param {Fire.Vec2} vector
      * @returns {number} from -MathPI to Math.PI
      */
-    Vec2.prototype.singAngle = function (vector) {
-        var magSqr1 = this.magSqr();
-        var magSqr2 = vector.magSqr();
-
-        if ( magSqr1 === 0 || magSqr2 === 0 ) {
-            console.warn( "Can't get angle between zero vector" );
-            return 0.0;
-        }
-
-        var dot = this.dot(vector);
+    Vec2.prototype.signAngle = function (vector) {
+        var angle = this.angle(vector);
         var cross = this.cross(vector);
-        return Math.sign(cross) * Math.acos( dot / (Math.sqrt(magSqr1 * magSqr2)) );
+        return Math.sign(cross) * angle;
+    };
+
+    /**
+     * rotate self
+     * @method Fire.Vec2#rotate
+     * @param {number} radians
+     * @returns {Fire.Vec2} this
+     */
+    Vec2.prototype.rotate = function (radians) {
+        var sin = Math.sin(radians);
+        var cos = Math.cos(radians);
+        var x = this.x;
+        this.x = cos * x - sin * this.y;
+        this.y = sin * x + cos * this.y;
     };
     
     return Vec2;
