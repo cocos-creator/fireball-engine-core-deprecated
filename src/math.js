@@ -59,6 +59,10 @@
         randomRangeInt: function (min, max) {
             return Math.floor(_randomRange(min,max));
         },
+
+        clamp: function ( val, min, max ) {
+            return Math.min ( Math.max( val, min ), max );
+        },
     } );
 
 })();

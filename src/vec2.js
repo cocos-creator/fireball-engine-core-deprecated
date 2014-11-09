@@ -286,7 +286,9 @@ Vec2 = (function () {
         }
 
         var dot = this.dot(vector);
-        return Math.acos( dot / (Math.sqrt(magSqr1 * magSqr2)) );
+        var theta = dot / (Math.sqrt(magSqr1 * magSqr2));
+        theta = Math.clamp( theta, -1.0, 1.0 );
+        return Math.acos(theta);
     };
 
     /**
@@ -296,9 +298,12 @@ Vec2 = (function () {
      * @returns {number} from -MathPI to Math.PI
      */
     Vec2.prototype.signAngle = function (vector) {
-        var angle = this.angle(vector);
-        var cross = this.cross(vector);
-        return Math.sign(cross) * angle;
+        // NOTE: this algorithm will return 0.0 without signed if vectors are parallex
+        // var angle = this.angle(vector);
+        // var cross = this.cross(vector);
+        // return Math.sign(cross) * angle;
+
+        return Math.atan2( this.y, this.x ) - Math.atan2( vector.y, vector.x );
     };
 
     /**
