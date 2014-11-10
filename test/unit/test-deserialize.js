@@ -15,12 +15,12 @@ test('basic deserialize test', function () {
 
             this.emptyArray = [];
             this.array = [1, '2', {a:3}, [4, [5]], true];
-            this.string = 'unknown'; 
+            this.string = 'unknown';
+            this.emptyString = '';
             this.number = 1;
             this.boolean = true;
             this.emptyObj = {};
-            this.obj = {};
-
+            this.embeddedTypedObj = new Vec2(1, 2.1);
         }
         Fire.extend(MyAsset, _super);
         Fire.registerClass('MyAsset', MyAsset);

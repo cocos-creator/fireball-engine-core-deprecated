@@ -19,7 +19,9 @@ var _Deserializer = (function () {
             var refCount = referencedList.length;
             // deserialize
             for (var i = 0; i < refCount; i++) {
-                referencedList[i] = _deserializeAsset(this, referencedList[i]);
+                if (referencedList[i]) {
+                    referencedList[i] = _deserializeObject(this, referencedList[i]);
+                }
             }
             // dereference
             _dereference(referencedList, referencedList);
@@ -35,7 +37,7 @@ var _Deserializer = (function () {
         }
         else {
             //jsonObj = jsonObj || {};
-            var deserializedData = _deserializeAsset(this, jsonObj);
+            var deserializedData = jsonObj ? _deserializeObject(this, jsonObj) : null;
             _dereference(deserializedData, [deserializedData]);
             this.deserializedData = deserializedData;
 
@@ -82,87 +84,120 @@ var _Deserializer = (function () {
     };
 
     /**
-     * @param {Object} serialized - The obj to deserialize
+     * @param {Object} serialized - The obj to deserialize, must be non-nil
      */
-    var _deserializeAsset = function (self, serialized) {
-        if (!serialized) {
-            return null;
-        }
-        if (!serialized.__type__) {
-            // embedded primitive javascript object, not asset
-            for (var key in serialized) {
-                var val = serialized[key];
-                if (val && val.__uuid__) {
-                    self.result.uuidList.push(val.__uuid__);
-                    self.result.uuidObjList.push(serialized);
-                    self.result.uuidPropList.push(key);
-                }
-            }
-            return serialized;
-        }
-        
+    var _deserializeObject = function (self, serialized) {
+        var propName, prop;
         var asset = null;
         var klass = null;
-        klass = Fire.getClassByName(serialized.__type__);
-        if (!klass) {
-            Fire.warn('Fire.deserialize: unknown type: ' + serialized.__type__);
-            return null;
+        if (serialized.__type__) {
+            klass = Fire.getClassByName(serialized.__type__);
+            if (!klass) {
+                Fire.error('[Fire.deserialize] unknown type: ' + serialized.__type__);
+                return null;
+            }
+            // instantiate a new object
+            asset = new klass();
+        }
+        else if (!Array.isArray(serialized)) {
+            // embedded primitive javascript object, not asset
+            asset = serialized;
             //// jshint -W010
             //asset = new Object();
             //// jshint +W010
         }
-        // instantiate a new object
-        asset = new klass();
+        else {
+            asset = serialized;
+            for (var i = 0; i < serialized.length; i++) {
+                prop = serialized[i];
+                if (typeof prop === 'object' && prop) {
+                    if (!prop.__uuid__) {
+                        asset[i] = _deserializeObject(self, prop);
+                    }
+                    else {
+                        self.result.uuidList.push(prop.__uuid__);
+                        self.result.uuidObjList.push(asset);
+                        self.result.uuidPropList.push('' + i);
+                    }
+                }
+            }
+            return serialized;
+        }
 
         // parse property
         if (klass && Fire._isFireClass(klass)) {
-            if (klass.__props__) {
-                for (var p = 0; p < klass.__props__.length; p++) {
-                    var propName = klass.__props__[p];
-                    var attrs = Fire.attr(klass, propName);
-                    // assume all prop in __props__ must have attr
-                    var hostType = attrs.hostType;
-                    if (!hostType) {
-                        // skip nonSerialized
-                        if (attrs.serializable === false) {
-                            continue;
-                        }
+            if (!klass.__props__) {
+                return asset;
+            }
+            for (var p = 0; p < klass.__props__.length; p++) {
+                propName = klass.__props__[p];
+                var attrs = Fire.attr(klass, propName);
+                // assume all prop in __props__ must have attr
+                var hostType = attrs.hostType;
+                if (!hostType) {
+                    // skip nonSerialized
+                    if (attrs.serializable === false) {
+                        continue;
+                    }
 
-                        // skip editor only if not editor
-                        if (!self._editor && attrs.editorOnly) {
-                            continue;
-                        }
+                    // skip editor only if not editor
+                    if (!self._editor && attrs.editorOnly) {
+                        continue;
+                    }
 
-                        var prop = serialized[propName];
-                        if (typeof prop !== 'undefined') {        
+                    prop = serialized[propName];
+                    if (typeof prop !== 'undefined') {
+                        if (typeof prop !== 'object') {
                             asset[propName] = prop;
-                            if (prop && prop.__uuid__) {
+                        }
+                        else {
+                            if (prop) {
+                                if (!prop.__uuid__) {
+                                    asset[propName] = _deserializeObject(self, prop);
+                                }
+                                else {
+                                    self.result.uuidList.push(prop.__uuid__);
+                                    self.result.uuidObjList.push(asset);
+                                    self.result.uuidPropList.push(propName);
+                                }
+                            }
+                            else {
+                                asset[propName] = null;
+                            }
+                        }
+                    }
+                }
+                else {
+                    // always load host objects even if property not serialized
+                    if (self.result.hostProp) {
+                        Fire.error('not support multi host object in a file');
+                        // 这里假定每个asset都有uuid，每个json只能包含一个asset，只能包含一个hostProp
+                    }
+                    self.result.hostProp = propName;
+                }
+            }
+        }
+        else /*javascript object instance*/ {
+            for (propName in asset) {
+                prop = serialized[propName];
+                if (typeof prop !== 'undefined' && serialized.hasOwnProperty(propName)) {
+                    if (typeof prop !== 'object') {
+                        asset[propName] = prop;
+                    }
+                    else {
+                        if (prop) {
+                            if (!prop.__uuid__) {
+                                asset[propName] = _deserializeObject(self, prop);
+                            }
+                            else {
                                 self.result.uuidList.push(prop.__uuid__);
                                 self.result.uuidObjList.push(asset);
                                 self.result.uuidPropList.push(propName);
                             }
                         }
-                    }
-                    else {
-                        // always load host objects even if property not serialized
-                        if (self.result.hostProp) {
-                            Fire.error('not support multi host object in a file');
-                            // 这里假定每个asset都有uuid，每个json只能包含一个asset，只能包含一个hostProp
+                        else {
+                            asset[propName] = null;
                         }
-                        self.result.hostProp = propName;
-                    }
-                }
-            }
-        }
-        else /*javascript object instance*/ {
-            for (var k in asset) {
-                var v = serialized[k];
-                if (typeof v !== 'undefined' && serialized.hasOwnProperty(k)) {
-                    asset[k] = v;
-                    if (v && v.__uuid__) {
-                        self.result.uuidList.push(v.__uuid__);
-                        self.result.uuidObjList.push(asset);
-                        self.result.uuidPropList.push(k);
                     }
                 }
             }
