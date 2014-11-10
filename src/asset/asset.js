@@ -17,5 +17,17 @@ Fire.Asset = (function () {
     Asset.prototype.onAfterDeserialize = function () {};
      */
 
+    Asset.prototype._setHostExtname = function (extname) {
+        if (this.hasOwnProperty('_$hostExt')) {
+            if (extname.charAt(0) === '.') {
+                extname = extname.substring(1);
+            }
+            this._$hostExt = extname;
+        }
+        else {
+            Fire.error('Have not defined any HostType yet');
+        }
+    };
+
     return Asset;
 })();

@@ -102,6 +102,41 @@ Fire.HostType = function (typename) {
         hostType: typename,
         serializable: false,
         hideInInspector: true,
+
+        _onAfterProp: function (constructor, mainPropName) {
+            // check host object
+            var checked = (function checkHostType(constructor) {
+                var found = false;
+                for (var p = 0; p < constructor.__props__.length; p++) {
+                    var propName = constructor.__props__[p];
+                    var attrs = Fire.attr(constructor, propName);
+                    var type = attrs.type;
+                    if (type === 'host') {
+                        var containsUppercase = (attrs.hostType.toLowerCase() !== attrs.hostType);
+                        if (containsUppercase) {
+                            Fire.error('HostType name cannot contain uppercase');
+                            return false;
+                        }
+                        if (found) {
+                            Fire.error('Each asset cannot have more than one HostType');
+                            return false;
+                        }
+                        found = true;
+                    }
+                }
+                return true;
+            })(constructor);
+
+            if (checked) {
+                var mainPropAttr = Fire.attr(constructor, mainPropName) || {};
+                var TYPES = ['image'];  // the types need to specify exact extname
+                var needExtname = (TYPES.indexOf(mainPropAttr.hostType) !== -1);
+                if (needExtname) {
+                    // declare extname field
+                    constructor.prop('_$hostExt', '', Fire.HideInInspector);
+                }
+            }
+        }
     };
 };
 
