@@ -307,6 +307,23 @@ Vec2 = (function () {
     };
 
     /**
+     * rotate
+     * @method Fire.Vec2#rotate
+     * @param {number} radians
+     * @returns {Fire.Vec2} this
+     */
+    Vec2.prototype.rotate = function (radians) {
+        var sin = Math.sin(radians);
+        var cos = Math.cos(radians);
+
+        var result = new Fire.Vec2(0,0);
+        result.x = cos * this.x - sin * this.y;
+        result.y = sin * this.x + cos * this.y;
+
+        return result;
+    };
+
+    /**
      * rotate self
      * @method Fire.Vec2#rotateSelf
      * @param {number} radians
