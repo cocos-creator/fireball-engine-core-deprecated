@@ -18,11 +18,11 @@ Fire.Asset = (function () {
      */
 
     Asset.prototype._setHostExtname = function (extname) {
-        if (this.hasOwnProperty('_$hostExt')) {
+        if (this.hasOwnProperty('_hostext')) {
             if (extname.charAt(0) === '.') {
                 extname = extname.substring(1);
             }
-            this._$hostExt = extname;
+            this._hostext = extname;
         }
         else {
             Fire.error('Have not defined any HostType yet');

@@ -133,7 +133,7 @@ Fire.HostType = function (typename) {
                 var needExtname = (TYPES.indexOf(mainPropAttr.hostType) !== -1);
                 if (needExtname) {
                     // declare extname field
-                    constructor.prop('_$hostExt', '', Fire.HideInInspector);
+                    constructor.prop('_hostext', '', Fire.HideInInspector);
                 }
             }
         }
