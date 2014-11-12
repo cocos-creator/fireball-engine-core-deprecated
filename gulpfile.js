@@ -16,7 +16,7 @@ var paths = {
         'src/__intro.js',
 
         // javascript extends
-        'src/define.js',
+        'src/definition.js',
         'src/core.js',
         'src/math.js',
         'src/intersection.js',

@@ -4,6 +4,9 @@ var _Deserializer = (function () {
     function _Deserializer(data, result, editor) {
         this._editor = (typeof editor !== 'undefined') ? editor : true;
         
+        this._idList = [];
+        this._idObjList = [];
+        this._idPropList = [];
         this.result = result || new Fire._DeserializeInfo();
 
         var jsonObj = null;
@@ -15,18 +18,16 @@ var _Deserializer = (function () {
         }
         
         if (Array.isArray(jsonObj)) {
-            var referencedList = jsonObj;
-            var refCount = referencedList.length;
+            var jsonList = jsonObj;
+            var refCount = jsonList.length;
+            this.deserializedList = new Array(refCount);
             // deserialize
             for (var i = 0; i < refCount; i++) {
-                if (referencedList[i]) {
-                    referencedList[i] = _deserializeObject(this, referencedList[i]);
+                if (jsonList[i]) {
+                    this.deserializedList[i] = _deserializeObject(this, jsonList[i]);
                 }
             }
-            // dereference
-            _dereference(referencedList, referencedList);
-            // 
-            this.deserializedData = refCount > 0 ? referencedList[0] : [];
+            this.deserializedData = refCount > 0 ? this.deserializedList[0] : [];
 
             //// callback
             //for (var j = 0; j < refCount; j++) {
@@ -36,59 +37,62 @@ var _Deserializer = (function () {
             //}
         }
         else {
-            //jsonObj = jsonObj || {};
-            var deserializedData = jsonObj ? _deserializeObject(this, jsonObj) : null;
-            _dereference(deserializedData, [deserializedData]);
-            this.deserializedData = deserializedData;
+            this.deserializedList = new Array(1);
+            this.deserializedData = jsonObj ? _deserializeObject(this, jsonObj) : null;
+            this.deserializedList[0] = this.deserializedData;
 
             //// callback
             //if (deserializedData.onAfterDeserialize) {
             //    deserializedData.onAfterDeserialize();
             //}
         }
+
+        // dereference
+        _dereference(this);
     }
 
-    /**
-     * @param {object} obj - The object to dereference, must be object type, non-nil, not a reference
-     * @param {object[]} referenceList - The referenced list to get reference from
-     */
-    var _dereference = function (obj, referenceList) {
-        if (Array.isArray(obj)) {
-            for (var i = 0; i < obj.length; i++) {
-                if (obj[i] && typeof obj[i] === 'object') {
-                    var id1 = obj[i].__id__;
-                    if (id1 !== undefined) {
-                        // set real reference
-                        obj[i] = referenceList[id1];
-                    }
-                    else {
-                        _dereference(obj[i], referenceList);
-                    }
-                }
+    var _dereference = function (self) {
+        // 这里不采用遍历反序列化结果的方式，因为反序列化的结果如果引用到复杂的外部库，很容易堆栈溢出。
+        var deserializedList = self.deserializedList;
+        for (var i = 0, len = self._idList.length; i < len; i++) {
+            var propName = self._idPropList[i];
+            var id = self._idList[i];
+            self._idObjList[i][propName] = deserializedList[id];
+        }
+    };
+
+    function _deserializeObjField (self, obj, jsonObj, propName) {
+        var id = jsonObj.__id__;
+        if (typeof id === 'undefined') {
+            var uuid = jsonObj.__uuid__;
+            if (uuid) {
+                self.result.uuidList.push(uuid);
+                self.result.uuidObjList.push(obj);
+                self.result.uuidPropList.push(propName);
+            }
+            else {
+                obj[propName] = _deserializeObject(self, jsonObj);
             }
         }
         else {
-            for (var k in obj) {
-                var val = obj[k];
-                if (val && typeof val === 'object') {
-                    var id2 = val.__id__;
-                    if (id2 !== undefined) {
-                        obj[k] = referenceList[id2];
-                    }
-                    else {
-                        _dereference(val, referenceList);
-                    }
-                }
+            var dObj = self.deserializedList[id];
+            if (dObj) {
+                obj[propName] = dObj;
+            }
+            else {
+                self._idList.push(id);
+                self._idObjList.push(obj);
+                self._idPropList.push(propName);
             }
         }
-    };
+    }
 
     /**
      * @param {Object} serialized - The obj to deserialize, must be non-nil
      */
     var _deserializeObject = function (self, serialized) {
-        var propName, prop;
-        var asset = null;
+        var propName, prop, id = 0, uuid;
+        var obj = null;
         var klass = null;
         if (serialized.__type__) {
             klass = Fire.getClassByName(serialized.__type__);
@@ -97,27 +101,26 @@ var _Deserializer = (function () {
                 return null;
             }
             // instantiate a new object
-            asset = new klass();
+            obj = new klass();
         }
         else if (!Array.isArray(serialized)) {
-            // embedded primitive javascript object, not asset
-            asset = serialized;
+            // embedded primitive javascript object
+            obj = serialized;
             //// jshint -W010
-            //asset = new Object();
+            //obj = new Object();
             //// jshint +W010
         }
         else {
-            asset = serialized;
+            // array
+            obj = serialized;
             for (var i = 0; i < serialized.length; i++) {
                 prop = serialized[i];
                 if (typeof prop === 'object' && prop) {
-                    if (!prop.__uuid__) {
-                        asset[i] = _deserializeObject(self, prop);
+                    if (!prop.__uuid__ && typeof prop.__id__ === 'undefined') {
+                        obj[i] = _deserializeObject(self, prop);
                     }
                     else {
-                        self.result.uuidList.push(prop.__uuid__);
-                        self.result.uuidObjList.push(asset);
-                        self.result.uuidPropList.push('' + i);
+                        _deserializeObjField(self, obj, prop, '' + i);
                     }
                 }
             }
@@ -127,7 +130,7 @@ var _Deserializer = (function () {
         // parse property
         if (klass && Fire._isFireClass(klass)) {
             if (!klass.__props__) {
-                return asset;
+                return obj;
             }
             for (var p = 0; p < klass.__props__.length; p++) {
                 propName = klass.__props__[p];
@@ -148,21 +151,19 @@ var _Deserializer = (function () {
                     prop = serialized[propName];
                     if (typeof prop !== 'undefined') {
                         if (typeof prop !== 'object') {
-                            asset[propName] = prop;
+                            obj[propName] = prop;
                         }
                         else {
                             if (prop) {
-                                if (!prop.__uuid__) {
-                                    asset[propName] = _deserializeObject(self, prop);
+                                if (!prop.__uuid__ && typeof prop.__id__ === 'undefined') {
+                                    obj[propName] = _deserializeObject(self, prop);
                                 }
                                 else {
-                                    self.result.uuidList.push(prop.__uuid__);
-                                    self.result.uuidObjList.push(asset);
-                                    self.result.uuidPropList.push(propName);
+                                    _deserializeObjField(self, obj, prop, propName);
                                 }
                             }
                             else {
-                                asset[propName] = null;
+                                obj[propName] = null;
                             }
                         }
                     }
@@ -178,31 +179,29 @@ var _Deserializer = (function () {
             }
         }
         else /*javascript object instance*/ {
-            for (propName in asset) {
+            for (propName in obj) {
                 prop = serialized[propName];
                 if (typeof prop !== 'undefined' && serialized.hasOwnProperty(propName)) {
                     if (typeof prop !== 'object') {
-                        asset[propName] = prop;
+                        obj[propName] = prop;
                     }
                     else {
                         if (prop) {
-                            if (!prop.__uuid__) {
-                                asset[propName] = _deserializeObject(self, prop);
+                            if (!prop.__uuid__ && typeof prop.__id__ === 'undefined') {
+                                obj[propName] = _deserializeObject(self, prop);
                             }
                             else {
-                                self.result.uuidList.push(prop.__uuid__);
-                                self.result.uuidObjList.push(asset);
-                                self.result.uuidPropList.push(propName);
+                                _deserializeObjField(self, obj, prop, propName);
                             }
                         }
                         else {
-                            asset[propName] = null;
+                            obj[propName] = null;
                         }
                     }
                 }
             }
         }
-        return asset;
+        return obj;
     };
 
     return _Deserializer;

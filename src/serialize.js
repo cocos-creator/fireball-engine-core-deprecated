@@ -333,3 +333,12 @@ Fire.serialize = function (obj, exporting, canBindProp) {
     var serializedData = serializedList.length === 1 ? serializedList[0] : serializedList;
     return JSON.stringify(serializedData, null, 4);
 };
+
+/**
+ * Create a pseudo object which will be force serialized as a reference to any asset by specified uuid.
+ */
+Fire.serialize.asAsset = function (uuid) {
+    var pseudoAsset = new FObject();
+    pseudoAsset._uuid = uuid;
+    return pseudoAsset;
+};
