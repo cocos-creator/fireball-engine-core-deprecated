@@ -275,3 +275,11 @@ Fire._DeserializeInfo.prototype.reset = function () {
     //this.hostObjList.length = 0;
     //this.hostPropList.length = 0;
 };
+
+Fire._DeserializeInfo.prototype.getUuidOf = function (obj, propName) {
+    for (var i = 0; i < this.uuidObjList.length; i++) {
+        if (this.uuidObjList[i] === obj && this.uuidPropList[i] === propName) {
+            return this.uuidList[i];
+        }
+    }
+};

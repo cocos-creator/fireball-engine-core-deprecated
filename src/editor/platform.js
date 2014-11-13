@@ -58,7 +58,7 @@ else {
 
 if (Fire.isApp && Fire.isWeb) {
     if (Fire.isNodeWebkit) {
-        Fire.getSavePath = function (defaultFilename, preserveDirKey, callback) {
+        Fire.getSavePath = function (defaultFilename, persistDirKey, callback) {
             var persistentId = 'SaveFileDialog';
             var chooser = document.getElementById(persistentId);
             if (chooser) {
@@ -72,7 +72,7 @@ if (Fire.isApp && Fire.isWeb) {
             chooser.type = 'file';
 
             chooser.nwsaveas = defaultFilename;
-            var defaultDir = localStorage[preserveDirKey];
+            var defaultDir = localStorage[persistDirKey];
             chooser.nwworkingdir = defaultDir || '';
         
             chooser.onchange = function (evt) {
@@ -80,7 +80,7 @@ if (Fire.isApp && Fire.isWeb) {
                 //chooser.removeEventListener("change", arguments.callee);
                 chooser.onchange = null;
                 //Fire.log('value ' + this.value);
-                localStorage[preserveDirKey] = this.value;
+                localStorage[persistDirKey] = this.value;
                 callback(this.value);
             };
 
@@ -186,8 +186,8 @@ if (Fire.isApp && Fire.isWeb) {
         Fire.showItemInFolder = nwgui.Shell.showItemInFolder;
     }
     /*else if (Fire.isAtomShell) {
-        Fire.getSavePath = function (defaultFilename, preserveDirKey, callback, title, browserWindow) {
-            var defaultDir = localStorage[preserveDirKey];
+        Fire.getSavePath = function (defaultFilename, persistDirKey, callback, title, browserWindow) {
+            var defaultDir = localStorage[persistDirKey];
             var defaultPath = null;
             if (defaultDir && typeof defaultDir === 'string') {
                 defaultDir = Fire.Path.dirname(defaultDir);
@@ -204,7 +204,7 @@ if (Fire.isApp && Fire.isWeb) {
             }
             dialog.showSaveDialog(browserWindow, options, function (path) {
                 if (path) {
-                    localStorage[preserveDirKey] = path;
+                    localStorage[persistDirKey] = path;
                 }
                 callback(path);
             });
