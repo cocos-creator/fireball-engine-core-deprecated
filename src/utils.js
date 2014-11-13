@@ -130,23 +130,23 @@ Fire.CallbacksInvoker = (function () {
      * @returns {boolean} whether the key is new
      */
     CallbacksInvoker.prototype.add = function (key, callback) {
-        var callbackList = this._callbackTable[key];
-        if (typeof callbackList !== 'undefined') {
+        var list = this._callbackTable[key];
+        if (typeof list !== 'undefined') {
             if (callback) {
-                if (callbackList !== null) {
-                    callbackList.push(callback);
+                if (list !== null) {
+                    list.push(callback);
                 }
                 else {
-                    callbackList = [callback];
-                    this._callbackTable[key] = callbackList;
+                    list = [callback];
+                    this._callbackTable[key] = list;
                 }
             }
             return false;
         }
         else {
             // new key
-            callbackList = callback ? [callback] : null;
-            this._callbackTable[key] = callbackList;
+            list = callback ? [callback] : null;
+            this._callbackTable[key] = list;
             return true;
         }
     };
@@ -160,10 +160,10 @@ Fire.CallbacksInvoker = (function () {
      * @param {*} [p5]
      */
     CallbacksInvoker.prototype.invoke = function (key, p1, p2, p3, p4, p5) {
-        var callbackList = this._callbackTable[key];
-        if (callbackList) {
-            for (var i = 0; i < callbackList.length; i++) {
-                callbackList[i](p1, p2, p3, p4, p5);
+        var list = this._callbackTable[key];
+        if (list) {
+            for (var i = 0; i < list.length; i++) {
+                list[i](p1, p2, p3, p4, p5);
             }
         }
     };
@@ -179,20 +179,34 @@ Fire.CallbacksInvoker = (function () {
     CallbacksInvoker.prototype.invokeAndRemove = function (key, p1, p2, p3, p4, p5) {
         // this.invoke(key, p1, p2, p3, p4, p5);
         // 这里不直接调用invoke仅仅是为了减少调用堆栈的深度，方便调试
-        var callbackList = this._callbackTable[key];
-        if (callbackList) {
-            for (var i = 0; i < callbackList.length; i++) {
-                callbackList[i](p1, p2, p3, p4, p5);
+        var list = this._callbackTable[key];
+        if (list) {
+            for (var i = 0; i < list.length; i++) {
+                list[i](p1, p2, p3, p4, p5);
             }
         }
-        this.remove(key);
+        this.removeAll(key);
     };
 
     /**
      * @param {string} key
      */
-    CallbacksInvoker.prototype.remove = function (key) {
+    CallbacksInvoker.prototype.removeAll = function (key) {
         delete this._callbackTable[key];
+    };
+
+    /**
+     * @param {string} key
+     * @param {function} callback
+     */
+    CallbacksInvoker.prototype.remove = function (key, callback) {
+        var list = this._callbackTable[key];
+        if (list) {
+            var index = list.indexOf(callback);
+            if (index !== -1) {
+                list.splice(index, 1);
+            }
+        }
     };
 
     /**
@@ -205,14 +219,14 @@ Fire.CallbacksInvoker = (function () {
         return function bindedInvocation (p1, p2, p3, p4, p5) {
             // this.invoke(key, p1, p2, p3, p4, p5);
             // 这里不直接调用invoke仅仅是为了减少调用堆栈的深度，方便调试
-            var callbackList = self._callbackTable[key];
-            if (callbackList) {
-                for (var i = 0; i < callbackList.length; i++) {
-                    callbackList[i](p1, p2, p3, p4, p5);
+            var list = self._callbackTable[key];
+            if (list) {
+                for (var i = 0; i < list.length; i++) {
+                    list[i](p1, p2, p3, p4, p5);
                 }
             }
             if (remove) {
-                self.remove(key);
+                self.removeAll(key);
             }
         };
     };

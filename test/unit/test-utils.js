@@ -61,6 +61,15 @@ test('CallbacksInvoker', function () {
     ci.invoke('b');
     cb3.once('3 should be called');
 
-    ci.remove('a');
-    ci.invoke('a'); // should not be called after removed
+    ci.remove('a', cb2);
+    cb2.setDisabledMessage('callback should not be invoked after removed');
+    cb1.enable();
+    ci.invoke('a');
+    cb1.once('callback should still be invoked if not excatly the one being removed');
+
+    ci.add('a', cb2);
+    ci.removeAll('a');
+    cb1.setDisabledMessage('should not be called after all removed');
+    cb2.setDisabledMessage('should not be called after all removed');
+    ci.invoke('a');
 });
