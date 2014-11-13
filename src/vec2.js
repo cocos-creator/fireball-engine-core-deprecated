@@ -62,7 +62,7 @@ Vec2 = (function () {
      * @returns {Fire.Vec2} the result
      */
     Vec2.prototype.add = function (vector, out) {
-        out = out || new Fire.Vec2();
+        out = out || new Vec2();
         out.x = this.x + vector.x;
         out.y = this.y + vector.y;
         return out;
@@ -88,7 +88,7 @@ Vec2 = (function () {
      * @returns {Fire.Vec2} the result
      */
     Vec2.prototype.sub = function (vector, out) {
-        out = out || new Fire.Vec2();
+        out = out || new Vec2();
         out.x = this.x - vector.x;
         out.y = this.y - vector.y;
         return out;
@@ -114,7 +114,7 @@ Vec2 = (function () {
      * @returns {Fire.Vec2} the result
      */
     Vec2.prototype.mul = function (num, out) {
-        out = out || new Fire.Vec2();
+        out = out || new Vec2();
         out.x = this.x * num;
         out.y = this.y * num;
         return out;
@@ -140,7 +140,7 @@ Vec2 = (function () {
      * @returns {Fire.Vec2} the result
      */
     Vec2.prototype.scale = function (vector, out) {
-        out = out || new Fire.Vec2();
+        out = out || new Vec2();
         out.x = this.x * vector.x;
         out.y = this.y * vector.y;
         return out;
@@ -166,7 +166,7 @@ Vec2 = (function () {
      * @returns {Fire.Vec2} the result
      */
     Vec2.prototype.div = function (vector, out) {
-        out = out || new Fire.Vec2();
+        out = out || new Vec2();
         out.x = this.x / vector.x;
         out.y = this.y / vector.y;
         return out;
@@ -190,7 +190,7 @@ Vec2 = (function () {
      * @returns {Fire.Vec2} the result
      */
     Vec2.prototype.neg = function (out) {
-        out = out || new Fire.Vec2();
+        out = out || new Vec2();
         out.x = -this.x;
         out.y = -this.y;
         return out;
@@ -263,7 +263,7 @@ Vec2 = (function () {
      * @returns {Fire.Vec2} result
      */
     Vec2.prototype.normalize = function (out) {
-        out = out || new Fire.Vec2();
+        out = out || new Vec2();
         out.x = this.x;
         out.y = this.y;
         out.normalizeSelf();
@@ -310,17 +310,14 @@ Vec2 = (function () {
      * rotate
      * @method Fire.Vec2#rotate
      * @param {number} radians
-     * @returns {Fire.Vec2} this
+     * @param {Fire.Vec2} [out] - optional, the receiving vector
+     * @returns {Fire.Vec2} the result
      */
-    Vec2.prototype.rotate = function (radians) {
-        var sin = Math.sin(radians);
-        var cos = Math.cos(radians);
-
-        var result = new Fire.Vec2(0,0);
-        result.x = cos * this.x - sin * this.y;
-        result.y = sin * this.x + cos * this.y;
-
-        return result;
+    Vec2.prototype.rotate = function (radians, out) {
+        out = out || new Vec2();
+        out.x = this.x;
+        out.y = this.y;
+        return out.rotateSelf(radians);
     };
 
     /**
