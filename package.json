@@ -13,7 +13,7 @@
     "gulp-util": "",
     "gulp-concat": "",
     "gulp-jshint": "",
-    "gulp-qunit": "",
+    "gulp-qunit": "jareguo/gulp-qunit",
     "gulp-rename": "",
     "gulp-uglify": "",
     "jshint-stylish": "",

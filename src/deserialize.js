@@ -282,4 +282,5 @@ Fire._DeserializeInfo.prototype.getUuidOf = function (obj, propName) {
             return this.uuidList[i];
         }
     }
+    return "";
 };
