@@ -126,7 +126,7 @@ Fire.CallbacksInvoker = (function () {
 
     /**
      * @param {string} key
-     * @param {function} [callback]
+     * @param {function} callback - The callback is ignored if it is a duplicate (the callbacks are unique).
      * @returns {boolean} whether the key is new
      */
     CallbacksInvoker.prototype.add = function (key, callback) {
@@ -149,6 +149,25 @@ Fire.CallbacksInvoker = (function () {
             this._callbackTable[key] = list;
             return true;
         }
+    };
+
+    /**
+     * Check if the specified key has any registered callback. If a callback is also specified,
+     * it will only return true if the callback is registered.
+     * 
+     * @param {string} key
+     * @param {function} [callback]
+     * @returns {boolean}
+     */
+    CallbacksInvoker.prototype.has = function (key, callback) {
+        var list = this._callbackTable[key];
+        if (list && list.length > 0) {
+            if (callback) {
+                return list.indexOf(callback) !== -1;
+            }
+            return true;
+        }
+        return false;
     };
 
     /**
