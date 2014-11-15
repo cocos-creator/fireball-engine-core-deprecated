@@ -43,8 +43,8 @@ Fire.rgb2hsv = function ( r, g, b ) {
     if (!hsv.s) hsv.h = 0;
     else {
         delta = max - min;
-        if (r == max) hsv.h = (g - b) / delta;
-        else if (g == max) hsv.h = 2 + (b - r) / delta;
+        if (r === max) hsv.h = (g - b) / delta;
+        else if (g === max) hsv.h = 2 + (b - r) / delta;
         else hsv.h = 4 + (r - g) / delta;
         hsv.h /= 6;
         if (hsv.h < 0) hsv.h += 1.0;
@@ -114,22 +114,25 @@ Fire.hsv2rgb = function ( h, s, v ) {
     return rgb;
 };
 
-Fire.CallbacksInvoker = (function () {
+(function () {
 
     /**
-     * The callbacks invoker to register and invoke multi callbacks by key
+     * The CallbacksHandler is an abstract class that can register and unregister callbacks by key.
+     * Subclasses should implement their own methods about how to invoke the callbacks.
      * @class
      */
-    var CallbacksInvoker = function () {
+    var CallbacksHandler = (function () {
         this._callbackTable = {};
-    };
+    });
+
+    Fire._CallbacksHandler = CallbacksHandler;
 
     /**
      * @param {string} key
-     * @param {function} callback - The callback is ignored if it is a duplicate (the callbacks are unique).
+     * @param {function} callback
      * @returns {boolean} whether the key is new
      */
-    CallbacksInvoker.prototype.add = function (key, callback) {
+    CallbacksHandler.prototype.add = function (key, callback) {
         var list = this._callbackTable[key];
         if (typeof list !== 'undefined') {
             if (callback) {
@@ -159,7 +162,7 @@ Fire.CallbacksInvoker = (function () {
      * @param {function} [callback]
      * @returns {boolean}
      */
-    CallbacksInvoker.prototype.has = function (key, callback) {
+    CallbacksHandler.prototype.has = function (key, callback) {
         var list = this._callbackTable[key];
         if (list && list.length > 0) {
             if (callback) {
@@ -169,6 +172,40 @@ Fire.CallbacksInvoker = (function () {
         }
         return false;
     };
+
+    /**
+     * @param {string} key
+     */
+    CallbacksHandler.prototype.removeAll = function (key) {
+        delete this._callbackTable[key];
+    };
+
+    /**
+     * @param {string} key
+     * @param {function} callback
+     */
+    CallbacksHandler.prototype.remove = function (key, callback) {
+        var list = this._callbackTable[key];
+        if (list) {
+            var index = list.indexOf(callback);
+            if (index !== -1) {
+                list.splice(index, 1);
+            }
+        }
+    };
+
+
+
+    /**
+     * The callbacks invoker to handle and invoke callbacks by key
+     * @class
+     */
+    var CallbacksInvoker = function () {
+        this._callbackTable = {};
+    };
+    Fire.extend(CallbacksInvoker, CallbacksHandler);
+
+    Fire.CallbacksInvoker = CallbacksInvoker;
 
     /**
      * @param {string} key
@@ -205,27 +242,6 @@ Fire.CallbacksInvoker = (function () {
             }
         }
         this.removeAll(key);
-    };
-
-    /**
-     * @param {string} key
-     */
-    CallbacksInvoker.prototype.removeAll = function (key) {
-        delete this._callbackTable[key];
-    };
-
-    /**
-     * @param {string} key
-     * @param {function} callback
-     */
-    CallbacksInvoker.prototype.remove = function (key, callback) {
-        var list = this._callbackTable[key];
-        if (list) {
-            var index = list.indexOf(callback);
-            if (index !== -1) {
-                list.splice(index, 1);
-            }
-        }
     };
 
     /**
