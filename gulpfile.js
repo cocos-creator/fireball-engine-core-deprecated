@@ -127,9 +127,10 @@ gulp.task('unit-runner', function() {
 });
 
 gulp.task('test', ['min', 'unit-runner'], function() {
+    var timeOut_second = 5;
     return gulp.src(['test/unit/**/*.html', '!**/*.dev.*'], { read: false })
-                .pipe(qunit())
-                ;
+               .pipe(qunit({"phantomjs-options": "" + timeOut_second}))
+               ;
 });
 
 /////////////////////////////////////////////////////////////////////////////
