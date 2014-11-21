@@ -127,6 +127,44 @@ test('destroy other at destroy callback', 3, function () {
     strictEqual(obj2.isValid, false, 'other should destroyed at the end of next frame');
 });
 
+test('destruct', function () {
+    var obj1 = new FObject();
+
+    // add dynamic value to instance
+    obj1.function_value = function () {return 342};
+    obj1.string_value = 'test string';
+    obj1.object_value = [];
+
+    obj1._destroyImmediate();
+    equal(obj1.string_value, false, 'string value in instance will be null');
+    equal(obj1.function_value, null, 'method in instance will be null');
+    equal(obj1.object_value, null, 'object in instance will be null');
+    ok(obj1._destruct, 'should not effect prototype method');
+
+    // 原型继承测试
+    var Sub = function () {
+        FObject.call(this);
+        this.array = [];
+    };
+    Sub.prototype.test_function = function () {return 342};
+    Sub.prototype.test_boolean = true;
+    Sub.prototype.test_string = 'test string';
+    Fire.extend(Sub, FObject);
+    var inherited1 = new Sub();
+    inherited1.object_value = [1,2];
+    inherited1.function_value = {};
+    inherited1.string_value = 'test string';
+
+    var inherited2 = new Sub();
+
+    inherited1._destroyImmediate();
+    ok(!inherited1.object_value &&
+       !inherited1.string_value &&
+       !inherited1.function_value, 'should remove instance value');
+    ok(inherited1._destruct, 'will not effect prototype method');
+    ok(inherited2.array, 'should not effect other instance value');
+});
+
 module('HashObject');
 
 test('test', function () {

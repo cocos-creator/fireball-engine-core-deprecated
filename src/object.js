@@ -1,12 +1,12 @@
 FObject = (function () {
-    
+
     // constructor
 
     function FObject () {
         this._name = '';
         this._objFlags = 0;
     }
-    
+
     // TODO: 统一FireClass和FObject
     Fire._fastDefine('Fire.FObject', FObject, ['_name', '_objFlags']);
 
@@ -32,7 +32,7 @@ FObject = (function () {
 
     Object.defineProperty(FObject, '_deferredDestroy', {
         value: function () {
-            // if we called b.destory() in a.onDestroy(), objectsToDestroy will be resized, 
+            // if we called b.destory() in a.onDestroy(), objectsToDestroy will be resized,
             // but we only destroy the objects which called destory in this frame.
             var deleteCount = objectsToDestroy.length;
             for (var i = 0; i < deleteCount; ++i) {
@@ -98,6 +98,35 @@ FObject = (function () {
         return true;
     };
 
+    /**
+     * Reset instance reference about prototype to null
+     * NOTE: this method will not release the memory referenced by getter or setter functions
+     * that defined at the INSTANCE of FObject. If you need to dereference your closure in accessors,
+     * override this method please.
+     */
+    FObject.prototype._destruct = function () {
+        // 允许重载destroy
+        // 所有可枚举到的属性，都会被清空
+        for (var key in this) {
+            var type = typeof this[key];
+            if(this.hasOwnProperty(key)) {
+                switch (type) {
+                    case 'string':
+                        this[key] = '';
+                        break;
+                    case 'object':
+                        this[key] = null;
+                        break;
+                    case 'function':
+                        this[key] = null;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    };
+
     FObject.prototype._destroyImmediate = function () {
         if (this._objFlags & Destroyed) {
             Fire.error('object already destroyed');
@@ -107,8 +136,8 @@ FObject = (function () {
         if (this._onPreDestroy) {
             this._onPreDestroy();
         }
-        // TODO do destroy，允许重载destroy
-            // 所有可枚举到的属性，都会被清空
+        // do destroy
+        this._destruct();
         // mark destroyed
         this._objFlags |= Destroyed;
     };
