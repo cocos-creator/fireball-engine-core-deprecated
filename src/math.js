@@ -63,6 +63,25 @@
         clamp: function ( val, min, max ) {
             return Math.min ( Math.max( val, min ), max );
         },
+
+        /**
+         * @param {Fire.Rect} out
+         * @param {Fire.Vec2} p0
+         * @param {Fire.Vec2} p1
+         * @param {Fire.Vec2} p2
+         * @param {Fire.Vec2} p3
+         */
+        calculateMaxRect: function (out, p0, p1, p2, p3) {
+            var minX = Math.min(p0.x, p1.x, p2.x, p3.x);
+            var maxX = Math.max(p0.x, p1.x, p2.x, p3.x);
+            var minY = Math.min(p0.y, p1.y, p2.y, p3.y);
+            var maxY = Math.max(p0.y, p1.y, p2.y, p3.y);
+            out.x = minX;
+            out.y = minY;
+            out.width = maxX - minX;
+            out.height = maxY - minY;
+        },
+
     } );
 
 })();
