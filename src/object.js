@@ -109,7 +109,7 @@ FObject = (function () {
         // 所有可枚举到的属性，都会被清空
         for (var key in this) {
             var type = typeof this[key];
-            if(this.hasOwnProperty(key)) {
+            if (this.hasOwnProperty(key)) {
                 switch (type) {
                     case 'string':
                         this[key] = '';
