@@ -87,13 +87,10 @@ test('Inherit', function () {
     strictEqual(Fire.attr(Dog, 'name').type, 'str', 'can modify attribute');
     strictEqual(Fire.attr(Dog, 'weight'), undefined, 'base property not added');
 
-    strictEqual(Fire.superof( Animal, Dog),  true, 'Animal is super of Dog');
-    strictEqual(Fire.superof( Animal, Husky),  true, 'Animal is super of Husky');
-    strictEqual(Fire.superof( Dog, Husky),  true, 'Dog is super of Husky');
-
-    strictEqual(Fire.childof( Dog, Animal),  true, 'Animal is child of Dog');
-    strictEqual(Fire.childof( Husky, Animal),  true, 'Animal is child of Husky');
-    strictEqual(Fire.childof( Dog, Husky),  false, 'Dog is not child of Husky');
+    strictEqual(Fire.isChildClassOf( Dog, Animal),  true, 'Animal is child of Dog');
+    strictEqual(Fire.isChildClassOf( Husky, Animal),  true, 'Animal is child of Husky');
+    strictEqual(Fire.isChildClassOf( Husky, Husky),  true, 'Husky is child of Husky');
+    strictEqual(Fire.isChildClassOf( Dog, Husky),  false, 'Dog is not child of Husky');
 
     var husky = new Husky();
     var dog = new Dog();

@@ -277,33 +277,33 @@ Fire._isFireClass = function (constructor) {
 };
 
 /**
- * Checks whether myclass is child of superclass
+ * Checks whether subclass is child of superclass or equals to superclass
  * 
- * @method Fire.childof
- * @param {function} myclass
+ * @method Fire.isChildClassOf
+ * @param {function} subclass
  * @param {function} superclass
  * @returns {boolean}
  */
-
-Fire.childof = function (myclass, superclass) {
-    for ( var mysuper = myclass.$super; mysuper; mysuper = mysuper.$super ) {
-        if ( mysuper === superclass )
+Fire.isChildClassOf = function (subclass, superclass) {
+    if (!Fire._isFireClass(subclass) || !Fire._isFireClass(superclass)) {
+        Fire.error('classes must be FireClass');
+    }
+    for (; subclass; subclass = subclass.$super) {
+        if (subclass === superclass) {
             return true;
+        }
     }
     return false;
 };
 
-/**
- * Checks whether myclass is super of childclass
- * 
- * @method Fire.childof
- * @param {function} myclass
- * @param {function} childclass
- * @returns {boolean}
- */
-
+// TODO: remove
+Fire.childof = function (a, b) {
+    Fire.warn('Deprecated, use Fire.isChildClassOf');
+    return Fire.isChildClassOf(a, b);
+};
 Fire.superof = function (myclass, childclass) {
-    return Fire.childof(childclass, myclass);
+    Fire.warn('Deprecated, use Fire.isChildClassOf');
+    return Fire.isChildClassOf(childclass, myclass);
 };
 
 /**
