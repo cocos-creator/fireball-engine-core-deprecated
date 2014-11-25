@@ -183,6 +183,7 @@ Fire.hsv2rgb = function ( h, s, v ) {
     /**
      * @param {string} key
      * @param {function} callback
+     * @returns {boolean} removed
      */
     CallbacksHandler.prototype.remove = function (key, callback) {
         var list = this._callbackTable[key];
@@ -190,8 +191,10 @@ Fire.hsv2rgb = function ( h, s, v ) {
             var index = list.indexOf(callback);
             if (index !== -1) {
                 list.splice(index, 1);
+                return true;
             }
         }
+        return false;
     };
 
 
