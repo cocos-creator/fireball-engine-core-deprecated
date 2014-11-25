@@ -99,17 +99,16 @@ FObject = (function () {
     };
 
     /**
-     * Reset instance reference about prototype to null
-     * NOTE: this method will not release the memory referenced by getter or setter functions
-     * that defined at the INSTANCE of FObject. If you need to dereference your closure in accessors,
-     * override this method please.
+     * Clear all references in the instance.
+     * NOTE: this method will not clear the getter or setter functions which defined in the INSTANCE of FObject.
+     *       You can override the _destruct method if you need.
      */
     FObject.prototype._destruct = function () {
         // 允许重载destroy
         // 所有可枚举到的属性，都会被清空
         for (var key in this) {
-            var type = typeof this[key];
             if (this.hasOwnProperty(key)) {
+                var type = typeof this[key];
                 switch (type) {
                     case 'string':
                         this[key] = '';
