@@ -6,7 +6,7 @@
         return Math.random() * (max - min) + min;
     }
 
-    Fire.merge ( Math, {
+    Fire.mixin ( Math, {
         TWO_PI: 2.0 * Math.PI,
         HALF_PI: 0.5 * Math.PI,
 

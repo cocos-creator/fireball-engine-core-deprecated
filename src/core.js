@@ -1,5 +1,17 @@
+function _getPropertyDescriptor(obj, name) {
+    if (obj) {
+        var pd = Object.getOwnPropertyDescriptor(obj, name);
+        return pd || _getPropertyDescriptor(Object.getPrototypeOf(obj), name);
+    }
+}
+
+function _copyprop(name, source, target) {
+    var pd = _getPropertyDescriptor(source, name);
+    Object.defineProperty(target, name, pd);
+}
+
 /**
- * @method Fire.merge
+ * @method Fire.mixin
  * copy all properties from arguments[1...n] to obj 
  * 
  * @param {object} obj
@@ -7,13 +19,13 @@
  * @returns {object} the result obj
  * 
  */
-Fire.merge = function (obj, source) {
+Fire.mixin = function (obj) {
     'use strict';
-    var prop;
+    obj = obj || {}; 
     for (var i = 1, length = arguments.length; i < length; i++) {
-        source = arguments[i];
-        for (prop in source) {
-            obj[prop] = source[prop];
+        var source = arguments[i];
+        for ( var name in source) {
+            _copyprop( name, source, obj);
         }
     }
     return obj;
