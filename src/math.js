@@ -2,10 +2,6 @@
     var _d2r = Math.PI/180.0;
     var _r2d = 180.0/Math.PI;
 
-    function _randomRange (min, max) {
-        return Math.random() * (max - min) + min;
-    }
-
     Fire.mixin ( Math, {
         TWO_PI: 2.0 * Math.PI,
         HALF_PI: 0.5 * Math.PI,
@@ -54,14 +50,16 @@
             return degree;
         },
 
-        randomRange: _randomRange,
+        randomRange: function (min, max) {
+            return Math.random() * (max - min) + min;
+        },
 
         randomRangeInt: function (min, max) {
-            return Math.floor(_randomRange(min,max));
+            return Math.floor(this.randomRange(min, max));
         },
 
         clamp: function ( val, min, max ) {
-            return Math.min ( Math.max( val, min ), max );
+            return Math.min( Math.max( val, min ), max );
         },
 
         /**
@@ -80,6 +78,7 @@
             out.y = minY;
             out.width = maxX - minX;
             out.height = maxY - minY;
+            return out;
         },
 
     } );
