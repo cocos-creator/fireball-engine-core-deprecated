@@ -285,8 +285,9 @@ Fire._isFireClass = function (constructor) {
  * @returns {boolean}
  */
 Fire.isChildClassOf = function (subclass, superclass) {
-    if (!Fire._isFireClass(subclass) || !Fire._isFireClass(superclass)) {
-        Fire.error('classes must be FireClass');
+    if ( !Fire._isFireClass(subclass) ) {
+        // Fire.error('classes must be FireClass');
+        return false;
     }
     for (; subclass; subclass = subclass.$super) {
         if (subclass === superclass) {
@@ -294,16 +295,6 @@ Fire.isChildClassOf = function (subclass, superclass) {
         }
     }
     return false;
-};
-
-// TODO: remove
-Fire.childof = function (a, b) {
-    Fire.warn('Deprecated, use Fire.isChildClassOf');
-    return Fire.isChildClassOf(a, b);
-};
-Fire.superof = function (myclass, childclass) {
-    Fire.warn('Deprecated, use Fire.isChildClassOf');
-    return Fire.isChildClassOf(childclass, myclass);
 };
 
 /**
