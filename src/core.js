@@ -11,6 +11,29 @@ function _copyprop(name, source, target) {
 }
 
 /**
+ * @method Fire.addon
+ * copy all properties not defined in obj from arguments[1...n]
+ * 
+ * @param {object} obj
+ * @param {...object} source
+ * @returns {object} the result obj
+ * 
+ */
+Fire.addon = function (obj) {
+    'use strict';
+    obj = obj || {}; 
+    for (var i = 1, length = arguments.length; i < length; i++) {
+        var source = arguments[i];
+        for ( var name in source) {
+            if ( obj[name] === undefined ) {
+                _copyprop( name, source, obj);
+            }
+        }
+    }
+    return obj;
+};
+
+/**
  * @method Fire.mixin
  * copy all properties from arguments[1...n] to obj 
  * 
