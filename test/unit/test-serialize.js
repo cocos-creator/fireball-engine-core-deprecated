@@ -78,7 +78,7 @@ test('nil', function () {
     equal(Fire.serialize(obj), expect);
 });
 
-test('test type derived by Fire.define', function() {
+test('test inherited FireClass', function() {
     var MyAsset = Fire.define('MyAsset', Fire.Asset, function () {
                   this.array = [1, '2', {a:3}, [4, [5]], true];
                   })
@@ -121,7 +121,7 @@ test('test type derived by Fire.define', function() {
     Fire.undefine(MyAsset);
 });
 
-test('test type created by Fire.define', function () {
+test('test FireClass', function () {
     var Sprite = Fire.define('Sprite', function () {
         this.image = 'sprite.png';
     })
@@ -147,22 +147,17 @@ test('test type created by Fire.define', function () {
 });
 
 test('test circular reference', function () {
-    var MyAsset = (function () {
-        var _super = function () {};
+    function MyAsset () {
+        this.array1 = [1];
+        this.array2 = [this.array1, 2];
+        this.array1.push(this.array2);
+        // array1 = [1, array2]
+        // array2 = [array1, 2]
 
-        function MyAsset () {
-            _super.call(this);
-            this.array1 = [1];
-            this.array2 = [this.array1, 2];
-            this.array1.push(this.array2);
-            // array1 = [1, array2]
-            // array2 = [array1, 2]
-        }
-        Fire.extend(MyAsset, _super);
-        Fire.registerClass('MyAsset', MyAsset);
-
-        return MyAsset;
-    })();
+        this.dict1 = {num: 1};
+        this.dict2 = {num: 2, other: this.dict1};
+        this.dict1.other = this.dict2;
+    }
     var asset = new MyAsset();
 
     var expect = [
@@ -170,44 +165,14 @@ test('test circular reference', function () {
             __type__: 'MyAsset',
             array1: { __id__: 1 },
             array2: [ { __id__: 1 },  2 ],
+            dict1: { __id__: 2 },
+            dict2: { /*__id__: 4,*/ num:2, other: {__id__: 2} },
         },
         [ 1,  [{ __id__: 1 }, 2] ],  // You'll get two copies of array2
+        { /*__id__: 2,*/ num:1, other: {num:2, other: {__id__: 2}} },  // You'll get two copies of dict2
     ];
-    match(asset, expect, 'two arrays can circular reference each other');
+    match(asset, expect, 'arrays and dicts can circular reference each other');
     match(asset, expect, 'test re-serialize again');
-    Fire.unregisterClass(MyAsset);
-
-    MyAsset = (function () {
-        var _super = function () {};
-
-        function MyAsset () {
-            _super.call(this);
-            this.dict1 = {num: 1};
-            this.dict2 = {num: 2, other: this.dict1};
-            this.dict1.other = this.dict2;
-        }
-        Fire.extend(MyAsset, _super);
-        Fire.registerClass('MyAsset', MyAsset);
-
-        return MyAsset;
-    })();
-    asset = new MyAsset();
-
-    expect = [
-        {
-            __type__: 'MyAsset',
-            dict1: { __id__: 1 },
-            dict2: { /*__id__: 2,*/ num:2, other: {__id__: 1} },
-        },
-        { /*__id__: 1,*/ num:1, other: {num:2, other: {__id__: 1}} },  // You'll get two copies of dict2
-    ];
-    match(asset, expect, 'two dicts can circular reference each other');
-
-    //asset.sameRef = asset.dict2;
-    //expect[1].sameRef = { __id__: 1 };
-    //match(asset, expect, 'more referenced object just serialize its id');
-
-    Fire.unregisterClass(MyAsset);
 });
 
 test('test serializable attributes', function () {

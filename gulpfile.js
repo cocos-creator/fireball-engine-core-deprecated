@@ -26,8 +26,6 @@ var paths = {
         'src/class.js',
         'src/utils.js',
         'src/path.js',
-        'src/serialize.js',
-        'src/deserialize.js',
         'src/object.js',
         'src/hash-object.js',
         'src/vec2.js',
@@ -35,6 +33,8 @@ var paths = {
         'src/rect.js',
         'src/polygon.js',
         'src/color.js',
+        'src/deserialize.js',
+        'src/instantiate.js',
 
         // assets
         'src/asset/asset.js',
@@ -46,6 +46,7 @@ var paths = {
         // editor utils
         'src/editor/utils.js',
         'src/editor/platform.js',
+        'src/editor/serialize.js',
         'src/editor/dom.js',
         'src/editor/file-utils.js',
 

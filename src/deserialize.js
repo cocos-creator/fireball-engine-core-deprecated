@@ -91,7 +91,7 @@ var _Deserializer = (function () {
      * @param {Object} serialized - The obj to deserialize, must be non-nil
      */
     var _deserializeObject = function (self, serialized) {
-        var propName, prop, id = 0, uuid;
+        var propName, prop;
         var obj = null;
         var klass = null;
         if (serialized.__type__) {
@@ -208,11 +208,6 @@ var _Deserializer = (function () {
 })();
 
 /**
- * @property {boolean} Fire.deserializing
- */
-Fire._isDeserializing = false;
-
-/**
  * Deserialize json to Fire.Asset
  * @param {(string|object)} data - the serialized Fire.Asset json string or json object
  * @param {Fire._DeserializeInfo} [result] - additional loading result
@@ -220,9 +215,9 @@ Fire._isDeserializing = false;
  * @returns {object} the main data(asset)
  */
 Fire.deserialize = function (data, result, editor) {
-    Fire._isDeserializing = true;
+    Fire._isCloning = true;
     var deserializer = new _Deserializer(data, result, editor);
-    Fire._isDeserializing = false;
+    Fire._isCloning = false;
     return deserializer.deserializedData;
 };
 

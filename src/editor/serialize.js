@@ -1,9 +1,3 @@
-function _isDomNode(obj) {
-    return (
-        typeof Node === "object" ? obj instanceof Node : 
-        obj && typeof obj === "object" && typeof obj.nodeType === "number" && typeof obj.nodeName === "string"
-    );
-}
 
 var _Serializer = (function () {
 
@@ -59,9 +53,9 @@ var _Serializer = (function () {
     };
 
     /**
-     * @param {Object} obj - The object to serialize
-     * @param {Object} data - The array or dict where serialized data to store
-     * @returns {Object} The reference info used to embed to its container.
+     * @param {object} obj - The object to serialize
+     * @param {array|object} data - The array or dict where serialized data to store
+     * @returns {object} The reference info used to embed to its container.
      *                   if the serialized data not contains in serializedList, then return the data directly.
      */
     var _enumerateObject = function (self, obj, data) {
@@ -189,7 +183,7 @@ var _Serializer = (function () {
         self._parsingData.pop();
 
         // check whether obj has been serialized to serializedList, 
-        // if so, no need to serialized to data again
+        // if it is, no need to serialized to data again
         if (self.serializedList.length > oldSerializedCount) {
             var index = self.serializedList.indexOf(data, oldSerializedCount);
             if (index !== -1) {

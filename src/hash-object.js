@@ -1,4 +1,4 @@
-﻿Fire.HashObject = (function () {
+﻿var HashObject = (function () {
     
     /**
      * 提供获取对象ID的功能，该ID全局唯一但不会被序列化，可用于索引对象。
@@ -44,3 +44,5 @@
 
     return HashObject;
 })();
+
+Fire.HashObject = HashObject;

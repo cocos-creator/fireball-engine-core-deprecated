@@ -170,9 +170,10 @@ module('HashObject');
 test('test', function () {
     var obj1 = new Fire.HashObject();
     var obj2 = new Fire.HashObject();
-
-    strictEqual(typeof obj1.hashCode, 'number', 'id is number');
-    strictEqual(typeof obj2.id, 'string', 'key is string');
+    
+    ok(obj1.hashCode, 'id is always true')
+    strictEqual(typeof obj1.hashCode, 'number', 'hashCode is number');
+    strictEqual(typeof obj2.id, 'string', 'id is string');
 
     notEqual(obj1.id, obj2.id, 'unique id');
     notEqual(obj1.hashCode, obj2.hashCode, 'unique hashCode');
@@ -182,6 +183,6 @@ test('test', function () {
 
     var obj3 = new Fire.HashObject();
 
-    strictEqual(obj1.hashCode, id1, 'id not changed');
-    strictEqual(obj2.id, key2, 'key not changed');
+    strictEqual(obj1.hashCode, id1, 'hashCode not changed');
+    strictEqual(obj2.id, key2, 'id not changed');
 });

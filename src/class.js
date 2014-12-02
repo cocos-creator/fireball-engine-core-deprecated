@@ -246,7 +246,7 @@ var _createInstanceProps = function (instance, itsClass) {
         for (var i = 0; i < propList.length; i++) {
             var prop = propList[i];
             var attrs = Fire.attr(itsClass, prop);
-            if (attrs && attrs.hasOwnProperty('default')) {  // getter does not have default
+            if (attrs && attrs.hasOwnProperty('default')) {  // getter does not have default, default maybe 0
                 var def = attrs.default;
                 if (typeof def === 'object' && def) {
                     // 防止多个实例引用相同对象

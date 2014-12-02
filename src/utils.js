@@ -271,3 +271,9 @@ Fire.hsv2rgb = function ( h, s, v ) {
 
     return CallbacksInvoker;
 })();
+function _isDomNode(obj) {
+    return (
+        typeof Node === "object" ? obj instanceof Node : 
+        obj && typeof obj === "object" && typeof obj.nodeType === "number" && typeof obj.nodeName === "string"
+    );
+}

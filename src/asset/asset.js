@@ -1,4 +1,4 @@
-Fire.Asset = (function () {
+var Asset = (function () {
 
     var Asset = Fire.define('Fire.Asset', Fire.HashObject, function () {
         Fire.HashObject.call(this);
@@ -31,3 +31,5 @@ Fire.Asset = (function () {
 
     return Asset;
 })();
+
+Fire.Asset = Asset;
