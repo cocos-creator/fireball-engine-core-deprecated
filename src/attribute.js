@@ -232,6 +232,22 @@ Fire.Nullable = function (boolPropName, hasValueByDefault) {
     };
 };
 
+
+/**
+ * Appends the watch attribute to last defined property.
+ * This attrubite is only used in Fireball-x inspector.
+ * 
+ * @param {string[]|string} names - the name of target property to watch, array is also acceptable.
+ * @param {function} callback - the callback function to invoke when target property(s) is changed.
+ * @returns {function} the class itself
+ */
+Fire.Watch = function (names, callback) {
+    return {
+        watch: [].concat(names),  // array of property name to watch
+        watchCallback: callback, // callback
+    };
+};
+
 //Fire.range = function (min, max) {
 //    return { min: min, max: max };
 //};

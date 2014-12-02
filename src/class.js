@@ -45,9 +45,6 @@ var _cloneable = function (obj) {
     return obj && typeof obj.clone === 'function' && (obj.constructor.prototype.hasOwnProperty('clone') || obj.hasOwnProperty('clone'));
 };
 
-// the name of last defined property
-var lastPropName = '';
-
 /**
  * the metaclass of the "fire class" created by Fire.define, all its static members
  * will inherited by fire class.
@@ -75,8 +72,6 @@ var _metaClass = {
      */
     prop: function (name, defaultValue, attribute) {
         'use strict';
-
-        lastPropName = name;
 
         // check default object value
         if (typeof defaultValue === 'object' && defaultValue) {
@@ -149,8 +144,6 @@ var _metaClass = {
     get: function (name, getter, attribute) {
         'use strict';
 
-        lastPropName = name;
-
         var d = Object.getOwnPropertyDescriptor(this.prototype, name);
         if (d && d.get) {
             Fire.error(Fire.getClassName(this) + ': the getter of "' + name + '" is already defined!');
@@ -205,7 +198,6 @@ var _metaClass = {
      * @returns {function} the class itself
      */
     set: function (name, setter) {
-        lastPropName = '';
         var d = Object.getOwnPropertyDescriptor(this.prototype, name);
         if (d && d.set) {
             Fire.error(Fire.getClassName(this) + ': the setter of "' + name + '" is already defined!');
@@ -244,30 +236,6 @@ var _metaClass = {
     getset: function (name, getter, setter, attribute) {
         this.get(name, getter, attribute);
         this.set(name, setter);
-        lastPropName = name;
-        return this;
-    },
-
-    /**
-     * Appends the watch attribute to last defined property.
-     * This attrubite is only used in Fireball-x inspector.
-     * 
-     * @param {string[]|string} name - the name of target property to watch, array is also acceptable.
-     * @param {function} callback - the callback function to invoke when target property(s) is changed.
-     * @returns {function} the class itself
-     */
-    watch: function (name, callback) {
-        var attrs = Fire.attr(this, lastPropName);
-        if (!attrs) {
-            Fire.error('The property "%s" is not defined', lastPropName);
-            return;
-        }
-        if (attrs.watch) {
-            Fire.error('The watcher for %s is already exists', lastPropName);
-            return;
-        }
-        attrs.watch = [].concat(name);  // array of property name to watch
-        attrs.watchCallback = callback; // callback
         return this;
     },
 };
