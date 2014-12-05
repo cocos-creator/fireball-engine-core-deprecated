@@ -20,6 +20,7 @@ var paths = {
         'src/core.js',
         'src/math.js',
         'src/intersection.js',
+        'src/callbacks-invoker.js',
 
         // basic classes
         'src/attribute.js',
