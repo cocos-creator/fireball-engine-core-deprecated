@@ -53,10 +53,20 @@ Fire._doInstantiate = (function () {
      * 值得注意的是，这个方法不可重入。
      * 
      * @param {object} obj - 该方法仅供内部使用，用户需负责保证参数合法。什么参数是合法的请参考 Fire.instantiate().
+     * @returns {object}
      * @private
      */
     function doInstantiate (obj) {
-        var clone = instantiateObj(obj);
+        if (Array.isArray(obj)) {
+            Fire.error('Can not instantiate array');
+            return null;
+        }
+        if (_isDomNode(obj)) {
+            Fire.error('Can not instantiate DOM element');
+            return null;
+        }
+
+        var clone = enumerateObject(obj);
 
         for (var i = 0, len = objsToClearTmpVar.length; i < len; ++i) {
             objsToClearTmpVar[i]._iN$t = null;
@@ -153,6 +163,7 @@ Fire._doInstantiate = (function () {
             return enumerateObject(obj);
         }
         else {
+            // dom
             return null;
         }
     }
