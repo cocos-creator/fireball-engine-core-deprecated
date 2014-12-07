@@ -148,7 +148,7 @@ Fire._doInstantiate = (function () {
             clone = new Array(len);
             obj._iN$t = clone;
             for (var i = 0; i < len; ++i) {
-                value = obj[i];
+                var value = obj[i];
                 // instantiate field
                 var type = typeof value;
                 clone[i] = (type === 'object') ? 
