@@ -24,19 +24,19 @@ test('destroyImmediate', 2, function () {
     }
 });
 
-test('FObject.isValid', function () {
+test('Fire.isValid', function () {
     var obj = new FObject();
-    strictEqual(FObject.isValid(obj), true, 'valid');
+    strictEqual(Fire.isValid(obj), true, 'valid');
 
     obj._destroyImmediate();
 
-    strictEqual(FObject.isValid(obj), false, 'destroyed');
+    strictEqual(Fire.isValid(obj), false, 'destroyed');
 
     delete obj;
 
-    strictEqual(FObject.isValid(), false, 'undefined return false 1');
-    strictEqual(FObject.isValid(obj), false, 'undefined return false 2');
-    strictEqual(FObject.isValid(null), false, 'null return false');
+    strictEqual(Fire.isValid(), false, 'undefined return false 1');
+    strictEqual(Fire.isValid(obj), false, 'undefined return false 2');
+    strictEqual(Fire.isValid(null), false, 'null return false');
 });
 
 test('deferred destroy', function () {
@@ -51,7 +51,7 @@ test('deferred destroy', function () {
     // frame 1
 
     strictEqual(obj.isValid, true, 'still available in frame 1');
-    strictEqual(FObject.isValid(obj), true, 'still available in frame 1');
+    strictEqual(Fire.isValid(obj), true, 'still available in frame 1');
 
     obj._onPreDestroy = function () {
         ok(true, 'should callback');
@@ -60,7 +60,7 @@ test('deferred destroy', function () {
     FObject._deferredDestroy();
 
     strictEqual(obj.isValid, false, 'deleted at the end of frame 1');
-    strictEqual(FObject.isValid(obj), false, 'deleted at the end of frame 1');
+    strictEqual(Fire.isValid(obj), false, 'deleted at the end of frame 1');
 
     obj._onPreDestroy = function () {
         ok(false, 'should not callback anymore');

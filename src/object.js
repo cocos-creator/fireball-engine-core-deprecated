@@ -14,14 +14,17 @@ FObject = (function () {
 
     /**
      * Checks whether the object is not destroyed
-     * @method FObject.isValid
-     * @return {boolean} whether it is not destroyed
-     * @see Fire.FObject#destroy
-     * @static
+     * @method Fire.isValid
+     * @returns {boolean} whether it is not destroyed
+     * @see Fire.FObject#isValid
      */
+    Fire.isValid = function (object) {
+        return !!object && !(object._objFlags & Destroyed);
+    };
     Object.defineProperty(FObject, 'isValid', {
         value: function (object) {
-            return !!object && !(object._objFlags & Destroyed);
+            Fire.warn('FObject.isValid is deprecated, use Fire.isValid instead please');
+            return Fire.isValid(object);
         },
         enumerable: false
     });
