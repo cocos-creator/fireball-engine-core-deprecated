@@ -56,162 +56,126 @@ else {
     Fire.readDirRecursively = error;
 }
 
-if (Fire.isApp && Fire.isWeb) {
-    if (Fire.isNodeWebkit) {
-        Fire.getSavePath = function (defaultFilename, persistDirKey, callback) {
-            var persistentId = 'SaveFileDialog';
-            var chooser = document.getElementById(persistentId);
-            if (chooser) {
-                // remove the old one or change event may not fired
-                document.body.removeChild(chooser);
-            }
-            chooser = document.createElement('input');
-            document.body.appendChild(chooser);
-            chooser.id = persistentId;
-            chooser.style.display = 'none';
-            chooser.type = 'file';
+if (Fire.isNodeWebkit && Fire.isWeb) {
+    Fire.getSavePath = function (defaultFilename, persistDirKey, title, callback) {
+        var persistentId = 'SaveFileDialog';
+        var chooser = document.getElementById(persistentId);
+        if (chooser) {
+            // remove the old one or change event may not fired
+            document.body.removeChild(chooser);
+        }
+        chooser = document.createElement('input');
+        document.body.appendChild(chooser);
+        chooser.id = persistentId;
+        chooser.style.display = 'none';
+        chooser.type = 'file';
 
-            chooser.nwsaveas = defaultFilename;
-            var defaultDir = localStorage[persistDirKey];
-            chooser.nwworkingdir = defaultDir || '';
+        chooser.nwsaveas = defaultFilename;
+        var defaultDir = localStorage[persistDirKey];
+        chooser.nwworkingdir = defaultDir || '';
         
-            chooser.onchange = function (evt) {
-                document.body.removeChild(chooser);
-                //chooser.removeEventListener("change", arguments.callee);
-                chooser.onchange = null;
-                //Fire.log('value ' + this.value);
-                localStorage[persistDirKey] = this.value;
-                callback(this.value);
-            };
-
-            //chooser.addEventListener("change", function (evt) {
-            //    Fire.log('change');
-            //}, false);
-            //chooser.addEventListener("blur", function (evt) {
-            //    Fire.log('blur');
-            //}, false);
-            //chooser.addEventListener("load", function (evt) {
-            //    Fire.log('load');
-            //}, false);
-            //chooser.addEventListener("unload", function (evt) {
-            //    Fire.log('unload');
-            //}, false);
-            //chooser.addEventListener("abort", function (evt) {
-            //    Fire.log('abort');
-            //}, false);
-            //chooser.addEventListener("click", function (evt) {
-            //    Fire.log('click');
-            //}, false);
-            //chooser.addEventListener("error", function (evt) {
-            //    Fire.log('error');
-            //}, false);
-            //chooser.addEventListener("resize", function (evt) {
-            //    Fire.log('resize');
-            //}, false);
-            //chooser.addEventListener("select", function (evt) {
-            //    Fire.log('select');
-            //}, false);
-            //chooser.addEventListener("submit", function (evt) {
-            //    Fire.log('submit');
-            //}, false);
-            //chooser.addEventListener("reset", function (evt) {
-            //    Fire.log('reset');
-            //}, false);
-            //chooser.addEventListener("focus", function (evt) {
-            //    Fire.log('focus');
-            //}, false);
-            //chooser.addEventListener("focusin", function (evt) {
-            //    Fire.log('focusin');
-            //}, false);
-            //chooser.addEventListener("focusout", function (evt) {
-            //    Fire.log('focusout');
-            //}, false);
-            //chooser.addEventListener("error", function (evt) {
-            //    Fire.log('error');
-            //}, false);
-
-
-            //chooser.addEventListener("change", function (evt) {
-            //    Fire.log('change');
-            //}, true);
-            //chooser.addEventListener("blur", function (evt) {
-            //    Fire.log('blur');
-            //}, true);
-            //chooser.addEventListener("load", function (evt) {
-            //    Fire.log('load');
-            //}, true);
-            //chooser.addEventListener("unload", function (evt) {
-            //    Fire.log('unload');
-            //}, true);
-            //chooser.addEventListener("abort", function (evt) {
-            //    Fire.log('abort');
-            //}, true);
-            //chooser.addEventListener("click", function (evt) {
-            //    Fire.log('click');
-            //}, true);
-            //chooser.addEventListener("error", function (evt) {
-            //    Fire.log('error');
-            //}, true);
-            //chooser.addEventListener("resize", function (evt) {
-            //    Fire.log('resize');
-            //}, true);
-            //chooser.addEventListener("select", function (evt) {
-            //    Fire.log('select');
-            //}, true);
-            //chooser.addEventListener("submit", function (evt) {
-            //    Fire.log('submit');
-            //}, true);
-            //chooser.addEventListener("reset", function (evt) {
-            //    Fire.log('reset');
-            //}, true);
-            //chooser.addEventListener("focus", function (evt) {
-            //    Fire.log('focus');
-            //}, true);
-            //chooser.addEventListener("focusin", function (evt) {
-            //    Fire.log('focusin');
-            //}, true);
-            //chooser.addEventListener("focusout", function (evt) {
-            //    Fire.log('focusout');
-            //}, true);
-            //chooser.addEventListener("error", function (evt) {
-            //    Fire.log('error');
-            //}, true);
-            chooser.click();
-            //chooser.value = '';
-            //chooser.files = new FileList();
-            //chooser.files.append(new File('',''));
-            //chooser.files = null;
+        chooser.onchange = function (evt) {
+            document.body.removeChild(chooser);
+            //chooser.removeEventListener("change", arguments.callee);
+            chooser.onchange = null;
+            //Fire.log('value ' + this.value);
+            localStorage[persistDirKey] = this.value;
+            callback(this.value);
         };
-        var nwgui = require('nw.gui');
-        Fire.showItemInFolder = nwgui.Shell.showItemInFolder;
+        chooser.click();
+        //chooser.value = '';
+        //chooser.files = new FileList();
+        //chooser.files.append(new File('',''));
+        //chooser.files = null;
+    };
+    var nwgui = require('nw.gui');
+    Fire.showItemInFolder = nwgui.Shell.showItemInFolder;
+}
+else if (Fire.isAtomShell) {
+
+    if (typeof localStorage === 'undefined') {
+        localStorage = Fire.userProfile || {};
     }
-    /*else if (Fire.isAtomShell) {
-        Fire.getSavePath = function (defaultFilename, persistDirKey, callback, title, browserWindow) {
-            var defaultDir = localStorage[persistDirKey];
-            var defaultPath = null;
-            if (defaultDir && typeof defaultDir === 'string') {
-                defaultDir = Fire.Path.dirname(defaultDir);
-                defaultPath = Fire.Path.join(defaultDir, defaultFilename);
-            }
+
+    /**
+     * @param {BrowserWindow} [browserWindow]
+     */
+    Fire.getSavePath = function (defaultFilename, persistDirKey, title, callback, browserWindow) {
+        if (typeof title === 'function') {
+            Fire.error('Fire.getSavePath: swap title and callback please');
+        }
+        var defaultDir = localStorage[persistDirKey];
+        var defaultPath = null;
+        if (defaultDir && typeof defaultDir === 'string') {
+            defaultDir = Fire.Path.dirname(defaultDir);
+            defaultPath = Fire.Path.join(defaultDir, defaultFilename);
+        }
+
+        var dialog;
+        if (Fire.isWeb) {
             var remote = require('remote');
-            var dialog = remote.require('dialog');
-            var options = {
-                title: title,
-                defaultPath: defaultPath,
-            };
+            dialog = remote.require('dialog');
             if (!browserWindow) {
                 browserWindow = remote.getCurrentWindow();
             }
-            dialog.showSaveDialog(browserWindow, options, function (path) {
-                if (path) {
-                    localStorage[persistDirKey] = path;
-                }
-                callback(path);
-            });
+        }
+        else {
+            dialog = require('dialog');
+            if (!browserWindow) {
+                var BrowserWindow = require('browser-window');
+                browserWindow = BrowserWindow.getFocusedWindow();
+            }
+        }
+        var options = {
+            title: title,
+            defaultPath: defaultPath,
         };
-        var shell = require('shell');
-        Fire.showItemInFolder = shell.showItemInFolder;
-    }*/
+
+        dialog.showSaveDialog(browserWindow, options, function (path) {
+            if (path) {
+                localStorage[persistDirKey] = path;
+            }
+            callback(path);
+        });
+    };
+
+    /**
+     * @param {BrowserWindow} [browserWindow]
+     */
+    Fire.getDirPath = function (defaultDir, persistDirKey, title, callback, browserWindow) {
+        var lastDir = localStorage[persistDirKey];
+        if (lastDir && typeof lastDir === 'string') {
+            defaultDir = lastDir;
+        }
+        var dialog;
+        if (Fire.isWeb) {
+            var remote = require('remote');
+            dialog = remote.require('dialog');
+            if (!browserWindow) {
+                browserWindow = remote.getCurrentWindow();
+            }
+        }
+        else {
+            dialog = require('dialog');
+            if (!browserWindow) {
+                var BrowserWindow = require('browser-window');
+                browserWindow = BrowserWindow.getFocusedWindow();
+            }
+        }
+        var options = {
+            title: title,
+            defaultPath: defaultDir,
+            properties: ['openDirectory'],
+        };
+        dialog.showOpenDialog(browserWindow, options, function (path) {
+            if (path) {
+                localStorage[persistDirKey] = path;
+            }
+            callback(path);
+        });
+    };
+
+    Fire.showItemInFolder = require('shell').showItemInFolder;
 }
 else {
     var error = function () {
@@ -219,4 +183,5 @@ else {
     };
     Fire.getSavePath = error;
     Fire.showItemInFolder = error;
+    Fire.getDirPath = error;
 }
