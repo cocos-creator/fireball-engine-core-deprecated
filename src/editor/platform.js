@@ -57,7 +57,10 @@ else {
 }
 
 if (Fire.isNodeWebkit && Fire.isWeb) {
-    Fire.getSavePath = function (defaultFilename, persistDirKey, title, callback) {
+    Fire.askSavePath = function (defaultFilename, persistDirKey, title, callback) {
+        if (typeof title === 'function') {
+            Fire.error('Fire.askSavePath: swap title and callback please');
+        }
         var persistentId = 'SaveFileDialog';
         var chooser = document.getElementById(persistentId);
         if (chooser) {
@@ -88,6 +91,9 @@ if (Fire.isNodeWebkit && Fire.isWeb) {
         //chooser.files.append(new File('',''));
         //chooser.files = null;
     };
+    Fire.getSavePath = function () {
+        Fire.error('Fire.getSavePath is deprecated, use Fire.askSavePath plz');
+    };
     var nwgui = require('nw.gui');
     Fire.showItemInFolder = nwgui.Shell.showItemInFolder;
 }
@@ -100,10 +106,7 @@ else if (Fire.isAtomShell) {
     /**
      * @param {BrowserWindow} [browserWindow]
      */
-    Fire.getSavePath = function (defaultFilename, persistDirKey, title, callback, browserWindow) {
-        if (typeof title === 'function') {
-            Fire.error('Fire.getSavePath: swap title and callback please');
-        }
+    Fire.askSavePath = function (defaultFilename, persistDirKey, title, callback, browserWindow) {
         var defaultDir = localStorage[persistDirKey];
         var defaultPath = null;
         if (defaultDir && typeof defaultDir === 'string') {
@@ -142,7 +145,7 @@ else if (Fire.isAtomShell) {
     /**
      * @param {BrowserWindow} [browserWindow]
      */
-    Fire.getDirPath = function (defaultDir, persistDirKey, title, callback, browserWindow) {
+    Fire.askDirPath = function (defaultDir, persistDirKey, title, callback, browserWindow) {
         var lastDir = localStorage[persistDirKey];
         if (lastDir && typeof lastDir === 'string') {
             defaultDir = lastDir;
@@ -168,6 +171,7 @@ else if (Fire.isAtomShell) {
             properties: ['openDirectory'],
         };
         dialog.showOpenDialog(browserWindow, options, function (path) {
+            path = path && path[0];
             if (path) {
                 localStorage[persistDirKey] = path;
             }
@@ -181,7 +185,7 @@ else {
     var error = function () {
         throw new Error("This function can only be used in node-webkit or atom-shell");
     };
-    Fire.getSavePath = error;
+    Fire.askSavePath = error;
+    Fire.askDirPath = error;
     Fire.showItemInFolder = error;
-    Fire.getDirPath = error;
 }

@@ -2,9 +2,9 @@
 
 // both getter and prop must register the name into __props__ array
 var _appendProp = function (name/*, isGetter*/) {
-    var RuleStr = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
-    if (!RuleStr.test(name)) {
-        Fire.error("The name: " + name + " does not meet the javascript naming rules!");
+    var JsVarReg = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
+    if (!JsVarReg.test(name)) {
+        Fire.error('The property name "' + name + '" is not compliant with JavaScript naming standards');
         return;
     }
 

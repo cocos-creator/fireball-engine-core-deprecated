@@ -1,9 +1,9 @@
 Fire.Color = (function () {
     function Color( r, g, b, a ) {
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
+        this.r = typeof r !== 'undefined' ? r : 0;
+        this.g = typeof g !== 'undefined' ? g : 0;
+        this.b = typeof b !== 'undefined' ? b : 0;
+        this.a = typeof a !== 'undefined' ? a : 1;
     }
     Fire.registerClass('Fire.Color', Color);
 
@@ -50,28 +50,19 @@ Fire.Color = (function () {
     };
 
     Color.prototype.equalTo = function ( rhs ) {
-        if ( !(rhs instanceof Fire.Color) )
-            return false;
-
-        if ( this.r !== rhs.r )
-            return false;
-        if ( this.g !== rhs.g )
-            return false;
-        if ( this.b !== rhs.b )
-            return false;
-        if ( this.a !== rhs.a )
-            return false;
-
-        return true;
+        return (rhs instanceof Color &&
+                this.r === rhs.r &&
+                this.g === rhs.g &&
+                this.b === rhs.b &&
+                this.a === rhs.a);
     };
 
     Color.prototype.clamp = function () {
-        this.r = Math.min(1, Math.max(0, this.r));
-        this.g = Math.min(1, Math.max(0, this.g));
-        this.b = Math.min(1, Math.max(0, this.b));
-        this.a = Math.min(1, Math.max(0, this.a));
+        this.r = Math.clamp(this.r, 0, 1);
+        this.g = Math.clamp(this.g, 0, 1);
+        this.b = Math.clamp(this.b, 0, 1);
+        this.a = Math.clamp(this.a, 0, 1);
     };
-
 
     Color.prototype.fromHEX = function (hexString) {
         var hex = parseInt(((hexString.indexOf('#') > -1) ? hexString.substring(1) : hexString), 16);
