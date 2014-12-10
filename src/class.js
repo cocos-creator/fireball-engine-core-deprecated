@@ -2,16 +2,7 @@
 
 // both getter and prop must register the name into __props__ array
 var _appendProp = function (name/*, isGetter*/) {
-    //if (!isGetter) {
-    //    // checks whether getter/setter defined
-    //    var d = Object.getOwnPropertyDescriptor(this.prototype, name);
-    //    var hasGetterOrSetter = (d && (d.get || d.set));
-    //    if (hasGetterOrSetter) {
-    //        Fire.error(Fire.getClassName(this) + '.' + name + ' is already defined as a getter or setter!');
-    //        return;
-    //    }
-    //}
-
+    // TODO: 变量名合法检测
     if (!this.__props__) {
         this.__props__ = [name];
     }
@@ -20,6 +11,7 @@ var _appendProp = function (name/*, isGetter*/) {
         if (index < 0) {
             this.__props__.push(name);
         }
+        // 这里不进行报错，因为重写 prop 可以是一个合法的行为，可以用于设置新的默认值。
         //else {
         //    Fire.error(Fire.getClassName(this) + '.' + name + ' is already defined!');
         //}
@@ -34,8 +26,7 @@ var _isPlainEmptyObj = function (obj) {
     if (obj.constructor !== ({}).constructor) {
         return false;
     }
-    var k;
-    for (k in obj) {
+    for (var k in obj) {
         return false;
     }
     return true;
@@ -93,6 +84,16 @@ var _metaClass = {
                     return this;
                 }
             }
+        }
+
+        // check base prototype to avoid name collision
+        for (var base = this.$super; base; base = base.$super) {
+            // 这个循环只能检测到最上面的FireClass的父类，如果再上还有父类，将不做检测。（Fire.extend 将 prototype.constructor 设为子类）
+            if (base.prototype.hasOwnProperty(name)) {
+                Fire.error('Can not declare ' + Fire.getClassName(this) + '.' + name + 
+                           ', it is already defined in the prototype of ' + Fire.getClassName(base));
+                return;
+            }        
         }
 
         // set default value
