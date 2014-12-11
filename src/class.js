@@ -2,7 +2,12 @@
 
 // both getter and prop must register the name into __props__ array
 var _appendProp = function (name/*, isGetter*/) {
-    // TODO: 变量名合法检测
+    var RuleStr = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
+    if (!RuleStr.test(name)) {
+        Fire.error("The name: " + name + " does not meet the javascript naming rules!");
+        return;
+    }
+
     if (!this.__props__) {
         this.__props__ = [name];
     }
