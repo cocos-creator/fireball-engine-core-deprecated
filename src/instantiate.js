@@ -71,7 +71,7 @@ Fire._doInstantiate = (function () {
         for (var i = 0, len = objsToClearTmpVar.length; i < len; ++i) {
             objsToClearTmpVar[i]._iN$t = null;
         }
-        objsToClearTmpVar.length = [];
+        objsToClearTmpVar.length = 0;
 
         return clone;
     }
