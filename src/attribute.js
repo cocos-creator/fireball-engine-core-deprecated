@@ -41,6 +41,7 @@ Fire.attr = function (constructor, propertyName, attributes) {
 
 BuiltinAttributes: {
     default: defaultValue,
+    _canUsedInGetter: true,
 }
 Getter or Setter: {
     hasGetter: true,
@@ -59,7 +60,10 @@ Callbacks: {
  * @property {object} Fire.NonSerialized
  * @see Fire.EditorOnly
  */
-Fire.NonSerialized = { serializable: false };
+Fire.NonSerialized = {
+    serializable: false,
+    _canUsedInGetter: false,
+};
 
 /**
  * The EditorOnly attribute marks a variable to be serialized in editor project, but non-serialized
@@ -68,7 +72,10 @@ Fire.NonSerialized = { serializable: false };
  * @property {object} Fire.EditorOnly
  * @see Fire.NonSerialized
  */
-Fire.EditorOnly = { editorOnly: true };
+Fire.EditorOnly = {
+    editorOnly: true,
+    _canUsedInGetter: false,
+};
 
 /**
  * Specify that the input value must be integer in Inspector
@@ -102,6 +109,7 @@ Fire.HostType = function (typename) {
         hostType: typename,
         serializable: false,
         hideInInspector: true,
+        _canUsedInGetter: false,
 
         _onAfterProp: function (constructor, mainPropName) {
             // check host object

@@ -118,7 +118,8 @@ var _metaClass = {
         // apply attributes
         if (attribute) {
             var onAfterProp = null;
-            for (var i = 2; i < arguments.length; i++) {
+            var AttrArgStart = 2;
+            for (var i = AttrArgStart; i < arguments.length; i++) {
                 var attr = arguments[i];
                 Fire.attr(this, name, attr);
                 // register callback
@@ -158,8 +159,13 @@ var _metaClass = {
 
         var displayInInspector = true;
         if (attribute) {
-            for (var i = 2; i < arguments.length; i++) {
+            var AttrArgStart = 2;
+            for (var i = AttrArgStart; i < arguments.length; i++) {
                 var attr = arguments[i];
+                if (attr._canUsedInGetter === false) {
+                    Fire.error('Can not apply the specified attribute to the getter of "' + Fire.getClassName(this) + '.' + name + '", attribute index: ' + (i - AttrArgStart));
+                    continue;
+                }
                 Fire.attr(this, name, attr);
                 // check attributes
                 if (attr.hideInInspector) {
