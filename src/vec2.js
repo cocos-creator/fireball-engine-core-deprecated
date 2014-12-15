@@ -339,3 +339,20 @@ Vec2 = (function () {
 })();
 
 Fire.Vec2 = Vec2;
+
+/**
+ * The convenience method to create a new Vec2
+ * @property {function} Fire.v2
+ * @param {number|number[]} [x=0]
+ * @param {number} [y=0]
+ * @returns {Fire.Vec2}
+ * @see Fire.Vec2
+ */
+Fire.v2 = function v2 (x, y) {
+    if (Array.isArray(x)) {
+        return new Vec2(x[0], x[1]);
+    }
+    else {
+        return new Vec2(x, y);
+    }
+};

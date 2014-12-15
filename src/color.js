@@ -1,9 +1,9 @@
-Fire.Color = (function () {
+var Color = (function () {
     function Color( r, g, b, a ) {
-        this.r = typeof r !== 'undefined' ? r : 0;
-        this.g = typeof g !== 'undefined' ? g : 0;
-        this.b = typeof b !== 'undefined' ? b : 0;
-        this.a = typeof a !== 'undefined' ? a : 1;
+        this.r = typeof r === 'number' ? r : 0.0;
+        this.g = typeof g === 'number' ? g : 0.0;
+        this.b = typeof b === 'number' ? b : 0.0;
+        this.a = typeof a === 'number' ? a : 1.0;
     }
     Fire.registerClass('Fire.Color', Color);
 
@@ -115,3 +115,23 @@ Fire.Color = (function () {
     return Color;
 })();
 
+Fire.Color = Color;
+
+/**
+ * The convenience method to create a new Color
+ * @property {function} Fire.color
+ * @param {number|number[]} [r=0]
+ * @param {number} [g=0]
+ * @param {number} [b=0]
+ * @param {number} [a=1]
+ * @returns {Fire.Color}
+ * @see Fire.Color
+ */
+Fire.color = function color (r, g, b, a) {
+    if (Array.isArray(r)) {
+        return new Color(r[0], r[1], r[2], r[3]);
+    }
+    else {
+        return new Color(r, g, b, a);
+    }
+};

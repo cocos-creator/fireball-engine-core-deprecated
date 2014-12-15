@@ -1,9 +1,9 @@
-Fire.Rect = (function () {
+var Rect = (function () {
     function Rect( x, y, w, h ) {
-        this.x = x;
-        this.y = y;
-        this.width = w;
-        this.height = h;
+        this.x = typeof x === 'number' ? x : 0.0;
+        this.y = typeof y === 'number' ? y : 0.0;
+        this.width = typeof w === 'number' ? w : 0.0;
+        this.height = typeof h === 'number' ? h : 0.0;
     }
     Fire.registerClass('Fire.Rect', Rect);
 
@@ -103,3 +103,23 @@ Fire.Rect = (function () {
     return Rect;
 })();
 
+Fire.Rect = Rect;
+
+/**
+ * The convenience method to create a new Rect
+ * @property {function} Fire.rect
+ * @param {number|number[]} [x=0]
+ * @param {number} [y=0]
+ * @param {number} [w=0]
+ * @param {number} [h=0]
+ * @returns {Fire.Rect}
+ * @see Fire.Rect
+ */
+Fire.rect = function rect (x, y, w, h) {
+    if (Array.isArray(x)) {
+        return new Rect(x[0], x[1], x[2], x[3]);
+    }
+    else {
+        return new Rect(x, y, w, h);
+    }
+};

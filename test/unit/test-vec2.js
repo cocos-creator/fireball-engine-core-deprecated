@@ -1,17 +1,18 @@
-largeModule('vec2');
+module('Vec2');
 
-function v2 (x, y) {
-    return new Fire.Vec2(x, y);
-};
+var v2 = Fire.v2;
 
 test('basic test', function () {
     var vec1 = new Fire.Vec2(5, 6);
-    ok(vec1 instanceof Fire.Vec2, 'is instanceof');
-    equal( vec1.x, 5, 'is that num' );
+    ok(vec1 instanceof Fire.Vec2, 'is instanceof Vec2');
+    strictEqual(vec1.x, 5, 'can get x');
+    strictEqual(vec1.y, 6, 'can get y');
+    vec1.x = -1;
+    vec1.y = -2;
+    strictEqual(vec1.x, -1, 'can set x');
+    strictEqual(vec1.y, -2, 'can set y');
     var vec2 = vec1.clone();
-    deepEqual(vec1, vec2, 'is the same');
-    //var ccc = vec1.toString();
-    //equal(ccc, '(5.00, 6.00)', 'can to string');
+    deepEqual(vec1, vec2, 'can clone');
 });
 
 test('scale test', function () {
