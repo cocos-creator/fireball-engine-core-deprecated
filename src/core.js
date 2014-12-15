@@ -169,7 +169,7 @@ Fire.getClassByName = function (className) {
 Fire.log = function () {
     console.log.apply(console, arguments);
 };
-Fire.hint = function () {
+Fire.info = function () {
     (console.info || console.log).apply(console, arguments);
 };
 Fire.warn = function () {
