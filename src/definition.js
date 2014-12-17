@@ -31,11 +31,12 @@ var Destroyed = 1 << 0;
 var ToDestroy = 1 << 1;
 var DontSave = 1 << 2;
 var EditorOnly  = 1 << 3; // dont save in build
-var Dirty  = 1 << 4; // used in editor
+var Dirty = 1 << 4; // used in editor
 
 var ObjectFlags = {
     DontSave: DontSave,
     EditorOnly: EditorOnly,
+    Dirty: Dirty,
 };
 
 Fire._ObjectFlags = ObjectFlags;

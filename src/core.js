@@ -130,6 +130,7 @@ Fire.registerClass = function (className, constructor) {
  (这个错误可能是单元测试未通过引起的.) \
 If you dont need serialization, you can set class name to "". You can also call \
 Fire.undefine or Fire.unregisterClass to remove the name of unused class');
+            return;
         }
         _nameToClass[className] = constructor;
     }
@@ -161,6 +162,24 @@ Fire.unregisterClass = function (constructor) {
 Fire.getClassByName = function (className) {
     return _nameToClass[className];
 };
+
+// if editor
+Object.defineProperty(Fire, '_registeredClasses', {
+    get: function () {
+        var dump = {};
+        for (var name in _nameToClass) {
+            dump[name] = _nameToClass[name];
+        }
+        return dump;
+    },
+    set: function (value) {
+        _nameToClass = {};
+        for (var name in value) {
+            _nameToClass[name] = value[name];
+        }
+    }
+});
+// end if
 
 // TODO getClassById
 

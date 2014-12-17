@@ -73,7 +73,7 @@ test('nil', function () {
         'undefined': undefined,
     };
     var expect = '{\n\
-    "null": null\n\
+  "null": null\n\
 }'
     equal(Fire.serialize(obj), expect);
 });

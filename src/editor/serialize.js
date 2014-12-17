@@ -317,15 +317,21 @@ var _Serializer = (function () {
  * Serialize Fire.Asset to a json string
  * @param {Fire.Asset} obj - The object to serialize
  * @param {boolean} [exporting=false] - if true, property with Fire.EditorOnly will be discarded
- * @param {boolean} [canBindProp=true] - if false, temporarily binded property will be deleted, 
+ * @param {boolean} [canBindProp=true] - if false, temporarily binded property will be deleted,
  *                                       may leading to performance degradations
- * @returns {string} The json string to represent the object
+ * @param {boolean} [stringify=true] - indicates whether needs to convert the result by JSON.stringify, default is true
+ * @returns {string|object} The json string to represent the object or json object if dontStringify is true
  */
-Fire.serialize = function (obj, exporting, canBindProp) {
+Fire.serialize = function (obj, exporting, canBindProp, stringify) {
     var serializer = new _Serializer(obj, exporting, canBindProp);
     var serializedList = serializer.serializedList;
     var serializedData = serializedList.length === 1 ? serializedList[0] : serializedList;
-    return JSON.stringify(serializedData, null, 4);
+    if (stringify === false) {
+        return serializedData;
+    }
+    else {
+        return JSON.stringify(serializedData, null, 2);
+    }
 };
 
 /**
