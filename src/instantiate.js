@@ -2,7 +2,7 @@
  * Instantiate 时，对于不可序列化的字段(包含function和dom)，直接设为 null。
  * 对可以被序列化的字段则统一进行拷贝，不考虑引用是否该和现有场景共享，但能保证实例化后的对象间能共享一份引用。
  * 对于 Asset 永远只拷贝引用。对于 Entity / Component 等 Scene Object，如果对方也会被一起 Instantiate，则重定向到新的引用，否则设置为原来的引用。
- * 
+ *
  * 另规定：B和C均由A实例化而来，则BC相等。A实例化出B，B再实例化出C的话，则BC相等。
  */
 
@@ -35,7 +35,7 @@ Fire.instantiate = function (original) {
         Fire.error('The instantiate method for given asset do not implemented');
         return null;
     }
-    // 
+    //
     Fire._isCloning = true;
     clone = Fire._doInstantiate(original);
     Fire._isCloning = false;
@@ -51,7 +51,7 @@ Fire._doInstantiate = (function () {
      * 这是一个实例化的通用方法，可能效率比较低。
      * 之后可以给各种类型重载快速实例化的特殊实现，但应该在单元测试中将结果和这个方法的结果进行对比。
      * 值得注意的是，这个方法不可重入。
-     * 
+     *
      * @param {object} obj - 该方法仅供内部使用，用户需负责保证参数合法。什么参数是合法的请参考 Fire.instantiate().
      * @returns {object}
      * @private
@@ -75,7 +75,7 @@ Fire._doInstantiate = (function () {
 
         return clone;
     }
-    
+
     /**
      * @param {object} obj - The object to instantiate, typeof mustbe 'object' and should not be an array.
      * @returns {object} - the instantiated instance
@@ -99,7 +99,7 @@ Fire._doInstantiate = (function () {
                         value = obj[propName];
                         // instantiate field
                         type = typeof value;
-                        clone[propName] = (type === 'object') ? 
+                        clone[propName] = (type === 'object') ?
                                             (value ? instantiateObj(value) : value) :
                                             ((type !== 'function') ? value : null);
                     }
@@ -119,7 +119,7 @@ Fire._doInstantiate = (function () {
                 }
                 // instantiate field
                 type = typeof value;
-                clone[key] = (type === 'object') ? 
+                clone[key] = (type === 'object') ?
                                 (value ? instantiateObj(value) : value) :
                                 ((type !== 'function') ? value : null);
             }
@@ -151,7 +151,7 @@ Fire._doInstantiate = (function () {
                 var value = obj[i];
                 // instantiate field
                 var type = typeof value;
-                clone[i] = (type === 'object') ? 
+                clone[i] = (type === 'object') ?
                                 (value ? instantiateObj(value) : value) :
                                 ((type !== 'function') ? value : null);
             }

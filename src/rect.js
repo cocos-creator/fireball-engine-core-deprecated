@@ -21,7 +21,7 @@ var Rect = (function () {
      *
      * @param a {Fire.Rect} Rect a
      * @param b {Fire.Rect} Rect b
-     * @return {Number} The contains result, 1 is a contains b, -1 is b contains a, 0 is no contains 
+     * @return {Number} The contains result, 1 is a contains b, -1 is b contains a, 0 is no contains
      */
     Rect.contain = function _Contain ( a, b ) {
         if ( a.x <= b.x &&
@@ -48,7 +48,7 @@ var Rect = (function () {
     };
 
     Rect.prototype.equals = function (other) {
-        return this.x === other.x && 
+        return this.x === other.x &&
                this.y === other.y &&
                this.width === other.width &&
                this.height === other.height;
@@ -68,9 +68,9 @@ var Rect = (function () {
     });
 
     Object.defineProperty(Rect.prototype, 'center', {
-        get: function () { 
+        get: function () {
             return new Fire.Vec2( this.x + this.width * 0.5,
-                                  this.y + this.height * 0.5 ); 
+                                  this.y + this.height * 0.5 );
         }
     });
 

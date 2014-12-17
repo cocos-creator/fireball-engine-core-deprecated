@@ -28,7 +28,7 @@ test('misc', function(){
     strictEqual(vec1.dot(vector), -385, 'vec1 test');
     strictEqual(vec1.cross(vector), -415, 'corss test');
     strictEqual(vec1.magSqr(vector), 1885, 'magSqr test');
-    
+
     var normalizeSelf = vec1.normalizeSelf();
     var mag = Math.sqrt(vec1.x * vec1.x + vec1.y * vec1.y);
     var expect = v2(vec1.x / mag, vec1.y / mag);

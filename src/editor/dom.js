@@ -11,7 +11,7 @@ Fire.getTrimRect = function (img, trimThreshold) {
         canvas.width = img.width;
         canvas.height = img.height;
         ctx = canvas.getContext('2d');
-        ctx.drawImage( img, 0, 0, img.width, img.height );  
+        ctx.drawImage( img, 0, 0, img.width, img.height );
     }
     else {
         canvas = img;
@@ -33,15 +33,15 @@ var _readDir = function (dirReader, callback) {
             _readEntries(entries, callback);
 
             // Keep calling readEntries() until no more results are returned.
-            // This is needed to get all directory entries as one 
-            // call of readEntries may not return all items. Works a 
+            // This is needed to get all directory entries as one
+            // call of readEntries may not return all items. Works a
             // bit like stream reader.
             _readDir(dirReader, callback);
         }
     };
     dirReader.readEntries(onReadDir);
 };
-// Recursive directory read 
+// Recursive directory read
 var _readEntries = function (entries, callback) {
     var files = [];
     var processingFile = 0;

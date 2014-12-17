@@ -3,7 +3,7 @@ var _Deserializer = (function () {
 
     function _Deserializer(data, result, editor) {
         this._editor = (typeof editor !== 'undefined') ? editor : true;
-        
+
         this._idList = [];
         this._idObjList = [];
         this._idPropList = [];
@@ -16,7 +16,7 @@ var _Deserializer = (function () {
         else {
             jsonObj = data;
         }
-        
+
         if (Array.isArray(jsonObj)) {
             var jsonList = jsonObj;
             var refCount = jsonList.length;

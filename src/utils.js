@@ -22,7 +22,7 @@ Fire.getEnumList = function (enumDef) {
 //
 Fire.getVarFrom = function ( obj, text ) {
     var res = text.split('.');
-    var curObj = obj; 
+    var curObj = obj;
     for ( var i = 0; i < res.length; ++i ) {
         var name = res[i];
         curObj = curObj[name];
@@ -116,7 +116,7 @@ Fire.hsv2rgb = function ( h, s, v ) {
 
 function _isDomNode(obj) {
     return (
-        typeof Node === "object" ? obj instanceof Node : 
+        typeof Node === "object" ? obj instanceof Node :
         obj && typeof obj === "object" && typeof obj.nodeType === "number" && typeof obj.nodeName === "string"
     );
 }

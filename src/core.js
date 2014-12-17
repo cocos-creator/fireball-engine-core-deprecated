@@ -13,15 +13,15 @@ function _copyprop(name, source, target) {
 /**
  * @method Fire.addon
  * copy all properties not defined in obj from arguments[1...n]
- * 
+ *
  * @param {object} obj
  * @param {...object} source
  * @returns {object} the result obj
- * 
+ *
  */
 Fire.addon = function (obj) {
     'use strict';
-    obj = obj || {}; 
+    obj = obj || {};
     for (var i = 1, length = arguments.length; i < length; i++) {
         var source = arguments[i];
         for ( var name in source) {
@@ -35,16 +35,16 @@ Fire.addon = function (obj) {
 
 /**
  * @method Fire.mixin
- * copy all properties from arguments[1...n] to obj 
- * 
+ * copy all properties from arguments[1...n] to obj
+ *
  * @param {object} obj
  * @param {...object} source
  * @returns {object} the result obj
- * 
+ *
  */
 Fire.mixin = function (obj) {
     'use strict';
-    obj = obj || {}; 
+    obj = obj || {};
     for (var i = 1, length = arguments.length; i < length; i++) {
         var source = arguments[i];
         for ( var name in source) {
@@ -58,12 +58,12 @@ Fire.mixin = function (obj) {
  * Derive the class from the supplied base class.
  * Both classes are just native javascript constructors, not created by Fire.define, so
  * usually you will want to inherit using Fire.define instead.
- * 
+ *
  * @method Fire.extend
  * @param {function} cls
  * @param {function} base - the baseclass to inherit
  * @returns {function} the result class
- * 
+ *
  * @see Fire.define
  */
 Fire.extend = function (cls, base) {
@@ -89,7 +89,7 @@ Fire.getClassName = function (obj) {
             return obj.__classname__;
         }
         var retval;
-        //  for browsers which have name property in the constructor of the object, such as chrome 
+        //  for browsers which have name property in the constructor of the object, such as chrome
         if (obj.constructor.name) {
             retval = obj.constructor.name;
         }
@@ -136,7 +136,7 @@ Fire.undefine or Fire.unregisterClass to remove the name of unused class');
 };
 
 /**
- * Unregister the classes extended by Fire.extend. If you dont need it anymore, 
+ * Unregister the classes extended by Fire.extend. If you dont need it anymore,
  * you'd better unregister it to reduce memory usage.
  * Please note that its still your responsibility to free other references to the class.
  *

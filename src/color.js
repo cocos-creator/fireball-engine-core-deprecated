@@ -19,27 +19,27 @@ var Color = (function () {
     };
 
     Color.prototype.toString = function () {
-        return "rgba(" + 
-            this.r.toFixed(2) + ", " + 
-            this.g.toFixed(2) + ", " + 
-            this.b.toFixed(2) + ", " + 
+        return "rgba(" +
+            this.r.toFixed(2) + ", " +
+            this.g.toFixed(2) + ", " +
+            this.b.toFixed(2) + ", " +
             this.a.toFixed(2) + ")"
         ;
     };
 
     Color.prototype.toCSS = function ( opt ) {
         if ( opt === 'rgba' ) {
-            return "rgba(" + 
-                (this.r * 255 | 0 ) + "," + 
-                (this.g * 255 | 0 ) + "," + 
-                (this.b * 255 | 0 ) + "," + 
+            return "rgba(" +
+                (this.r * 255 | 0 ) + "," +
+                (this.g * 255 | 0 ) + "," +
+                (this.b * 255 | 0 ) + "," +
                 this.a.toFixed(2) + ")"
             ;
         }
         else if ( opt === 'rgb' ) {
-            return "rgb(" + 
-                (this.r * 255 | 0 ) + "," + 
-                (this.g * 255 | 0 ) + "," + 
+            return "rgb(" +
+                (this.r * 255 | 0 ) + "," +
+                (this.g * 255 | 0 ) + "," +
                 (this.b * 255 | 0 ) + ")"
             ;
         }
@@ -101,7 +101,7 @@ var Color = (function () {
     };
 
     Color.prototype.fromHSV = function ( h, s, v ) {
-        var rgb = Fire.hsv2rgb( h, s, v ); 
+        var rgb = Fire.hsv2rgb( h, s, v );
         this.r = rgb.r;
         this.g = rgb.g;
         this.b = rgb.b;

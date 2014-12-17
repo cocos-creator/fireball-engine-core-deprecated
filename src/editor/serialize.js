@@ -68,7 +68,7 @@ var _Serializer = (function () {
                 }
             }
             /*
-            // check whether obj has been serialized to serializedList, 
+            // check whether obj has been serialized to serializedList,
             // if so, no need to serialized to data again
             var index = self.serializedList.indexOf(data, oldSerializedCount);
             if (index !== -1) {
@@ -116,7 +116,7 @@ var _Serializer = (function () {
                 }
             }
             /*
-            // check whether obj has been serialized to serializedList, 
+            // check whether obj has been serialized to serializedList,
             // if so, no need to serialized to data again
             var refId = data.__id__;
             // notEqual(refId, obj.__id__);
@@ -182,7 +182,7 @@ var _Serializer = (function () {
         self._parsingObjs.pop();
         self._parsingData.pop();
 
-        // check whether obj has been serialized to serializedList, 
+        // check whether obj has been serialized to serializedList,
         // if it is, no need to serialized to data again
         if (self.serializedList.length > oldSerializedCount) {
             var index = self.serializedList.indexOf(data, oldSerializedCount);
@@ -204,7 +204,7 @@ var _Serializer = (function () {
         if (!obj) {
             return null;
         }
-        
+
         // has been serialized ?
         var id = obj.__id__;
         if (typeof id !== 'undefined') {
@@ -287,7 +287,7 @@ var _Serializer = (function () {
                 self.serializedList.push(null);
                 return;
             }
-            
+
             var data;
             if (Array.isArray(obj)) {
                 data = [];
@@ -299,7 +299,7 @@ var _Serializer = (function () {
                     data.__type__ = className;
                 }
             }
-            
+
             obj.__id__ = 0;
             self._objsToResetId.push(obj);
             self.serializedList.push(data);

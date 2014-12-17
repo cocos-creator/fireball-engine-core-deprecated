@@ -1,14 +1,14 @@
 ﻿/**
  * Tag the class with any meta attributes, then return all current attributes assigned to it.
  * This function holds only the attributes, not their implementations.
- * 
+ *
  * @method Fire.attr
  * @param {function} constructor - the class
  * @param {string} propertyName - the name of property or function, used to retrieve the attributes
  * @param {object} [attributes] - the attribute table to mark, new attributes will merged with existed attributes.
  *                                Attribute whose key starts with '_' will be ignored.
  * @returns {object|undefined} return all attributes associated with the property. if none undefined will be returned
- * 
+ *
  * @example
  * var klass = function () { this.value = 0.5 };
  * Fire.attr(klass, 'value');              // return undefined
@@ -56,7 +56,7 @@ Callbacks: {
  * By default, all properties declared by "Class.prop" is serializable.
  * The NonSerialized attribute marks a variable to not be serialized,
  * so you can keep a property show in the Editor and Fireball will not attempt to serialize it.
- * 
+ *
  * @property {object} Fire.NonSerialized
  * @see Fire.EditorOnly
  */
@@ -68,7 +68,7 @@ Fire.NonSerialized = {
 /**
  * The EditorOnly attribute marks a variable to be serialized in editor project, but non-serialized
  * in exported products.
- * 
+ *
  * @property {object} Fire.EditorOnly
  * @see Fire.NonSerialized
  */
@@ -86,7 +86,7 @@ Fire.Integer = { type: 'int' };
 /**
  * Makes a property only accept the supplied object type in Inspector.
  * If the type is derived from Fire.Asset, it will be serialized to uuid.
- * 
+ *
  * @method Fire.ObjectType
  * @param {function} constructor - the special type you want
  * @returns {object} the attribute
@@ -98,7 +98,7 @@ Fire.ObjectType = function (constructor) {
 /**
  * Makes a property referenced to a javascript host object which needs to load before deserialzation.
  * The property will not be serialized but will be referenced to the loaed host object while deserialzation.
- * 
+ *
  * @method Fire.HostType
  * @param {string} [typename]
  * @returns {object} the attribute
@@ -166,8 +166,8 @@ Fire.HostType = function (typename) {
 //}});
 
 /**
- * Makes a custom property 
- * 
+ * Makes a custom property
+ *
  * @method Fire.Custom
  * @param {(string)} name
  * @returns {object} the enum attribute
@@ -178,7 +178,7 @@ Fire.Custom = function (type) {
 
 /**
  * Makes a property show up as a enum in Inspector.
- * 
+ *
  * @method Fire.Enum
  * @param {(string)} enumType
  * @returns {object} the enum attribute
@@ -189,14 +189,14 @@ Fire.Enum = function (enumType) {
 
 /**
  * Makes a property not show up in the Inspector but be serialized.
- * 
+ *
  * @property {object} Fire.HideInInspector
  */
 Fire.HideInInspector = { hideInInspector: true };
 
 /**
  * Set a custom property name for display in the editor
- * 
+ *
  * @method Fire.DisplayName
  * @param {string} name
  * @returns {object} the attribute
@@ -207,7 +207,7 @@ Fire.DisplayName = function (name) {
 
 /**
  * Specify a tooltip for a property
- * 
+ *
  * @method Fire.Tooltip
  * @param {string} tooltip
  * @returns {object} the attribute

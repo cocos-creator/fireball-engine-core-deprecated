@@ -3,7 +3,7 @@ Fire.Intersection = (function () {
 
     function _lineLine ( a1, a2, b1, b2 ) {
         var result;
-        
+
         var ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
         var ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
         var u_b  = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
@@ -14,8 +14,8 @@ Fire.Intersection = (function () {
 
             if ( 0 <= ua && ua <= 1 && 0 <= ub && ub <= 1 ) {
                 return true;
-            } 
-        } 
+            }
+        }
 
         return false;
     }
@@ -69,9 +69,9 @@ Fire.Intersection = (function () {
         var b_max_x = b.x + b.width;
         var b_max_y = b.y + b.height;
 
-        return a_min_x <= b_max_x && 
-               a_max_x >= b_min_x && 
-               a_min_y <= b_max_y && 
+        return a_min_x <= b_max_x &&
+               a_max_x >= b_min_x &&
+               a_min_y <= b_max_y &&
                a_max_y >= b_min_y
                ;
     }

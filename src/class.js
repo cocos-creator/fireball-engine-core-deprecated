@@ -59,7 +59,7 @@ var _metaClass = {
      * 如果传入属性包含Fire.HideInInspector则仍会序列化但不在inspector中显示。
      * 如果传入属性包含Fire.NonSerialized则不会序列化并且不会在inspector中显示。
      * 如果传入属性包含Fire.EditorOnly则只在编辑器下序列化，打包时不序列化。
-     * 
+     *
      * @method class.prop
      * @param {string} name - the property name
      * @param {*} defaultValue - the default value
@@ -74,8 +74,8 @@ var _metaClass = {
             if (Array.isArray(defaultValue)) {
                 // check array empty
                 if (defaultValue.length > 0) {
-                    Fire.error('Default array must be empty, set default value of ' + Fire.getClassName(this) + '.prop("' + name + 
-                        '", ...) to null or [], and initialize in constructor please. (just like "this.' + 
+                    Fire.error('Default array must be empty, set default value of ' + Fire.getClassName(this) + '.prop("' + name +
+                        '", ...) to null or [], and initialize in constructor please. (just like "this.' +
                         name + ' = [...];")');
                     return this;
                 }
@@ -83,8 +83,8 @@ var _metaClass = {
             else if (!_isPlainEmptyObj(defaultValue)) {
                 // check cloneable
                 if (!_cloneable(defaultValue)) {
-                    Fire.error('Do not set default value to non-empty object, unless the object defines its own "clone" function. Set default value of ' + Fire.getClassName(this) + '.prop("' + name + 
-                        '", ...) to null or {}, and initialize in constructor please. (just like "this.' + 
+                    Fire.error('Do not set default value to non-empty object, unless the object defines its own "clone" function. Set default value of ' + Fire.getClassName(this) + '.prop("' + name +
+                        '", ...) to null or {}, and initialize in constructor please. (just like "this.' +
                         name + ' = {foo: bar};")');
                     return this;
                 }
@@ -95,10 +95,10 @@ var _metaClass = {
         for (var base = this.$super; base; base = base.$super) {
             // 这个循环只能检测到最上面的FireClass的父类，如果再上还有父类，将不做检测。（Fire.extend 将 prototype.constructor 设为子类）
             if (base.prototype.hasOwnProperty(name)) {
-                Fire.error('Can not declare ' + Fire.getClassName(this) + '.' + name + 
+                Fire.error('Can not declare ' + Fire.getClassName(this) + '.' + name +
                            ', it is already defined in the prototype of ' + Fire.getClassName(base));
                 return;
-            }        
+            }
         }
 
         // set default value
@@ -141,7 +141,7 @@ var _metaClass = {
     /**
      * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
      * 如果传入参数包含Fire.HideInInspector则不在inspector中显示。
-     * 
+     *
      * @method class.get
      * @param {string} name - the getter property
      * @param {function} getter - the getter function which returns the real property
@@ -172,7 +172,7 @@ var _metaClass = {
                     displayInInspector = false;
                 }
                 if (attr.serializable === false || attr.editorOnly === true) {
-                    Fire.warn('No need to use Fire.NonSerialized or Fire.EditorOnly for the getter of ' + 
+                    Fire.warn('No need to use Fire.NonSerialized or Fire.EditorOnly for the getter of ' +
                         Fire.getClassName(this) + '.' + name + ', every getter is actually non-serialized.');
                 }
                 if (attr.hasOwnProperty('default')) {
@@ -203,7 +203,7 @@ var _metaClass = {
 
     /**
      * 该方法定义的变量**不会**被序列化，除非有对应的getter否则不在inspector中显示。
-     * 
+     *
      * @method class.set
      * @param {string} name - the setter property
      * @param {function} setter - the setter function
@@ -237,7 +237,7 @@ var _metaClass = {
     /**
      * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
      * 如果传入参数包含Fire.HideInInspector则不在inspector中显示。
-     * 
+     *
      * @method class.get
      * @param {string} name - the getter property
      * @param {function} getter - the getter function which returns the real property
@@ -280,7 +280,7 @@ var _createInstanceProps = function (instance, itsClass) {
 
 /**
  * Checks whether the constructor is created by Fire.define
- * 
+ *
  * @method Fire._isFireClass
  * @param {function} constructor
  * @returns {boolean}
@@ -292,7 +292,7 @@ Fire._isFireClass = function (constructor) {
 
 /**
  * Checks whether subclass is child of superclass or equals to superclass
- * 
+ *
  * @method Fire.isChildClassOf
  * @param {function} subclass
  * @param {function} superclass
@@ -314,18 +314,18 @@ Fire.isChildClassOf = function (subclass, superclass) {
 /**
  * Creates a FireClass and returns its constructor function.
  * You can also creates a sub-class by supplying a baseClass parameter.
- * 
+ *
  * @method Fire.define
  * @param {string} className - the name of class that is used to deserialize this class
  * @param {function} [baseOrConstructor] - The base class to inherit from.
  *                                         如果你的父类不是由Fire.define定义的，那么必须传入第三个参数(constructor)，否则会被当成创建新类而非继承类。
  *                                         如果你不需要构造函数，可以传入null。
- * @param {function} [constructor] - a constructor function that is used to instantiate this class, 
+ * @param {function} [constructor] - a constructor function that is used to instantiate this class,
  *                                   if not supplied, the constructor of base class will be called automatically
  * @param {[object[]]} instanceMembers - NYI
  * @param {[object[]]} staticMembers - NYI
  * @returns {function} the defined class
- * 
+ *
  * @see Fire.extend
  */
 Fire.define = function (className, baseOrConstructor, constructor) {
@@ -409,10 +409,10 @@ Fire.define = function (className, baseOrConstructor, constructor) {
 };
 
 /**
- * If you dont need a class (which defined by Fire.define) anymore, 
+ * If you dont need a class (which defined by Fire.define) anymore,
  * you'd better undefine it to reduce memory usage.
  * Please note that its still your responsibility to free other references to the class.
- * 
+ *
  * @method Fire.undefine
  * @param {...function} [constructor] - the class you will want to undefine, any number of classes can be added
  *

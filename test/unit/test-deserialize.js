@@ -70,7 +70,7 @@ test('json deserialize test', function () {
 
             this.emptyArray = [];
             this.array = [1, '2', {a:3}, [4, [5]], true];
-            this.string = 'unknown'; 
+            this.string = 'unknown';
             this.number = 1;
             this.boolean = true;
             this.emptyObj = {};
@@ -105,7 +105,7 @@ test('reference to main asset', function () {
 
     var serializedAsset = Fire.serialize(asset);
     var deserializedAsset = Fire.deserialize(serializedAsset);
-    
+
     ok(deserializedAsset.refSelf === deserializedAsset, 'should ref to self');
     //deepEqual(Fire.serialize(deserializedAsset), serializedAsset, 'test deserialize');
 });
@@ -122,14 +122,14 @@ test('circular reference by object', function () {
         Fire.registerClass('MyAsset', MyAsset);
         return MyAsset;
     })();
-    
+
     var asset = new MyAsset();
     var mainAsset = { myAsset: asset };
     asset.refToMain = mainAsset;
 
     var serializedAsset = Fire.serialize(mainAsset, false, false);
     var deserializedAsset = Fire.deserialize(serializedAsset);
-    
+
     ok(deserializedAsset.myAsset.refSelf === deserializedAsset.myAsset, 'sub asset should ref to itself');
     ok(deserializedAsset.myAsset.refToMain === deserializedAsset, 'sub asset should ref to main');
 

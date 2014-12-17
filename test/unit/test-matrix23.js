@@ -68,7 +68,7 @@ test('rotate', function () {
 test('transform', function () {
     var rm = new Fire.Matrix23();
     rm.rotate(Math.PI * 0.5);
-    
+
     var sm = new Fire.Matrix23();
     sm.setScale(new Fire.Vec2(7, 2));
 
@@ -84,7 +84,7 @@ test('transform', function () {
 test('prepend', function () {
     var rm = new Fire.Matrix23();
     rm.rotate(Math.PI * 0.5);
-    
+
     var sm = new Fire.Matrix23();
     sm.setScale(new Fire.Vec2(7, 2));
 

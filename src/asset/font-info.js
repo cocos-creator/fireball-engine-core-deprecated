@@ -7,12 +7,12 @@ Fire.FontInfo = (function () {
 
         this.atlas = new Fire.Atlas();
 
-        // TODO: this.spacing = get this.atlas.customPadding 
+        // TODO: this.spacing = get this.atlas.customPadding
 
-        // this.charSetType = TODO: custom, unicode, ascii 
-        this.charSet = 
-            'abcdefghijklmnopqrstuvwxyz\n' + 
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZ\n' + 
+        // this.charSetType = TODO: custom, unicode, ascii
+        this.charSet =
+            'abcdefghijklmnopqrstuvwxyz\n' +
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZ\n' +
             '1234567890;:_,.-("*!?\')';
 
         this.fontFamily = '';
@@ -36,8 +36,8 @@ Fire.FontInfo = (function () {
         this.strokeJoin = 'round';
 
         /**
-         * When two line segments meet at a sharp angle and miter joins have been specified for item.strokeJoin, 
-         * it is possible for the miter to extend far beyond the item.strokeWidth of the path. The miterLimit 
+         * When two line segments meet at a sharp angle and miter joins have been specified for item.strokeJoin,
+         * it is possible for the miter to extend far beyond the item.strokeWidth of the path. The miterLimit
          * imposes a limit on the ratio of the miter length to the item.strokeWidth.
          */
         this.miterLimit = 10;

@@ -41,7 +41,7 @@
     /**
      * Check if the specified key has any registered callback. If a callback is also specified,
      * it will only return true if the callback is registered.
-     * 
+     *
      * @param {string} key
      * @param {function} [callback]
      * @returns {boolean}

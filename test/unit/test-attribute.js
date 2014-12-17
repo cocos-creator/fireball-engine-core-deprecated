@@ -4,13 +4,13 @@ test('Fire.attr', function () {
     var MyCompBase = function () {
         this.baseVal = [];
     };
-    
+
     Fire.attr(MyCompBase, 'baseVal', {
         data: 'waha'
     });
 
     strictEqual(Fire.attr(MyCompBase, 'baseVal').data, 'waha', 'can get attribute');
-    
+
     Fire.attr(MyCompBase, 'baseVal').foo = { bar: 524 };
     strictEqual(Fire.attr(MyCompBase, 'baseVal').foo.bar, 524, 'can assign directly');
 

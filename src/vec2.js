@@ -36,8 +36,8 @@ Vec2 = (function () {
     };
 
     Vec2.prototype.toString = function () {
-        return "(" + 
-            this.x.toFixed(2) + ", " + 
+        return "(" +
+            this.x.toFixed(2) + ", " +
             this.y.toFixed(2) + ")"
         ;
     };
@@ -145,7 +145,7 @@ Vec2 = (function () {
         out.y = this.y * vector.y;
         return out;
     };
-    
+
     /**
      * Divides two vectors. If you want to save result to another vector, use div() instead.
      * @method Fire.Vec2#divSelf
@@ -248,8 +248,8 @@ Vec2 = (function () {
             console.warn( "Can't normalize zero vector" );
             return this;
         }
-        
-        var invsqrt = 1.0 / Math.sqrt(magSqr); 
+
+        var invsqrt = 1.0 / Math.sqrt(magSqr);
         this.x *= invsqrt;
         this.y *= invsqrt;
 
@@ -257,7 +257,7 @@ Vec2 = (function () {
     };
 
     /**
-     * Get normalized vector 
+     * Get normalized vector
      * @method Fire.Vec2#normalize
      * @param {Fire.Vec2} [out] - optional, the receiving vector
      * @returns {Fire.Vec2} result
@@ -271,7 +271,7 @@ Vec2 = (function () {
     };
 
     /**
-     * Get angle between this and vector 
+     * Get angle between this and vector
      * @method Fire.Vec2#angle
      * @param {Fire.Vec2} vector
      * @returns {number} from 0 to Math.PI
@@ -292,7 +292,7 @@ Vec2 = (function () {
     };
 
     /**
-     * Get angle between this and vector with direction 
+     * Get angle between this and vector with direction
      * @method Fire.Vec2#signAngle
      * @param {Fire.Vec2} vector
      * @returns {number} from -MathPI to Math.PI
@@ -334,7 +334,7 @@ Vec2 = (function () {
         this.y = sin * x + cos * this.y;
         return this;
     };
-    
+
     return Vec2;
 })();
 

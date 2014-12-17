@@ -22,7 +22,7 @@ test('basic test', function() {
 
             this.emptyArray = [];
             this.array = [1, '2', {a:3}, [4, [5]], true];
-            this.string = 'unknown';    
+            this.string = 'unknown';
             this.number = 1;
             this.boolean = true;
             this.emptyObj = {};

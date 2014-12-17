@@ -1,6 +1,6 @@
 Fire.Atlas = (function () {
 
-    var Atlas = Fire.define("Fire.Atlas", Fire.Asset, null);  // supply a null constructor to explicitly indicates that 
+    var Atlas = Fire.define("Fire.Atlas", Fire.Asset, null);  // supply a null constructor to explicitly indicates that
                                                               // inherit from Asset, because Asset not defined by Fire.define
 
     // enum Algorithm
@@ -41,18 +41,18 @@ Fire.Atlas = (function () {
     Atlas.prop('sortBy', Atlas.SortBy.UseBest, Fire.Enum(Atlas.SortBy), Fire.EditorOnly);
     Atlas.prop('sortOrder', Atlas.SortOrder.UseBest, Fire.Enum(Atlas.SortOrder), Fire.EditorOnly);
     Atlas.prop('allowRotate', true, Fire.EditorOnly);
-    
+
     // build settings
     Atlas.prop('useContourBleed', true, Fire.DisplayName('Contour Bleed'),  // 应用于sprite内部，只改变全透明像素的颜色
                                         Fire.EditorOnly,
                                         Fire.Tooltip('reduce border artifacts'));
-    
+
     Atlas.prop('usePaddingBleed', true, Fire.DisplayName('Padding Bleed'),  // 应用于sprite外部，同时复制颜色和透明度
                                         Fire.EditorOnly,
                                         Fire.Tooltip('extrude'));
     Atlas.prop('customPadding', 2, Fire.Integer, Fire.EditorOnly);
     Atlas.prop('buildColor', new Fire.Color(1, 1, 1, 1), Fire.Nullable('customBuildColor', false), Fire.EditorOnly);
-    
+
     Atlas.prop('sprites', [], Fire.HideInInspector);
 
     //
@@ -68,7 +68,7 @@ Fire.Atlas = (function () {
         this.sprites.push(sprite);
     };
 
-    // remove sprite 
+    // remove sprite
     Atlas.prototype.remove = function ( sprite ) {
         var idx = this.sprites.indexOf(sprite);
         if ( idx !== -1 ) {
@@ -83,9 +83,9 @@ Fire.Atlas = (function () {
 
     //
     var _basicLayout = function (atlas) {
-        var curX = 0; 
-        var curY = 0; 
-        var maxY = 0; 
+        var curX = 0;
+        var curY = 0;
+        var maxY = 0;
 
         for (var i = 0; i < atlas.sprites.length; ++i) {
             var sprite = atlas.sprites[i];
@@ -147,39 +147,39 @@ Fire.Atlas = (function () {
         // so that only other elements with the same height or less can be added there
         // (we do not use paddedHeight, because the padding area is reserved and should
         // never be occupied)
-        node.right = { 
+        node.right = {
             rect: new Fire.Rect (
-                rect.x + paddedWidth, 
+                rect.x + paddedWidth,
                 rect.y,
-                rect.width - paddedWidth, 
-                elHeight 
+                rect.width - paddedWidth,
+                elHeight
             ),
             right: null,
             bottom: null,
         };
-        
+
         // create second child node in remaining space at the bottom, occupying the entire width
         node.bottom = {
-            rect: new Fire.Rect ( 
+            rect: new Fire.Rect (
                 rect.x,
                 rect.y + paddedHeight,
-                rect.width, 
-                rect.height - paddedHeight 
+                rect.width,
+                rect.height - paddedHeight
             ),
             right: null,
             bottom: null,
-        }; 
+        };
 
         // return position where to put element
         return [ rect.x, rect.y ];
     };
     var _treeLayout = function (atlas) {
         var root = {
-            rect: new Fire.Rect( 
+            rect: new Fire.Rect(
                 0,
                 0,
                 atlas.width,
-                atlas.height ), 
+                atlas.height ),
             right: null,
             bottom: null,
         };
@@ -334,9 +334,9 @@ Fire.Atlas = (function () {
             var bestRect = new Fire.Rect( 0, 0, 1, 1 );
 
             for ( var i = 0; i < processElements.length; ++i ) {
-                var newRect = scoreRect ( freeRects, 
-                                          processElements[i].width + atlas.customPadding, 
-                                          processElements[i].height + atlas.customPadding, 
+                var newRect = scoreRect ( freeRects,
+                                          processElements[i].width + atlas.customPadding,
+                                          processElements[i].height + atlas.customPadding,
                                           atlas.allowRotate );
 
                 if ( score1 < bestScore1 || (score1 === bestScore1 && score2 < bestScore2) ) {

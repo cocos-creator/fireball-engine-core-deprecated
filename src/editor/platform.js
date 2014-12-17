@@ -76,7 +76,7 @@ if (Fire.isNodeWebkit && Fire.isWeb) {
         chooser.nwsaveas = defaultFilename;
         var defaultDir = localStorage[persistDirKey];
         chooser.nwworkingdir = defaultDir || '';
-        
+
         chooser.onchange = function (evt) {
             document.body.removeChild(chooser);
             //chooser.removeEventListener("change", arguments.callee);

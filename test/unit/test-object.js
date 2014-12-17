@@ -170,7 +170,7 @@ module('HashObject');
 test('test', function () {
     var obj1 = new Fire.HashObject();
     var obj2 = new Fire.HashObject();
-    
+
     ok(obj1.hashCode, 'id is always true')
     strictEqual(typeof obj1.hashCode, 'number', 'hashCode is number');
     strictEqual(typeof obj2.id, 'string', 'id is string');

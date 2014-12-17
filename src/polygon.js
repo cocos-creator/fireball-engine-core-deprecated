@@ -33,14 +33,14 @@ Fire.Polygon = (function () {
     };
 
     Object.defineProperty(Polygon.prototype, 'center', {
-        get: function () { 
+        get: function () {
             if ( this.points.length < 3 )
                 return null;
 
-            var min_x = this.points[0].x; 
-            var min_y = this.points[0].y; 
-            var max_x = this.points[0].x; 
-            var max_y = this.points[0].y; 
+            var min_x = this.points[0].x;
+            var min_y = this.points[0].y;
+            var max_x = this.points[0].x;
+            var max_y = this.points[0].y;
 
             for ( var i = 1; i < this.points.length; ++i ) {
                 var x = this.points[i].x;
@@ -57,7 +57,7 @@ Fire.Polygon = (function () {
                     max_y = y;
             }
 
-            return new Fire.Vec2( (max_x + min_x) * 0.5, 
+            return new Fire.Vec2( (max_x + min_x) * 0.5,
                                   (max_y + min_y) * 0.5 );
         }
     });

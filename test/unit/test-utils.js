@@ -24,7 +24,7 @@ test('enum', function () {
         return t;
     })({});
 
-    deepEqual ( Fire.getEnumList(TestEnum), 
+    deepEqual ( Fire.getEnumList(TestEnum),
                [
                    { name: "UseBest", value: 0 },
                    { name: "Width", value: 1 },
@@ -32,12 +32,12 @@ test('enum', function () {
                    { name: "Area", value: 15 },
                    { name: "Name", value: 20 },
                ],
-               "The value must be same" ); 
+               "The value must be same" );
 });
 
 test('CallbacksInvoker', function () {
     var ci = new Fire.CallbacksInvoker();
-    
+
     var cb1 = new Callback();
     var cb2 = new Callback();
     var cb3 = new Callback();

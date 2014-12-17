@@ -79,10 +79,10 @@ test('Inherit', function () {
     strictEqual(Fire.getClassName(Animal), 'Fire.Animal', 'can get class name 1');
     strictEqual(Fire.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
     strictEqual(Fire.getClassName(Husky), 'Fire.Husky', 'can get class name 3');
-    
+
     strictEqual(Dog.$super, Animal, 'can get super');
 
-    strictEqual(Fire.attr(Animal, 'name'), Fire.attr(Dog, 'name'), 
+    strictEqual(Fire.attr(Animal, 'name'), Fire.attr(Dog, 'name'),
                 "inheritance chain shares the same property's attribute");
     strictEqual(Fire.attr(Dog, 'name').type, 'str', 'can modify attribute');
     strictEqual(Fire.attr(Dog, 'weight'), undefined, 'base property not added');
@@ -94,7 +94,7 @@ test('Inherit', function () {
 
     var husky = new Husky();
     var dog = new Dog();
-    
+
     strictEqual(dog.name, 'doge', 'can override property');
     strictEqual(husky.name, 'doge', 'can inherit property');
 
@@ -152,7 +152,7 @@ test('prop reference', function () {
 test('serialization if inherited from FObject', function () {
     var type = Fire.define('Fire.MyType', FObject, null);
     type.__props__.push('_name');
-    
+
     var obj = new type();
     obj.name = '阿加西';
 
