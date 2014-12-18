@@ -87,11 +87,6 @@ test('Inherit', function () {
     strictEqual(Fire.attr(Dog, 'name').type, 'str', 'can modify attribute');
     strictEqual(Fire.attr(Dog, 'weight'), undefined, 'base property not added');
 
-    strictEqual(Fire.isChildClassOf( Dog, Animal),  true, 'Animal is child of Dog');
-    strictEqual(Fire.isChildClassOf( Husky, Animal),  true, 'Animal is child of Husky');
-    strictEqual(Fire.isChildClassOf( Husky, Husky),  true, 'Husky is child of Husky');
-    strictEqual(Fire.isChildClassOf( Dog, Husky),  false, 'Dog is not child of Husky');
-
     var husky = new Husky();
     var dog = new Dog();
 
@@ -162,4 +157,45 @@ test('serialization if inherited from FObject', function () {
     deepEqual(json, expected, 'can serialize FObject.name');
 
     Fire.undefine(type);
+});
+
+test('isChildClassOf', function () {
+    strictEqual(Fire.isChildClassOf(null, null) ||
+                Fire.isChildClassOf(Object, null) ||
+                Fire.isChildClassOf(null, Object),  false, 'nil');
+    strictEqual(Fire.isChildClassOf(Object, Object), true, 'any obj is child of itself');
+
+    var Base = function () {};
+
+    strictEqual(Fire.isChildClassOf(Base, Object) &&
+                ! Fire.isChildClassOf(Object, Base), true, 'any type is child of Object');
+
+    var Base = function () {};
+    var Sub = function () {};
+    Fire.extend(Sub, Base);
+    strictEqual(Fire.isChildClassOf(Sub, Base) &&
+                !Fire.isChildClassOf(Base, Sub), true, 'Sub is child of Base');
+
+    // fire class
+
+    var Animal = Fire.define('Fire.Animal', Sub, null)
+                .prop('name', 'ann');
+
+    var Dog = Fire.define('Fire.Dog', Animal)
+             .prop('name', 'doge', { type: 'str' });
+
+    var Husky = Fire.define('Fire.Husky', Dog)
+               .prop('weight', 100);
+
+    strictEqual(Fire.isChildClassOf( Husky, Husky), true, 'Husky is child of itself');
+    strictEqual(Fire.isChildClassOf( Dog, Animal), true, 'Animal is parent of Dog');
+    strictEqual(Fire.isChildClassOf( Husky, Animal) &&
+                ! Fire.isChildClassOf( Animal, Husky), true, 'Animal is parent of Husky');
+    strictEqual(Fire.isChildClassOf( Dog, Husky), false, 'Dog is not child of Husky');
+
+    strictEqual(Fire.isChildClassOf( Animal, Sub), true, 'Animal is child of Sub');
+    strictEqual(Fire.isChildClassOf( Animal, Base), true, 'Animal is child of Base');
+    strictEqual(Fire.isChildClassOf( Dog, Base),  true, 'Dog is child of Base');
+
+    Fire.undefine(Animal, Dog, Husky);
 });

@@ -299,13 +299,24 @@ Fire._isFireClass = function (constructor) {
  * @returns {boolean}
  */
 Fire.isChildClassOf = function (subclass, superclass) {
-    if ( !Fire._isFireClass(subclass) ) {
-        // Fire.error('classes must be FireClass');
-        return false;
-    }
-    for (; subclass; subclass = subclass.$super) {
+    if (subclass && superclass) {
+        // fireclass
+        for (; subclass && subclass.$super; subclass = subclass.$super) {
+            if (subclass === superclass) {
+                return true;
+            }
+        }
         if (subclass === superclass) {
             return true;
+        }
+        // js class
+        var dunderProto = Object.getPrototypeOf(subclass.prototype);
+        while (dunderProto) {
+            subclass = dunderProto.constructor;
+            if (subclass === superclass) {
+                return true;
+            }
+            dunderProto = Object.getPrototypeOf(subclass.prototype);
         }
     }
     return false;
