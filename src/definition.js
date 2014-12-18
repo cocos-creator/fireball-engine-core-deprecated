@@ -34,35 +34,40 @@ var EditorOnly  = 1 << 3; // dont save in build
 var Dirty = 1 << 4; // used in editor
 
 var ObjectFlags = {
+    // public flags
+
     DontSave: DontSave,
     EditorOnly: EditorOnly,
     Dirty: Dirty,
+
+    // public flags for engine
+
+    Destroying: 1 << 9,
+    /**
+     * Hide in game and hierarchy.
+     * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
+     * @property {number} ObjectFlags.HideInGame
+     */
+    HideInGame: 1 << 10,
+
+    // public flags for editor
+
+    /**
+     * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
+     * @property {number} ObjectFlags.HideInEditor
+     */
+    HideInEditor: 1 << 11,
+
+    /**
+     * Hide in game view, hierarchy, and scene view... etc.
+     * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
+     * @property {number} ObjectFlags.Hide
+     */
+    Hide: -1,
 };
+
+ObjectFlags.Hide = ObjectFlags.HideInGame | ObjectFlags.HideInEditor;
 
 Fire._ObjectFlags = ObjectFlags;
 
-// for engine
-
-ObjectFlags.Destroying = 1 << 9;
-
-/**
- * Hide in game and hierarchy.
- * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
- * @property {number} ObjectFlags.HideInGame
- */
-ObjectFlags.HideInGame = 1 << 10;
-
-// for editor
-
-/**
- * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
- * @property {number} ObjectFlags.HideInEditor
- */
-ObjectFlags.HideInEditor = 1 << 11;
-
-/**
- * Hide in game view, hierarchy, and scene view... etc.
- * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
- * @property {number} ObjectFlags.Hide
- */
-ObjectFlags.Hide = ObjectFlags.HideInGame | ObjectFlags.HideInEditor;
+var PersistentMask = ~(ToDestroy | Dirty | ObjectFlags.Destroying); // can not clone these flags

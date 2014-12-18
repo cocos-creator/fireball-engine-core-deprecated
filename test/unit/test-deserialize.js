@@ -28,7 +28,8 @@ test('basic deserialize test', function () {
     })();
 
     var asset = new MyAsset();
-    var serializedAsset = Fire.serialize(asset, false, false);
+    var serializedAsset = Fire.serialize(asset, false);
+    delete asset.__id__;
     var deserializedAsset = Fire.deserialize(serializedAsset);
 
     deepEqual(deserializedAsset, asset, 'test deserialize');
@@ -127,7 +128,9 @@ test('circular reference by object', function () {
     var mainAsset = { myAsset: asset };
     asset.refToMain = mainAsset;
 
-    var serializedAsset = Fire.serialize(mainAsset, false, false);
+    var serializedAsset = Fire.serialize(mainAsset, false);
+    delete mainAsset.__id__;
+    delete asset.__id__;
     var deserializedAsset = Fire.deserialize(serializedAsset);
 
     ok(deserializedAsset.myAsset.refSelf === deserializedAsset.myAsset, 'sub asset should ref to itself');

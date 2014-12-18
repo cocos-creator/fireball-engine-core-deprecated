@@ -80,15 +80,16 @@ test('nil', function () {
 
 test('test inherited FireClass', function() {
     var MyAsset = Fire.define('MyAsset', Fire.Asset, function () {
-                  this.array = [1, '2', {a:3}, [4, [5]], true];
-                  })
-                      .prop('emptyArray', [])
-                      .prop('array', null)
-                      .prop('string', 'unknown')
-                      .prop('number', 1)
-                      .prop('boolean', true)
-                      .prop('emptyObj', {})
-                      .prop('obj', {});
+        Fire.Asset.call(this);
+        this.array = [1, '2', {a:3}, [4, [5]], true];
+    });
+    MyAsset.prop('emptyArray', [])
+           .prop('array', null)
+           .prop('string', 'unknown')
+           .prop('number', 1)
+           .prop('boolean', true)
+           .prop('emptyObj', {})
+           .prop('obj', {});
 
     // should not serialize ----------------------------
     MyAsset.staticFunc = function () { };
@@ -104,9 +105,12 @@ test('test inherited FireClass', function() {
 
     var asset = new MyAsset();
     asset.dynamicProp = false;  // should not serialize
+    asset._objFlags |= Fire._ObjectFlags.Destroying;   // should not serialize
 
     var expect = {
         __type__: 'MyAsset',
+        _objFlags: 0,
+        _name: '',
         emptyArray: [],
         array: [1, '2',  {a:3}, [4, [5]], true],
         string: 'unknown',

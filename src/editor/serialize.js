@@ -1,9 +1,7 @@
 
 var _Serializer = (function () {
 
-    function _Serializer(obj, exporting, canBindProp) {
-        canBindProp = (typeof canBindProp !== 'undefined') ? canBindProp : true;
-
+    function _Serializer(obj, exporting) {
         this._exporting = exporting;
 
         this.serializedList = [];  // list of serialized data for all Fire.FObject objs
@@ -13,15 +11,8 @@ var _Serializer = (function () {
 
         _serializeMainObj(this, obj);
 
-        if (canBindProp) {
-            for (var i = 0; i < this._objsToResetId.length; ++i) {
-                this._objsToResetId[i].__id__ = undefined;
-            }
-        }
-        else {
-            for (var j = 0; j < this._objsToResetId.length; ++j) {
-                delete this._objsToResetId[j].__id__;
-            }
+        for (var i = 0; i < this._objsToResetId.length; ++i) {
+            this._objsToResetId[i].__id__ = undefined;
         }
 
         this._parsingObjs = null;
@@ -82,7 +73,7 @@ var _Serializer = (function () {
                 // primitive javascript object
                 for (var key in obj) {
                     //Fire.log(key);
-                    if (obj.hasOwnProperty(key) === false || (key.charCodeAt(0) === 95 && key.charCodeAt(1) === 95))    // starts with __
+                    if ( !obj.hasOwnProperty(key) || (key.charCodeAt(0) === 95 && key.charCodeAt(1) === 95))    // starts with __
                         continue;
                     // undefined value (if dont save) will be stripped from JSON
                     data[key] = _serializeField(self, obj[key]);
@@ -234,7 +225,7 @@ var _Serializer = (function () {
                 data.__type__ = className;
             }
             _enumerateObject(self, obj, data);
-            //
+            data._objFlags &= PersistentMask;
 
             return { __id__: id };
         }
@@ -317,13 +308,11 @@ var _Serializer = (function () {
  * Serialize Fire.Asset to a json string
  * @param {Fire.Asset} obj - The object to serialize
  * @param {boolean} [exporting=false] - if true, property with Fire.EditorOnly will be discarded
- * @param {boolean} [canBindProp=true] - if false, temporarily binded property will be deleted,
- *                                       may leading to performance degradations
  * @param {boolean} [stringify=true] - indicates whether needs to convert the result by JSON.stringify, default is true
  * @returns {string|object} The json string to represent the object or json object if dontStringify is true
  */
-Fire.serialize = function (obj, exporting, canBindProp, stringify) {
-    var serializer = new _Serializer(obj, exporting, canBindProp);
+Fire.serialize = function (obj, exporting, stringify) {
+    var serializer = new _Serializer(obj, exporting);
     var serializedList = serializer.serializedList;
     var serializedData = serializedList.length === 1 ? serializedList[0] : serializedList;
     if (stringify === false) {

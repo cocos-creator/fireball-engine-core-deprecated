@@ -445,10 +445,10 @@ Fire.undefine = function (constructor) {
  * Specially optimized define function only for internal base classes
  * @private
  */
-Fire._fastDefine = function (className, constructor, attributes) {
+Fire._fastDefine = function (className, constructor, serializableFields) {
     Fire.registerClass(className, constructor);
-    constructor.__props__ = attributes;
-    for (var i = 0; i < attributes.length; i++) {
-        Fire.attr(constructor, attributes[i], Fire.HideInInspector);
+    constructor.__props__ = serializableFields;
+    for (var i = 0; i < serializableFields.length; i++) {
+        Fire.attr(constructor, serializableFields[i], Fire.HideInInspector);
     }
 };

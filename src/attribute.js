@@ -104,6 +104,7 @@ Fire.ObjectType = function (constructor) {
  * @returns {object} the attribute
  */
 Fire.HostType = function (typename) {
+    var NEED_EXT_TYPES = ['image'];  // the types need to specify exact extname
     return {
         type: 'host',
         hostType: typename,
@@ -114,6 +115,10 @@ Fire.HostType = function (typename) {
         _onAfterProp: function (constructor, mainPropName) {
             // check host object
             var checked = (function checkHostType(constructor) {
+                if (! Fire.isChildClassOf(constructor, Asset)) {
+                    Fire.error('HostType can only be used in types of Asset');
+                    return false;
+                }
                 var found = false;
                 for (var p = 0; p < constructor.__props__.length; p++) {
                     var propName = constructor.__props__[p];
@@ -137,8 +142,7 @@ Fire.HostType = function (typename) {
 
             if (checked) {
                 var mainPropAttr = Fire.attr(constructor, mainPropName) || {};
-                var TYPES = ['image'];  // the types need to specify exact extname
-                var needExtname = (TYPES.indexOf(mainPropAttr.hostType) !== -1);
+                var needExtname = (NEED_EXT_TYPES.indexOf(mainPropAttr.hostType) !== -1);
                 if (needExtname) {
                     // declare extname field
                     constructor.prop('_hostext', '', Fire.HideInInspector);
