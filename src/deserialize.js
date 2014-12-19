@@ -1,8 +1,9 @@
 
 var _Deserializer = (function () {
 
-    function _Deserializer(data, result, editor) {
-        this._editor = (typeof editor !== 'undefined') ? editor : true;
+    function _Deserializer(data, result, isEditor, classFinder) {
+        this._editor = isEditor;
+        this._classFinder = classFinder;
 
         this._idList = [];
         this._idObjList = [];
@@ -87,6 +88,30 @@ var _Deserializer = (function () {
         }
     }
 
+    function _deserializePrimitiveObject (self, instance, serialized) {
+        for (var propName in instance) {    // 遍历 instance，如果具有类型，才不会把 __type__ 也读进来
+            var prop = serialized[propName];
+            if (typeof prop !== 'undefined' && serialized.hasOwnProperty(propName)) {
+                if (typeof prop !== 'object') {
+                    instance[propName] = prop;
+                }
+                else {
+                    if (prop) {
+                        if ( !prop.__uuid__ && typeof prop.__id__ === 'undefined' ) {
+                            instance[propName] = _deserializeObject(self, prop);
+                        }
+                        else {
+                            _deserializeObjField(self, instance, prop, propName);
+                        }
+                    }
+                    else {
+                        instance[propName] = null;
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * @param {Object} serialized - The obj to deserialize, must be non-nil
      */
@@ -95,7 +120,7 @@ var _Deserializer = (function () {
         var obj = null;
         var klass = null;
         if (serialized.__type__) {
-            klass = Fire.getClassByName(serialized.__type__);
+            klass = self._classFinder(serialized.__type__);
             if (!klass) {
                 Fire.error('[Fire.deserialize] unknown type: ' + serialized.__type__);
                 return null;
@@ -129,25 +154,22 @@ var _Deserializer = (function () {
 
         // parse property
         if (klass && Fire._isFireClass(klass)) {
-            if (!klass.__props__) {
+            var props = klass.__props__;
+            if (!props) {
                 return obj;
             }
-            for (var p = 0; p < klass.__props__.length; p++) {
-                propName = klass.__props__[p];
+            for (var p = 0; p < props.length; p++) {
+                propName = props[p];
                 var attrs = Fire.attr(klass, propName);
                 // assume all prop in __props__ must have attr
                 var hostType = attrs.hostType;
                 if (!hostType) {
-                    // skip nonSerialized
                     if (attrs.serializable === false) {
-                        continue;
+                        continue;   // skip nonSerialized
                     }
-
-                    // skip editor only if not editor
                     if (!self._editor && attrs.editorOnly) {
-                        continue;
+                        continue;   // skip editor only if not editor
                     }
-
                     prop = serialized[propName];
                     if (typeof prop !== 'undefined') {
                         if (typeof prop !== 'object') {
@@ -155,7 +177,7 @@ var _Deserializer = (function () {
                         }
                         else {
                             if (prop) {
-                                if (!prop.__uuid__ && typeof prop.__id__ === 'undefined') {
+                                if ( !prop.__uuid__ && typeof prop.__id__ === 'undefined' ) {
                                     obj[propName] = _deserializeObject(self, prop);
                                 }
                                 else {
@@ -177,29 +199,15 @@ var _Deserializer = (function () {
                     self.result.hostProp = propName;
                 }
             }
-        }
-        else /*javascript object instance*/ {
-            for (propName in obj) {
-                prop = serialized[propName];
-                if (typeof prop !== 'undefined' && serialized.hasOwnProperty(propName)) {
-                    if (typeof prop !== 'object') {
-                        obj[propName] = prop;
-                    }
-                    else {
-                        if (prop) {
-                            if (!prop.__uuid__ && typeof prop.__id__ === 'undefined') {
-                                obj[propName] = _deserializeObject(self, prop);
-                            }
-                            else {
-                                _deserializeObjField(self, obj, prop, propName);
-                            }
-                        }
-                        else {
-                            obj[propName] = null;
-                        }
-                    }
-                }
+            if (props[props.length - 1] === '_$erialized') {
+                // save original serialized data
+                obj._$erialized = serialized;
+                // parse the serialized data as primitive javascript object, so its __id__ will be dereferenced
+                _deserializePrimitiveObject(self, obj._$erialized, serialized);
             }
+        }
+        else {
+            _deserializePrimitiveObject(self, obj, serialized);
         }
         return obj;
     };
@@ -211,12 +219,16 @@ var _Deserializer = (function () {
  * Deserialize json to Fire.Asset
  * @param {(string|object)} data - the serialized Fire.Asset json string or json object
  * @param {Fire._DeserializeInfo} [result] - additional loading result
- * @param {boolean} [editor=true] - if false, property with Fire.EditorOnly will be discarded
+ * @param {boolean} [isEditor=true] - if false, property with Fire.EditorOnly will be discarded
+ * @param {object} [options=null]
  * @returns {object} the main data(asset)
  */
-Fire.deserialize = function (data, result, editor) {
+Fire.deserialize = function (data, result, isEditor, options) {
+    isEditor = (typeof isEditor !== 'undefined') ? isEditor : true;
+    var classFinder = (options && options.classFinder) || Fire.getClassByName;
+
     Fire._isCloning = true;
-    var deserializer = new _Deserializer(data, result, editor);
+    var deserializer = new _Deserializer(data, result, isEditor, classFinder);
     Fire._isCloning = false;
     return deserializer.deserializedData;
 };
