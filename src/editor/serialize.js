@@ -79,30 +79,39 @@ var _Serializer = (function () {
                     data[key] = _serializeField(self, obj[key]);
                 }
             }
-            else /*FireClass*/ {
+            else {
+                // FireClass
+
                 //if (obj.onBeforeSerialize) {
                 //    obj.onBeforeSerialize();
                 //}
                 // only __props__ will be serialized
                 var props = klass.__props__;
                 if (props) {
-                    for (var p = 0; p < props.length; p++) {
-                        var propName = props[p];
-                        var attrs = Fire.attr(klass, propName);
-                        // assume all prop in __props__ must have attr
+                    if (props[props.length - 1] !== '_$erialized') {
+                        for (var p = 0; p < props.length; p++) {
+                            var propName = props[p];
+                            var attrs = Fire.attr(klass, propName);
+                            // assume all prop in __props__ must have attr
 
-                        // skip nonSerialized
-                        if (attrs.serializable === false) {
-                            continue;
+                            // skip nonSerialized
+                            if (attrs.serializable === false) {
+                                continue;
+                            }
+
+                            // skip editor only when exporting
+                            if (self._exporting && attrs.editorOnly) {
+                                continue;
+                            }
+
+                            // undefined value (if dont save) will be stripped from JSON
+                            data[propName] = _serializeField(self, obj[propName]);
                         }
-
-                        // skip editor only when exporting
-                        if (self._exporting && attrs.editorOnly) {
-                            continue;
-                        }
-
-                        // undefined value (if dont save) will be stripped from JSON
-                        data[propName] = _serializeField(self, obj[propName]);
+                    }
+                    else {
+                        // If is missing script proxy, serialized as original data
+                        data.__type__ = obj._$erialized.__type__;
+                        _enumerateObject(self, obj._$erialized, data);
                     }
                 }
             }
@@ -204,6 +213,9 @@ var _Serializer = (function () {
 
         if (obj instanceof FObject) {
             // FObject
+            if ( !obj.isValid ) {
+                return null;
+            }
             var uuid = obj._uuid;
             if (uuid) {
                 // Asset

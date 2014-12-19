@@ -4,6 +4,7 @@ largeModule('Serialize');
 
 var match = function (obj, expect, info) {
     deepEqual(JSON.parse(Fire.serialize(obj)), expect, info);
+    //deepEqual(Fire.serialize(obj, false, false), expect, info);
 };
 
 test('basic test', function() {

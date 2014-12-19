@@ -217,7 +217,8 @@ var _Deserializer = (function () {
 
 /**
  * Deserialize json to Fire.Asset
- * @param {(string|object)} data - the serialized Fire.Asset json string or json object
+ * @param {(string|object)} data - the serialized Fire.Asset json string or json object.
+ *                                 Note: If data is an object, it will be modified.
  * @param {Fire._DeserializeInfo} [result] - additional loading result
  * @param {boolean} [isEditor=true] - if false, property with Fire.EditorOnly will be discarded
  * @param {object} [options=null]
