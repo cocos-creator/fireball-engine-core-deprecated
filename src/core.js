@@ -126,10 +126,13 @@ Fire.registerClass = function (className, constructor) {
     if (className) {
         var registered = _nameToClass[className];
         if (registered && registered !== constructor) {
-            console.error('A Class already exists with that name: "' + className + '".\
- (这个错误可能是单元测试未通过引起的.) \
+            var error = 'A Class already exists with the same name: "' + className + '".';
+            if ( !Fire.isEditor ) {
+                error += ' (This may be caused by error of unit test.) \
 If you dont need serialization, you can set class name to "". You can also call \
-Fire.undefine or Fire.unregisterClass to remove the name of unused class');
+Fire.undefine or Fire.unregisterClass to remove the name of unused class';
+            }
+            Fire.error(error);
             return;
         }
         _nameToClass[className] = constructor;
