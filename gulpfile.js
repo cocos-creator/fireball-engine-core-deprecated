@@ -1,5 +1,6 @@
-var gulp = require('gulp');
+var Path = require('path');
 
+var gulp = require('gulp');
 var gutil = require('gulp-util');
 var del = require('del');
 var rename = require('gulp-rename');
@@ -8,6 +9,7 @@ var stylish = require('jshint-stylish');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var qunit = require('gulp-qunit');
+var preprocess = require('gulp-preprocess');
 
 var fb = require('gulp-fb');
 
@@ -55,6 +57,8 @@ var paths = {
     ],
     dev: 'bin/core.dev.js',
     min: 'bin/core.min.js',
+    player_dev: 'bin/core.player.dev.js',
+    player: 'bin/core.player.js',
 
     test: {
         src: 'test/unit/**/*.js',
@@ -93,7 +97,7 @@ gulp.task('jshint', function() {
 });
 
 // dev
-gulp.task('dev', ['jshint'], function() {
+gulp.task('dev', ['jshint', 'player-dev'], function() {
     return gulp.src(paths.src)
     .pipe(concat('core.dev.js'))
     .pipe(gulp.dest('bin'))
@@ -102,10 +106,29 @@ gulp.task('dev', ['jshint'], function() {
 
 // min
 gulp.task('min', ['dev'], function() {
-    return gulp.src('bin/core.dev.js')
+    return gulp.src(paths.dev)
+    .pipe(preprocess({context: { EDITOR: true, DEV: true }}))
     .pipe(rename('core.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('bin'))
+    ;
+});
+
+// player dev
+gulp.task('player-dev', ['jshint'], function() {
+    return gulp.src(paths.src.concat('!**/editor/**'))
+    .pipe(preprocess({context: { PLAYER: true, DEV: true }}))
+    .pipe(concat(Path.basename(paths.player_dev)))
+    .pipe(gulp.dest(Path.dirname(paths.player_dev)))
+    ;
+});
+
+// player
+gulp.task('player', ['jshint'], function() {
+    return gulp.src(paths.src.concat('!**/editor/**'))
+    .pipe(preprocess({context: { PLAYER: true }}))
+    .pipe(concat(Path.basename(paths.player)))
+    .pipe(gulp.dest(Path.dirname(paths.player)))
     ;
 });
 
@@ -149,13 +172,11 @@ gulp.task('ref', function() {
 
 // watch
 gulp.task('watch', function() {
-    gulp.watch(paths.src, ['dev']).on( 'error', gutil.log );
+    gulp.watch(paths.src, ['dev', 'player-dev', 'player']).on( 'error', gutil.log );
 });
-gulp.task('watch-self', function() {
-    gulp.watch(paths.src, ['dev']).on( 'error', gutil.log );
-});
+gulp.task('watch-self', ['watch']);
 
 //
-gulp.task('all', ['min', 'test', 'ref'] );
+gulp.task('all', ['min', 'test', 'ref', 'player-dev', 'player'] );
 gulp.task('ci', ['min', 'test'] );
-gulp.task('default', ['min'] );
+gulp.task('default', ['min', 'player-dev', 'player'] );

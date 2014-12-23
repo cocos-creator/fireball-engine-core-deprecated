@@ -2,11 +2,13 @@
 
 // both getter and prop must register the name into __props__ array
 var _appendProp = function (name/*, isGetter*/) {
+    // @ifdef DEV
     var JsVarReg = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
     if (!JsVarReg.test(name)) {
         Fire.error('The property name "' + name + '" is not compliant with JavaScript naming standards');
         return;
     }
+    // @endif
 
     if (!this.__props__) {
         this.__props__ = [name];
@@ -68,7 +70,7 @@ var _metaClass = {
      */
     prop: function (name, defaultValue, attribute) {
         'use strict';
-
+        // @ifdef DEV
         // check default object value
         if (typeof defaultValue === 'object' && defaultValue) {
             if (Array.isArray(defaultValue)) {
@@ -90,7 +92,9 @@ var _metaClass = {
                 }
             }
         }
+        // @endif
 
+        // @ifdef DEV
         // check base prototype to avoid name collision
         for (var base = this.$super; base; base = base.$super) {
             // 这个循环只能检测到最上面的FireClass的父类，如果再上还有父类，将不做检测。（Fire.extend 将 prototype.constructor 设为子类）
@@ -100,6 +104,7 @@ var _metaClass = {
                 return;
             }
         }
+        // @endif
 
         // set default value
         Fire.attr(this, name, { 'default': defaultValue });
@@ -151,22 +156,31 @@ var _metaClass = {
     get: function (name, getter, attribute) {
         'use strict';
 
+        // @ifdef DEV
         var d = Object.getOwnPropertyDescriptor(this.prototype, name);
         if (d && d.get) {
             Fire.error(Fire.getClassName(this) + ': the getter of "' + name + '" is already defined!');
             return this;
         }
+        // @endif
 
+        // @ifdef DEV
         var displayInInspector = true;
+        // @endif
         if (attribute) {
             var AttrArgStart = 2;
             for (var i = AttrArgStart; i < arguments.length; i++) {
                 var attr = arguments[i];
+                // @ifdef DEV
                 if (attr._canUsedInGetter === false) {
                     Fire.error('Can not apply the specified attribute to the getter of "' + Fire.getClassName(this) + '.' + name + '", attribute index: ' + (i - AttrArgStart));
                     continue;
                 }
+                // @endif
+
                 Fire.attr(this, name, attr);
+
+                // @ifdef DEV
                 // check attributes
                 if (attr.hideInInspector) {
                     displayInInspector = false;
@@ -179,10 +193,12 @@ var _metaClass = {
                     Fire.error(Fire.getClassName(this) + ': Can not set default value of a getter!');
                     return this;
                 }
+                // @endif
             }
         }
         Fire.attr(this, name, Fire.NonSerialized);
 
+        // @ifdef DEV
         if (displayInInspector) {
             _appendProp.call(this, name/*, true*/);
         }
@@ -193,11 +209,14 @@ var _metaClass = {
                 return this;
             }
         }
+        // @endif
         Object.defineProperty(this.prototype, name, {
             get: getter,
             configurable: true
         });
+        // @ifdef EDITOR
         Fire.attr(this, name, { hasGetter: true }); // 方便 editor 做判断
+        // @endif
         return this;
     },
 
@@ -210,11 +229,14 @@ var _metaClass = {
      * @returns {function} the class itself
      */
     set: function (name, setter) {
+        // @ifdef DEV
         var d = Object.getOwnPropertyDescriptor(this.prototype, name);
         if (d && d.set) {
             Fire.error(Fire.getClassName(this) + ': the setter of "' + name + '" is already defined!');
             return this;
         }
+        // @endif
+        // @ifdef EDITOR
         Object.defineProperty(this.prototype, name, {
             set: function (value) {
                 if (this._observing) {
@@ -230,7 +252,16 @@ var _metaClass = {
             },
             configurable: true
         });
+        // @endif
+        // @ifndef EDITOR
+        Object.defineProperty(this.prototype, name, {
+            set: setter,
+            configurable: true
+        });
+        // @endif
+        // @ifdef EDITOR
         Fire.attr(this, name, { hasSetter: true }); // 方便 editor 做判断
+        // @endif
         return this;
     },
 

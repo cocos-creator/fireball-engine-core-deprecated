@@ -1,3 +1,4 @@
+// @ifndef PLAYER
 })(Fire);
 
 if (typeof module !== "undefined" && module) {
@@ -8,3 +9,4 @@ else if (typeof define === "function" && define && define.amd) {
         return Fire;
     });
 }
+// @endif

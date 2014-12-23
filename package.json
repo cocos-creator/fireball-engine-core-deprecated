@@ -5,18 +5,18 @@
   "homepage": "http://fireball-x.github.io",
   "license": "MIT",
   "licenseUrl": "http://opensource.org/licenses/MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
+    "del": "",
     "gulp": "",
-    "gulp-fb": "",
-    "gulp-util": "",
     "gulp-concat": "",
+    "gulp-fb": "",
     "gulp-jshint": "",
+    "gulp-preprocess": "^1.2.0",
     "gulp-qunit": "jareguo/gulp-qunit",
     "gulp-rename": "",
     "gulp-uglify": "",
-    "jshint-stylish": "",
-    "del": ""
+    "gulp-util": "",
+    "jshint-stylish": ""
   }
 }
