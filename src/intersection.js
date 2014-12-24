@@ -46,7 +46,7 @@ Fire.Intersection = (function () {
     function _linePolygon ( a1, a2, b ) {
         var length = b.points.length;
 
-        for ( i = 0; i < length; ++i ) {
+        for ( var i = 0; i < length; ++i ) {
             var b1 = b.points[i];
             var b2 = b.points[(i+1)%length];
 
