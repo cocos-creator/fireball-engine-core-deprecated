@@ -13,7 +13,7 @@
     "gulp-fb": "",
     "gulp-jshint": "",
     "gulp-preprocess": "^1.2.0",
-    "gulp-qunit": "jareguo/gulp-qunit",
+    "gulp-qunit": "fireball-x/gulp-qunit",
     "gulp-rename": "",
     "gulp-uglify": "",
     "gulp-util": "",

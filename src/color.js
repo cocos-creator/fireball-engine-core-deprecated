@@ -88,7 +88,7 @@ var Color = (function () {
         }
         else if ( fmt === '#rrggbb' ) {
             for ( i = 0; i < hex.length; ++i ) {
-                if ( hex[i].length == 1 ) {
+                if ( hex[i].length === 1 ) {
                     hex[i] = '0' + hex[i];
                 }
             }

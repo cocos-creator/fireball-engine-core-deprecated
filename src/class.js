@@ -33,9 +33,11 @@ var _isPlainEmptyObj = function (obj) {
     if (obj.constructor !== ({}).constructor) {
         return false;
     }
+    // jshint ignore: start
     for (var k in obj) {
         return false;
     }
+    // jshint ignore: end
     return true;
 };
 
@@ -395,7 +397,9 @@ Fire.define = function (className, baseOrConstructor, constructor) {
     if (constructor) {
         // constructor provided
         fireClass = function () {
+            // @ifdef EDITOR
             this._observing = false;
+            // @endif
             _createInstanceProps(this, fireClass);
             constructor.apply(this, arguments);
         };
@@ -404,7 +408,9 @@ Fire.define = function (className, baseOrConstructor, constructor) {
         if (isInherit) {
             // auto call base constructor
             fireClass = function () {
+                // @ifdef EDITOR
                 this._observing = false;
+                // @endif
                 _createInstanceProps(this, fireClass);
                 baseClass.apply(this, arguments);
             };
@@ -412,7 +418,9 @@ Fire.define = function (className, baseOrConstructor, constructor) {
         else {
             // no constructor
             fireClass = function () {
+                // @ifdef EDITOR
                 this._observing = false;
+                // @endif
                 _createInstanceProps(this, fireClass);
             };
         }
