@@ -99,16 +99,17 @@ gulp.task('jshint', function() {
 // dev
 gulp.task('dev', ['jshint', 'player-dev'], function() {
     return gulp.src(paths.src)
+    .pipe(preprocess({context: { EDITOR: true, DEBUG: true, DEV: true }}))
     .pipe(concat('core.dev.js'))
     .pipe(gulp.dest('bin'))
     ;
 });
 
 // min
-gulp.task('min', ['dev'], function() {
-    return gulp.src(paths.dev)
+gulp.task('min', function() {
+    return gulp.src(paths.src)
     .pipe(preprocess({context: { EDITOR: true, DEV: true }}))
-    .pipe(rename('core.min.js'))
+    .pipe(concat('core.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('bin'))
     ;
@@ -117,14 +118,14 @@ gulp.task('min', ['dev'], function() {
 // player dev
 gulp.task('player-dev', ['jshint'], function() {
     return gulp.src(paths.src.concat('!**/editor/**'))
-    .pipe(preprocess({context: { PLAYER: true, DEV: true }}))
+    .pipe(preprocess({context: { PLAYER: true, DEBUG: true, DEV: true }}))
     .pipe(concat(Path.basename(paths.player_dev)))
     .pipe(gulp.dest(Path.dirname(paths.player_dev)))
     ;
 });
 
 // player
-gulp.task('player', ['jshint'], function() {
+gulp.task('player', function() {
     return gulp.src(paths.src.concat('!**/editor/**'))
     .pipe(preprocess({context: { PLAYER: true }}))
     .pipe(concat(Path.basename(paths.player)))
