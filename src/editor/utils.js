@@ -58,3 +58,39 @@
 
     return new Fire.Rect(tx, ty, tw, th);
 };
+
+Fire.arrayCmpFilter = function ( items, func ) {
+    var results, item, i, j;
+
+    results = [];
+    for ( i = 0; i < items.length; ++i ) {
+        item = items[i];
+        var add = true;
+
+        for ( j = 0; j < results.length; ++j ) {
+            var addedItem = results[j];
+
+            if ( item === addedItem ) {
+                // existed
+                add = false;
+                break;
+            }
+
+            var cmp = func( addedItem, item );
+            if ( cmp > 0 ) {
+                add = false;
+                break;
+            }
+            else if ( cmp < 0 ) {
+                results.splice(j, 1);
+                --j;
+            }
+        }
+
+        if ( add ) {
+            results.push(item);
+        }
+    }
+
+    return results;
+};
