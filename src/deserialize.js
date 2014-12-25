@@ -219,14 +219,16 @@ var _Deserializer = (function () {
 Fire.deserialize = function (data, result, isEditor, options) {
     isEditor = (typeof isEditor !== 'undefined') ? isEditor : true;
     var classFinder = (options && options.classFinder) || Fire.getClassByName;
-    if (typeof data === 'string') {
-        data = JSON.parse(data);
-    }
+
     // @ifndef PLAYER
     if (Fire.isNode && Buffer.isBuffer(data)) {
         data = data.toString();
     }
     // @endif
+
+    if (typeof data === 'string') {
+        data = JSON.parse(data);
+    }
 
     Fire._isCloning = true;
     var deserializer = new _Deserializer(data, result, isEditor, classFinder);
