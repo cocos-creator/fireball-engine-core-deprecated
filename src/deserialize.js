@@ -1,7 +1,7 @@
 
 var _Deserializer = (function () {
 
-    function _Deserializer(data, result, isEditor, classFinder) {
+    function _Deserializer(jsonObj, result, isEditor, classFinder) {
         this._editor = isEditor;
         this._classFinder = classFinder;
 
@@ -9,14 +9,6 @@ var _Deserializer = (function () {
         this._idObjList = [];
         this._idPropList = [];
         this.result = result || new Fire._DeserializeInfo();
-
-        var jsonObj = null;
-        if (typeof data === 'string') {
-            jsonObj = JSON.parse(data);
-        }
-        else {
-            jsonObj = data;
-        }
 
         if (Array.isArray(jsonObj)) {
             var jsonList = jsonObj;
@@ -227,6 +219,14 @@ var _Deserializer = (function () {
 Fire.deserialize = function (data, result, isEditor, options) {
     isEditor = (typeof isEditor !== 'undefined') ? isEditor : true;
     var classFinder = (options && options.classFinder) || Fire.getClassByName;
+    if (typeof data === 'string') {
+        data = JSON.parse(data);
+    }
+    // @ifndef PLAYER
+    if (Fire.isNode && Buffer.isBuffer(data)) {
+        data = data.toString();
+    }
+    // @endif
 
     Fire._isCloning = true;
     var deserializer = new _Deserializer(data, result, isEditor, classFinder);
