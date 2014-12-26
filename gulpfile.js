@@ -106,7 +106,7 @@ gulp.task('dev', ['jshint', 'player-dev'], function() {
 });
 
 // min
-gulp.task('min', function() {
+gulp.task('min', ['dev'], function() {
     return gulp.src(paths.src)
     .pipe(preprocess({context: { EDITOR: true, DEV: true }}))
     .pipe(concat('core.min.js'))
