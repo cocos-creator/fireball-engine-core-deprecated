@@ -1,8 +1,9 @@
 
 var _Serializer = (function () {
 
-    function _Serializer(obj, exporting) {
+    function _Serializer(obj, exporting, network) {
         this._exporting = exporting;
+        this._network = network;
 
         this.serializedList = [];  // list of serialized data for all Fire.FObject objs
         this._parsingObjs = [];    // 记录当前引用对象，防止循环引用
@@ -99,6 +100,11 @@ var _Serializer = (function () {
                                 continue;
                             }
 
+                            // skip network only when not network
+                            if (attrs.networkOnly && !self._network) {
+                                continue;
+                            }
+
                             // skip editor only when exporting
                             if (self._exporting && attrs.editorOnly) {
                                 continue;
@@ -137,7 +143,7 @@ var _Serializer = (function () {
         if (type === 'object') {
             if (val instanceof FObject) {
                 var objFlags = val._objFlags;
-                if (objFlags & DontSave) {
+                if ((objFlags & DontSave) && !self._network) {
                     return undefined;
                 }
                 else if (self._exporting && (objFlags & EditorOnly)) {
@@ -320,11 +326,12 @@ var _Serializer = (function () {
  * Serialize Fire.Asset to a json string
  * @param {Fire.Asset} obj - The object to serialize
  * @param {boolean} [exporting=false] - if true, property with Fire.EditorOnly will be discarded
+ * @param {boolean} [network=false] - if false, property with Fire.NetworkOnly will be discarded
  * @param {boolean} [stringify=true] - indicates whether needs to convert the result by JSON.stringify, default is true
  * @returns {string|object} The json string to represent the object or json object if dontStringify is true
  */
-Fire.serialize = function (obj, exporting, stringify) {
-    var serializer = new _Serializer(obj, exporting);
+Fire.serialize = function (obj, exporting, network, stringify) {
+    var serializer = new _Serializer(obj, exporting, network);
     var serializedList = serializer.serializedList;
     var serializedData = serializedList.length === 1 ? serializedList[0] : serializedList;
     if (stringify === false) {

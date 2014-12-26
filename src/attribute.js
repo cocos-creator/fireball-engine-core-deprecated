@@ -78,6 +78,14 @@ Fire.EditorOnly = {
 };
 
 /**
+ * The NetworkOnly attribute indicates that the prop will only serializable for network transfer, just like DontSave.
+ */
+Fire.NetworkOnly = {
+    networkOnly: true,
+    _canUsedInGetter: false,
+};
+
+/**
  * Specify that the input value must be integer in Inspector
  * @property {object} Fire.HideInInspector
  */
