@@ -19,7 +19,7 @@ test('deserialize missing script', function() {
 
     // deserialize
 
-    var missed = Fire.deserialize(lastData, null, true, {classFinder: MissingScript.safeFindClass});
+    var missed = Fire.deserialize(lastData, null, {classFinder: MissingScript.safeFindClass});
 
     var expectBackup = {
         "__type__": "ToMiss",

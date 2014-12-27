@@ -1,6 +1,8 @@
 
 var _Deserializer = (function () {
-
+    /**
+     * @param {boolean} isEditor - if false, property with Fire.EditorOnly will be discarded
+     */
     function _Deserializer(jsonObj, result, isEditor, classFinder) {
         this._editor = isEditor;
         this._classFinder = classFinder;
@@ -212,13 +214,13 @@ var _Deserializer = (function () {
  * @param {(string|object)} data - the serialized Fire.Asset json string or json object.
  *                                 Note: If data is an object, it will be modified.
  * @param {Fire._DeserializeInfo} [result] - additional loading result
- * @param {boolean} [isEditor=true] - if false, property with Fire.EditorOnly will be discarded
  * @param {object} [options=null]
  * @returns {object} the main data(asset)
  */
-Fire.deserialize = function (data, result, isEditor, options) {
-    isEditor = (typeof isEditor !== 'undefined') ? isEditor : true;
+Fire.deserialize = function (data, result, options) {
+    var isEditor = (options && 'isEditor' in options) ? options.isEditor : Fire.isEditor;
     var classFinder = (options && options.classFinder) || Fire.getClassByName;
+    var createAssetRefs = (options && options.createAssetRefs) || Fire.isEditorCore;
 
     // @ifndef PLAYER
     if (Fire.isNode && Buffer.isBuffer(data)) {
@@ -230,9 +232,18 @@ Fire.deserialize = function (data, result, isEditor, options) {
         data = JSON.parse(data);
     }
 
+    if (createAssetRefs && !result) {
+        result = new Fire._DeserializeInfo();
+    }
+
     Fire._isCloning = true;
     var deserializer = new _Deserializer(data, result, isEditor, classFinder);
     Fire._isCloning = false;
+
+    if (createAssetRefs) {
+        result.createAssetRefs();
+    }
+
     return deserializer.deserializedData;
 };
 
@@ -293,4 +304,13 @@ Fire._DeserializeInfo.prototype.getUuidOf = function (obj, propName) {
         }
     }
     return "";
+};
+
+Fire._DeserializeInfo.prototype.createAssetRefs = function () {
+    for (var i = 0; i < this.uuidObjList.length; i++) {
+        var obj = this.uuidObjList[i];
+        var prop = this.uuidPropList[i];
+        var uuid = this.uuidList[i];
+        obj[prop] = Fire.serialize.asAsset(uuid);
+    }
 };

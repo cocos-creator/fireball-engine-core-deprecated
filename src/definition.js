@@ -13,6 +13,7 @@ if (Fire.isAtomShell) {
 else {
     Fire.isWeb = (typeof __dirname === 'undefined' || __dirname === null); // common web browser, or window's render context in node-webkit or atom-shell
 }
+Fire.isEditorCore = Fire.isApp && !Fire.isWeb;
 
 if (Fire.isNode) {
     Fire.isDarwin = process.platform === 'darwin';

@@ -346,7 +346,7 @@ Fire.serialize = function (obj, exporting, network, stringify) {
  * Create a pseudo object which will be force serialized as a reference to any asset by specified uuid.
  */
 Fire.serialize.asAsset = function (uuid) {
-    var pseudoAsset = new FObject();
+    var pseudoAsset = new Asset();
     pseudoAsset._uuid = uuid;
     return pseudoAsset;
 };
