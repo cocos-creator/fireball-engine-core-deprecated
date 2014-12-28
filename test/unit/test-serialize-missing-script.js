@@ -29,7 +29,7 @@ test('deserialize missing script', function() {
 
     // serialize
 
-    reSerialized = Fire.serialize(missed, false, false, false);
+    reSerialized = Fire.serialize(missed, {stringify: false});
     delete obj.ref.__id__;
     deepEqual(reSerialized, JSON.parse(lastData), 'can serialize missing script as its original data');
 

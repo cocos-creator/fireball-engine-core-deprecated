@@ -1,6 +1,10 @@
 
 var _Serializer = (function () {
 
+    /**
+     * @param {boolean} [exporting=false] - if true, property with Fire.EditorOnly will be discarded
+     * @param {boolean} [network=false] - if false, property with Fire.NetworkOnly will be discarded
+     */
     function _Serializer(obj, exporting, network) {
         this._exporting = exporting;
         this._network = network;
@@ -325,12 +329,15 @@ var _Serializer = (function () {
 /**
  * Serialize Fire.Asset to a json string
  * @param {Fire.Asset} obj - The object to serialize
- * @param {boolean} [exporting=false] - if true, property with Fire.EditorOnly will be discarded
- * @param {boolean} [network=false] - if false, property with Fire.NetworkOnly will be discarded
- * @param {boolean} [stringify=true] - indicates whether needs to convert the result by JSON.stringify, default is true
+ * @param {object} [options=null]
  * @returns {string|object} The json string to represent the object or json object if dontStringify is true
  */
-Fire.serialize = function (obj, exporting, network, stringify) {
+Fire.serialize = function (obj, options) {
+    var exporting = (options && options.exporting);
+    var network = (options && options.network);
+    // indicates whether needs to convert the result by JSON.stringify, default is true
+    var stringify = (options && 'stringify' in options) ? options.stringify : true;
+
     var serializer = new _Serializer(obj, exporting, network);
     var serializedList = serializer.serializedList;
     var serializedData = serializedList.length === 1 ? serializedList[0] : serializedList;
@@ -346,6 +353,9 @@ Fire.serialize = function (obj, exporting, network, stringify) {
  * Create a pseudo object which will be force serialized as a reference to any asset by specified uuid.
  */
 Fire.serialize.asAsset = function (uuid) {
+    if ( !uuid ) {
+        Fire.error('[Fire.serialize.asAsset] The uuid must be non-nil!');
+    }
     var pseudoAsset = new Asset();
     pseudoAsset._uuid = uuid;
     return pseudoAsset;

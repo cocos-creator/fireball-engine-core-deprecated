@@ -28,7 +28,7 @@ test('basic deserialize test', function () {
     })();
 
     var asset = new MyAsset();
-    var serializedAsset = Fire.serialize(asset, false);
+    var serializedAsset = Fire.serialize(asset);
     delete asset.__id__;
     var deserializedAsset = Fire.deserialize(serializedAsset);
 
@@ -128,7 +128,7 @@ test('circular reference by object', function () {
     var mainAsset = { myAsset: asset };
     asset.refToMain = mainAsset;
 
-    var serializedAsset = Fire.serialize(mainAsset, false);
+    var serializedAsset = Fire.serialize(mainAsset);
     delete mainAsset.__id__;
     delete asset.__id__;
     var deserializedAsset = Fire.deserialize(serializedAsset);

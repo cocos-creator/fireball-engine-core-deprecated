@@ -4,7 +4,7 @@ largeModule('Serialize');
 
 var match = function (obj, expect, info) {
     deepEqual(JSON.parse(Fire.serialize(obj)), expect, info);
-    //deepEqual(Fire.serialize(obj, false, false, false), expect, info);
+    //deepEqual(Fire.serialize(obj, {stringify: false}), expect, info);
 };
 
 test('basic test', function() {
@@ -188,8 +188,8 @@ test('test serializable attributes', function () {
 
     var sprite = new Sprite();
     var resultInEditor = JSON.parse(Fire.serialize(sprite));
-    var resultInPlayer = JSON.parse(Fire.serialize(sprite, true));
-    var resultInNetwork = JSON.parse(Fire.serialize(sprite, false, true));
+    var resultInPlayer = JSON.parse(Fire.serialize(sprite, { exporting: true }));
+    var resultInNetwork = JSON.parse(Fire.serialize(sprite, { network: true }));
 
     strictEqual(resultInEditor.trimThreshold, 2, 'serialize editor only in editor');
     strictEqual(resultInEditor.author, undefined, 'dont serialize network only in editor');

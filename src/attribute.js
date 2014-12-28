@@ -41,7 +41,8 @@ Fire.attr = function (constructor, propertyName, attributes) {
 
 BuiltinAttributes: {
     default: defaultValue,
-    _canUsedInGetter: true,
+    _canUsedInGetter: true, (default true)
+    _canUsedInSetter: false, (default false) (NYI)
 }
 Getter or Setter: {
     hasGetter: true,
@@ -49,6 +50,8 @@ Getter or Setter: {
 }
 Callbacks: {
     _onAfterProp: function (constructor, propName) {},
+    _onAfterGetter: function (constructor, propName) {}, (NYI)
+    _onAfterSetter: function (constructor, propName) {}, (NYI)
 }
  */
 
@@ -251,7 +254,6 @@ Fire.Nullable = function (boolPropName, hasValueByDefault) {
         }
     };
 };
-
 
 /**
  * @param {string[]|string} names - the name of target property to watch, array is also acceptable.

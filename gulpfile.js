@@ -172,10 +172,10 @@ gulp.task('ref', function() {
 });
 
 // watch
-gulp.task('watch', function() {
+gulp.task('watch-self', function() {
     gulp.watch(paths.src, ['dev', 'player-dev', 'player']).on( 'error', gutil.log );
 });
-gulp.task('watch-self', ['watch']);
+gulp.task('watch', ['watch-self']);
 
 //
 gulp.task('all', ['min', 'test', 'ref', 'player-dev', 'player'] );
