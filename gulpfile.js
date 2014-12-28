@@ -180,4 +180,4 @@ gulp.task('watch', ['watch-self']);
 //
 gulp.task('all', ['min', 'test', 'ref', 'player-dev', 'player'] );
 gulp.task('ci', ['min', 'test'] );
-gulp.task('default', ['min', 'player-dev', 'player'] );
+gulp.task('default', ['dev', 'min', 'player-dev', 'player'] );
