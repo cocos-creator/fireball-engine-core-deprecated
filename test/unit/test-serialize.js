@@ -223,8 +223,8 @@ test('test FObject reference', function () {
     var asset = { ref1: fobj, ref2: fobj };
     var expected = [
         {
-          "ref1": { "__id__": 1 },
-          "ref2": { "__id__": 1 }
+            "ref1": { "__id__": 1 },
+            "ref2": { "__id__": 1 }
         },
         { "__type__": "Fire.FObject", "_objFlags": 0, "_name": "" },
     ];

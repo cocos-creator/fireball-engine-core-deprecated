@@ -45,6 +45,7 @@ var paths = {
         'src/asset/sprite.js',
         'src/asset/atlas.js',
         'src/asset/font-info.js',
+        'src/asset/json-asset.js',
 
         // editor utils
         'src/editor/utils.js',

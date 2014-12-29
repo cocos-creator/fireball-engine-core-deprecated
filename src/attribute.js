@@ -115,7 +115,7 @@ Fire.ObjectType = function (constructor) {
  * @returns {object} the attribute
  */
 Fire.HostType = function (typename) {
-    var NEED_EXT_TYPES = ['image'];  // the types need to specify exact extname
+    var NEED_EXT_TYPES = ['image', 'json'];  // the types need to specify exact extname
     return {
         type: 'host',
         hostType: typename,
@@ -218,6 +218,14 @@ Fire.HideInInspector = { hideInInspector: true };
  */
 Fire.DisplayName = function (name) {
     return { displayName: name };
+};
+
+/**
+ * The ReadOnly attribute indicates that the property field is disabled in Inspector.
+ * @property {object} Fire.ReadOnly
+ */
+Fire.ReadOnly = {
+    readOnly: true
 };
 
 /**
