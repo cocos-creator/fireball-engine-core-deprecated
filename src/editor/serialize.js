@@ -337,9 +337,15 @@ Fire.serialize = function (obj, options) {
     var network = (options && options.network);
     // indicates whether needs to convert the result by JSON.stringify, default is true
     var stringify = (options && 'stringify' in options) ? options.stringify : true;
+    var nicify = (options && options.nicify);
 
     var serializer = new _Serializer(obj, exporting, network);
     var serializedList = serializer.serializedList;
+
+    if (nicify) {
+        nicifySerialized(serializedList);
+    }
+
     var serializedData = serializedList.length === 1 ? serializedList[0] : serializedList;
     if (stringify === false) {
         return serializedData;
