@@ -231,40 +231,36 @@ test('test FObject reference', function () {
     match(asset, expected, 'references should the same');
 });
 
-test('test FObject nicify 1', function () {
-    var fobj1 = new Fire.FObject();
-    var fobj2 = new Fire.FObject();
-    var asset = { ref1: fobj1, ref2: fobj1, ref3: fobj2 };
+test(' nicify ', function () {
+    var data = [
+      {
+          "ref1": [1, 2, 3, { "__id__": 1 }, { "a": 1, "b": 2, "c": { "__id__": 2 } }],
+          "ref2": { "__id__": 1 },
+          "ref3": { "__id__": 3 },
+          "ref4": { "__id__": 3 },
+          "ref5": [{ "__id__": 4 }, { "__id__": 4 }]
+      },
+      { "__type__": "Fire.FObject", "_name": "test_1", "_objFlags": 0 },
+      { "__type__": "Fire.FObject", "_name": "test_2", "_objFlags": 0 },
+      { "__type__": "Fire.FObject", "_name": "test_3", "_objFlags": 0 },
+      { "__type__": "Fire.FObject", "_name": "test_4", "_objFlags": 0 }
+    ]
     var expected = [
-        {
-            "ref1": { "__id__": 1 },
-            "ref2": { "__id__": 1 },
-            "ref3": { "__type__": "Fire.FObject", "_objFlags": 0, "_name": "" },
-        },
-        { "__type__": "Fire.FObject", "_objFlags": 0, "_name": "" },
-    ];
-    deepEqual(JSON.parse(Fire.serialize(asset, { nicify: true })), expected, 'nicify success');
-});
+          {
+              "ref1": [1, 2, 3, { "__id__": 1 }, { "a": 1, "b": 2, "c": { "__type__": "Fire.FObject", "_name": "test_2", "_objFlags": 0 } }],
+              "ref2": { "__id__": 1 },
+              "ref3": { "__id__": 2 },
+              "ref4": { "__id__": 2 },
+              "ref5": [{ "__id__": 3 }, { "__id__": 3 }]
+          },
+          { "__type__": "Fire.FObject", "_name": "test_1", "_objFlags": 0 },
+          { "__type__": "Fire.FObject", "_name": "test_3", "_objFlags": 0 },
+          { "__type__": "Fire.FObject", "_name": "test_4", "_objFlags": 0 }
+    ]
 
-test('test FObject nicify 2', function () {
-    var fobj1 = new Fire.FObject();
-    fobj1.name = "fbj_1";
-    var fobj2 = new Fire.FObject();
-    fobj2.name = "fbj_2";
-    var fobj3 = new Fire.FObject();
-    fobj3.name = "fbj_3";
-    var asset = { ref1: [1, 2, 3, fobj1, { a: 1, b: 2, c: fobj3 }], ref2: fobj1, ref3: fobj2, ref4: fobj2 };
-    var expected = [
-        {
-            "ref1": [1, 2, 3, { "__id__": 1 }, { a: 1, b: 2, c: { "__type__": "Fire.FObject", "_objFlags": 0, "_name": "fbj_3" } }],
-            "ref2": { "__id__": 1 },
-            "ref3": { "__id__": 2 },
-            "ref4": { "__id__": 2 },
-        },
-        { "__type__": "Fire.FObject", "_objFlags": 0, "_name": "fbj_1" },
-        { "__type__": "Fire.FObject", "_objFlags": 0, "_name": "fbj_2" },
-    ];
-    deepEqual(JSON.parse(Fire.serialize(asset, { nicify: true })), expected, 'nicify success');
+    Fire._nicifySerialized(data);
+    deepEqual(data, expected, 'nicify success');
+
 });
 
 // jshint ignore: end
