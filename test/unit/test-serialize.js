@@ -231,7 +231,7 @@ test('test FObject reference', function () {
     match(asset, expected, 'references should the same');
 });
 
-test(' nicify ', function () {
+test('nicify ', function () {
     var data = [
       {
           "ref1": [1, 2, 3, { "__id__": 1 }, { "a": 1, "b": 2, "c": { "__id__": 2 } }],
@@ -257,6 +257,54 @@ test(' nicify ', function () {
           { "__type__": "Fire.FObject", "_name": "test_3", "_objFlags": 0 },
           { "__type__": "Fire.FObject", "_name": "test_4", "_objFlags": 0 }
     ]
+
+    Fire._nicifySerialized(data);
+    deepEqual(data, expected, 'nicify success');
+
+});
+
+test('nicify 1 ', function () {
+    var data = [
+            {
+                "ref1": { "__id__": 1 }
+            },
+            {
+                "ref2": { "__id__": 2 },
+            },
+            {
+                "ref3": { "__id__": 3 },
+            },
+            {
+                "123": 1,
+            },
+    ];
+
+    var expected = [
+       {
+           "ref1": { "ref2": { "ref3": { "123": 1 } }}
+       },
+    ];
+
+    Fire._nicifySerialized(data);
+    deepEqual(data, expected, 'nicify success');
+
+});
+
+test('nicify 2 ', function () {
+    var data = [
+        {
+            "ref1": { "__id__": 1 }
+        },
+        {
+            "ref0": { "__id__": 0 },
+        },
+    ];
+
+    var expected = [
+       {
+           "ref1": { "ref0": { "__id__": 0 } }
+       },
+    ];
 
     Fire._nicifySerialized(data);
     deepEqual(data, expected, 'nicify success');

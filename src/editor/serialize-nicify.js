@@ -1,34 +1,31 @@
 ﻿/**
- * 美化序列化
- * @class nicifyInfo
+ * @class RefInfos
  */
-
 var RefInfos = function () {
-
-    this.idList = [];
-
+    // id所在的对象列表
     this.objList = [];
-
+    // 关键字列表
     this.keyList = [];
-
-    this.repeatIDList = [];
+    // 引用的id列表
+    this.referncedIDList = [];
+    // 引用id的次数
+    this.referencedCounts = [];
+    // 保存有标记_iN$t列表
+    this.temporaryDataList = [];
 };
-
 /**
  *  nicify
  */
-
 var nicifySerialized = function (serialized) {
 
     var mainObject = serialized[0];
 
-    if (mainObject === undefined) {
+    if (typeof mainObject === 'undefined') {
         return;
     }
 
     var refInfos = new RefInfos();
-
-    _traversal(mainObject, refInfos);
+    refInfos.referencedCounts = new Array(serialized.length);
 
     var id;
     var obj;
@@ -37,13 +34,23 @@ var nicifySerialized = function (serialized) {
     var hasRepeatID;
     var tempSelf = serialized.slice();
 
+    // 遍历，并且保存需要美化的数据
+    _iterative(mainObject, serialized, refInfos);
+    
+    var idx = 0;
+
+    // del _iN$t
+    for (idx = 0; idx < refInfos.temporaryDataList.length; idx++) {
+        delete refInfos.temporaryDataList[idx]._iN$t;
+    }
+
     // dereference
-    for (var i = 0; i < refInfos.objList.length; i++) {
-        id = refInfos.idList[i];
-        obj = refInfos.objList[i];
-        key = refInfos.keyList[i];
+    for (idx = 0; idx < refInfos.objList.length; idx++) {
+        obj = refInfos.objList[idx];
+        id = refInfos.referncedIDList[idx];
+        key = refInfos.keyList[idx];
         value = tempSelf[id];
-        hasRepeatID = refInfos.repeatIDList.indexOf(id) !== -1;
+        hasRepeatID = refInfos.referencedCounts[id] > 1;
         if (hasRepeatID) {
             continue;
         }
@@ -53,11 +60,11 @@ var nicifySerialized = function (serialized) {
     }
 
     // update id
-    for (var j = 0; j < refInfos.objList.length; j++) {
-        id = refInfos.idList[j];
-        key = refInfos.keyList[j];
-        obj = refInfos.objList[j];
-        hasRepeatID = refInfos.repeatIDList.indexOf(id) !== -1;
+    for (idx = 0; idx < refInfos.objList.length; idx++) {
+        id = refInfos.referncedIDList[idx];
+        key = refInfos.keyList[idx];
+        obj = refInfos.objList[idx];
+        hasRepeatID = refInfos.referencedCounts[id] > 1;
         if (hasRepeatID) {
             value = tempSelf[id];
             var newIdx = serialized.indexOf(value);
@@ -69,51 +76,63 @@ var nicifySerialized = function (serialized) {
 Fire._nicifySerialized = nicifySerialized;
 
 /**
- *  traversal 
+ *  iterative
  */
-var _traversal = function (obj, refInfos) {
+var _iterative = function (obj, serialized, refInfos) {
     if (typeof obj !== 'object') {
         return;
     }
-    var id;
     var element;
-    var hasRepeatID;
+    obj._iN$t = true;
+    refInfos.temporaryDataList.push(obj);
     if (Array.isArray(obj)) {
-        for (var i = 0; i < obj.length; i++) {
+        for (var key = 0; key < obj.length; key++) {
+            element = obj[key];
+            if (!element) {
+                continue;
+            }
+            _traversalChild(element, key, obj, serialized, refInfos);
+        }
+    }
+    else {
+        for (var i in obj) {
             element = obj[i];
             if (!element) {
                 continue;
             }
-            id = element.__id__;
-            if (id !== undefined) {
-                hasRepeatID = refInfos.idList.indexOf(id) !== -1;
-                if (hasRepeatID) {
-                    refInfos.repeatIDList.push(id);
-                }
-                refInfos.idList.push(id);
-                refInfos.keyList.push(i);
-                refInfos.objList.push(obj);
-            }
-            _traversal(element, refInfos);
+            _traversalChild(element, i, obj, serialized, refInfos);
         }
+    }
+};
+
+/**
+ *  traversal Child
+ */
+var _traversalChild = function (element, key, obj, serialized, refInfos) {
+    var hasRepeatID;
+    var id = element.__id__;
+    var hasID = typeof id !== 'undefined';
+    if (hasID) {
+        element = serialized[id];
+        hasRepeatID = refInfos.referncedIDList.indexOf(id) !== -1;
+        if (hasRepeatID) {
+            refInfos.referencedCounts[id]++;
+        }
+        else {
+            refInfos.referencedCounts[id] = 1;
+        }
+        refInfos.referncedIDList.push(id);
+        refInfos.keyList.push(key);
+        refInfos.objList.push(obj);
+    }
+    var isNew = !element._iN$t;
+    if (isNew) {
+        _iterative(element, serialized, refInfos);
     }
     else {
-        for (var j in obj) {
-            element = obj[j];
-            if (!element) {
-                continue;
-            }
-            id = element.__id__;
-            if (id !== undefined) {
-                hasRepeatID = refInfos.idList.indexOf(id) !== -1;
-                if (hasRepeatID) {
-                    refInfos.repeatIDList.push(id);
-                }
-                refInfos.idList.push(id);
-                refInfos.keyList.push(j);
-                refInfos.objList.push(obj);
-            }
-            _traversal(element, refInfos);
+        if (hasID) {
+            refInfos.referencedCounts[id]++;
         }
     }
+
 };
