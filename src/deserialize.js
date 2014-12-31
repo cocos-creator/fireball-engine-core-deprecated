@@ -241,7 +241,7 @@ Fire.deserialize = function (data, result, options) {
     Fire._isCloning = false;
 
     if (createAssetRefs) {
-        result.createAssetRefs();
+        result.assignAssetsBy(Fire.serialize.asAsset);
     }
 
     return deserializer.deserializedData;
@@ -306,11 +306,17 @@ Fire._DeserializeInfo.prototype.getUuidOf = function (obj, propName) {
     return "";
 };
 
-Fire._DeserializeInfo.prototype.createAssetRefs = function () {
-    for (var i = 0; i < this.uuidObjList.length; i++) {
-        var obj = this.uuidObjList[i];
-        var prop = this.uuidPropList[i];
+Fire._DeserializeInfo.prototype.assignAssetsBy = function (callback) {
+    for (var i = 0, len = this.uuidList.length; i < len; i++) {
         var uuid = this.uuidList[i];
-        obj[prop] = Fire.serialize.asAsset(uuid);
+        var asset = callback(uuid);
+        if (asset) {
+            var obj = this.uuidObjList[i];
+            var prop = this.uuidPropList[i];
+            obj[prop] = asset;
+        }
+        else {
+            Fire.error('Failed to assign asset: ' + uuid);
+        }
     }
 };
