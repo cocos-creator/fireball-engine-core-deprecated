@@ -51,6 +51,7 @@ var paths = {
         'src/editor/utils.js',
         'src/editor/platform.js',
         'src/editor/serialize.js',
+        'src/editor/serialize-nicify.js',
         'src/editor/dom.js',
         'src/editor/file-utils.js',
 
