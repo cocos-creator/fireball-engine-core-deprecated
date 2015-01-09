@@ -238,6 +238,7 @@ var _metaClass = {
             return this;
         }
         // @endif
+        // ================================================================
         // @ifdef EDITOR
         Object.defineProperty(this.prototype, name, {
             set: function (value) {
@@ -248,21 +249,22 @@ var _metaClass = {
                         oldValue: this[name]
                     });
                 }
-
-                //
                 setter.call(this, value);
             },
             configurable: true
         });
         // @endif
+        // ----------------------------------------------------------------
         // @ifndef EDITOR
         Object.defineProperty(this.prototype, name, {
             set: setter,
             configurable: true
         });
         // @endif
+        // ================================================================
         // @ifdef EDITOR
         Fire.attr(this, name, { hasSetter: true }); // 方便 editor 做判断
+        Fire.attr(this, name, { originalSetter: setter }); // 方便 editor 重载 setter
         // @endif
         return this;
     },
