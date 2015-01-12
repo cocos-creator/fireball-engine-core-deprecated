@@ -450,15 +450,23 @@ Fire.define = function (className, baseOrConstructor, constructor) {
     }
     Fire.registerClass(className, fireClass);
 
-    //// nicify constructor name
-    //if (className && fireClass.toString) {
-    //    var toString = fireClass.toString;
-    //    fireClass.toString = function () {
-    //        return _toNiceString.call(this, toString);
-    //    };
-    //}
+    // @ifdef EDITOR
+    nicifyFireClass(fireClass, className);
+    // @endif
+
     return fireClass;
 };
+
+// @ifdef EDITOR
+function nicifyFireClass (fireClass, className) {
+    if (className) {
+        fireClass.toString = function () {
+            var plain = Function.toString.call(this);
+            return plain.replace('function ', 'function ' + Fire.getClassName(this));
+        };
+    }
+}
+// @endif
 
 /**
  * If you dont need a class (which defined by Fire.define) anymore,
@@ -476,11 +484,6 @@ Fire.undefine = function (constructor) {
         Fire.unregisterClass(arguments[i]);
     }
 };
-
-//_toNiceString = function (originalToString) {
-//    var str = originalToString.call(this);
-//    return str.replace('function ', 'function ' + Fire.getClassName(this));
-//};
 
 /**
  * Specially optimized define function only for internal base classes
