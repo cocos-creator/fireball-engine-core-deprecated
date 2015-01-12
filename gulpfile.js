@@ -1,4 +1,4 @@
-var Path = require('path');
+﻿var Path = require('path');
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
@@ -41,6 +41,7 @@ var paths = {
 
         // assets
         'src/asset/asset.js',
+        'src/asset/custom-asset.js',
         'src/asset/texture.js',
         'src/asset/sprite.js',
         'src/asset/atlas.js',

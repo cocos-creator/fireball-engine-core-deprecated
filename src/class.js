@@ -394,6 +394,10 @@ Fire.define = function (className, baseOrConstructor, constructor) {
         constructor = baseOrConstructor;
     }
 
+    if (constructor) {
+        _checkCtor(constructor);
+    }
+
     // create a new constructor
     var fireClass;
     if (constructor) {
@@ -496,3 +500,23 @@ Fire._fastDefine = function (className, constructor, serializableFields) {
         Fire.attr(constructor, serializableFields[i], Fire.HideInInspector);
     }
 };
+
+// @ifdef DEV
+/**
+ * check Ctor is a function and is no parameters
+ */
+function _checkCtor(ctor) {
+    if (typeof ctor !== 'function') {
+        Fire.error("Constructor of FireClass must be function type");
+        return;
+    }
+    if (ctor.length > 0) {
+        // To make a unified FireClass serialization process, we don't allow parameters for constructor when creating instances of FireClass.
+        // For advance user, construct arguments can get from 'arguments'.
+        Fire.warn("Can not instantiate FireClass with arguments.");
+        console.log(ctor);
+        return;
+    }
+}
+// @endif
+

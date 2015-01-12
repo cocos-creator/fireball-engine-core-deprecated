@@ -3,9 +3,10 @@ Fire.Texture = (function () {
     /**
      * @param {Image} [img] - the html image element to render
      */
-    var Texture = Fire.define('Fire.Texture', Fire.Asset, function (img) {
+    var Texture = Fire.define('Fire.Texture', Fire.Asset, function () {
         Texture.$super.call(this);
 
+        var img = arguments[0];
         if (img) {
             this.image = img;
             this.width = img.width;
