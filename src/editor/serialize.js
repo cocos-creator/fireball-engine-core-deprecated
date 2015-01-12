@@ -1,3 +1,13 @@
+function _getType (obj) {
+    var p = obj.constructor.prototype;
+    if (p.hasOwnProperty('__cid__')) {
+        return obj.__cid__;
+    }
+    if (p.hasOwnProperty('__classname__')) {
+        return obj.__classname__;
+    }
+    return '';
+}
 
 var _Serializer = (function () {
 
@@ -38,9 +48,9 @@ var _Serializer = (function () {
             var data = self._parsingData[parsingIndex];
             if (Array.isArray(obj) === false) {
                 //data.__id__ = id;   // also save id in source data, just for debugging
-                var className = Fire.getClassName(obj);
-                if (className) {
-                    data.__type__ = className;
+                var type = _getType(obj);
+                if (type) {
+                    data.__type__ = type;
                 }
             }
             self.serializedList.push(data);
@@ -175,9 +185,9 @@ var _Serializer = (function () {
         }
         else {  // 'object'
             data = {};
-            var className = Fire.getClassName(obj);
-            if (className) {
-                data.__type__ = className;
+            var type = _getType(obj);
+            if (type) {
+                data.__type__ = type;
             }
         }
 
@@ -242,9 +252,9 @@ var _Serializer = (function () {
             self.serializedList.push(data);
 
             // get FObject data
-            var className = Fire.getClassName(obj);
-            if (className) {
-                data.__type__ = className;
+            var type = _getType(obj);
+            if (type) {
+                data.__type__ = type;
             }
             _enumerateObject(self, obj, data);
             data._objFlags &= PersistentMask;
@@ -307,9 +317,9 @@ var _Serializer = (function () {
             }
             else {
                 data = {};
-                var className = Fire.getClassName(obj);
-                if (className) {
-                    data.__type__ = className;
+                var type = _getType(obj);
+                if (type) {
+                    data.__type__ = type;
                 }
             }
 

@@ -3,8 +3,8 @@
 test('deserialize missing script', function() {
 
     var MissingScript = Fire.define('MissingScript').prop('_$erialized', null);
-    MissingScript.safeFindClass = function (className) {
-        return Fire.getClassByName(className) || MissingScript;
+    MissingScript.safeFindClass = function (id) {
+        return Fire.getClassById(id) || MissingScript;
     };
 
     var ToMiss = Fire.define('ToMiss').prop('ref', null);

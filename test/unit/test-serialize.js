@@ -167,7 +167,6 @@ test('test circular reference', function () {
 
     var expect = [
         {
-            __type__: 'MyAsset',
             array1: { __id__: 1 },
             array2: [ { __id__: 1 },  2 ],
             dict1: { __id__: 2 },

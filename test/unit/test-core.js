@@ -23,7 +23,7 @@ test('test', function() {
     // (constructor's name may renamed by uglify, so we do not test the value exactly)
 
     var asset = new Fire.Asset();
-    ok(Fire.getClassName(asset), 'can getClassName of Fire type');
+    ok(Fire.getClassName(asset), 'can getClassName of FireClass');
     notEqual(Fire.getClassName(myAsset), Fire.getClassName(asset), 'class name should not achieved from its super');
 
     Fire.unregisterClass(MyAsset);

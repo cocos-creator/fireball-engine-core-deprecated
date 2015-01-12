@@ -17,7 +17,6 @@ function _copyprop(name, source, target) {
  * @param {object} obj
  * @param {...object} source
  * @returns {object} the result obj
- *
  */
 Fire.addon = function (obj) {
     'use strict';
@@ -40,7 +39,6 @@ Fire.addon = function (obj) {
  * @param {object} obj
  * @param {...object} source
  * @returns {object} the result obj
- *
  */
 Fire.mixin = function (obj) {
     'use strict';
@@ -112,79 +110,109 @@ Fire.getClassName = function (obj) {
     return null;
 };
 
-var _nameToClass = {};
-
 /**
  * Set the name of a class
- * @method Fire.registerClass
+ * @method Fire.setClassName
  * @param {string} className
  * @param {function} constructor
  */
-Fire.registerClass = function (className, constructor) {
+Fire.setClassName = function (className, constructor) {
     constructor.prototype.__classname__ = className;
-    // register class
-    if (className) {
-        var registered = _nameToClass[className];
-        if (registered && registered !== constructor) {
-            var error = 'A Class already exists with the same name: "' + className + '".';
-            if ( !Fire.isEditor ) {
-                error += ' (This may be caused by error of unit test.) \
-If you dont need serialization, you can set class name to "". You can also call \
-Fire.undefine or Fire.unregisterClass to remove the name of unused class';
+};
+
+// id 注册
+(function () {
+    var _idToClass = {};
+
+    /**
+     * Register the class by specified id, if its classname is not defined, the class name will also be set.
+     * @method Fire.registerClass
+     * @param {string} classId
+     * @param {function} constructor
+     */
+    Fire.registerClass = function (classId, constructor) {
+        constructor.prototype.__cid__ = classId;
+        // register class
+        if (classId) {
+            var registered = _idToClass[classId];
+            if (registered && registered !== constructor) {
+                var error = 'A Class already exists with the same id: "' + classId + '".';
+
+                if ( !Fire.isEditor ) {
+                    error += ' (This may be caused by error of unit test.) \
+If you dont need serialization, you can set class id to "". You can also call \
+Fire.undefine or Fire.unregisterClass to remove the id of unused class';
+                }
+                Fire.error(error);
+                return;
             }
-            Fire.error(error);
-            return;
+            _idToClass[classId] = constructor;
         }
-        _nameToClass[className] = constructor;
-    }
-};
-
-/**
- * Unregister the classes extended by Fire.extend. If you dont need it anymore,
- * you'd better unregister it to reduce memory usage.
- * Please note that its still your responsibility to free other references to the class.
- *
- * @method Fire.unregisterClass
- * @param {function} constructor
- *
- * @private
- */
-Fire.unregisterClass = function (constructor) {
-    var className = constructor.prototype.__classname__;
-    if (className) {
-        delete _nameToClass[className];
-    }
-};
-
-/**
- * Get the registered class by name
- * @method Fire.getClassByName
- * @param {string} className
- * @returns {function} constructor
- */
-Fire.getClassByName = function (className) {
-    return _nameToClass[className];
-};
-
-// if editor
-Object.defineProperty(Fire, '_registeredClasses', {
-    get: function () {
-        var dump = {};
-        for (var name in _nameToClass) {
-            dump[name] = _nameToClass[name];
+        if ( !constructor.prototype.hasOwnProperty('__classname__') ) {
+            Fire.setClassName(classId, constructor);
         }
-        return dump;
-    },
-    set: function (value) {
-        _nameToClass = {};
-        for (var name in value) {
-            _nameToClass[name] = value[name];
-        }
-    }
-});
-// end if
+    };
 
-// TODO getClassById
+    /**
+     * Unregister the class so that Fireball-x will not keep its reference anymore.
+     *
+     * @method Fire.unregisterClass
+     * @param {function} constructor
+     *
+     * @private
+     */
+    Fire.unregisterClass = function (constructor) {
+        var classId = constructor.prototype.__cid__;
+        if (classId) {
+            delete _idToClass[classId];
+        }
+    };
+
+    /**
+     * Get the registered class by id
+     * @method Fire.getClassById
+     * @param {string} classId
+     * @returns {function} constructor
+     */
+    Fire.getClassById = function (classId) {
+        return _idToClass[classId];
+    };
+
+    // @ifdef EDITOR
+    /**
+     * Get class id of the object, if class id not defined, its class name will be returned.
+     * @param {(object|function)} obj - instance or constructor
+     * @returns {string}
+     */
+    Fire.getClassId = function (obj) {
+        if (typeof obj === 'function' && obj.prototype.__cid__) {
+            return obj.prototype.__cid__;
+        }
+        if (obj && obj.constructor) {
+            if (obj.constructor.prototype && obj.constructor.prototype.hasOwnProperty('__cid__')) {
+                return obj.__cid__;
+            }
+        }
+        return Fire.getClassName(obj);
+    };
+
+    Object.defineProperty(Fire, '_registeredClasses', {
+        get: function () {
+            var dump = {};
+            for (var id in _idToClass) {
+                dump[id] = _idToClass[id];
+            }
+            return dump;
+        },
+        set: function (value) {
+            _idToClass = {};
+            for (var id in value) {
+                _idToClass[id] = value[id];
+            }
+        }
+    });
+    // @endif
+})();
 
 // logs
 

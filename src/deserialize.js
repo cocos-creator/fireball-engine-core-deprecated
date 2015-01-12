@@ -219,7 +219,7 @@ var _Deserializer = (function () {
  */
 Fire.deserialize = function (data, result, options) {
     var isEditor = (options && 'isEditor' in options) ? options.isEditor : Fire.isEditor;
-    var classFinder = (options && options.classFinder) || Fire.getClassByName;
+    var classFinder = (options && options.classFinder) || Fire.getClassById;
     var createAssetRefs = (options && options.createAssetRefs) || Fire.isEditorCore;
 
     // @ifndef PLAYER
