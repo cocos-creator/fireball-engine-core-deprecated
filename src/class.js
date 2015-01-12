@@ -394,7 +394,38 @@ Fire.define = function (className, baseOrConstructor, constructor) {
         constructor = baseOrConstructor;
     }
 
-    // create a new constructor
+    var fireClass = _createCtor(isInherit, constructor, baseClass);
+
+    // occupy some non-inherited static members
+    for (var staticMember in _metaClass) {
+        Object.defineProperty(fireClass, staticMember, {
+            value: _metaClass[staticMember],
+            // __props__ is writable
+            writable: staticMember === '__props__',
+            // __props__ is enumerable so it can be inherited by Fire.extend
+            enumerable: staticMember === '__props__',
+        });
+    }
+
+    // inherit
+    if (isInherit) {
+        Fire.extend(fireClass, baseClass);
+        fireClass.$super = baseClass;
+        if (baseClass.__props__) {
+            // copy __props__
+            fireClass.__props__ = baseClass.__props__.slice();
+        }
+    }
+    Fire.registerClass(className, fireClass);
+
+    // @ifdef EDITOR
+    _nicifyFireClass(fireClass, className);
+    // @endif
+
+    return fireClass;
+};
+
+function _createCtor (isInherit, constructor, baseClass) {
     var fireClass;
     if (constructor) {
         // constructor provided
@@ -427,38 +458,11 @@ Fire.define = function (className, baseOrConstructor, constructor) {
             };
         }
     }
-
-    // occupy some non-inherited static members
-    for (var staticMember in _metaClass) {
-        Object.defineProperty(fireClass, staticMember, {
-            value: _metaClass[staticMember],
-            // __props__ is writable
-            writable: staticMember === '__props__',
-            // __props__ is enumerable so it can be inherited by Fire.extend
-            enumerable: staticMember === '__props__',
-        });
-    }
-
-    // inherit
-    if (isInherit) {
-        Fire.extend(fireClass, baseClass);
-        fireClass.$super = baseClass;
-        if (baseClass.__props__) {
-            // copy __props__
-            fireClass.__props__ = baseClass.__props__.slice();
-        }
-    }
-    Fire.registerClass(className, fireClass);
-
-    // @ifdef EDITOR
-    nicifyFireClass(fireClass, className);
-    // @endif
-
     return fireClass;
-};
+}
 
 // @ifdef EDITOR
-function nicifyFireClass (fireClass, className) {
+function _nicifyFireClass (fireClass, className) {
     if (className) {
         fireClass.toString = function () {
             var plain = Function.toString.call(this);
