@@ -17,6 +17,8 @@ var paths = {
     src: [
         'src/__intro.js',
 
+        'src/editor/pre-define.js',
+
         // javascript extends
         'src/definition.js',
         'src/core.js',
