@@ -131,25 +131,33 @@ Fire.setClassName = function (className, constructor) {
      * @param {function} constructor
      */
     Fire.registerClass = function (classId, constructor) {
+        // deregister old class id
+        if (constructor.prototype.hasOwnProperty('__cid__')) {
+            delete _idToClass[constructor.prototype.__cid__];
+        }
         constructor.prototype.__cid__ = classId;
         // register class
         if (classId) {
             var registered = _idToClass[classId];
             if (registered && registered !== constructor) {
                 var error = 'A Class already exists with the same id: "' + classId + '".';
-
+// @ifdef EDITOR
                 if ( !Fire.isEditor ) {
                     error += ' (This may be caused by error of unit test.) \
 If you dont need serialization, you can set class id to "". You can also call \
 Fire.undefine or Fire.unregisterClass to remove the id of unused class';
                 }
+// @endif
                 Fire.error(error);
-                return;
             }
-            _idToClass[classId] = constructor;
-        }
-        if ( !constructor.prototype.hasOwnProperty('__classname__') ) {
-            Fire.setClassName(classId, constructor);
+            else {
+                _idToClass[classId] = constructor;
+            }
+
+            // auto set class name
+            if ( !constructor.prototype.hasOwnProperty('__classname__') ) {
+                Fire.setClassName(classId, constructor);
+            }
         }
     };
 
