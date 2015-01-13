@@ -182,26 +182,18 @@ test('test circular reference', function () {
 test('test serializable attributes', function () {
     var Sprite = Fire.define('Sprite')
                      .prop('trimThreshold', 2, Fire.EditorOnly)
-                     .prop('author', 'knox', Fire.NetworkOnly)
                      .prop('_isValid', true, Fire.NonSerialized);
 
     var sprite = new Sprite();
     var resultInEditor = JSON.parse(Fire.serialize(sprite));
     var resultInPlayer = JSON.parse(Fire.serialize(sprite, { exporting: true }));
-    var resultInNetwork = JSON.parse(Fire.serialize(sprite, { network: true }));
 
     strictEqual(resultInEditor.trimThreshold, 2, 'serialize editor only in editor');
-    strictEqual(resultInEditor.author, undefined, 'dont serialize network only in editor');
 
     strictEqual(resultInPlayer.trimThreshold, undefined, 'should not serialize editor only in player');
-    strictEqual(resultInPlayer.author, undefined, 'dont serialize network only in player');
-
-    strictEqual(resultInNetwork.trimThreshold, 2, 'should serialize editor only in network');
-    strictEqual(resultInNetwork.author, 'knox', 'should serialize network only in network');
 
     strictEqual(resultInEditor._isValid, undefined, 'should not serialize non-serialized in editor');
     strictEqual(resultInPlayer._isValid, undefined, 'should not serialize non-serialized in player');
-    strictEqual(resultInPlayer.author, undefined, 'should not serialize non-serialized in network');
 
     Fire.undefine(Sprite);
 });

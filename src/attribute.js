@@ -81,14 +81,6 @@ Fire.EditorOnly = {
 };
 
 /**
- * The NetworkOnly attribute indicates that the prop will only serializable for network transfer, just like DontSave.
- */
-Fire.NetworkOnly = {
-    networkOnly: true,
-    _canUsedInGetter: false,
-};
-
-/**
  * Specify that the input value must be integer in Inspector
  * @property {object} Fire.HideInInspector
  */
@@ -124,10 +116,11 @@ Fire.HostType = function (typename) {
         _canUsedInGetter: false,
 
         _onAfterProp: function (constructor, mainPropName) {
+// @ifdef DEV
             // check host object
             var checked = (function checkHostType(constructor) {
                 if (! Fire.isChildClassOf(constructor, Asset)) {
-                    Fire.error('HostType can only be used in types of Asset');
+                    Fire.error('HostType is only available for Assets');
                     return false;
                 }
                 var found = false;
@@ -152,13 +145,16 @@ Fire.HostType = function (typename) {
             })(constructor);
 
             if (checked) {
+// @endif
                 var mainPropAttr = Fire.attr(constructor, mainPropName) || {};
                 var needExtname = (NEED_EXT_TYPES.indexOf(mainPropAttr.hostType) !== -1);
                 if (needExtname) {
                     // declare extname field
                     constructor.prop('_hostext', '', Fire.HideInInspector);
                 }
+// @ifdef DEV
             }
+// @endif
         }
     };
 };

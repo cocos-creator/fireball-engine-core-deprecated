@@ -13,11 +13,9 @@ var _Serializer = (function () {
 
     /**
      * @param {boolean} [exporting=false] - if true, property with Fire.EditorOnly will be discarded
-     * @param {boolean} [network=false] - if false, property with Fire.NetworkOnly will be discarded
      */
-    function _Serializer(obj, exporting, network) {
+    function _Serializer(obj, exporting) {
         this._exporting = exporting;
-        this._network = network;
 
         this.serializedList = [];  // list of serialized data for all Fire.FObject objs
         this._parsingObjs = [];    // 记录当前引用对象，防止循环引用
@@ -114,11 +112,6 @@ var _Serializer = (function () {
                                 continue;
                             }
 
-                            // skip network only when not network
-                            if (attrs.networkOnly && !self._network) {
-                                continue;
-                            }
-
                             // skip editor only when exporting
                             if (self._exporting && attrs.editorOnly) {
                                 continue;
@@ -157,7 +150,7 @@ var _Serializer = (function () {
         if (type === 'object') {
             if (val instanceof FObject) {
                 var objFlags = val._objFlags;
-                if ((objFlags & DontSave) && !self._network) {
+                if (objFlags & DontSave) {
                     return undefined;
                 }
                 else if (self._exporting && (objFlags & EditorOnly)) {
