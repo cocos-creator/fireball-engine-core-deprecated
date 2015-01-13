@@ -11,11 +11,11 @@ Fire._customAssetMenuItems = [];
  * @param {string} menuPath - the menu path name. Eg. "Rendering/Camera"
  * @param {number} [priority] - the order which the menu item are displayed
  */
-Fire.addCustomAssetMenu = function (constructor, menuPath, name, priority) {
+Fire.addCustomAssetMenu = function (constructor, menuPath, priority) {
     Fire._customAssetMenuItems.push({
-        fileName:name,
         customAsset: constructor,
         menuPath: menuPath,
         priority: priority
     });
 };
+
