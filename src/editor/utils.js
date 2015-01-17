@@ -94,3 +94,37 @@ Fire.arrayCmpFilter = function ( items, func ) {
 
     return results;
 };
+
+Fire.arrayResize = function ( array, newLength ) {
+    if ( array.length >= newLength ) {
+        array.length = newLength;
+        return;
+    }
+
+    var start = array.length;
+    var lastItem = array[array.length-1];
+    array.length = newLength;
+
+    for ( var i = start; i < newLength; ++i ) {
+        if ( lastItem.clone ) {
+            array[i] = lastItem.clone();
+        }
+        else {
+            array[i] = lastItem;
+        }
+    }
+};
+
+Fire.arrayFillUndefined = function ( array, value ) {
+    for ( var i = 0; i < array.length; ++i ) {
+        if ( array[i] !== undefined )
+            continue;
+
+        if ( value !== null && value.clone ) {
+            array[i] = value.clone();
+        }
+        else {
+            array[i] = value;
+        }
+    }
+};
