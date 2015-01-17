@@ -27,9 +27,9 @@ var paths = {
         'src/callbacks-invoker.js',
 
         // basic classes
+        'src/utils.js',
         'src/attribute.js',
         'src/class.js',
-        'src/utils.js',
         'src/path.js',
         'src/object.js',
         'src/hash-object.js',

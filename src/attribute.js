@@ -81,10 +81,68 @@ Fire.EditorOnly = {
 };
 
 /**
- * Specify that the input value must be integer in Inspector
+ * Specify that the input value must be integer in Inspector.
+ * Also used to indicates that the type of elements in array or the type of value in dictionary is integer.
  * @property {object} Fire.HideInInspector
  */
 Fire.Integer = { type: 'int' };
+
+/**
+ * Indicates that the type of elements in array or the type of value in dictionary is double.
+ * @property {object} Fire.HideInInspector
+ */
+Fire.Double = { type: 'double' };
+
+// @ifdef DEV
+function getTypeChecker (type, attrName) {
+    return function (constructor, mainPropName) {
+        var mainPropAttrs = Fire.attr(constructor, mainPropName) || {};
+        if (mainPropAttrs.type !== type) {
+            Fire.warn('Can only indicate one type attribute for %s.%s.', Fire.getClassName(constructor), mainPropName);
+            return;
+        }
+        if (!mainPropAttrs.hasOwnProperty('default')) {
+            return;
+        }
+        var isContainer = Array.isArray(mainPropAttrs.default) || _isPlainEmptyObj_DEV(mainPropAttrs.default);
+        if (isContainer) {
+            return;
+        }
+        var defType = typeof mainPropAttrs.default;
+        if (defType === type) {
+            Fire.warn('No needs to indicate the "%s" attribute for %s.%s, which its default value is type of %s.',
+                       attrName, Fire.getClassName(constructor), mainPropName, type);
+        }
+        else {
+            Fire.warn('Can not indicate the "%s" attribute for %s.%s, which its default value is type of %s.',
+                       attrName, Fire.getClassName(constructor), mainPropName, defType);
+        }
+        delete mainPropAttrs.type;
+    };
+}
+// @endif
+
+/**
+ * Indicates that the type of elements in array or the type of value in dictionary is boolean.
+ * @property {object} Fire.HideInInspector
+ */
+Fire.Boolean = {
+    type: 'boolean',
+// @ifdef DEV
+    _onAfterProp: getTypeChecker('boolean', 'Fire.Boolean'),
+// @endif
+};
+
+/**
+ * Indicates that the type of elements in array or the type of value in dictionary is string.
+ * @property {object} Fire.HideInInspector
+ */
+Fire.String = {
+    type: 'string',
+// @ifdef DEV
+    _onAfterProp: getTypeChecker('string', 'Fire.String'),
+// @endif
+};
 
 /**
  * Makes a property only accept the supplied object type in Inspector.
@@ -96,6 +154,17 @@ Fire.Integer = { type: 'int' };
  */
 Fire.ObjectType = function (constructor) {
     return { type: 'object', objectType: constructor };
+};
+
+/**
+ * Makes a property show up as a enum in Inspector.
+ *
+ * @method Fire.Enum
+ * @param {(string)} enumType
+ * @returns {object} the enum attribute
+ */
+Fire.Enum = function (enumType) {
+    return { type: 'enum', enumList: Fire.getEnumList(enumType) };
 };
 
 /**
@@ -185,17 +254,6 @@ Fire.HostType = function (typename) {
  */
 Fire.Custom = function (type) {
     return { custom: type };
-};
-
-/**
- * Makes a property show up as a enum in Inspector.
- *
- * @method Fire.Enum
- * @param {(string)} enumType
- * @returns {object} the enum attribute
- */
-Fire.Enum = function (enumType) {
-    return { type: 'enum', enumList: Fire.getEnumList(enumType) };
 };
 
 /**
