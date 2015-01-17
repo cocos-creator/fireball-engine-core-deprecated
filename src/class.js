@@ -26,26 +26,6 @@ var _appendProp = function (name/*, isGetter*/) {
 };
 
 /**
- * @param {object} obj
- * @returns {boolean} is {} ?
- */
-var _isPlainEmptyObj = function (obj) {
-    if (obj.constructor !== ({}).constructor) {
-        return false;
-    }
-    // jshint ignore: start
-    for (var k in obj) {
-        return false;
-    }
-    // jshint ignore: end
-    return true;
-};
-
-var _cloneable = function (obj) {
-    return obj && typeof obj.clone === 'function' && (obj.constructor.prototype.hasOwnProperty('clone') || obj.hasOwnProperty('clone'));
-};
-
-/**
  * the metaclass of the "fire class" created by Fire.define, all its static members
  * will inherited by fire class.
  */
@@ -84,9 +64,9 @@ var _metaClass = {
                     return this;
                 }
             }
-            else if (!_isPlainEmptyObj(defaultValue)) {
+            else if (!_isPlainEmptyObj_DEV(defaultValue)) {
                 // check cloneable
-                if (!_cloneable(defaultValue)) {
+                if (!_cloneable_DEV(defaultValue)) {
                     Fire.error('Do not set default value to non-empty object, unless the object defines its own "clone" function. Set default value of ' + Fire.getClassName(this) + '.prop("' + name +
                         '", ...) to null or {}, and initialize in constructor please. (just like "this.' +
                         name + ' = {foo: bar};")');

@@ -120,3 +120,27 @@ function _isDomNode(obj) {
         obj && typeof obj === "object" && typeof obj.nodeType === "number" && typeof obj.nodeName === "string"
     );
 }
+
+// @ifdef DEV
+/**
+ * @param {object} obj
+ * @returns {boolean} is {} ?
+ */
+var _isPlainEmptyObj_DEV = function (obj) {
+    if (obj.constructor !== ({}).constructor) {
+        return false;
+    }
+    // jshint ignore: start
+    for (var k in obj) {
+        return false;
+    }
+    // jshint ignore: end
+    return true;
+};
+// @endif
+
+// @ifdef DEV
+var _cloneable_DEV = function (obj) {
+    return obj && typeof obj.clone === 'function' && (obj.constructor.prototype.hasOwnProperty('clone') || obj.hasOwnProperty('clone'));
+};
+// @endif
