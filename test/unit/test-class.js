@@ -47,7 +47,7 @@ test('test', function () {
 
     // constructor
 
-    Fire.undefine(Animal);
+    Fire.unregisterClass(Animal);
 
     var constructor = new Callback();
     Animal = Fire.define('Animal', constructor)
@@ -67,7 +67,7 @@ test('test', function () {
     var instance3 = new Animal();
     strictEqual(instance3.weight, 100, 'class define not changed');
 
-    Fire.undefine(Animal);
+    Fire.unregisterClass(Animal);
 });
 
 test('Inherit', function () {
@@ -96,7 +96,7 @@ test('Inherit', function () {
     deepEqual(Husky.__props__, ['name', 'weight'], 'can inherit prop list');
     deepEqual(Dog.__props__, ['name'], 'base prop list not changed');
 
-    Fire.undefine(Animal, Dog, Husky);
+    Fire.unregisterClass(Animal, Dog, Husky);
 });
 
 test('Inherit + constructor', function () {
@@ -126,7 +126,7 @@ test('Inherit + constructor', function () {
     strictEqual(dog.name, 'doge', 'can override property');
     strictEqual(husky.name, 'doge', 'can inherit property');
 
-    Fire.undefine(Animal, Dog, Husky);
+    Fire.unregisterClass(Animal, Dog, Husky);
 });
 
 test('prop reference', function () {
@@ -141,7 +141,7 @@ test('prop reference', function () {
     notStrictEqual(obj1.ary, obj2.ary, 'empty array reference not equal');
     notStrictEqual(obj1.dict, obj2.dict, 'empty dict reference not equal');
 
-    Fire.undefine(type);
+    Fire.unregisterClass(type);
 });
 
 test('serialization if inherited from FObject', function () {
@@ -156,7 +156,7 @@ test('serialization if inherited from FObject', function () {
 
     deepEqual(json, expected, 'can serialize FObject.name');
 
-    Fire.undefine(type);
+    Fire.unregisterClass(type);
 });
 
 test('isChildClassOf', function () {
@@ -201,5 +201,5 @@ test('isChildClassOf', function () {
     strictEqual(Fire.isChildClassOf( Animal, Base), true, 'Animal is child of Base');
     strictEqual(Fire.isChildClassOf( Dog, Base),  true, 'Dog is child of Base');
 
-    Fire.undefine(Animal, Dog, Husky);
+    Fire.unregisterClass(Animal, Dog, Husky);
 });

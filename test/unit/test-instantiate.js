@@ -101,7 +101,7 @@
         strictEqual(clone.image, 'sprite.png', 'should not clone variable which not defined by property');
         strictEqual(clone._isValid, true, 'should not clone non-serialized field');
 
-        Fire.undefine(Sprite);
+        Fire.unregisterClass(Sprite);
     });
 
     test('Circular Reference', function () {

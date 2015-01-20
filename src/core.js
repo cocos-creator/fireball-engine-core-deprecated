@@ -133,7 +133,7 @@ Fire.getClassName = function (obj) {
                     if (!Fire.isEditor) {
                         error += ' (This may be caused by error of unit test.) \
 If you dont need serialization, you can set class id to "". You can also call \
-Fire.undefine or Fire.unregisterClass to remove the id of unused class';
+Fire.unregisterClass to remove the id of unused class';
                     }
                     // @endif
                     Fire.error(error);
@@ -169,21 +169,25 @@ Fire.undefine or Fire.unregisterClass to remove the id of unused class';
     };
 
     /**
-     * Unregister the class so that Fireball-x will not keep its reference anymore.
+     * If you dont need a class (which defined by Fire.define or Fire.setClassName) anymore,
+     * You should unregister the class so that Fireball-x will not keep its reference anymore.
+     * Please note that its still your responsibility to free other references to the class.
      *
      * @method Fire.unregisterClass
-     * @param {function} constructor
-     *
-     * @private
+     * @param {...function} [constructor] - the class you will want to unregister, any number of classes can be added
      */
     Fire.unregisterClass = function (constructor) {
-        var classId = constructor.prototype.__cid__;
-        if (classId) {
-            delete _idToClass[classId];
-        }
-        var classname = constructor.prototype.__classname__;
-        if (classname) {
-            delete _nameToClass[classname];
+        'use strict';
+        for (var i = 0; i < arguments.length; i++) {
+            var p = arguments[i].prototype;
+            var classId = p.__cid__;
+            if (classId) {
+                delete _idToClass[classId];
+            }
+            var classname = p.__classname__;
+            if (classname) {
+                delete _nameToClass[classname];
+            }
         }
     };
 

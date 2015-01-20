@@ -485,23 +485,6 @@ function _nicifyFireClass (fireClass, className) {
 // @endif
 
 /**
- * If you dont need a class (which defined by Fire.define) anymore,
- * you'd better undefine it to reduce memory usage.
- * Please note that its still your responsibility to free other references to the class.
- *
- * @method Fire.undefine
- * @param {...function} [constructor] - the class you will want to undefine, any number of classes can be added
- *
- * @see Fire.define
- */
-Fire.undefine = function (constructor) {
-    'use strict';
-    for (var i = 0; i < arguments.length; i++) {
-        Fire.unregisterClass(arguments[i]);
-    }
-};
-
-/**
  * Specially optimized define function only for internal base classes
  * @private
  */

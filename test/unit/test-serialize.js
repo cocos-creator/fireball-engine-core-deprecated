@@ -123,7 +123,7 @@ test('test inherited FireClass', function() {
 
     match(asset, expect, 'type test');
 
-    Fire.undefine(MyAsset);
+    Fire.unregisterClass(MyAsset);
 });
 
 test('test FireClass', function () {
@@ -148,7 +148,7 @@ test('test FireClass', function () {
 
     deepEqual(actual, expected, 'can serialize');
 
-    Fire.undefine(Sprite);
+    Fire.unregisterClass(Sprite);
 });
 
 test('test circular reference', function () {
@@ -195,7 +195,7 @@ test('test serializable attributes', function () {
     strictEqual(resultInEditor._isValid, undefined, 'should not serialize non-serialized in editor');
     strictEqual(resultInPlayer._isValid, undefined, 'should not serialize non-serialized in player');
 
-    Fire.undefine(Sprite);
+    Fire.unregisterClass(Sprite);
 });
 
 test('test asset property', function () {

@@ -15,7 +15,7 @@ test('deserialize missing script', function() {
     var lastData = Fire.serialize(obj);
     delete obj.__id__;
     delete obj.ref.__id__;
-    Fire.undefine(ToMiss);
+    Fire.unregisterClass(ToMiss);
 
     // deserialize
 
