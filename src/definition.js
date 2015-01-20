@@ -64,16 +64,18 @@ var ObjectFlags = {
     IsOnLoadCalled: 1 << 13,
     IsOnStartCalled: 1 << 14,
 
-    /**
-     * Hide in game view, hierarchy, and scene view... etc.
-     * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
-     * @property {number} ObjectFlags.Hide
-     */
-    Hide: -1,
 };
 
+/**
+ * Hide in game view, hierarchy, and scene view... etc.
+ * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
+ * @property {number} ObjectFlags.Hide
+ */
 ObjectFlags.Hide = ObjectFlags.HideInGame | ObjectFlags.HideInEditor;
 
 Fire._ObjectFlags = ObjectFlags;
 
-var PersistentMask = ~(ToDestroy | Dirty | ObjectFlags.Destroying); // can not clone these flags
+var PersistentMask = ~(ToDestroy | Dirty | ObjectFlags.Destroying |     // can not clone these flags
+                       ObjectFlags.IsOnEnableCalled |
+                       ObjectFlags.IsOnLoadCalled |
+                       ObjectFlags.IsOnStartCalled);

@@ -315,6 +315,18 @@ Fire._isFireClass = function (constructor) {
  */
 Fire.isChildClassOf = function (subclass, superclass) {
     if (subclass && superclass) {
+        if (typeof subclass !== 'function') {
+// @ifdef DEV
+            Fire.warn('[isChildClassOf] subclass should be function type');
+// @endif
+            return false;
+        }
+        if (typeof superclass !== 'function') {
+// @ifdef DEV
+            Fire.warn('[isChildClassOf] superclass should be function type');
+// @endif
+            return false;
+        }
         // fireclass
         for (; subclass && subclass.$super; subclass = subclass.$super) {
             if (subclass === superclass) {

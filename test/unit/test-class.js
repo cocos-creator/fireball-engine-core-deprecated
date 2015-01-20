@@ -163,6 +163,10 @@ test('isChildClassOf', function () {
     strictEqual(Fire.isChildClassOf(null, null) ||
                 Fire.isChildClassOf(Object, null) ||
                 Fire.isChildClassOf(null, Object),  false, 'nil');
+
+    //strictEqual(Fire.isChildClassOf(123, Object), false, 'can ignore wrong type');
+    //strictEqual(Fire.isChildClassOf(Object, 123), false, 'can ignore wrong type 2');
+
     strictEqual(Fire.isChildClassOf(Object, Object), true, 'any obj is child of itself');
 
     var Base = function () {};
