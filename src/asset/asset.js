@@ -25,7 +25,7 @@ var Asset = (function () {
             this._hostext = extname;
         }
         else {
-            Fire.error('Have not defined any HostType yet');
+            Fire.error('Have not defined any HostType yet, no need to set host file\'s extname.');
         }
     };
 

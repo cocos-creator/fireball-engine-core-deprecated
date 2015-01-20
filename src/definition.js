@@ -59,6 +59,11 @@ var ObjectFlags = {
      */
     HideInEditor: 1 << 11,
 
+    // flags for Component
+    IsOnEnableCalled: 1 << 12,
+    IsOnLoadCalled: 1 << 13,
+    IsOnStartCalled: 1 << 14,
+
     /**
      * Hide in game view, hierarchy, and scene view... etc.
      * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
