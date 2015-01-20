@@ -37,7 +37,7 @@
                 this.obj = {};
             }
             Fire.extend(MyAsset, _super);
-            Fire.registerClass('MyAsset', MyAsset);
+            Fire.setClassName('MyAsset', MyAsset);
 
             // should not instantiate --------------------------
             MyAsset.staticFunc = function () { };

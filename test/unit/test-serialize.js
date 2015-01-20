@@ -30,7 +30,7 @@ test('basic test', function() {
             this.obj = {};
         }
         Fire.extend(MyAsset, _super);
-        Fire.registerClass('MyAsset', MyAsset);
+        Fire.setClassName('MyAsset', MyAsset);
 
         // should not serialize ----------------------------
         MyAsset.staticFunc = function () { };

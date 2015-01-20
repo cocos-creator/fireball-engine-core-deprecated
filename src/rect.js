@@ -5,7 +5,7 @@ var Rect = (function () {
         this.width = typeof w === 'number' ? w : 0.0;
         this.height = typeof h === 'number' ? h : 0.0;
     }
-    Fire.registerClass('Fire.Rect', Rect);
+    Fire.setClassName('Fire.Rect', Rect);
 
     Rect.fromVec2 = function ( v1, v2 ) {
         var min_x = Math.min( v1.x, v2.x );

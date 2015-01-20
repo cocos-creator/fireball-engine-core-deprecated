@@ -5,7 +5,7 @@ var Color = (function () {
         this.b = typeof b === 'number' ? b : 0.0;
         this.a = typeof a === 'number' ? a : 1.0;
     }
-    Fire.registerClass('Fire.Color', Color);
+    Fire.setClassName('Fire.Color', Color);
 
     Color.prototype.clone = function () {
         return new Color(this.r, this.g, this.b, this.a);

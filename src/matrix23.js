@@ -11,7 +11,7 @@ var Matrix23 = function () {
     this.tx = 0;
     this.ty = 0;
 };
-Fire.registerClass('Fire.Matrix23', Matrix23);
+Fire.setClassName('Fire.Matrix23', Matrix23);
 Fire.Matrix23 = Matrix23;
 
 Matrix23.identity = new Matrix23();

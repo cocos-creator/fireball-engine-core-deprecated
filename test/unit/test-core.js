@@ -10,7 +10,7 @@ test('test', function() {
             _super.call(this);
         }
         Fire.extend(MyAsset, _super);
-        Fire.registerClass('Foo', MyAsset);
+        Fire.setClassName('Foo', MyAsset);
 
         return MyAsset;
     })();

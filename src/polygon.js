@@ -6,7 +6,7 @@ Fire.Polygon = (function () {
             console.warn( "Invalid polygon, the data must contains 3 or more points." );
         }
     }
-    Fire.registerClass('Fire.Polygon', Polygon);
+    Fire.setClassName('Fire.Polygon', Polygon);
 
     Polygon.prototype.intersects = function ( polygon ) {
         return Intersection.polygonPolygon( this, polygon );

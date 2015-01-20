@@ -4,7 +4,7 @@ test('deserialize missing script', function() {
 
     var MissingScript = Fire.define('MissingScript').prop('_$erialized', null);
     MissingScript.safeFindClass = function (id) {
-        return Fire.getClassById(id) || MissingScript;
+        return Fire._getClassById(id) || MissingScript;
     };
 
     var ToMiss = Fire.define('ToMiss').prop('ref', null);
@@ -34,7 +34,7 @@ test('deserialize missing script', function() {
     deepEqual(reSerialized, JSON.parse(lastData), 'can serialize missing script as its original data');
 
     //// re deserialize after fixed, no need to test ;)
-    //Fire.registerClass('ToMiss', ToMiss);
+    //Fire.setClassName('ToMiss', ToMiss);
     //var recovered = Fire.deserialize(reSerialized);
     //deepEqual(recovered, obj, 'can deserialize correctly after script fixed');
     //Fire.unregisterClass(ToMiss);

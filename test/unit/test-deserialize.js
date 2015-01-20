@@ -23,7 +23,7 @@ test('basic deserialize test', function () {
             this.embeddedTypedObj = new Vec2(1, 2.1);
         }
         Fire.extend(MyAsset, _super);
-        Fire.registerClass('MyAsset', MyAsset);
+        Fire.setClassName('MyAsset', MyAsset);
         return MyAsset;
     })();
 
@@ -79,7 +79,7 @@ test('json deserialize test', function () {
 
         }
         Fire.extend(MyAsset, _super);
-        Fire.registerClass('MyAsset', MyAsset);
+        Fire.setClassName('MyAsset', MyAsset);
         return MyAsset;
     })();
 
@@ -120,7 +120,7 @@ test('circular reference by object', function () {
             this.refToMain = null;
         }
         Fire.extend(MyAsset, Fire.Asset);
-        Fire.registerClass('MyAsset', MyAsset);
+        Fire.setClassName('MyAsset', MyAsset);
         return MyAsset;
     })();
 
@@ -154,7 +154,7 @@ test('circular reference by array', function () {
             // array2 = [array1, 2]
         }
         Fire.extend(MyAsset, _super);
-        Fire.registerClass('MyAsset', MyAsset);
+        Fire.setClassName('MyAsset', MyAsset);
 
         return MyAsset;
     })();
@@ -182,7 +182,7 @@ test('circular reference by dict', function () {
             this.dict1.other = this.dict2;
         }
         Fire.extend(MyAsset, _super);
-        Fire.registerClass('MyAsset', MyAsset);
+        Fire.setClassName('MyAsset', MyAsset);
 
         return MyAsset;
     })();

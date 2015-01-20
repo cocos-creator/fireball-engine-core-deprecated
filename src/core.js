@@ -10,6 +10,8 @@ function _copyprop(name, source, target) {
     Object.defineProperty(target, name, pd);
 }
 
+Fire.JS = {};
+
 /**
  * @method Fire.addon
  * copy all properties not defined in obj from arguments[1...n]
@@ -110,54 +112,59 @@ Fire.getClassName = function (obj) {
     return null;
 };
 
-/**
- * Set the name of a class
- * @method Fire.setClassName
- * @param {string} className
- * @param {function} constructor
- */
-Fire.setClassName = function (className, constructor) {
-    constructor.prototype.__classname__ = className;
-};
-
 // id 注册
 (function () {
     var _idToClass = {};
+    var _nameToClass = {};
+
+    function getRegister (key, table) {
+        return function (id, constructor) {
+            // deregister old
+            if (constructor.prototype.hasOwnProperty(key)) {
+                delete table[constructor.prototype[key]];
+            }
+            constructor.prototype[key] = id;
+            // register class
+            if (id) {
+                var registered = table[id];
+                if (registered && registered !== constructor) {
+                    var error = 'A Class already exists with the same key: "' + id + '".';
+                    // @ifdef EDITOR
+                    if (!Fire.isEditor) {
+                        error += ' (This may be caused by error of unit test.) \
+If you dont need serialization, you can set class id to "". You can also call \
+Fire.undefine or Fire.unregisterClass to remove the id of unused class';
+                    }
+                    // @endif
+                    Fire.error(error);
+                }
+                else {
+                    table[id] = constructor;
+                }
+            }
+        };
+    }
 
     /**
      * Register the class by specified id, if its classname is not defined, the class name will also be set.
-     * @method Fire.registerClass
      * @param {string} classId
      * @param {function} constructor
      */
-    Fire.registerClass = function (classId, constructor) {
-        // deregister old class id
-        if (constructor.prototype.hasOwnProperty('__cid__')) {
-            delete _idToClass[constructor.prototype.__cid__];
-        }
-        constructor.prototype.__cid__ = classId;
-        // register class
-        if (classId) {
-            var registered = _idToClass[classId];
-            if (registered && registered !== constructor) {
-                var error = 'A Class already exists with the same id: "' + classId + '".';
-// @ifdef EDITOR
-                if ( !Fire.isEditor ) {
-                    error += ' (This may be caused by error of unit test.) \
-If you dont need serialization, you can set class id to "". You can also call \
-Fire.undefine or Fire.unregisterClass to remove the id of unused class';
-                }
-// @endif
-                Fire.error(error);
-            }
-            else {
-                _idToClass[classId] = constructor;
-            }
+    Fire._setClassId = getRegister('__cid__', _idToClass);
 
-            // auto set class name
-            if ( !constructor.prototype.hasOwnProperty('__classname__') ) {
-                Fire.setClassName(classId, constructor);
-            }
+    var doSetClassName = getRegister('__classname__', _nameToClass);
+
+    /**
+     * Register the class by specified name
+     * @method Fire.setClassName
+     * @param {string} className
+     * @param {function} constructor
+     */
+    Fire.setClassName = function (className, constructor) {
+        doSetClassName(className, constructor);
+        // auto set class id
+        if (className && !constructor.prototype.hasOwnProperty('__cid__')) {
+            Fire._setClassId(className, constructor);
         }
     };
 
@@ -174,25 +181,39 @@ Fire.undefine or Fire.unregisterClass to remove the id of unused class';
         if (classId) {
             delete _idToClass[classId];
         }
+        var classname = constructor.prototype.__classname__;
+        if (classname) {
+            delete _nameToClass[classname];
+        }
     };
 
     /**
      * Get the registered class by id
-     * @method Fire.getClassById
+     * @method Fire._getClassById
      * @param {string} classId
      * @returns {function} constructor
      */
-    Fire.getClassById = function (classId) {
+    Fire._getClassById = function (classId) {
         return _idToClass[classId];
+    };
+
+    /**
+     * Get the registered class by name
+     * @method Fire.getClassByName
+     * @param {string} classname
+     * @returns {function} constructor
+     */
+    Fire.getClassByName = function (classname) {
+        return _nameToClass[classname];
     };
 
     // @ifdef EDITOR
     /**
-     * Get class id of the object, if class id not defined, its class name will be returned.
+     * Get class id of the object
      * @param {(object|function)} obj - instance or constructor
      * @returns {string}
      */
-    Fire.getClassId = function (obj) {
+    Fire._getClassId = function (obj) {
         if (typeof obj === 'function' && obj.prototype.__cid__) {
             return obj.prototype.__cid__;
         }
@@ -201,10 +222,10 @@ Fire.undefine or Fire.unregisterClass to remove the id of unused class';
                 return obj.__cid__;
             }
         }
-        return Fire.getClassName(obj);
+        return '';
     };
 
-    Object.defineProperty(Fire, '_registeredClasses', {
+    Object.defineProperty(Fire, '_registeredClassIds', {
         get: function () {
             var dump = {};
             for (var id in _idToClass) {
@@ -216,6 +237,21 @@ Fire.undefine or Fire.unregisterClass to remove the id of unused class';
             _idToClass = {};
             for (var id in value) {
                 _idToClass[id] = value[id];
+            }
+        }
+    });
+    Object.defineProperty(Fire, '_registeredClassNames', {
+        get: function () {
+            var dump = {};
+            for (var id in _nameToClass) {
+                dump[id] = _nameToClass[id];
+            }
+            return dump;
+        },
+        set: function (value) {
+            _nameToClass = {};
+            for (var id in value) {
+                _nameToClass[id] = value[id];
             }
         }
     });

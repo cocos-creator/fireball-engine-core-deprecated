@@ -412,7 +412,7 @@ Fire.define = function (className, baseOrConstructor, constructor) {
             fireClass.__props__ = baseClass.__props__.slice();
         }
     }
-    Fire.registerClass(className, fireClass);
+    Fire.setClassName(className, fireClass);
 
     // @ifdef EDITOR
     _nicifyFireClass(fireClass, className);
@@ -506,7 +506,7 @@ Fire.undefine = function (constructor) {
  * @private
  */
 Fire._fastDefine = function (className, constructor, serializableFields) {
-    Fire.registerClass(className, constructor);
+    Fire.setClassName(className, constructor);
     constructor.__props__ = serializableFields;
     for (var i = 0; i < serializableFields.length; i++) {
         Fire.attr(constructor, serializableFields[i], Fire.HideInInspector);

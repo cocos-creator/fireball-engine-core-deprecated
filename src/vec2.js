@@ -4,7 +4,7 @@ Vec2 = (function () {
         this.x = (typeof x === 'number' ? x : 0.0);
         this.y = (typeof y === 'number' ? y : 0.0);
     }
-    Fire.registerClass('Fire.Vec2', Vec2);
+    Fire.setClassName('Fire.Vec2', Vec2);
 
     // static
 
