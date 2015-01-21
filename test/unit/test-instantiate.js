@@ -68,11 +68,11 @@
 
     test('Object', function () {
         var obj = new Fire.FObject();
-        obj._objFlags = 234;
+        obj._objFlags = Fire._ObjectFlags.EditorOnly;
 
         var clone = Fire.instantiate(obj);
 
-        strictEqual(clone._objFlags, 234, 'can clone obj flags');
+        strictEqual(clone._objFlags, Fire._ObjectFlags.EditorOnly, 'can clone obj flags');
 
         var hashObj = new Fire.HashObject();
         var id = hashObj.id;    // generate id

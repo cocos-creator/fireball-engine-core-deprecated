@@ -46,7 +46,6 @@ var Color = (function () {
         else {
             return '#' + this.toHEX(opt);
         }
-        return "";
     };
 
     Color.prototype.equalTo = function ( rhs ) {
