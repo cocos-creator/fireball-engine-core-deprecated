@@ -124,6 +124,9 @@ Fire._doInstantiate = (function () {
                                 ((type !== 'function') ? value : null);
             }
         }
+        if (obj instanceof FObject) {
+            clone._objFlags &= PersistentMask;
+        }
         return clone;
     };
 
