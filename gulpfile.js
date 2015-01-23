@@ -49,6 +49,8 @@ var paths = {
         'src/asset/atlas.js',
         'src/asset/font-info.js',
         'src/asset/json-asset.js',
+        'src/asset/text-asset.js',
+        'src/asset/bitmap-font.js',
 
         // editor utils
         'src/editor/utils.js',

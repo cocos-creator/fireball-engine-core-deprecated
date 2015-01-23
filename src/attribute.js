@@ -176,7 +176,7 @@ Fire.Enum = function (enumType) {
  * @returns {object} the attribute
  */
 Fire.HostType = function (typename) {
-    var NEED_EXT_TYPES = ['image', 'json'];  // the types need to specify exact extname
+    var NEED_EXT_TYPES = ['image', 'json', 'text'];  // the types need to specify exact extname
     return {
         type: 'host',
         hostType: typename,
