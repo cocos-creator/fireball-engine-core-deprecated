@@ -18,4 +18,3 @@ Fire.addCustomAssetMenu = function (constructor, menuPath, priority) {
         priority: priority
     });
 };
-

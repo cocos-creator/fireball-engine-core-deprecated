@@ -54,8 +54,14 @@ Fire.mixin = function (obj) {
     obj = obj || {};
     for (var i = 1, length = arguments.length; i < length; i++) {
         var source = arguments[i];
-        for ( var name in source) {
-            _copyprop( name, source, obj);
+        if (source) {
+            if (typeof source !== 'object') {
+                Fire.error('Fire.mixin called on non-object:', source);
+                continue;
+            }
+            for ( var name in source) {
+                _copyprop( name, source, obj);
+            }
         }
     }
     return obj;
