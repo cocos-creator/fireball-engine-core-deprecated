@@ -10,7 +10,14 @@ function _copyprop(name, source, target) {
     Object.defineProperty(target, name, pd);
 }
 
-Fire.JS = {};
+Fire.JS = {
+    clear: function (obj) {
+        var keys = Object.keys(obj);
+        for (var i = 0; i < keys.length; i++) {
+            delete obj[keys[i]];
+        }
+    },
+};
 
 /**
  * @method Fire.addon
@@ -128,7 +135,8 @@ Fire.getClassName = function (obj) {
             if (id) {
                 var registered = table[id];
                 if (registered && registered !== constructor) {
-                    var error = 'A Class already exists with the same key: "' + id + '".';
+                    var error = 'A Class already exists with the same ' + key + ' : "' + id + '".';
+                    console.log('is _nameToClass:', _nameToClass === table);
                     // @ifdef EDITOR
                     if (!Fire.isEditor) {
                         error += ' (This may be caused by error of unit test.) \
@@ -238,7 +246,7 @@ Fire.unregisterClass to remove the id of unused class';
             return dump;
         },
         set: function (value) {
-            _idToClass = {};
+            Fire.JS.clear(_idToClass);
             for (var id in value) {
                 _idToClass[id] = value[id];
             }
@@ -253,7 +261,7 @@ Fire.unregisterClass to remove the id of unused class';
             return dump;
         },
         set: function (value) {
-            _nameToClass = {};
+            Fire.JS.clear(_nameToClass);
             for (var id in value) {
                 _nameToClass[id] = value[id];
             }
