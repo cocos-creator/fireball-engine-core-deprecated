@@ -93,6 +93,9 @@ Fire.Integer = { type: 'int' };
  */
 Fire.Double = { type: 'double' };
 
+Fire.SingleText = { textMode: 'single' };
+Fire.MultiText = { textMode: 'multi' };
+
 // @ifdef DEV
 function getTypeChecker (type, attrName) {
     return function (constructor, mainPropName) {
