@@ -17,4 +17,5 @@ Fire.addCustomAssetMenu = function (constructor, menuPath, priority) {
         menuPath: menuPath,
         priority: priority
     });
+    Fire.sendToPages('asset:refresh-context-menu');
 };
