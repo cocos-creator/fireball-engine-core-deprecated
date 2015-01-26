@@ -171,14 +171,14 @@ Fire.Enum = function (enumType) {
 };
 
 /**
- * Makes a property referenced to a javascript raw object which needs to load before deserialzation.
- * The property will not be serialized but will be referenced to the loaed raw object while deserialzation.
+ * Makes a property referenced to a javascript host object which needs to load before deserialzation.
+ * The property will not be serialized but will be referenced to the loaded host object while deserialzation.
  *
- * @method Fire.RawTypes
+ * @method Fire.RawType
  * @param {string} [typename]
  * @returns {object} the attribute
  */
-Fire.RawTypes = function (typename) {
+Fire.RawType = function (typename) {
     var NEED_EXT_TYPES = ['image', 'json', 'text'];  // the types need to specify exact extname
     return {
         type: 'raw',
@@ -192,7 +192,7 @@ Fire.RawTypes = function (typename) {
             // check raw object
             var checked = (function checkRawType(constructor) {
                 if (! Fire.isChildClassOf(constructor, Asset)) {
-                    Fire.error('RawTypes is only available for Assets');
+                    Fire.error('RawType is only available for Assets');
                     return false;
                 }
                 var found = false;
@@ -203,11 +203,11 @@ Fire.RawTypes = function (typename) {
                     if (type === 'raw') {
                         var containsUppercase = (attrs.rawType.toLowerCase() !== attrs.rawType);
                         if (containsUppercase) {
-                            Fire.error('RawTypes name cannot contain uppercase');
+                            Fire.error('RawType name cannot contain uppercase');
                             return false;
                         }
                         if (found) {
-                            Fire.error('Each asset cannot have more than one RawTypes');
+                            Fire.error('Each asset cannot have more than one RawType');
                             return false;
                         }
                         found = true;

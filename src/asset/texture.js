@@ -29,7 +29,7 @@ Fire.Texture = (function () {
         return t;
     })({});
 
-    Texture.prop('image', null, Fire.RawTypes('image'));
+    Texture.prop('image', null, Fire.RawType('image'));
     Texture.prop('width', 0, Fire.Integer);
     Texture.prop('height', 0, Fire.Integer);
     Texture.prop('wrapMode', Texture.WrapMode.Clamp, Fire.Enum(Texture.WrapMode));
