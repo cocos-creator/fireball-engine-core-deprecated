@@ -17,15 +17,15 @@ var Asset = (function () {
     Asset.prototype.onAfterDeserialize = function () {};
      */
 
-    Asset.prototype._setHostExtname = function (extname) {
-        if (this.hasOwnProperty('_hostext')) {
+    Asset.prototype._setRawExtname = function (extname) {
+        if (this.hasOwnProperty('_rawext')) {
             if (extname.charAt(0) === '.') {
                 extname = extname.substring(1);
             }
-            this._hostext = extname;
+            this._rawext = extname;
         }
         else {
-            Fire.error('Have not defined any HostType yet, no need to set host file\'s extname.');
+            Fire.error('Have not defined any RawTypes yet, no need to set raw file\'s extname.');
         }
     };
 

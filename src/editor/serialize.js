@@ -255,7 +255,7 @@ var _Serializer = (function () {
             return { __id__: id };
         }
         else if (_isDomNode(obj)) {
-            // host obj
+            // raw obj
             //Fire.warn("" + obj + " won't be serialized");
             return null;
         }

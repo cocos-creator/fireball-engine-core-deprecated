@@ -156,8 +156,8 @@ var _Deserializer = (function () {
                 propName = props[p];
                 var attrs = Fire.attr(klass, propName);
                 // assume all prop in __props__ must have attr
-                var hostType = attrs.hostType;
-                if (!hostType) {
+                var rawType = attrs.rawType;
+                if (!rawType) {
                     if (attrs.serializable === false) {
                         continue;   // skip nonSerialized
                     }
@@ -185,12 +185,12 @@ var _Deserializer = (function () {
                     }
                 }
                 else {
-                    // always load host objects even if property not serialized
-                    if (self.result.hostProp) {
-                        Fire.error('not support multi host object in a file');
-                        // 这里假定每个asset都有uuid，每个json只能包含一个asset，只能包含一个hostProp
+                    // always load raw objects even if property not serialized
+                    if (self.result.rawProp) {
+                        Fire.error('not support multi raw object in a file');
+                        // 这里假定每个asset都有uuid，每个json只能包含一个asset，只能包含一个rawProp
                     }
-                    self.result.hostProp = propName;
+                    self.result.rawProp = propName;
                 }
             }
             if (props[props.length - 1] === '_$erialized') {
@@ -271,30 +271,30 @@ Fire._DeserializeInfo = function () {
      */
     this.uuidPropList = [];
 
-    // host objects need to load
-    // (不用存hostList因为它的uuid可以从asset上获得)
+    // raw objects need to load
+    // (不用存rawList因为它的uuid可以从asset上获得)
 
     /**
-     * @property {string} hostProp - the corresponding field name which referenced to the host object
+     * @property {string} rawProp - the corresponding field name which referenced to the raw object
      */
-    this.hostProp = '';
+    this.rawProp = '';
     ///**
-    // * @property {Fire.Asset[]} hostObjList - the obj list whose corresponding host object needs to load
+    // * @property {Fire.Asset[]} rawObjList - the obj list whose corresponding raw object needs to load
     // */
-    //this.hostObjList = [];
+    //this.rawObjList = [];
     ///**
-    // * @property {string[]} hostPropList - the corresponding field name which referenced to the host object
+    // * @property {string[]} rawPropList - the corresponding field name which referenced to the raw object
     // */
-    //this.hostPropList = [];
+    //this.rawPropList = [];
 };
 
 Fire._DeserializeInfo.prototype.reset = function () {
     this.uuidList.length = 0;
     this.uuidObjList.length = 0;
     this.uuidPropList.length = 0;
-    this.hostProp = '';
-    //this.hostObjList.length = 0;
-    //this.hostPropList.length = 0;
+    this.rawProp = '';
+    //this.rawObjList.length = 0;
+    //this.rawPropList.length = 0;
 };
 
 Fire._DeserializeInfo.prototype.getUuidOf = function (obj, propName) {

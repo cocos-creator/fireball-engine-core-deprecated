@@ -3,7 +3,7 @@
         Fire.Asset.call(this);
     });
 
-    TextAsset.prop('text', '', Fire.HostType('text'));
+    TextAsset.prop('text', '', Fire.RawTypes('text'));
 
     return TextAsset;
 })();
