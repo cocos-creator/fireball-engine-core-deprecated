@@ -172,27 +172,27 @@ Fire.Enum = function (enumType) {
 
 /**
  * Makes a property referenced to a javascript host object which needs to load before deserialzation.
- * The property will not be serialized but will be referenced to the loaed host object while deserialzation.
+ * The property will not be serialized but will be referenced to the loaded host object while deserialzation.
  *
- * @method Fire.HostType
+ * @method Fire.RawType
  * @param {string} [typename]
  * @returns {object} the attribute
  */
-Fire.HostType = function (typename) {
+Fire.RawType = function (typename) {
     var NEED_EXT_TYPES = ['image', 'json', 'text'];  // the types need to specify exact extname
     return {
-        type: 'host',
-        hostType: typename,
+        type: 'raw',
+        rawType: typename,
         serializable: false,
         hideInInspector: true,
         _canUsedInGetter: false,
 
         _onAfterProp: function (constructor, mainPropName) {
 // @ifdef DEV
-            // check host object
-            var checked = (function checkHostType(constructor) {
+            // check raw object
+            var checked = (function checkRawType(constructor) {
                 if (! Fire.isChildClassOf(constructor, Asset)) {
-                    Fire.error('HostType is only available for Assets');
+                    Fire.error('RawType is only available for Assets');
                     return false;
                 }
                 var found = false;
@@ -200,14 +200,14 @@ Fire.HostType = function (typename) {
                     var propName = constructor.__props__[p];
                     var attrs = Fire.attr(constructor, propName);
                     var type = attrs.type;
-                    if (type === 'host') {
-                        var containsUppercase = (attrs.hostType.toLowerCase() !== attrs.hostType);
+                    if (type === 'raw') {
+                        var containsUppercase = (attrs.rawType.toLowerCase() !== attrs.rawType);
                         if (containsUppercase) {
-                            Fire.error('HostType name cannot contain uppercase');
+                            Fire.error('RawType name cannot contain uppercase');
                             return false;
                         }
                         if (found) {
-                            Fire.error('Each asset cannot have more than one HostType');
+                            Fire.error('Each asset cannot have more than one RawType');
                             return false;
                         }
                         found = true;
@@ -219,10 +219,10 @@ Fire.HostType = function (typename) {
             if (checked) {
 // @endif
                 var mainPropAttr = Fire.attr(constructor, mainPropName) || {};
-                var needExtname = (NEED_EXT_TYPES.indexOf(mainPropAttr.hostType) !== -1);
+                var needExtname = (NEED_EXT_TYPES.indexOf(mainPropAttr.rawType) !== -1);
                 if (needExtname) {
                     // declare extname field
-                    constructor.prop('_hostext', '', Fire.HideInInspector);
+                    constructor.prop('_rawext', '', Fire.HideInInspector);
                 }
 // @ifdef DEV
             }
