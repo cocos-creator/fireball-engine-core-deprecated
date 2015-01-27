@@ -369,3 +369,12 @@ Fire.serialize.asAsset = function (uuid) {
     pseudoAsset._uuid = uuid;
     return pseudoAsset;
 };
+
+Fire.serialize.setName = function (jsonObj, name) {
+    if ( Array.isArray(jsonObj) ) {
+        jsonObj[0]._name = name;
+    }
+    else {
+        jsonObj._name = name;
+    }
+};
