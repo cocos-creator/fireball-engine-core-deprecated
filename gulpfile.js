@@ -51,6 +51,8 @@ var paths = {
         'src/asset/json-asset.js',
         'src/asset/text-asset.js',
         'src/asset/bitmap-font.js',
+        'src/asset/audio-clip.js',
+
 
         // editor utils
         'src/editor/utils.js',
