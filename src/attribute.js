@@ -179,7 +179,7 @@ Fire.Enum = function (enumType) {
  * @returns {object} the attribute
  */
 Fire.RawType = function (typename) {
-    var NEED_EXT_TYPES = ['image', 'json', 'text'];  // the types need to specify exact extname
+    var NEED_EXT_TYPES = ['image', 'json', 'text', 'audio'];  // the types need to specify exact extname
     return {
         type: 'raw',
         rawType: typename,
