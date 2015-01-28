@@ -91,7 +91,7 @@ Fire.Integer = { type: 'int' };
  * Indicates that the type of elements in array or the type of value in dictionary is double.
  * @property {object} Fire.HideInInspector
  */
-Fire.Double = { type: 'double' };
+Fire.Float = { type: 'float' };
 
 Fire.SingleText = { textMode: 'single' };
 Fire.MultiText = { textMode: 'multi' };
