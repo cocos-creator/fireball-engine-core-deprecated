@@ -332,13 +332,11 @@ Fire.Watch = function (names, callback) {
     };
 };
 
-//Fire.range = function (min, max) {
-//    return { min: min, max: max };
-//};
-//Fire.min = function (value) {
-//    return { min: value };
-//};
-//Fire.max = function (value) {
-//    return { max: value };
-//};
-
+/**
+ * @param {number|null} min: null mins infinite
+ * @param {number|null} max: null mins infinite
+ * @returns {object} the attribute
+ */
+Fire.Range = function (min, max) {
+   return { min: min, max: max };
+};
