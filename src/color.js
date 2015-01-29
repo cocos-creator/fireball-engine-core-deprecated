@@ -57,10 +57,10 @@ var Color = (function () {
     };
 
     Color.prototype.clamp = function () {
-        this.r = Math.clamp(this.r, 0, 1);
-        this.g = Math.clamp(this.g, 0, 1);
-        this.b = Math.clamp(this.b, 0, 1);
-        this.a = Math.clamp(this.a, 0, 1);
+        this.r = Math.clamp(this.r);
+        this.g = Math.clamp(this.g);
+        this.b = Math.clamp(this.b);
+        this.a = Math.clamp(this.a);
     };
 
     Color.prototype.fromHEX = function (hexString) {
