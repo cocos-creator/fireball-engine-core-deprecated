@@ -59,6 +59,8 @@
         },
 
         clamp: function ( val, min, max ) {
+            min = typeof min === 'undefined' ? 0 : min;
+            max = typeof max === 'undefined' ? 1 : max;
             return Math.min( Math.max( val, min ), max );
         },
 

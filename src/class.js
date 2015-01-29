@@ -317,13 +317,13 @@ Fire.isChildClassOf = function (subclass, superclass) {
     if (subclass && superclass) {
         if (typeof subclass !== 'function') {
 // @ifdef DEV
-            Fire.warn('[isChildClassOf] subclass should be function type');
+            Fire.warn('[isChildClassOf] subclass should be function type, not', subclass);
 // @endif
             return false;
         }
         if (typeof superclass !== 'function') {
 // @ifdef DEV
-            Fire.warn('[isChildClassOf] superclass should be function type');
+            Fire.warn('[isChildClassOf] superclass should be function type, not', superclass);
 // @endif
             return false;
         }

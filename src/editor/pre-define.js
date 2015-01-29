@@ -4,7 +4,7 @@
 Fire._customAssetMenuItems = [];
 
 /**
- * Register a Custom Asset  to the "Asset" menu.
+ * Register a Custom Asset to the "Asset" menu.
  *
  * @method Fire.addCustomAssetMenu
  * @param {function} constructor - the class you want to register, must inherit from Custom Asset
