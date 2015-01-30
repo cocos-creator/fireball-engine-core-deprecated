@@ -80,6 +80,16 @@ Fire.mixin = function (obj) {
  * @see Fire.define
  */
 Fire.extend = function (cls, base) {
+// @ifdef DEV
+    if ( !base ) {
+        Fire.error('The base class to extend from must be non-nil');
+        return;
+    }
+    if ( !cls ) {
+        Fire.error('The class to extend must be non-nil');
+        return;
+    }
+// @endif
     for (var p in base) if (base.hasOwnProperty(p)) cls[p] = base[p];
     function __() { this.constructor = cls; }
     __.prototype = base.prototype;
