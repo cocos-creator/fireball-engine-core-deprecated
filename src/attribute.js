@@ -156,7 +156,14 @@ Fire.String = {
  * @returns {object} the attribute
  */
 Fire.ObjectType = function (constructor) {
-    return { type: 'object', objectType: constructor };
+    var clsname = Fire.getClassName(constructor);
+// @ifdef DEV
+    if ('string object enum raw int float boolean'.split(' ').indexOf(clsname) !== -1) {
+        Fire.error('Class name of Fire.ObjectType must not be %s', clsname);
+        return {};
+    }
+// @endif
+    return { type: clsname };
 };
 
 /**

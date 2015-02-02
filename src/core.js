@@ -152,7 +152,6 @@ Fire.getClassName = function (obj) {
                 var registered = table[id];
                 if (registered && registered !== constructor) {
                     var error = 'A Class already exists with the same ' + key + ' : "' + id + '".';
-                    console.log('is _nameToClass:', _nameToClass === table);
                     // @ifdef EDITOR
                     if (!Fire.isEditor) {
                         error += ' (This may be caused by error of unit test.) \
@@ -165,6 +164,9 @@ Fire.unregisterClass to remove the id of unused class';
                 else {
                     table[id] = constructor;
                 }
+                //if (id === "") {
+                //    console.trace("", table === _nameToClass);
+                //}
             }
         };
     }
