@@ -32,7 +32,9 @@ Vec2 = (function () {
     };
 
     Vec2.prototype.equals = function (other) {
-        return this.x === other.x && this.y === other.y;
+        if ( other && other.constructor === Fire.Vec2 )
+            return this.x === other.x && this.y === other.y;
+        return false;
     };
 
     Vec2.prototype.toString = function () {

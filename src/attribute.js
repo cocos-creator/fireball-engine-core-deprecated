@@ -152,18 +152,11 @@ Fire.String = {
  * If the type is derived from Fire.Asset, it will be serialized to uuid.
  *
  * @method Fire.ObjectType
- * @param {function} constructor - the special type you want
+ * @param {function} ctor - the special type you want
  * @returns {object} the attribute
  */
-Fire.ObjectType = function (constructor) {
-    var clsname = Fire.getClassName(constructor);
-// @ifdef DEV
-    if ('string object enum raw int float boolean'.split(' ').indexOf(clsname) !== -1) {
-        Fire.error('Class name of Fire.ObjectType must not be %s', clsname);
-        return {};
-    }
-// @endif
-    return { type: clsname };
+Fire.ObjectType = function (ctor) {
+    return { type: 'object', ctor: ctor };
 };
 
 /**
