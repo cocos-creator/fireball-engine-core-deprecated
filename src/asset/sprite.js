@@ -21,7 +21,7 @@ Fire.Sprite = (function () {
                                                                '(0,0) means the bottom-left corner and (1,1) means the top-right corner.\n' +
                                                                'But you can use values higher than (1,1) and lower than (0,0) too.'));
 
-    // raw texture info (used for texture-offset calculation)
+    // raw texture info (used for texture-offset, pivot-offset calculation)
     Sprite.prop('trimX', 0, Fire.Integer); // offset of the sprite in raw-texture
     Sprite.prop('trimY', 0, Fire.Integer); // offset of the sprite in raw-texture
     Sprite.prop('rawWidth', 0, Fire.Integer);
