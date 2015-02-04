@@ -171,6 +171,17 @@ Fire.Enum = function (enumType) {
 };
 
 /**
+ * Makes a property show up as a enum in Inspector.
+ *
+ * @method Fire.EnumList
+ * @param {(array)} enumList
+ * @returns {object} the enum attribute
+ */
+Fire.EnumList = function (enumList) {
+    return { type: 'enum', enumList: enumList };
+};
+
+/**
  * Makes a property referenced to a javascript host object which needs to load before deserialzation.
  * The property will not be serialized but will be referenced to the loaded host object while deserialzation.
  *
