@@ -2,7 +2,7 @@
 
 Fire.isRetina = function () {
     return window.devicePixelRatio === 1 ? false : true;
-}
+};
 
 Fire.isNode = !!(typeof process !== 'undefined' && process.versions && process.versions.node);
 Fire.isNodeWebkit = !!(Fire.isNode && 'node-webkit' in process.versions);   // node-webkit
