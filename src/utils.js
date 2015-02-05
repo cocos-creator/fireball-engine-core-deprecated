@@ -1,3 +1,11 @@
+Fire.padLeft = function ( text, width, ch ) {
+    text = text.toString();
+    width -= text.length;
+    if ( width > 0 ) {
+        return new Array( width + 1 ).join(ch) + text;
+    }
+    return text;
+};
 
 //
 Fire.getEnumList = function (enumDef) {
