@@ -6,7 +6,7 @@ var del = require('del');
 var rename = require('gulp-rename');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
-var uglify = require('gulp-uglify');
+var uglify = require('gulp-uglifyjs');
 var concat = require('gulp-concat');
 var qunit = require('gulp-qunit');
 var preprocess = require('gulp-preprocess');
@@ -56,12 +56,12 @@ var paths = {
         'src/editor/serialize.js',
         'src/editor/serialize-nicify.js',
 
-        'src/__outro.js',
+        'src/__outro.js'
     ],
     dev: 'bin/core.dev.js',
-    min: 'bin/core.min.js',
+    min: 'bin/core.dev.js',
     player_dev: 'bin/core.player.dev.js',
-    player: 'bin/core.player.js',
+    player: 'bin/core.player.dev.js',
 
     test: {
         src: 'test/unit/**/*.js',
@@ -70,7 +70,7 @@ var paths = {
             'bin/core.dev.js',
         ],
         lib_min: [
-            'bin/core.min.js',
+            'bin/core.dev.js',
         ],
     },
 
@@ -112,15 +112,25 @@ gulp.task('js-dev', function() {
 gulp.task('js-min', function() {
     return gulp.src(paths.src)
     .pipe(preprocess({context: { EDITOR: true, DEV: true }}))
-    .pipe(concat('core.min.js'))
-    .pipe(uglify())
+    .pipe(concat('core.dev.js'))
+    .pipe(uglify({
+            compress: {
+                dead_code: false,
+                unused: false
+            }
+        }))
     .pipe(gulp.dest('bin'))
     ;
 });
 
 // player dev
 gulp.task('js-player-dev', function() {
+    //var playerpath = paths.src.filter(function(entry) {
+    //    return !(/\/editor\//ig.test(entry));
+    //})
+    //console.log(playerpath);
     return gulp.src(paths.src.concat('!**/editor/**'))
+    //return gulp.src(playerpath)
     .pipe(preprocess({context: { PLAYER: true, DEBUG: true, DEV: true }}))
     .pipe(concat(Path.basename(paths.player_dev)))
     .pipe(gulp.dest(Path.dirname(paths.player_dev)))
@@ -132,11 +142,13 @@ gulp.task('js-player', function() {
     return gulp.src(paths.src.concat('!**/editor/**'))
     .pipe(preprocess({context: { PLAYER: true }}))
     .pipe(concat(Path.basename(paths.player)))
-    .pipe(gulp.dest(Path.dirname(paths.player)))
+    .pipe(uglify())
+    .pipe(gulp.dest('bin/core.player.dev.js'))
     ;
 });
 
-gulp.task('js-all', ['jshint', 'js-dev', 'js-min', 'js-player-dev', 'js-player']);
+gulp.task('dev', ['jshint', 'js-dev']);
+gulp.task('default', ['jshint', 'js-min']);
 
 /////////////////////////////////////////////////////////////////////////////
 // test
@@ -176,8 +188,8 @@ gulp.task('ref', function() {
     return fb.generateReference(files, destPath);
 });
 
-gulp.task('default', ['js-all'] );
-gulp.task('dev', ['default']);
+//gulp.task('default', ['js-all'] );
+//gulp.task('dev', ['default']);
 gulp.task('all', ['default', 'test', 'ref'] );
 gulp.task('ci', ['jshint', 'test'] );
 
