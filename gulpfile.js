@@ -125,12 +125,7 @@ gulp.task('js-min', function() {
 
 // player dev
 gulp.task('js-player-dev', function() {
-    //var playerpath = paths.src.filter(function(entry) {
-    //    return !(/\/editor\//ig.test(entry));
-    //})
-    //console.log(playerpath);
     return gulp.src(paths.src.concat('!**/editor/**'))
-    //return gulp.src(playerpath)
     .pipe(preprocess({context: { PLAYER: true, DEBUG: true, DEV: true }}))
     .pipe(concat(Path.basename(paths.player_dev)))
     .pipe(gulp.dest(Path.dirname(paths.player_dev)))
@@ -138,17 +133,16 @@ gulp.task('js-player-dev', function() {
 });
 
 // player
-gulp.task('js-player', function() {
-    return gulp.src(paths.src.concat('!**/editor/**'))
-    .pipe(preprocess({context: { PLAYER: true }}))
-    .pipe(concat(Path.basename(paths.player)))
-    .pipe(uglify())
-    .pipe(gulp.dest('bin/core.player.dev.js'))
-    ;
-});
+//gulp.task('js-player', function() {
+//    return gulp.src(paths.src.concat('!**/editor/**'))
+//    .pipe(preprocess({context: { PLAYER: true }}))
+//    .pipe(concat(Path.basename(paths.player)))
+//    .pipe(gulp.dest('bin/core.player.dev.js'))
+//    ;
+//});
 
-gulp.task('dev', ['jshint', 'js-dev']);
-gulp.task('default', ['jshint', 'js-min']);
+gulp.task('dev', ['jshint', 'js-dev', 'js-player-dev']);
+gulp.task('default', ['jshint', 'js-min', 'js-player-dev']);
 
 /////////////////////////////////////////////////////////////////////////////
 // test
@@ -188,7 +182,7 @@ gulp.task('ref', function() {
     return fb.generateReference(files, destPath);
 });
 
-//gulp.task('default', ['js-all'] );
+//gulp.task('default', ['js-all']);
 //gulp.task('dev', ['default']);
 gulp.task('all', ['default', 'test', 'ref'] );
 gulp.task('ci', ['jshint', 'test'] );
