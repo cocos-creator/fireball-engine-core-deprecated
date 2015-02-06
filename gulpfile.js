@@ -133,16 +133,16 @@ gulp.task('js-player-dev', function() {
 });
 
 // player
-//gulp.task('js-player', function() {
-//    return gulp.src(paths.src.concat('!**/editor/**'))
-//    .pipe(preprocess({context: { PLAYER: true }}))
-//    .pipe(concat(Path.basename(paths.player)))
-//    .pipe(gulp.dest('bin/core.player.dev.js'))
-//    ;
-//});
+gulp.task('js-player', function() {
+    return gulp.src(paths.src.concat('!**/editor/**'))
+    .pipe(preprocess({context: { PLAYER: true }}))
+    .pipe(concat(Path.basename(paths.player)))
+    .pipe(gulp.dest(Path.dirname(paths.player_dev)))
+    ;
+});
 
 gulp.task('dev', ['jshint', 'js-dev', 'js-player-dev']);
-gulp.task('default', ['jshint', 'js-min', 'js-player-dev']);
+gulp.task('default', ['jshint', 'js-min', 'js-player']);
 
 /////////////////////////////////////////////////////////////////////////////
 // test
