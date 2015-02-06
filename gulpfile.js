@@ -47,7 +47,7 @@ var paths = {
         'src/asset/texture.js',
         'src/asset/sprite.js',
         'src/asset/atlas.js',
-        'src/asset/font-info.js',
+        //'src/asset/font-info.js',
         'src/asset/json-asset.js',
         'src/asset/text-asset.js',
         'src/asset/bitmap-font.js',
