@@ -1,9 +1,5 @@
 ﻿// global definitions
 
-Fire.isRetina = function () {
-    return window.devicePixelRatio === 1 ? false : true;
-};
-
 Fire.isNode = !!(typeof process !== 'undefined' && process.versions && process.versions.node);
 Fire.isNodeWebkit = !!(Fire.isNode && 'node-webkit' in process.versions);   // node-webkit
 Fire.isAtomShell = !!(Fire.isNode && 'atom-shell' in process.versions);     // atom-shell
@@ -18,6 +14,10 @@ else {
     Fire.isWeb = (typeof __dirname === 'undefined' || __dirname === null); // common web browser, or window's render context in node-webkit or atom-shell
 }
 Fire.isEditorCore = Fire.isApp && !Fire.isWeb;
+
+Fire.isRetina = function () {
+    return Fire.isWeb && window.devicePixelRatio !== 1;
+};
 
 if (Fire.isNode) {
     Fire.isDarwin = process.platform === 'darwin';
