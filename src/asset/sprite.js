@@ -41,7 +41,5 @@ Fire.Sprite = (function () {
         get: function () { return this.rotated ? this.width : this.height; }
     });
 
-    // TODO: add rawWidth/rawHeight getter ?
-
     return Sprite;
 })();
