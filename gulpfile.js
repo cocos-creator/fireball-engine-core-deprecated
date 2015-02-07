@@ -188,7 +188,6 @@ gulp.task('all', ['default', 'test', 'ref'] );
 gulp.task('ci', ['jshint', 'test'] );
 
 // watch
-gulp.task('watch-self', function() {
+gulp.task('watch', function() {
     gulp.watch(paths.src, ['dev']).on( 'error', gutil.log );
 });
-gulp.task('watch', ['watch-self']);
