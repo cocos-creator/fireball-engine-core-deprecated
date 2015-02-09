@@ -7,7 +7,8 @@ var Asset = (function () {
         Object.defineProperty(this, '_uuid', {
             value: '',
             writable: true,
-            enumerable: false   // avoid uuid being assigned to empty string during destory
+            enumerable: false   // avoid uuid being assigned to empty string during destroy,
+                                // so the _uuid can not display in console.
         });
 
     });

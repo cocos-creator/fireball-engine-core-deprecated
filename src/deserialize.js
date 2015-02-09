@@ -3,23 +3,29 @@ var _Deserializer = (function () {
     /**
      * @param {boolean} isEditor - if false, property with Fire.EditorOnly will be discarded
      */
-    function _Deserializer(jsonObj, result, isEditor, classFinder) {
+    function _Deserializer(jsonObj, result, target, isEditor, classFinder) {
         this._editor = isEditor;
         this._classFinder = classFinder;
-
+        // @ifndef PLAYER
+        this._target = target;
+        // @endif
         this._idList = [];
         this._idObjList = [];
         this._idPropList = [];
         this.result = result || new Fire._DeserializeInfo();
 
         if (Array.isArray(jsonObj)) {
-            var jsonList = jsonObj;
-            var refCount = jsonList.length;
+            var jsonArray = jsonObj;
+            var refCount = jsonArray.length;
             this.deserializedList = new Array(refCount);
             // deserialize
             for (var i = 0; i < refCount; i++) {
-                if (jsonList[i]) {
-                    this.deserializedList[i] = _deserializeObject(this, jsonList[i]);
+                if (jsonArray[i]) {
+                    var mainTarget;
+                    // @ifndef PLAYER
+                    mainTarget = (i === 0 && target);
+                    // @endif
+                    this.deserializedList[i] = _deserializeObject(this, jsonArray[i], mainTarget);
                 }
             }
             this.deserializedData = refCount > 0 ? this.deserializedList[0] : [];
@@ -32,8 +38,8 @@ var _Deserializer = (function () {
             //}
         }
         else {
-            this.deserializedList = new Array(1);
-            this.deserializedData = jsonObj ? _deserializeObject(this, jsonObj) : null;
+            this.deserializedList = [null];
+            this.deserializedData = jsonObj ? _deserializeObject(this, jsonObj, target) : null;
             this.deserializedList[0] = this.deserializedData;
 
             //// callback
@@ -56,7 +62,7 @@ var _Deserializer = (function () {
         }
     };
 
-    function _deserializeObjField (self, obj, jsonObj, propName) {
+    function _deserializeObjField (self, obj, jsonObj, propName, target) {
         var id = jsonObj.__id__;
         if (typeof id === 'undefined') {
             var uuid = jsonObj.__uuid__;
@@ -66,7 +72,12 @@ var _Deserializer = (function () {
                 self.result.uuidPropList.push(propName);
             }
             else {
+                // @ifdef PLAYER
                 obj[propName] = _deserializeObject(self, jsonObj);
+                // @endif
+                // @ifndef PLAYER
+                obj[propName] = _deserializeObject(self, jsonObj, target && target[propName]);
+                // @endif
             }
         }
         else {
@@ -92,10 +103,20 @@ var _Deserializer = (function () {
                 else {
                     if (prop) {
                         if ( !prop.__uuid__ && typeof prop.__id__ === 'undefined' ) {
+                            // @ifdef PLAYER
                             instance[propName] = _deserializeObject(self, prop);
+                            // @endif
+                            // @ifndef PLAYER
+                            instance[propName] = _deserializeObject(self, prop, self._target && instance[propName]);
+                            // @endif
                         }
                         else {
+                            // @ifdef PLAYER
                             _deserializeObjField(self, instance, prop, propName);
+                            // @endif
+                            // @ifndef PLAYER
+                            _deserializeObjField(self, instance, prop, propName, self._target && instance);
+                            // @endif
                         }
                     }
                     else {
@@ -107,9 +128,10 @@ var _Deserializer = (function () {
     }
 
     /**
-     * @param {Object} serialized - The obj to deserialize, must be non-nil
+     * @param {object} serialized - The obj to deserialize, must be non-nil
+     * @param {object} [target=null]
      */
-    var _deserializeObject = function (self, serialized) {
+    var _deserializeObject = function (self, serialized, target) {
         var propName, prop;
         var obj = null;
         var klass = null;
@@ -119,31 +141,78 @@ var _Deserializer = (function () {
                 Fire.error('[Fire.deserialize] unknown type: ' + serialized.__type__);
                 return null;
             }
+            // @ifdef PLAYER
             // instantiate a new object
             obj = new klass();
+            // @endif
+            // @ifndef PLAYER
+            if (target) {
+                // use target
+                if ( !(target instanceof klass) ) {
+                    Fire.warn('Type of target to deserialize not matched with data: target is %s, data is %s',
+                               Fire.getClassName(target), klass);
+                }
+                obj = target;
+            }
+            else {
+                obj = new klass();
+            }
+            // @endif
         }
         else if (!Array.isArray(serialized)) {
             // embedded primitive javascript object
+            // @ifdef PLAYER
             obj = serialized;
-            //// jshint -W010
-            //obj = new Object();
-            //// jshint +W010
+            // @endif
+            // @ifndef PLAYER
+            obj = target || serialized;
+            //for (var key in serialized) {
+            //    obj[key] = serialized[key];
+            //
+            //}
+            // @endif
         }
         else {
             // array
+            // @ifdef PLAYER
             obj = serialized;
+            // @endif
+            // @ifndef PLAYER
+            if (target) {
+                target.length = serialized.length;
+                obj = target;
+            }
+            else {
+                obj = serialized;
+            }
+            // @endif
             for (var i = 0; i < serialized.length; i++) {
                 prop = serialized[i];
                 if (typeof prop === 'object' && prop) {
                     if (!prop.__uuid__ && typeof prop.__id__ === 'undefined') {
+                        // @ifdef PLAYER
                         obj[i] = _deserializeObject(self, prop);
+                        // @endif
+                        // @ifndef PLAYER
+                        obj[i] = _deserializeObject(self, prop, target && target[i]);
+                        // @endif
                     }
                     else {
+                        // @ifdef PLAYER
                         _deserializeObjField(self, obj, prop, '' + i);
+                        // @endif
+                        // @ifndef PLAYER
+                        _deserializeObjField(self, obj, prop, '' + i, target && target[i]);
+                        // @endif
                     }
                 }
+                // @ifndef PLAYER
+                else if (target) {
+                    obj[i] = serialized[i];
+                }
+                // @endif
             }
-            return serialized;
+            return obj;
         }
 
         // parse property
@@ -172,10 +241,20 @@ var _Deserializer = (function () {
                         else {
                             if (prop) {
                                 if ( !prop.__uuid__ && typeof prop.__id__ === 'undefined' ) {
+                                    // @ifdef PLAYER
                                     obj[propName] = _deserializeObject(self, prop);
+                                    // @endif
+                                    // @ifndef PLAYER
+                                    obj[propName] = _deserializeObject(self, prop, target && target[propName]);
+                                    // @endif
                                 }
                                 else {
+                                    // @ifdef PLAYER
                                     _deserializeObjField(self, obj, prop, propName);
+                                    // @endif
+                                    // @ifndef PLAYER
+                                    _deserializeObjField(self, obj, prop, propName, target && obj);
+                                    // @endif
                                 }
                             }
                             else {
@@ -221,6 +300,9 @@ Fire.deserialize = function (data, result, options) {
     var isEditor = (options && 'isEditor' in options) ? options.isEditor : Fire.isEditor;
     var classFinder = (options && options.classFinder) || Fire._getClassById;
     var createAssetRefs = (options && options.createAssetRefs) || Fire.isEditorCore;
+    // @ifndef PLAYER
+    var target = (options && options.target);
+    // @endif
 
     // @ifndef PLAYER
     if (Fire.isNode && Buffer.isBuffer(data)) {
@@ -237,7 +319,7 @@ Fire.deserialize = function (data, result, options) {
     }
 
     Fire._isCloning = true;
-    var deserializer = new _Deserializer(data, result, isEditor, classFinder);
+    var deserializer = new _Deserializer(data, result, target, isEditor, classFinder);
     Fire._isCloning = false;
 
     if (createAssetRefs) {

@@ -2,17 +2,22 @@
 
 largeModule('Deserialize');
 
+function testWithTarget (name, testFunc) {
+    test(name, function () {
+        testFunc(false);
+    });
+    test(name + ' with target', function () {
+        testFunc(true);
+    });
+}
+
 test('basic deserialize test', function () {
     deepEqual(Fire.deserialize({}), {}, 'smoke test1');
     deepEqual(Fire.deserialize([]), [], 'smoke test2');
 
     // TODO:
     var MyAsset = (function () {
-        var _super = Fire.Asset;
-
         function MyAsset () {
-            _super.call(this);
-
             this.emptyArray = [];
             this.array = [1, '2', {a:3}, [4, [5]], true];
             this.string = 'unknown';
@@ -22,7 +27,6 @@ test('basic deserialize test', function () {
             this.emptyObj = {};
             this.embeddedTypedObj = new Vec2(1, 2.1);
         }
-        Fire.extend(MyAsset, _super);
         Fire.setClassName('MyAsset', MyAsset);
         return MyAsset;
     })();
@@ -33,6 +37,44 @@ test('basic deserialize test', function () {
     var deserializedAsset = Fire.deserialize(serializedAsset);
 
     deepEqual(deserializedAsset, asset, 'test deserialize');
+
+    Fire.unregisterClass(MyAsset);
+});
+
+test('basic deserialize test with target', function () {
+    deepEqual(Fire.deserialize({}, null, { target: {} }), {}, 'smoke test1');
+    deepEqual(Fire.deserialize([], null, { target: [] }), [], 'smoke test2');
+
+    // TODO:
+    var MyAsset = (function () {
+        function MyAsset () {
+            this.emptyArray = [];
+            this.array = [1, '2', {a:3}, [4, [5]], true];
+            this.string = 'unknown';
+            this.emptyString = '';
+            this.number = 1;
+            this.boolean = true;
+            this.emptyObj = {};
+            this.embeddedTypedObj = new Vec2(1, 2.1);
+        }
+        Fire.setClassName('MyAsset', MyAsset);
+        return MyAsset;
+    })();
+    var asset = new MyAsset();
+    var serializedAsset = Fire.serialize(asset);
+    delete asset.__id__;
+
+    var newObj = {a:100};
+    var newArray = [3, '8', newObj, [4, [9]], false];
+    asset.array = newArray;
+
+    var deserializedAsset = Fire.deserialize(serializedAsset, null, {target: asset});
+
+    strictEqual(deserializedAsset, asset, 'ref should not changed');
+    strictEqual(deserializedAsset.array, newArray, 'embedded array ref should not changed');
+    deepEqual(newArray, [1, '2', {a:3}, [4, [5]], true], 'embedded array should restored');
+    strictEqual(deserializedAsset.array[2], newObj, 'embedded obj ref should not changed');
+    deepEqual(newObj, {a:3}, 'embedded obj should restored');
 
     Fire.unregisterClass(MyAsset);
 });
@@ -58,6 +100,14 @@ test('nil', function () {
     deepEqual(Fire.deserialize(str), obj, 'can override as null');
 
     Fire.unregisterClass(MyAsset);
+});
+
+test('nil with target', function () {
+    var obj = {
+        'null': null,
+    };
+    var str = '{ "null": null }'
+    deepEqual(Fire.deserialize(str, null, {target: null}), obj, 'can deserialize null');
 });
 
 test('json deserialize test', function () {
@@ -111,7 +161,18 @@ test('reference to main asset', function () {
     //deepEqual(Fire.serialize(deserializedAsset), serializedAsset, 'test deserialize');
 });
 
-test('circular reference by object', function () {
+test('reference to main asset with target', function () {
+    var asset = {};
+    asset.refSelf = asset;
+    var serializedAsset = Fire.serialize(asset);
+
+    asset.refSelf = null;
+
+    var deserializedAsset = Fire.deserialize(serializedAsset, null, {target: asset});
+    ok(deserializedAsset.refSelf === deserializedAsset, 'should ref to self');
+});
+
+testWithTarget('circular reference by object', function (useTarget) {
     var MyAsset = (function () {
         var _super = Fire.Asset;
         function MyAsset () {
@@ -131,7 +192,7 @@ test('circular reference by object', function () {
     var serializedAsset = Fire.serialize(mainAsset);
     delete mainAsset.__id__;
     delete asset.__id__;
-    var deserializedAsset = Fire.deserialize(serializedAsset);
+    var deserializedAsset = Fire.deserialize(serializedAsset, null, useTarget ? {target: mainAsset} : null);
 
     ok(deserializedAsset.myAsset.refSelf === deserializedAsset.myAsset, 'sub asset should ref to itself');
     ok(deserializedAsset.myAsset.refToMain === deserializedAsset, 'sub asset should ref to main');
@@ -141,7 +202,7 @@ test('circular reference by object', function () {
     Fire.unregisterClass(MyAsset);
 });
 
-test('circular reference by array', function () {
+testWithTarget('circular reference by array', function (useTarget) {
     var MyAsset = (function () {
         var _super = Fire.Asset;
 
@@ -162,7 +223,7 @@ test('circular reference by array', function () {
     var expectAsset = new MyAsset();
     //Fire.log(Fire.serialize(expectAsset));
     var json = '[{"__type__":"MyAsset","array1":{"__id__":1},"array2":{"__id__":2}},[1,{"__id__":2}],[{"__id__":1},2]]';
-    var deserializedAsset = Fire.deserialize(json);
+    var deserializedAsset = Fire.deserialize(json, null, useTarget ? {target: expectAsset} : null);
 
     deepEqual(deserializedAsset, expectAsset, 'two arrays can circular reference each other');
     strictEqual(deserializedAsset.array1[1][0], deserializedAsset.array1, 'two arrays can circular reference each other 1');
@@ -171,7 +232,7 @@ test('circular reference by array', function () {
     Fire.unregisterClass(MyAsset);
 });
 
-test('circular reference by dict', function () {
+testWithTarget('circular reference by dict', function (useTarget) {
     var MyAsset = (function () {
         var _super = Fire.Asset;
 
@@ -189,11 +250,35 @@ test('circular reference by dict', function () {
     var expectAsset = new MyAsset();
 
     var serializedAssetJson = '[{"__type__":"MyAsset","dict1":{"__id__":1},"dict2":{"__id__":2}},{"num":1,"other":{"__id__":2}},{"num":2,"other":{"__id__":1}}]';
-    var deserializedAsset = Fire.deserialize(serializedAssetJson);
+    var deserializedAsset = Fire.deserialize(serializedAssetJson, null, useTarget ? {target: expectAsset} : null);
 
     deepEqual(deserializedAsset, expectAsset, 'two dicts can circular reference each other');
     strictEqual(deserializedAsset.dict1.other.other, deserializedAsset.dict1, 'two dicts can circular reference each other 1');
     strictEqual(deserializedAsset.dict2.other.other, deserializedAsset.dict2, 'two dicts can circular reference each other 2');
+
+    Fire.unregisterClass(MyAsset);
+});
+
+test('target', function () {
+    var MyAsset = (function () {
+        var MyAsset = Fire.define( 'MyAsset', function () {
+            this.tmpVal = 0;
+        }).prop('saveVal', 0);
+
+        return MyAsset;
+    })();
+
+    var myAsset = new MyAsset();
+    myAsset.tmpVal = 321;
+    myAsset.saveVal = 111;
+    var data = Fire.serialize(myAsset);
+    myAsset.saveVal = 0;
+
+    var newAsset = Fire.deserialize(data, null, { target:myAsset });
+
+    strictEqual(newAsset, myAsset, 'target reference not changed');
+    strictEqual(myAsset.tmpVal, 321, 'tmp member of target not changed');
+    strictEqual(myAsset.saveVal, 111, 'serialized member of target reloaded');
 
     Fire.unregisterClass(MyAsset);
 });
