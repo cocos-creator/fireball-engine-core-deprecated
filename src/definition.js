@@ -15,9 +15,11 @@ else {
 }
 Fire.isEditorCore = Fire.isApp && !Fire.isWeb;
 
-Fire.isRetina = function () {
-    return Fire.isWeb && window.devicePixelRatio !== 1;
-};
+Object.defineProperty(Fire, 'isRetina', {
+    get: function () {
+        return Fire.isWeb && window.devicePixelRatio && window.devicePixelRatio > 1;
+    }
+});
 
 if (Fire.isNode) {
     Fire.isDarwin = process.platform === 'darwin';
