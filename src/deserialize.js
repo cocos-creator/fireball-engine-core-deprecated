@@ -67,6 +67,11 @@ var _Deserializer = (function () {
         if (typeof id === 'undefined') {
             var uuid = jsonObj.__uuid__;
             if (uuid) {
+                // @ifndef PLAYER
+                if (target && target[propName] && target[propName]._uuid === uuid) {
+                    return;
+                }
+                // @endif
                 self.result.uuidList.push(uuid);
                 self.result.uuidObjList.push(obj);
                 self.result.uuidPropList.push(propName);
