@@ -7,16 +7,16 @@
   "licenseUrl": "http://opensource.org/licenses/MIT",
   "dependencies": {},
   "devDependencies": {
-    "del": "",
-    "gulp": "",
+    "del": "1.1.1",
+    "gulp": "3.8.11",
     "gulp-concat": "",
     "gulp-fb": "",
     "gulp-jshint": "",
-    "gulp-preprocess": "^1.2.0",
+    "gulp-preprocess": "1.2.0",
     "gulp-uglifyjs": "",
-    "gulp-qunit": "^1.2.1",
-    "gulp-rename": "",
-    "gulp-util": "",
+    "gulp-qunit": "1.2.1",
+    "gulp-rename": "1.2.0",
+    "gulp-util": "3.0.3",
     "jshint-stylish": ""
   }
 }
