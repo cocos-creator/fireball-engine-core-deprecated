@@ -58,19 +58,17 @@ var paths = {
 
         'src/__outro.js'
     ],
-    dev: 'bin/core.dev.js',
-    min: 'bin/core.dev.js',
     player_dev: 'bin/core.player.dev.js',
-    player: 'bin/core.player.dev.js',
+    player: 'bin/core.player.js',
 
     test: {
         src: 'test/unit/**/*.js',
         runner: 'test/lib/runner.html',
         lib_dev: [
-            'bin/core.dev.js',
+            'bin/dev/core.js',
         ],
         lib_min: [
-            'bin/core.dev.js',
+            'bin/min/core.js',
         ],
     },
 
@@ -103,8 +101,8 @@ gulp.task('jshint', function() {
 gulp.task('js-dev', function() {
     return gulp.src(paths.src)
     .pipe(preprocess({context: { EDITOR: true, DEBUG: true, DEV: true }}))
-    .pipe(concat('core.dev.js'))
-    .pipe(gulp.dest('bin'))
+    .pipe(concat('core.js'))
+    .pipe(gulp.dest('bin/dev'))
     ;
 });
 
@@ -112,14 +110,14 @@ gulp.task('js-dev', function() {
 gulp.task('js-min', function() {
     return gulp.src(paths.src)
     .pipe(preprocess({context: { EDITOR: true, DEV: true }}))
-    .pipe(concat('core.dev.js'))
+    .pipe(concat('core.js'))
     .pipe(uglify({
             compress: {
                 dead_code: false,
                 unused: false
             }
         }))
-    .pipe(gulp.dest('bin'))
+    .pipe(gulp.dest('bin/min'))
     ;
 });
 
@@ -137,12 +135,13 @@ gulp.task('js-player', function() {
     return gulp.src(paths.src.concat('!**/editor/**'))
     .pipe(preprocess({context: { PLAYER: true }}))
     .pipe(concat(Path.basename(paths.player)))
-    .pipe(gulp.dest(Path.dirname(paths.player_dev)))
+    .pipe(gulp.dest(Path.dirname(paths.player)))
     ;
 });
 
 gulp.task('dev', ['jshint', 'js-dev', 'js-player-dev']);
-gulp.task('default', ['jshint', 'js-min', 'js-player']);
+gulp.task('min', ['jshint', 'js-min', 'js-player']);
+gulp.task('default', ['dev', 'min']);
 
 /////////////////////////////////////////////////////////////////////////////
 // test
@@ -182,8 +181,6 @@ gulp.task('ref', function() {
     return fb.generateReference(files, destPath);
 });
 
-//gulp.task('default', ['js-all']);
-//gulp.task('dev', ['default']);
 gulp.task('all', ['default', 'test', 'ref'] );
 gulp.task('ci', ['jshint', 'test'] );
 
