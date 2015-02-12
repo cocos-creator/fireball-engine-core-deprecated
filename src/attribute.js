@@ -5,7 +5,7 @@
  * @method Fire.attr
  * @param {function} constructor - the class
  * @param {string} propertyName - the name of property or function, used to retrieve the attributes
- * @param {object} [attributes] - the attribute table to mark, new attributes will merged with existed attributes.
+ * @param {object|*} [attributes] - the attribute table to mark, new attributes will merged with existed attributes.
  *                                Attribute whose key starts with '_' will be ignored.
  * @returns {object|undefined} return all attributes associated with the property. if none undefined will be returned
  *
@@ -22,16 +22,21 @@
 Fire.attr = function (constructor, propertyName, attributes) {
     var key = '_attr$' + propertyName;
     var attrs = constructor.prototype[key];
-    if (attributes) {
+    if (typeof attributes !== 'undefined') {
         // set
-        if (!attrs) {
-            attrs = {};
-            constructor.prototype[key] = attrs;
-        }
-        for (var name in attributes) {
-            if (name[0] !== '_') {
-                attrs[name] = attributes[name];
+        if (typeof attributes === 'object') {
+            if (!attrs) {
+                attrs = {};
+                constructor.prototype[key] = attrs;
             }
+            for (var name in attributes) {
+                if (name[0] !== '_') {
+                    attrs[name] = attributes[name];
+                }
+            }
+        }
+        else {
+            constructor.prototype[key] = attributes;
         }
     }
     return attrs;

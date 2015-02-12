@@ -1,6 +1,6 @@
 ﻿module('Attribute');
 
-test('Fire.attr', function () {
+test('base', function () {
     var MyCompBase = function () {
         this.baseVal = [];
     };
@@ -38,4 +38,12 @@ test('Fire.attr', function () {
 
     strictEqual(Fire.attr(MyCompBase, 'subVal'), undefined, 'base class not pulluted');
     strictEqual(Fire.attr(MyComp2, 'subVal'), undefined, 'sibling class not pulluted');
+});
+
+test('not object type', function () {
+    var MyCompBase = function () {};
+    Fire.attr(MyCompBase, 'subVal', false);
+    strictEqual(Fire.attr(MyCompBase, 'subVal'), false, 'attr should set to false');
+    Fire.attr(MyCompBase, 'subVal', true);
+    strictEqual(Fire.attr(MyCompBase, 'subVal'), true, 'attr should set to true');
 });
