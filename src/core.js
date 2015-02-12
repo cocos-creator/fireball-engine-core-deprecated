@@ -33,7 +33,7 @@ Fire.addon = function (obj) {
     for (var i = 1, length = arguments.length; i < length; i++) {
         var source = arguments[i];
         for ( var name in source) {
-            if ( obj[name] === undefined ) {
+            if ( !(name in obj) ) {
                 _copyprop( name, source, obj);
             }
         }

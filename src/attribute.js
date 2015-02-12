@@ -3,7 +3,8 @@
  * This function holds only the attributes, not their implementations.
  *
  * @method Fire.attr
- * @param {function} constructor - the class
+ * @param {function|object} constructor - the class or instance. If instance, the attribute will be dynamic and only
+ *                                        available for the specified instance.
  * @param {string} propertyName - the name of property or function, used to retrieve the attributes
  * @param {object|*} [attributes] - the attribute table to mark, new attributes will merged with existed attributes.
  *                                Attribute whose key starts with '_' will be ignored.
@@ -21,25 +22,65 @@
  */
 Fire.attr = function (constructor, propertyName, attributes) {
     var key = '_attr$' + propertyName;
-    var attrs = constructor.prototype[key];
-    if (typeof attributes !== 'undefined') {
-        // set
-        if (typeof attributes === 'object') {
-            if (!attrs) {
-                attrs = {};
-                constructor.prototype[key] = attrs;
-            }
-            for (var name in attributes) {
-                if (name[0] !== '_') {
-                    attrs[name] = attributes[name];
+    var instance, attrs, name;
+    if (typeof constructor === 'function') {
+        // attributes in class
+        instance = constructor.prototype;
+        attrs = instance[key];
+        if (typeof attributes !== 'undefined') {
+            // set
+            if (typeof attributes === 'object') {
+                if (!attrs) {
+                    instance[key] = attrs = {};
                 }
+                for (name in attributes) {
+                    if (name[0] !== '_') {
+                        attrs[name] = attributes[name];
+                    }
+                }
+            }
+            else {
+                instance[key] = attributes;
+                return attributes;
+            }
+        }
+        return attrs;
+    }
+    else {
+        // attributes in instance
+        instance = constructor;
+        if (typeof attributes !== 'undefined') {
+            // set
+            if (typeof attributes === 'object') {
+                if (instance.hasOwnProperty(key)) {
+                    attrs = instance[key];
+                }
+                if (!attrs) {
+                    instance[key] = attrs = {};
+                }
+                for (name in attributes) {
+                    if (name[0] !== '_') {
+                        attrs[name] = attributes[name];
+                    }
+                }
+                return Fire.addon({}, attrs, instance.constructor.prototype[key]);
+            }
+            else {
+                instance[key] = attributes;
+                return attributes;
             }
         }
         else {
-            constructor.prototype[key] = attributes;
+            // get
+            attrs = instance[key];
+            if (typeof attrs === 'object') {
+                return Fire.addon({}, attrs, instance.constructor.prototype[key]);
+            }
+            else {
+                return attrs;
+            }
         }
     }
-    return attrs;
 };
 
 /*

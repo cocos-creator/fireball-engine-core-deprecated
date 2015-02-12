@@ -47,3 +47,27 @@ test('not object type', function () {
     Fire.attr(MyCompBase, 'subVal', true);
     strictEqual(Fire.attr(MyCompBase, 'subVal'), true, 'attr should set to true');
 });
+
+test('dynamic attribute for instance', function () {
+    var MyCompBase = function () {};
+    var comp = new MyCompBase();
+
+    Fire.attr(MyCompBase, 'subVal', false);
+    Fire.attr(comp, 'subVal', true);
+    strictEqual(Fire.attr(MyCompBase, 'subVal'), false, 'class attr should set to false');
+    strictEqual(Fire.attr(comp, 'subVal'), true, 'instance attr should set to true');
+
+    Fire.attr(MyCompBase, 'baseVal', 123);
+    strictEqual(Fire.attr(comp, 'baseVal'), 123, 'instance attr should inherited from base');
+
+
+    Fire.attr(MyCompBase, 'readonly', {a: false});
+    Fire.attr(comp, 'readonly', {b: true});
+    deepEqual(Fire.attr(comp, 'readonly'), {a: false, b: true}, 'object attrs should merged');
+
+    Fire.attr(MyCompBase, 'readonly', {b: false});
+    deepEqual(Fire.attr(comp, 'readonly'), {a: false, b: true}, 'instance attr should override base');
+
+    Fire.attr(MyCompBase, 'readonly', {b: false});
+    deepEqual(Fire.attr(MyCompBase, 'readonly'), {a: false, b: false}, 'class attrs should not changed');
+});
