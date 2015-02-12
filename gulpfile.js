@@ -139,8 +139,8 @@ gulp.task('js-player', function() {
     ;
 });
 
-gulp.task('dev', ['jshint', 'js-dev', 'js-player-dev']);
-gulp.task('min', ['jshint', 'js-min', 'js-player']);
+gulp.task('dev', ['jshint', 'js-dev', 'js-player-dev', 'js-player']);
+gulp.task('min', ['jshint', 'js-min', 'js-player-dev', 'js-player']);
 gulp.task('default', ['dev', 'min']);
 
 /////////////////////////////////////////////////////////////////////////////
