@@ -237,7 +237,6 @@ Fire.unregisterClass to remove the id of unused class';
         return _nameToClass[classname];
     };
 
-    // @ifdef EDITOR
     /**
      * Get class id of the object
      * @param {(object|function)} obj - instance or constructor
@@ -255,6 +254,7 @@ Fire.unregisterClass to remove the id of unused class';
         return '';
     };
 
+    // @ifdef EDITOR
     Object.defineProperty(Fire, '_registeredClassIds', {
         get: function () {
             var dump = {};
