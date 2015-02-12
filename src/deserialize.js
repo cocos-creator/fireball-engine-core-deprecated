@@ -305,8 +305,9 @@ Fire.deserialize = function (data, result, options) {
     var isEditor = (options && 'isEditor' in options) ? options.isEditor : Fire.isEditor;
     var classFinder = (options && options.classFinder) || Fire._getClassById;
     var createAssetRefs = (options && options.createAssetRefs) || Fire.isEditorCore;
+    var target;
     // @ifndef PLAYER
-    var target = (options && options.target);
+    target = (options && options.target);
     // @endif
 
     // @ifndef PLAYER
