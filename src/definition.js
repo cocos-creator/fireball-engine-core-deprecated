@@ -15,6 +15,10 @@ else {
 }
 Fire.isEditorCore = Fire.isApp && !Fire.isWeb;
 
+/**
+ * @name Fire#isRetina
+ * @property {boolean} isRetina check if running in retina display
+ */
 Object.defineProperty(Fire, 'isRetina', {
     get: function () {
         return Fire.isWeb && window.devicePixelRatio && window.devicePixelRatio > 1;
@@ -79,6 +83,11 @@ var ObjectFlags = {
  */
 ObjectFlags.Hide = ObjectFlags.HideInGame | ObjectFlags.HideInEditor;
 
+/**
+ *
+ * @type {{DontSave: number, EditorOnly: number, Dirty: number, Destroying: number, HideInGame: number, HideInEditor: number, IsOnEnableCalled: number, IsOnLoadCalled: number, IsOnStartCalled: number}}
+ * @private
+ */
 Fire._ObjectFlags = ObjectFlags;
 
 var PersistentMask = ~(ToDestroy | Dirty | ObjectFlags.Destroying |     // can not clone these flags

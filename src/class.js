@@ -360,8 +360,6 @@ Fire.isChildClassOf = function (subclass, superclass) {
  *                                         如果你不需要构造函数，可以传入null。
  * @param {function} [constructor] - a constructor function that is used to instantiate this class,
  *                                   if not supplied, the constructor of base class will be called automatically
- * @param {[object[]]} instanceMembers - NYI
- * @param {[object[]]} staticMembers - NYI
  * @returns {function} the defined class
  *
  * @see Fire.extend
