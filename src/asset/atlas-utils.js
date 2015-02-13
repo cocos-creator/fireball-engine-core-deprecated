@@ -188,7 +188,7 @@ var _placeRect = function ( freeRects, rect ) {
 var _maxRectLayout = function (atlas, padding, allowRotate) {
     var freeRects = [];
     freeRects.push ( new Fire.Rect( 0, 0, atlas.width + padding, atlas.height + padding ) );
-    var score1/*, scroe2*/;
+    var score1, scroe2;
     var scoreRect = function (_freeRects, _width, _height, _allowRotate) {
         score1 = Number.MAX_VALUE;
         score2 = Number.MAX_VALUE;
@@ -202,14 +202,14 @@ var _maxRectLayout = function (atlas, padding, allowRotate) {
             var leftoverHoriz, leftoverVert, shortSideFit, longSideFit;
             //
             if (freeRect.width >= _width && freeRect.height >= _height) {
-                leftoverHoriz = Math.abs(Math.floor(_freeRects[i].width) - _width);
-                leftoverVert = Math.abs(Math.floor(_freeRects[i].height) - _height);
+                leftoverHoriz = Math.abs(Math.floor(freeRect.width) - _width);
+                leftoverVert = Math.abs(Math.floor(freeRect.height) - _height);
                 shortSideFit = Math.min(leftoverHoriz, leftoverVert);
                 longSideFit = Math.max(leftoverHoriz, leftoverVert);
 
                 if (shortSideFit < score1 || (shortSideFit === score1 && longSideFit < score2)) {
-                    newRect.x = _freeRects[i].x;
-                    newRect.y = _freeRects[i].y;
+                    newRect.x = freeRect.x;
+                    newRect.y = freeRect.y;
                     newRect.width = _width;
                     newRect.height = _height;
                     score1 = shortSideFit;
@@ -221,14 +221,14 @@ var _maxRectLayout = function (atlas, padding, allowRotate) {
 
             // rotated
             if (_allowRotate && freeRect.width >= _height && freeRect.height >= _width) {
-                leftoverHoriz = Math.abs(Math.floor(_freeRects[i].width) - _height);
-                leftoverVert = Math.abs(Math.floor(_freeRects[i].height) - _width);
+                leftoverHoriz = Math.abs(Math.floor(freeRect.width) - _height);
+                leftoverVert = Math.abs(Math.floor(freeRect.height) - _width);
                 shortSideFit = Math.min(leftoverHoriz, leftoverVert);
                 longSideFit = Math.max(leftoverHoriz, leftoverVert);
 
                 if (shortSideFit < score1 || (shortSideFit === score1 && longSideFit < score2)) {
-                    newRect.x = _freeRects[i].x;
-                    newRect.y = _freeRects[i].y;
+                    newRect.x = freeRect.x;
+                    newRect.y = freeRect.y;
                     newRect.width = _height;
                     newRect.height = _width;
                     score1 = shortSideFit;
