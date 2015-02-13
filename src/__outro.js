@@ -1,12 +1,15 @@
 // @ifndef PLAYER
-})(Fire);
-
-if (typeof module !== "undefined" && module) {
-    module.exports = Fire;
-}
-else if (typeof define === "function" && define && define.amd) {
-    define([], function() {
-        return Fire;
-    });
-}
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = Fire;
+        }
+        exports.Fire = Fire;
+    }
+    else if (typeof define !== 'undefined' && define.amd) {
+        define(Fire);
+    }
+    else {
+        root.Fire = Fire;
+    }
+}).call(this);
 // @endif

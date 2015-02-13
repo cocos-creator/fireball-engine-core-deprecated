@@ -1,2 +1,3 @@
-;var Fire = Fire || {};
-(function (Fire) {
+(function () {
+    var root = this;
+    var Fire = Fire || {};
