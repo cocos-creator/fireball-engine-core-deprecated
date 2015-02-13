@@ -1,3 +1,3 @@
 (function () {
     var root = this;
-    var Fire = Fire || {};
+    var Fire = root.Fire || {};
