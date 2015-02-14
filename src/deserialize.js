@@ -299,7 +299,7 @@ var _Deserializer = (function () {
  *                                 Note: If data is an object, it will be modified.
  * @param {Fire._DeserializeInfo} [result] - additional loading result
  * @param {object} [options=null]
- * @returns {object} the main data(asset)
+ * @return {object} the main data(asset)
  */
 Fire.deserialize = function (data, result, options) {
     var isEditor = (options && 'isEditor' in options) ? options.isEditor : Fire.isEditor;

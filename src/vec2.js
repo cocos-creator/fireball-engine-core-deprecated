@@ -48,7 +48,7 @@ Vec2 = (function () {
      * Adds this vector. If you want to save result to another vector, use add() instead.
      * @method Fire.Vec2#addSelf
      * @param {Fire.Vec2} vector
-     * @returns {Fire.Vec2} returns this
+     * @return {Fire.Vec2} returns this
      */
     Vec2.prototype.addSelf = function (vector) {
         this.x += vector.x;
@@ -61,7 +61,7 @@ Vec2 = (function () {
      * @method Fire.Vec2#add
      * @param {Fire.Vec2} vector
      * @param {Fire.Vec2} [out] - optional, the receiving vector
-     * @returns {Fire.Vec2} the result
+     * @return {Fire.Vec2} the result
      */
     Vec2.prototype.add = function (vector, out) {
         out = out || new Vec2();
@@ -74,7 +74,7 @@ Vec2 = (function () {
      * Subtracts one vector from this. If you want to save result to another vector, use sub() instead.
      * @method Fire.Vec2#subSelf
      * @param {Fire.Vec2} vector
-     * @returns {Fire.Vec2} returns this
+     * @return {Fire.Vec2} returns this
      */
     Vec2.prototype.subSelf = function (vector) {
         this.x -= vector.x;
@@ -87,7 +87,7 @@ Vec2 = (function () {
      * @method Fire.Vec2#sub
      * @param {Fire.Vec2} vector
      * @param {Fire.Vec2} [out] - optional, the receiving vector
-     * @returns {Fire.Vec2} the result
+     * @return {Fire.Vec2} the result
      */
     Vec2.prototype.sub = function (vector, out) {
         out = out || new Vec2();
@@ -100,7 +100,7 @@ Vec2 = (function () {
      * Multiplies this by a number. If you want to save result to another vector, use mul() instead.
      * @method Fire.Vec2#mulSelf
      * @param {number} num
-     * @returns {Fire.Vec2} returns this
+     * @return {Fire.Vec2} returns this
      */
     Vec2.prototype.mulSelf = function (num) {
         this.x *= num;
@@ -113,7 +113,7 @@ Vec2 = (function () {
      * @method Fire.Vec2#mul
      * @param {number} num
      * @param {Fire.Vec2} [out] - optional, the receiving vector
-     * @returns {Fire.Vec2} the result
+     * @return {Fire.Vec2} the result
      */
     Vec2.prototype.mul = function (num, out) {
         out = out || new Vec2();
@@ -126,7 +126,7 @@ Vec2 = (function () {
      * Multiplies two vectors.
      * @method Fire.Vec2#scaleSelf
      * @param {Fire.Vec2} vector
-     * @returns {Fire.Vec2} returns this
+     * @return {Fire.Vec2} returns this
      */
     Vec2.prototype.scaleSelf = function (vector) {
         this.x *= vector.x;
@@ -139,7 +139,7 @@ Vec2 = (function () {
      * @method Fire.Vec2#scale
      * @param {Fire.Vec2} vector
      * @param {Fire.Vec2} [out] - optional, the receiving vector
-     * @returns {Fire.Vec2} the result
+     * @return {Fire.Vec2} the result
      */
     Vec2.prototype.scale = function (vector, out) {
         out = out || new Vec2();
@@ -152,7 +152,7 @@ Vec2 = (function () {
      * Divides two vectors. If you want to save result to another vector, use div() instead.
      * @method Fire.Vec2#divSelf
      * @param {Fire.Vec2} vector
-     * @returns {Fire.Vec2} returns this
+     * @return {Fire.Vec2} returns this
      */
     Vec2.prototype.divSelf = function (vector) {
         this.x /= vector.x;
@@ -165,7 +165,7 @@ Vec2 = (function () {
      * @method Fire.Vec2#div
      * @param {Fire.Vec2} vector
      * @param {Fire.Vec2} [out] - optional, the receiving vector
-     * @returns {Fire.Vec2} the result
+     * @return {Fire.Vec2} the result
      */
     Vec2.prototype.div = function (vector, out) {
         out = out || new Vec2();
@@ -177,7 +177,7 @@ Vec2 = (function () {
     /**
      * Negates the components. If you want to save result to another vector, use neg() instead.
      * @method Fire.Vec2#negSelf
-     * @returns {Fire.Vec2} returns this
+     * @return {Fire.Vec2} returns this
      */
     Vec2.prototype.negSelf = function () {
         this.x = -this.x;
@@ -189,7 +189,7 @@ Vec2 = (function () {
      * Negates the components, and returns the new result.
      * @method Fire.Vec2#neg
      * @param {Fire.Vec2} [out] - optional, the receiving vector
-     * @returns {Fire.Vec2} the result
+     * @return {Fire.Vec2} the result
      */
     Vec2.prototype.neg = function (out) {
         out = out || new Vec2();
@@ -202,7 +202,7 @@ Vec2 = (function () {
      * Dot product
      * @method Fire.Vec2#dot
      * @param {Fire.Vec2} [vector]
-     * @returns {number} the result
+     * @return {number} the result
      */
     Vec2.prototype.dot = function (vector) {
         return this.x * vector.x + this.y * vector.y;
@@ -212,7 +212,7 @@ Vec2 = (function () {
      * Cross product
      * @method Fire.Vec2#cross
      * @param {Fire.Vec2} [vector]
-     * @returns {number} the result
+     * @return {number} the result
      */
     Vec2.prototype.cross = function (vector) {
         return this.y * vector.x - this.x * vector.y;
@@ -221,7 +221,7 @@ Vec2 = (function () {
     /**
      * Magnitude
      * @method Fire.Vec2#mag
-     * @returns {number} the result
+     * @return {number} the result
      */
     Vec2.prototype.mag = function () {
         return Math.sqrt(this.x * this.x + this.y * this.y);
@@ -230,7 +230,7 @@ Vec2 = (function () {
     /**
      * Magnitude Sqaure
      * @method Fire.Vec2#magSqr
-     * @returns {number} the result
+     * @return {number} the result
      */
     Vec2.prototype.magSqr = function () {
         return this.x * this.x + this.y * this.y;
@@ -239,7 +239,7 @@ Vec2 = (function () {
     /**
      * Normalize self
      * @method Fire.Vec2#normalizeSelf
-     * @returns {Fire.Vec2} this
+     * @return {Fire.Vec2} this
      */
     Vec2.prototype.normalizeSelf = function () {
         var magSqr = this.x * this.x + this.y * this.y;
@@ -262,7 +262,7 @@ Vec2 = (function () {
      * Get normalized vector
      * @method Fire.Vec2#normalize
      * @param {Fire.Vec2} [out] - optional, the receiving vector
-     * @returns {Fire.Vec2} result
+     * @return {Fire.Vec2} result
      */
     Vec2.prototype.normalize = function (out) {
         out = out || new Vec2();
@@ -276,7 +276,7 @@ Vec2 = (function () {
      * Get angle between this and vector
      * @method Fire.Vec2#angle
      * @param {Fire.Vec2} vector
-     * @returns {number} from 0 to Math.PI
+     * @return {number} from 0 to Math.PI
      */
     Vec2.prototype.angle = function (vector) {
         var magSqr1 = this.magSqr();
@@ -297,7 +297,7 @@ Vec2 = (function () {
      * Get angle between this and vector with direction
      * @method Fire.Vec2#signAngle
      * @param {Fire.Vec2} vector
-     * @returns {number} from -MathPI to Math.PI
+     * @return {number} from -MathPI to Math.PI
      */
     Vec2.prototype.signAngle = function (vector) {
         // NOTE: this algorithm will return 0.0 without signed if vectors are parallex
@@ -313,7 +313,7 @@ Vec2 = (function () {
      * @method Fire.Vec2#rotate
      * @param {number} radians
      * @param {Fire.Vec2} [out] - optional, the receiving vector
-     * @returns {Fire.Vec2} the result
+     * @return {Fire.Vec2} the result
      */
     Vec2.prototype.rotate = function (radians, out) {
         out = out || new Vec2();
@@ -326,7 +326,7 @@ Vec2 = (function () {
      * rotate self
      * @method Fire.Vec2#rotateSelf
      * @param {number} radians
-     * @returns {Fire.Vec2} this
+     * @return {Fire.Vec2} this
      */
     Vec2.prototype.rotateSelf = function (radians) {
         var sin = Math.sin(radians);
@@ -347,7 +347,7 @@ Fire.Vec2 = Vec2;
  * @property {function} Fire.v2
  * @param {number|number[]} [x=0]
  * @param {number} [y=0]
- * @returns {Fire.Vec2}
+ * @return {Fire.Vec2}
  * @see Fire.Vec2
  */
 Fire.v2 = function v2 (x, y) {

@@ -48,7 +48,7 @@ var _metaClass = {
      * @param {string} name - the property name
      * @param {*} defaultValue - the default value
      * @param {...object} attribute - additional property attributes, any number of attributes can be added
-     * @returns {function} the class itself
+     * @return {function} the class itself
      */
     prop: function (name, defaultValue, attribute) {
         'use strict';
@@ -133,7 +133,7 @@ var _metaClass = {
      * @param {string} name - the getter property
      * @param {function} getter - the getter function which returns the real property
      * @param {...object} attribute - additional property attributes, any number of attributes can be added
-     * @returns {function} the class itself
+     * @return {function} the class itself
      */
     get: function (name, getter, attribute) {
         'use strict';
@@ -208,7 +208,7 @@ var _metaClass = {
      * @method class.set
      * @param {string} name - the setter property
      * @param {function} setter - the setter function
-     * @returns {function} the class itself
+     * @return {function} the class itself
      */
     set: function (name, setter) {
         // @ifdef DEV
@@ -258,7 +258,7 @@ var _metaClass = {
      * @param {function} getter - the getter function which returns the real property
      * @param {function} setter - the setter function
      * @param {...object} attribute - additional property attributes, any number of attributes can be added
-     * @returns {function} the class itself
+     * @return {function} the class itself
      */
     getset: function (name, getter, setter, attribute) {
         this.get(name, getter, attribute);
@@ -298,7 +298,7 @@ var _createInstanceProps = function (instance, itsClass) {
  *
  * @method Fire._isFireClass
  * @param {function} constructor
- * @returns {boolean}
+ * @return {boolean}
  * @private
  */
 Fire._isFireClass = function (constructor) {
@@ -311,7 +311,7 @@ Fire._isFireClass = function (constructor) {
  * @method Fire.isChildClassOf
  * @param {function} subclass
  * @param {function} superclass
- * @returns {boolean}
+ * @return {boolean}
  */
 Fire.isChildClassOf = function (subclass, superclass) {
     if (subclass && superclass) {
@@ -360,7 +360,7 @@ Fire.isChildClassOf = function (subclass, superclass) {
  *                                         如果你不需要构造函数，可以传入null。
  * @param {function} [constructor] - a constructor function that is used to instantiate this class,
  *                                   if not supplied, the constructor of base class will be called automatically
- * @returns {function} the defined class
+ * @return {function} the defined class
  *
  * @see Fire.extend
  */

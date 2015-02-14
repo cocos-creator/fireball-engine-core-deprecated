@@ -53,7 +53,7 @@ Fire._doInstantiate = (function () {
      * 值得注意的是，这个方法不可重入。
      *
      * @param {object} obj - 该方法仅供内部使用，用户需负责保证参数合法。什么参数是合法的请参考 Fire.instantiate().
-     * @returns {object}
+     * @return {object}
      * @private
      */
     function doInstantiate (obj) {
@@ -78,7 +78,7 @@ Fire._doInstantiate = (function () {
 
     /**
      * @param {object} obj - The object to instantiate, typeof mustbe 'object' and should not be an array.
-     * @returns {object} - the instantiated instance
+     * @return {object} - the instantiated instance
      */
     var enumerateObject = function (obj) {
         var value, type;
@@ -131,7 +131,7 @@ Fire._doInstantiate = (function () {
     };
 
     /**
-     * @returns {object} - the original non-nil object, typeof must be 'object'
+     * @return {object} - the original non-nil object, typeof must be 'object'
      */
     function instantiateObj (obj) {
         // 目前使用“_iN$t”这个特殊字段来存实例化后的对象，这样做主要是为了防止循环引用

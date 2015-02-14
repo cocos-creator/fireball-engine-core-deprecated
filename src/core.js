@@ -1,3 +1,11 @@
+/**
+ *
+ * Get property descriptor
+ * @param {object} obj
+ * @param {string} name
+ * @returns {Object}
+ *
+ */
 function _getPropertyDescriptor(obj, name) {
     if (obj) {
         var pd = Object.getOwnPropertyDescriptor(obj, name);
@@ -16,16 +24,16 @@ Fire.JS = {
         for (var i = 0; i < keys.length; i++) {
             delete obj[keys[i]];
         }
-    },
+    }
 };
 
 /**
- * @method Fire.addon
- * copy all properties not defined in obj from arguments[1...n]
  *
- * @param {object} obj
- * @param {...object} source
- * @returns {object} the result obj
+ * copy all properties not defined in obj from arguments[1...n]
+ * @method addon
+ * @param {object} obj object to extend its properties
+ * @param {object} sourceObj source object to copy properties from
+ * @return {object} the result obj
  */
 Fire.addon = function (obj) {
     'use strict';
@@ -42,12 +50,12 @@ Fire.addon = function (obj) {
 };
 
 /**
- * @method Fire.mixin
- * copy all properties from arguments[1...n] to obj
  *
+ * copy all properties from arguments[1...n] to obj
+ * @method mixin
  * @param {object} obj
- * @param {...object} source
- * @returns {object} the result obj
+ * @param {object} source
+ * @return {object} the result obj
  */
 Fire.mixin = function (obj) {
     'use strict';
@@ -70,14 +78,13 @@ Fire.mixin = function (obj) {
 /**
  * Derive the class from the supplied base class.
  * Both classes are just native javascript constructors, not created by Fire.define, so
- * usually you will want to inherit using Fire.define instead.
+ * usually you will want to inherit using {% crosslink Fire.define define %} instead.
  *
- * @method Fire.extend
+ * @method extend
  * @param {function} cls
  * @param {function} base - the baseclass to inherit
- * @returns {function} the result class
+ * @return {function} the result class
  *
- * @see Fire.define
  */
 Fire.extend = function (cls, base) {
 // @ifdef DEV
@@ -99,9 +106,10 @@ Fire.extend = function (cls, base) {
 
 /**
  * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null.
- * (modified from http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class)
- * @param {(object|function)} obj - instance or constructor
- * @returns {string}
+ * (modified from <a href="http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class">the code from this stackoverflow post</a>)
+ * @method getClassName
+ * @param {object|function} obj - instance or constructor
+ * @return {string}
  */
 Fire.getClassName = function (obj) {
     if (typeof obj === 'function' && obj.prototype.__classname__) {
@@ -173,6 +181,7 @@ Fire.unregisterClass to remove the id of unused class';
 
     /**
      * Register the class by specified id, if its classname is not defined, the class name will also be set.
+     * @method _setClassId
      * @param {string} classId
      * @param {function} constructor
      */
@@ -182,7 +191,7 @@ Fire.unregisterClass to remove the id of unused class';
 
     /**
      * Register the class by specified name
-     * @method Fire.setClassName
+     * @method setClassName
      * @param {string} className
      * @param {function} constructor
      */
@@ -199,8 +208,8 @@ Fire.unregisterClass to remove the id of unused class';
      * You should unregister the class so that Fireball-x will not keep its reference anymore.
      * Please note that its still your responsibility to free other references to the class.
      *
-     * @method Fire.unregisterClass
-     * @param {...function} [constructor] - the class you will want to unregister, any number of classes can be added
+     * @method unregisterClass
+     * @param {function} [constructor] - the class you will want to unregister, any number of classes can be added
      */
     Fire.unregisterClass = function (constructor) {
         'use strict';
@@ -219,9 +228,9 @@ Fire.unregisterClass to remove the id of unused class';
 
     /**
      * Get the registered class by id
-     * @method Fire._getClassById
+     * @method _getClassById
      * @param {string} classId
-     * @returns {function} constructor
+     * @return {function} constructor
      */
     Fire._getClassById = function (classId) {
         return _idToClass[classId];
@@ -229,9 +238,9 @@ Fire.unregisterClass to remove the id of unused class';
 
     /**
      * Get the registered class by name
-     * @method Fire.getClassByName
+     * @method getClassByName
      * @param {string} classname
-     * @returns {function} constructor
+     * @return {function} constructor
      */
     Fire.getClassByName = function (classname) {
         return _nameToClass[classname];
@@ -239,8 +248,9 @@ Fire.unregisterClass to remove the id of unused class';
 
     /**
      * Get class id of the object
-     * @param {(object|function)} obj - instance or constructor
-     * @returns {string}
+     * @method _getClassId
+     * @param {object|function} obj - instance or constructor
+     * @return {string}
      */
     Fire._getClassId = function (obj) {
         if (typeof obj === 'function' && obj.prototype.__cid__) {

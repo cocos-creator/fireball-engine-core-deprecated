@@ -8,7 +8,7 @@
  * @param {string} propertyName - the name of property or function, used to retrieve the attributes
  * @param {object|*} [attributes] - the attribute table to mark, new attributes will merged with existed attributes.
  *                                Attribute whose key starts with '_' will be ignored.
- * @returns {object|undefined} return all attributes associated with the property. if none undefined will be returned
+ * @return {object|undefined} return all attributes associated with the property. if none undefined will be returned
  *
  * @example
  * var klass = function () { this.value = 0.5 };
@@ -199,7 +199,7 @@ Fire.String = {
  *
  * @method Fire.ObjectType
  * @param {function} ctor - the special type you want
- * @returns {object} the attribute
+ * @return {object} the attribute
  */
 Fire.ObjectType = function (ctor) {
     return { type: 'object', ctor: ctor };
@@ -210,7 +210,7 @@ Fire.ObjectType = function (ctor) {
  *
  * @method Fire.Enum
  * @param {(string)} enumType
- * @returns {object} the enum attribute
+ * @return {object} the enum attribute
  */
 Fire.Enum = function (enumType) {
     return { type: 'enum', enumList: Fire.getEnumList(enumType) };
@@ -221,7 +221,7 @@ Fire.Enum = function (enumType) {
  *
  * @method Fire.EnumList
  * @param {(array)} enumList
- * @returns {object} the enum attribute
+ * @return {object} the enum attribute
  */
 Fire.EnumList = function (enumList) {
     return { type: 'enum', enumList: enumList };
@@ -233,7 +233,7 @@ Fire.EnumList = function (enumList) {
  *
  * @method Fire.RawType
  * @param {string} [typename]
- * @returns {object} the attribute
+ * @return {object} the attribute
  */
 Fire.RawType = function (typename) {
     var NEED_EXT_TYPES = ['image', 'json', 'text', 'audio'];  // the types need to specify exact extname
@@ -310,7 +310,7 @@ Fire.RawType = function (typename) {
  *
  * @method Fire.Custom
  * @param {(string)} name
- * @returns {object} the enum attribute
+ * @return {object} the enum attribute
  */
 Fire.Custom = function (type) {
     return { custom: type };
@@ -328,7 +328,7 @@ Fire.HideInInspector = { hideInInspector: true };
  *
  * @method Fire.DisplayName
  * @param {string} name
- * @returns {object} the attribute
+ * @return {object} the attribute
  */
 Fire.DisplayName = function (name) {
     return { displayName: name };
@@ -347,7 +347,7 @@ Fire.ReadOnly = {
  *
  * @method Fire.Tooltip
  * @param {string} tooltip
- * @returns {object} the attribute
+ * @return {object} the attribute
  */
 Fire.Tooltip = function (tooltip) {
     return { tooltip: tooltip };
@@ -356,7 +356,7 @@ Fire.Tooltip = function (tooltip) {
 /**
  * @param {string} boolPropName
  * @param {boolean} hasValueByDefault
- * @returns {object} the attribute
+ * @return {object} the attribute
  */
 Fire.Nullable = function (boolPropName, hasValueByDefault) {
     return {
@@ -380,7 +380,7 @@ Fire.Nullable = function (boolPropName, hasValueByDefault) {
 /**
  * @param {string[]|string} names - the name of target property to watch, array is also acceptable.
  * @param {function} callback - the callback function to invoke when target property(s) is changed.
- * @returns {object} the attribute
+ * @return {object} the attribute
  */
 Fire.Watch = function (names, callback) {
     return {
@@ -392,7 +392,7 @@ Fire.Watch = function (names, callback) {
 /**
  * @param {number|null} min: null mins infinite
  * @param {number|null} max: null mins infinite
- * @returns {object} the attribute
+ * @return {object} the attribute
  */
 Fire.Range = function (min, max) {
    return { min: min, max: max };

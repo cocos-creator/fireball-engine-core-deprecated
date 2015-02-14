@@ -132,7 +132,7 @@ function _isDomNode(obj) {
 // @ifdef DEV
 /**
  * @param {object} obj
- * @returns {boolean} is {} ?
+ * @return {boolean} is {} ?
  */
 var _isPlainEmptyObj_DEV = function (obj) {
     if (obj.constructor !== ({}).constructor) {

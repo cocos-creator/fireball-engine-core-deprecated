@@ -3,7 +3,7 @@
     /**
      * The CallbacksHandler is an abstract class that can register and unregister callbacks by key.
      * Subclasses should implement their own methods about how to invoke the callbacks.
-     * @class
+     * @class CallbacksHandler
      */
     var CallbacksHandler = (function () {
         this._callbackTable = {};
@@ -14,7 +14,7 @@
     /**
      * @param {string} key
      * @param {function} callback
-     * @returns {boolean} whether the key is new
+     * @return {boolean} whether the key is new
      */
     CallbacksHandler.prototype.add = function (key, callback) {
         var list = this._callbackTable[key];
@@ -44,7 +44,7 @@
      *
      * @param {string} key
      * @param {function} [callback]
-     * @returns {boolean}
+     * @return {boolean}
      */
     CallbacksHandler.prototype.has = function (key, callback) {
         var list = this._callbackTable[key];
@@ -67,7 +67,7 @@
     /**
      * @param {string} key
      * @param {function} callback
-     * @returns {boolean} removed
+     * @return {boolean} removed
      */
     CallbacksHandler.prototype.remove = function (key, callback) {
         var list = this._callbackTable[key];
@@ -85,7 +85,7 @@
 
     /**
      * The callbacks invoker to handle and invoke callbacks by key
-     * @class
+     * @class CallbacksInvoker
      */
     var CallbacksInvoker = function () {
         this._callbackTable = {};
@@ -134,7 +134,7 @@
     /**
      * @param {string} key
      * @param {boolean} [remove=false] - remove callbacks after invoked
-     * @returns {function} the new callback which will invoke all the callbacks binded with the same supplied key
+     * @return {function} the new callback which will invoke all the callbacks binded with the same supplied key
      */
     CallbacksInvoker.prototype.bindKey = function (key, remove) {
         var self = this;

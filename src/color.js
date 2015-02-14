@@ -123,7 +123,7 @@ Fire.Color = Color;
  * @param {number} [g=0]
  * @param {number} [b=0]
  * @param {number} [a=1]
- * @returns {Fire.Color}
+ * @return {Fire.Color}
  * @see Fire.Color
  */
 Fire.color = function color (r, g, b, a) {

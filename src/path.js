@@ -80,7 +80,7 @@ else {
  * @method Fire.Path.setExtname
  * @param {string} path
  * @param {string} newExtension - extension to replace with
- * @returns {string} result
+ * @return {string} result
  */
 Fire.Path.setExtname = function (path, newExtension) {
     // if (Fire.isNode) return Path.join(Path.dirname(path), Path.basename(path, Path.extname(path))) + newExtension;
@@ -92,7 +92,7 @@ Fire.Path.setExtname = function (path, newExtension) {
  * @method Fire.Path.setEndWithSep
  * @param {string} path
  * @param {boolean} [endWithSep = true]
- * @returns {string} result
+ * @return {string} result
  */
 Fire.Path.setEndWithSep = function (path, endWithSep) {
     endWithSep = (typeof endWithSep !== 'undefined') ? endWithSep : true;

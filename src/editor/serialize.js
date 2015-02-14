@@ -59,7 +59,7 @@ var _Serializer = (function () {
     /**
      * @param {object} obj - The object to serialize
      * @param {array|object} data - The array or dict where serialized data to store
-     * @returns {object} The reference info used to embed to its container.
+     * @return {object} The reference info used to embed to its container.
      *                   if the serialized data not contains in serializedList, then return the data directly.
      */
     var _enumerateObject = function (self, obj, data) {
@@ -333,7 +333,7 @@ var _Serializer = (function () {
  * Serialize Fire.Asset to a json string
  * @param {Fire.Asset} obj - The object to serialize
  * @param {object} [options=null]
- * @returns {string|object} The json string to represent the object or json object if dontStringify is true
+ * @return {string|object} The json string to represent the object or json object if dontStringify is true
  */
 Fire.serialize = function (obj, options) {
     var exporting = (options && options.exporting);

@@ -112,7 +112,7 @@ Fire.Rect = Rect;
  * @param {number} [y=0]
  * @param {number} [w=0]
  * @param {number} [h=0]
- * @returns {Fire.Rect}
+ * @return {Fire.Rect}
  * @see Fire.Rect
  */
 Fire.rect = function rect (x, y, w, h) {

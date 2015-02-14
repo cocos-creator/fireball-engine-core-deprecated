@@ -16,8 +16,9 @@ else {
 Fire.isEditorCore = Fire.isApp && !Fire.isWeb;
 
 /**
- * @name Fire#isRetina
- * @property {boolean} isRetina check if running in retina display
+ * check if running in retina display
+ * @property isRetina
+ * @type boolean
  */
 Object.defineProperty(Fire, 'isRetina', {
     get: function () {
@@ -43,7 +44,12 @@ var ToDestroy = 1 << 1;
 var DontSave = 1 << 2;
 var EditorOnly  = 1 << 3; // dont save in build
 var Dirty = 1 << 4; // used in editor
-
+/**
+ *
+ * Mark object with different flags.
+ * @type object
+ * @property _ObjectFlags
+ */
 var ObjectFlags = {
     // public flags
 
@@ -57,7 +63,8 @@ var ObjectFlags = {
     /**
      * Hide in game and hierarchy.
      * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
-     * @property {number} ObjectFlags.HideInGame
+     * @property _ObjectFlags.HideInGame
+     * @type number
      */
     HideInGame: 1 << 10,
 
@@ -65,7 +72,8 @@ var ObjectFlags = {
 
     /**
      * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
-     * @property {number} ObjectFlags.HideInEditor
+     * @property _ObjectFlags.HideInEditor
+     * @type number
      */
     HideInEditor: 1 << 11,
 
@@ -79,15 +87,11 @@ var ObjectFlags = {
 /**
  * Hide in game view, hierarchy, and scene view... etc.
  * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
- * @property {number} ObjectFlags.Hide
+ * @property _ObjectFlags.Hide
+ * @type number
  */
 ObjectFlags.Hide = ObjectFlags.HideInGame | ObjectFlags.HideInEditor;
 
-/**
- *
- * @type {{DontSave: number, EditorOnly: number, Dirty: number, Destroying: number, HideInGame: number, HideInEditor: number, IsOnEnableCalled: number, IsOnLoadCalled: number, IsOnStartCalled: number}}
- * @private
- */
 Fire._ObjectFlags = ObjectFlags;
 
 var PersistentMask = ~(ToDestroy | Dirty | ObjectFlags.Destroying |     // can not clone these flags

@@ -15,7 +15,7 @@ FObject = (function () {
     /**
      * Checks whether the object is not destroyed
      * @method Fire.isValid
-     * @returns {boolean} whether it is not destroyed
+     * @return {boolean} whether it is not destroyed
      * @see Fire.FObject#isValid
      */
     Fire.isValid = function (object) {
