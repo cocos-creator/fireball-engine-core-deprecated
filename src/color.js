@@ -1,4 +1,13 @@
 var Color = (function () {
+    /**
+     * A class represents RGBA color
+     * @class Color
+     * @constructor
+     * @param {number} r - red component of the color
+     * @param {number} g - green component of the color
+     * @param {number} b - blue component of the color
+     * @param {number} a - alpha component of the color
+     */
     function Color( r, g, b, a ) {
         this.r = typeof r === 'number' ? r : 0.0;
         this.g = typeof g === 'number' ? g : 0.0;
@@ -7,6 +16,11 @@ var Color = (function () {
     }
     Fire.setClassName('Fire.Color', Color);
 
+    /**
+     * Clone a new color from the current color.
+     * @method clone
+     * @return {Color} Newly created color.
+     */
     Color.prototype.clone = function () {
         return new Color(this.r, this.g, this.b, this.a);
     };
@@ -117,14 +131,13 @@ var Color = (function () {
 Fire.Color = Color;
 
 /**
- * The convenience method to create a new Color
- * @property {function} Fire.color
- * @param {number|number[]} [r=0]
+ * The convenience method to create a new <% crosslink Fire.Color Color %>
+ * @method color
+ * @param {number} [r=0]
  * @param {number} [g=0]
  * @param {number} [b=0]
  * @param {number} [a=1]
- * @return {Fire.Color}
- * @see Fire.Color
+ * @return {Color}
  */
 Fire.color = function color (r, g, b, a) {
     if (Array.isArray(r)) {

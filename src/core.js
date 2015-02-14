@@ -1,9 +1,10 @@
 /**
  *
  * Get property descriptor
+ * @method _getPropertyDescriptor
  * @param {object} obj
  * @param {string} name
- * @returns {Object}
+ * @return {Object}
  *
  */
 function _getPropertyDescriptor(obj, name) {
