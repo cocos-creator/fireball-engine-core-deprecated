@@ -1,8 +1,8 @@
 /**
  *
- * Get property descriptor
+ * !#en Get property descriptor !#zh 获取 property 的描述物体
  * @method _getPropertyDescriptor
- * @param {object} obj
+ * @param {object} obj - !#en do how many times !#zh 表示做几次的参数
  * @param {string} name
  * @return {Object}
  *
