@@ -1,6 +1,9 @@
-﻿// helper functions for defining Classes
-
-// both getter and prop must register the name into __props__ array
+﻿/**
+ * both getter and prop must register the name into __props__ array
+ * @method _appendProp
+ * @param {string} name - prop name
+ * @private
+ */
 var _appendProp = function (name/*, isGetter*/) {
     // @ifdef DEV
     var JsVarReg = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
@@ -28,6 +31,8 @@ var _appendProp = function (name/*, isGetter*/) {
 /**
  * the metaclass of the "fire class" created by Fire.define, all its static members
  * will inherited by fire class.
+ * @property _metaClass
+ * @type object
  */
 var _metaClass = {
 
@@ -129,7 +134,7 @@ var _metaClass = {
      * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
      * 如果传入参数包含Fire.HideInInspector则不在inspector中显示。
      *
-     * @method class.get
+     * @method get
      * @param {string} name - the getter property
      * @param {function} getter - the getter function which returns the real property
      * @param {...object} attribute - additional property attributes, any number of attributes can be added
@@ -205,7 +210,8 @@ var _metaClass = {
     /**
      * 该方法定义的变量**不会**被序列化，除非有对应的getter否则不在inspector中显示。
      *
-     * @method class.set
+     * @method set
+     * @static
      * @param {string} name - the setter property
      * @param {function} setter - the setter function
      * @return {function} the class itself
@@ -253,7 +259,8 @@ var _metaClass = {
      * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
      * 如果传入参数包含Fire.HideInInspector则不在inspector中显示。
      *
-     * @method class.get
+     * @method getset
+     * @static
      * @param {string} name - the getter property
      * @param {function} getter - the getter function which returns the real property
      * @param {function} setter - the setter function

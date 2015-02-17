@@ -26,7 +26,7 @@ var paths = {
         'src/intersection.js',
         'src/callbacks-invoker.js',
 
-        // basic classes
+        // basic classes utility
         'src/utils.js',
         'src/attribute.js',
         'src/class.js',

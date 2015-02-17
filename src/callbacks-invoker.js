@@ -4,6 +4,7 @@
      * The CallbacksHandler is an abstract class that can register and unregister callbacks by key.
      * Subclasses should implement their own methods about how to invoke the callbacks.
      * @class CallbacksHandler
+     * @constructor
      */
     var CallbacksHandler = (function () {
         this._callbackTable = {};
@@ -12,6 +13,7 @@
     Fire._CallbacksHandler = CallbacksHandler;
 
     /**
+     * @method add
      * @param {string} key
      * @param {function} callback
      * @return {boolean} whether the key is new
@@ -41,7 +43,7 @@
     /**
      * Check if the specified key has any registered callback. If a callback is also specified,
      * it will only return true if the callback is registered.
-     *
+     * @method has
      * @param {string} key
      * @param {function} [callback]
      * @return {boolean}
@@ -58,6 +60,7 @@
     };
 
     /**
+     * @method removeAll
      * @param {string} key
      */
     CallbacksHandler.prototype.removeAll = function (key) {
@@ -65,6 +68,7 @@
     };
 
     /**
+     * @method remove
      * @param {string} key
      * @param {function} callback
      * @return {boolean} removed
@@ -86,15 +90,23 @@
     /**
      * The callbacks invoker to handle and invoke callbacks by key
      * @class CallbacksInvoker
+     * @extends CallbacksHandler
+     * @constructor
      */
     var CallbacksInvoker = function () {
         this._callbackTable = {};
     };
     Fire.extend(CallbacksInvoker, CallbacksHandler);
 
+    /**
+     * This is a property accessible from {% crosslink Fire Fire %} global object
+     * @property Fire.CallbacksInvoker
+     * @type CallbacksInvoker
+     */
     Fire.CallbacksInvoker = CallbacksInvoker;
 
     /**
+     * @method invoke
      * @param {string} key
      * @param {*} [p1]
      * @param {*} [p2]
@@ -112,6 +124,7 @@
     };
 
     /**
+     * @method invokeAndRemove
      * @param {string} key
      * @param {*} [p1]
      * @param {*} [p2]
@@ -132,6 +145,7 @@
     };
 
     /**
+     * @method bindKey
      * @param {string} key
      * @param {boolean} [remove=false] - remove callbacks after invoked
      * @return {function} the new callback which will invoke all the callbacks binded with the same supplied key

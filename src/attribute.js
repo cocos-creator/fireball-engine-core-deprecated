@@ -2,23 +2,21 @@
  * Tag the class with any meta attributes, then return all current attributes assigned to it.
  * This function holds only the attributes, not their implementations.
  *
- * @method Fire.attr
- * @param {function|object} constructor - the class or instance. If instance, the attribute will be dynamic and only
- *                                        available for the specified instance.
+ * @method attr
+ * @param {function|object} constructor - the class or instance. If instance, the attribute will be dynamic and only available for the specified instance.
  * @param {string} propertyName - the name of property or function, used to retrieve the attributes
- * @param {object|*} [attributes] - the attribute table to mark, new attributes will merged with existed attributes.
- *                                Attribute whose key starts with '_' will be ignored.
+ * @param {object} [attributes] - the attribute table to mark, new attributes will merged with existed attributes. Attribute whose key starts with '_' will be ignored.
  * @return {object|undefined} return all attributes associated with the property. if none undefined will be returned
  *
  * @example
- * var klass = function () { this.value = 0.5 };
- * Fire.attr(klass, 'value');              // return undefined
- * Fire.attr(klass, 'value', {}).min = 0;  // assign new attribute table associated with 'value', and set its min = 0
- * Fire.attr(klass, 'value', {             // set values max and default
- *     max: 1,
- *     default: 0.5,
- * });
- * Fire.attr(klass, 'value');              // return { default: 0.5, min: 0, max: 1 }
+ *  var klass = function () { this.value = 0.5 };
+ *  Fire.attr(klass, 'value');              // return undefined
+ *  Fire.attr(klass, 'value', {}).min = 0;  // assign new attribute table associated with 'value', and set its min = 0
+ *  Fire.attr(klass, 'value', {             // set values max and default
+ *      max: 1,
+ *      default: 0.5,
+ *  });
+ *  Fire.attr(klass, 'value');              // return { default: 0.5, min: 0, max: 1 }
  */
 Fire.attr = function (constructor, propertyName, attributes) {
     var key = '_attr$' + propertyName;
@@ -106,7 +104,8 @@ Callbacks: {
  * The NonSerialized attribute marks a variable to not be serialized,
  * so you can keep a property show in the Editor and Fireball will not attempt to serialize it.
  *
- * @property {object} Fire.NonSerialized
+ * @property NonSerialized
+ * @type object
  * @see Fire.EditorOnly
  */
 Fire.NonSerialized = {
@@ -129,13 +128,15 @@ Fire.EditorOnly = {
 /**
  * Specify that the input value must be integer in Inspector.
  * Also used to indicates that the type of elements in array or the type of value in dictionary is integer.
- * @property {object} Fire.HideInInspector
+ * @property Integer
+ * @type object
  */
 Fire.Integer = { type: 'int' };
 
 /**
  * Indicates that the type of elements in array or the type of value in dictionary is double.
- * @property {object} Fire.HideInInspector
+ * @property Float
+ * @type object
  */
 Fire.Float = { type: 'float' };
 
@@ -308,7 +309,7 @@ Fire.RawType = function (typename) {
 /**
  * Makes a custom property
  *
- * @method Fire.Custom
+ * @method Custom
  * @param {(string)} name
  * @return {object} the enum attribute
  */
@@ -318,8 +319,8 @@ Fire.Custom = function (type) {
 
 /**
  * Makes a property not show up in the Inspector but be serialized.
- *
- * @property {object} Fire.HideInInspector
+ * @property HideInInspector
+ * @type object
  */
 Fire.HideInInspector = { hideInInspector: true };
 

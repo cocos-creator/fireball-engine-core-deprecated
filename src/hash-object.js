@@ -3,7 +3,8 @@
     /**
      * 提供获取对象ID的功能，该ID全局唯一但不会被序列化，可用于索引对象。
      * 如果你将对象索引起来，必须记住清除索引，否则对象将永远不会被销毁。
-     * @class Fire.HashObject
+     * @class HashObject
+     * @static
      */
     var HashObject = Fire.define('Fire.HashObject', Fire.FObject, function () {
         FObject.call(this);
@@ -25,7 +26,9 @@
     var globalId = 0;
 
     /**
-     * @member {number} Fire.HashObject#hashCode
+     * @property hashCode
+     * @type number
+     * @readOnly
      */
     Object.defineProperty ( HashObject.prototype, 'hashCode', {
         get: function () {
@@ -34,7 +37,9 @@
     });
 
     /**
-     * @member {string} Fire.HashObject#id
+     * @property id
+     * @type string
+     * @readOnly
      */
     Object.defineProperty ( HashObject.prototype, 'id', {
         get: function () {

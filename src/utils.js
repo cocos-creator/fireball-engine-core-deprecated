@@ -1,3 +1,16 @@
+/**
+ * @module Fire
+ * @class Fire
+ * @static
+ */
+
+/**
+ * @method Fire.padLeft
+ * @param {string} text
+ * @param {number} width
+ * @param {string} ch
+ * @return {string}
+ */
 Fire.padLeft = function ( text, width, ch ) {
     text = text.toString();
     width -= text.length;
