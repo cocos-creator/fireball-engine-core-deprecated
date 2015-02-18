@@ -391,9 +391,11 @@ Fire.define = function (className, baseOrConstructor, constructor) {
         constructor = baseOrConstructor;
     }
 
+// @ifdef DEV
     if (constructor) {
         _checkCtor(constructor);
     }
+// @endif
 
     var fireClass = _createCtor(isInherit, constructor, baseClass);
 
