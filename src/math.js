@@ -2,21 +2,41 @@
     var _d2r = Math.PI/180.0;
     var _r2d = 180.0/Math.PI;
 
+    /**
+     * Helper class for math operation
+     * @class Math
+     * @static
+     */
     Fire.mixin ( Math, {
         TWO_PI: 2.0 * Math.PI,
         HALF_PI: 0.5 * Math.PI,
 
-        // degree to radius
+        /**
+         * degree to radius
+         * @method deg2rad
+         * @param degree
+         * @return {number}
+         */
         deg2rad: function ( degree ) {
             return degree * _d2r;
         },
 
-        // radius to degree
+        /**
+         * radius to degree
+         * @method rad2deg
+         * @param radius
+         * @return {number}
+         */
         rad2deg: function ( radius ) {
             return radius * _r2d;
         },
 
-        // let radius in -pi to pi
+        /**
+         * let radius in -pi to pi
+         * @method rad180
+         * @param radius
+         * @return {number}
+         */
         rad180: function ( radius ) {
             if ( radius > Math.PI || radius < -Math.PI ) {
                 radius = (radius + Math.TOW_PI) % Math.TOW_PI;
@@ -24,7 +44,12 @@
             return radius;
         },
 
-        // let radius in 0 to 2pi
+        /**
+         * let radius in 0 to 2pi
+         * @method rad360
+         * @param radius
+         * @return {number}
+         */
         rad360: function ( radius ) {
             if ( radius > Math.TWO_PI )
                 return radius % Math.TOW_PI;
@@ -33,7 +58,13 @@
             return radius;
         },
 
-        // let degree in -180 to 180
+        /**
+         * let degree in -180 to 180
+         * @method deg180
+         * @param degree
+         * @return {number}
+         */
+
         deg180: function ( degree ) {
             if ( degree > 180.0 || degree < -180.0 ) {
                 degree = (degree + 360.0) % 360.0;
@@ -41,7 +72,12 @@
             return degree;
         },
 
-        // let degree in 0 to 360
+        /**
+         * let degree in 0 to 360
+         * @method deg360
+         * @param degree
+         * @return {number}
+         */
         deg360: function ( degree ) {
             if ( degree > 360.0 )
                 return degree % 360.0;
@@ -65,11 +101,13 @@
         },
 
         /**
+         * @method calculateMaxRect
          * @param {Fire.Rect} out
          * @param {Fire.Vec2} p0
          * @param {Fire.Vec2} p1
          * @param {Fire.Vec2} p2
          * @param {Fire.Vec2} p3
+         * @return {Fire.Vec2}
          */
         calculateMaxRect: function (out, p0, p1, p2, p3) {
             var minX = Math.min(p0.x, p1.x, p2.x, p3.x);
@@ -81,7 +119,7 @@
             out.width = maxX - minX;
             out.height = maxY - minY;
             return out;
-        },
+        }
 
     } );
 

@@ -1,3 +1,7 @@
+/**
+ * @class Intersection
+ * @static
+ */
 Fire.Intersection = (function () {
     var Intersection = {};
 
@@ -19,6 +23,15 @@ Fire.Intersection = (function () {
 
         return false;
     }
+
+    /**
+     * @method lineLine
+     * @param {Fire.Vec2} a1
+     * @param {Fire.Vec2} a2
+     * @param {Fire.Vec2} b1
+     * @param {Fire.Vec2} b2
+     * @return {boolean}
+     */
     Intersection.lineLine = _lineLine;
 
     function _lineRect ( a1, a2, b ) {

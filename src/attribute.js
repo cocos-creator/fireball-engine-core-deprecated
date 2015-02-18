@@ -103,10 +103,10 @@ Callbacks: {
  * By default, all properties declared by "Class.prop" is serializable.
  * The NonSerialized attribute marks a variable to not be serialized,
  * so you can keep a property show in the Editor and Fireball will not attempt to serialize it.
+ * See {% crosslink EditorOnly Fire.EditorOnly %} for more details.
  *
  * @property NonSerialized
  * @type object
- * @see Fire.EditorOnly
  */
 Fire.NonSerialized = {
     serializable: false,
@@ -117,8 +117,8 @@ Fire.NonSerialized = {
  * The EditorOnly attribute marks a variable to be serialized in editor project, but non-serialized
  * in exported products.
  *
- * @property {object} Fire.EditorOnly
- * @see Fire.NonSerialized
+ * @property EditorOnly
+ * @type object
  */
 Fire.EditorOnly = {
     editorOnly: true,
@@ -174,7 +174,8 @@ function getTypeChecker (type, attrName) {
 
 /**
  * Indicates that the type of elements in array or the type of value in dictionary is boolean.
- * @property {object} Fire.HideInInspector
+ * @property Boolean
+ * @type
  */
 Fire.Boolean = {
     type: 'boolean',
@@ -185,7 +186,8 @@ Fire.Boolean = {
 
 /**
  * Indicates that the type of elements in array or the type of value in dictionary is string.
- * @property {object} Fire.HideInInspector
+ * @property String
+ * @type object
  */
 Fire.String = {
     type: 'string',
@@ -198,7 +200,7 @@ Fire.String = {
  * Makes a property only accept the supplied object type in Inspector.
  * If the type is derived from Fire.Asset, it will be serialized to uuid.
  *
- * @method Fire.ObjectType
+ * @method ObjectType
  * @param {function} ctor - the special type you want
  * @return {object} the attribute
  */
@@ -209,7 +211,7 @@ Fire.ObjectType = function (ctor) {
 /**
  * Makes a property show up as a enum in Inspector.
  *
- * @method Fire.Enum
+ * @method Enum
  * @param {(string)} enumType
  * @return {object} the enum attribute
  */
@@ -220,7 +222,7 @@ Fire.Enum = function (enumType) {
 /**
  * Makes a property show up as a enum in Inspector.
  *
- * @method Fire.EnumList
+ * @method EnumList
  * @param {(array)} enumList
  * @return {object} the enum attribute
  */
@@ -232,7 +234,7 @@ Fire.EnumList = function (enumList) {
  * Makes a property referenced to a javascript host object which needs to load before deserialzation.
  * The property will not be serialized but will be referenced to the loaded host object while deserialzation.
  *
- * @method Fire.RawType
+ * @method RawType
  * @param {string} [typename]
  * @return {object} the attribute
  */
@@ -310,7 +312,7 @@ Fire.RawType = function (typename) {
  * Makes a custom property
  *
  * @method Custom
- * @param {(string)} name
+ * @param {string} name
  * @return {object} the enum attribute
  */
 Fire.Custom = function (type) {
@@ -337,7 +339,8 @@ Fire.DisplayName = function (name) {
 
 /**
  * The ReadOnly attribute indicates that the property field is disabled in Inspector.
- * @property {object} Fire.ReadOnly
+ * @property ReadOnly
+ * @type object
  */
 Fire.ReadOnly = {
     readOnly: true
@@ -346,7 +349,7 @@ Fire.ReadOnly = {
 /**
  * Specify a tooltip for a property
  *
- * @method Fire.Tooltip
+ * @method Tooltip
  * @param {string} tooltip
  * @return {object} the attribute
  */
@@ -355,6 +358,7 @@ Fire.Tooltip = function (tooltip) {
 };
 
 /**
+ * @method Nullable
  * @param {string} boolPropName
  * @param {boolean} hasValueByDefault
  * @return {object} the attribute
@@ -379,7 +383,8 @@ Fire.Nullable = function (boolPropName, hasValueByDefault) {
 };
 
 /**
- * @param {string[]|string} names - the name of target property to watch, array is also acceptable.
+ * @method Watch
+ * @param {string} names - the name of target property to watch, array is also acceptable.
  * @param {function} callback - the callback function to invoke when target property(s) is changed.
  * @return {object} the attribute
  */
@@ -391,8 +396,9 @@ Fire.Watch = function (names, callback) {
 };
 
 /**
- * @param {number|null} min: null mins infinite
- * @param {number|null} max: null mins infinite
+ * @method Range
+ * @param {number} min: null mins infinite
+ * @param {number} max: null mins infinite
  * @return {object} the attribute
  */
 Fire.Range = function (min, max) {
