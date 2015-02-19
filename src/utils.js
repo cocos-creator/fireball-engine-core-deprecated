@@ -5,7 +5,7 @@
  */
 
 /**
- * @method Fire.padLeft
+ * @method padLeft
  * @param {string} text
  * @param {number} width
  * @param {string} ch

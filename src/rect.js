@@ -1,4 +1,12 @@
 var Rect = (function () {
+    /**
+     * @class Rect
+     * @constructor
+     * @param {number} x
+     * @param {number} y
+     * @param {number} w
+     * @param {number} h
+     */
     function Rect( x, y, w, h ) {
         this.x = typeof x === 'number' ? x : 0.0;
         this.y = typeof y === 'number' ? y : 0.0;
@@ -7,6 +15,12 @@ var Rect = (function () {
     }
     Fire.setClassName('Fire.Rect', Rect);
 
+    /**
+     * @method fromVec2
+     * @param {Vec2} v1
+     * @param {Vec2} v2
+     * @return {Rect}
+     */
     Rect.fromVec2 = function ( v1, v2 ) {
         var min_x = Math.min( v1.x, v2.x );
         var min_y = Math.min( v1.y, v2.y );
@@ -18,9 +32,9 @@ var Rect = (function () {
 
     /**
      * Check if rect contains
-     *
-     * @param a {Fire.Rect} Rect a
-     * @param b {Fire.Rect} Rect b
+     * @method contain
+     * @param a {Rect} Rect a
+     * @param b {Rect} Rect b
      * @return {Number} The contains result, 1 is a contains b, -1 is b contains a, 0 is no contains
      */
     Rect.contain = function _Contain ( a, b ) {
@@ -107,13 +121,12 @@ Fire.Rect = Rect;
 
 /**
  * The convenience method to create a new Rect
- * @property {function} Fire.rect
- * @param {number|number[]} [x=0]
+ * @method Fire.rect
+ * @param {number} [x=0]
  * @param {number} [y=0]
  * @param {number} [w=0]
  * @param {number} [h=0]
- * @return {Fire.Rect}
- * @see Fire.Rect
+ * @return {Rect}
  */
 Fire.rect = function rect (x, y, w, h) {
     if (Array.isArray(x)) {

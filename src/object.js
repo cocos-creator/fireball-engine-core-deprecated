@@ -1,3 +1,7 @@
+/**
+ * @class FObject
+ * @constructor
+ */
 FObject = (function () {
 
     // constructor
@@ -16,11 +20,15 @@ FObject = (function () {
      * Checks whether the object is not destroyed
      * @method Fire.isValid
      * @return {boolean} whether it is not destroyed
-     * @see Fire.FObject#isValid
      */
     Fire.isValid = function (object) {
         return !!object && !(object._objFlags & Destroyed);
     };
+
+    /**
+     * @property isValid
+     * @type boolean
+     */
     Object.defineProperty(FObject, 'isValid', {
         value: function (object) {
             Fire.warn('FObject.isValid is deprecated, use Fire.isValid instead please');
@@ -57,7 +65,8 @@ FObject = (function () {
     // instance
 
     /**
-     * @property {boolean} Fire.FObject#name
+     * @property name
+     * @type boolean
      */
     Object.defineProperty(FObject.prototype, 'name', {
         get: function () {
@@ -69,11 +78,6 @@ FObject = (function () {
         enumerable: false
     });
 
-    /**
-     * Checks whether the object is not destroyed
-     * @property {boolean} Fire.FObject#isValid
-     * @see Fire.FObject#destroy
-     */
     Object.defineProperty(FObject.prototype, 'isValid', {
         get: function () {
             return !(this._objFlags & Destroyed);
@@ -84,9 +88,8 @@ FObject = (function () {
      * Destroy this FObject, and release all its own references to other resources.
      * After destory, this FObject is not usable any more.
      * You can use Fire.isValid(obj) (or obj.isValid if obj is non-nil) to check whether the object is destroyed before accessing it.
-     * @method Fire.FObject#destroy
+     * @method destroy
      * @return {boolean} whether it is the first time the destroy being called
-     * @see Fire.isValid
      */
     FObject.prototype.destroy = function () {
         if (this._objFlags & Destroyed) {

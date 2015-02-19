@@ -1,7 +1,8 @@
 ﻿/**
  * Simple matrix to do 2D affine transformations.
  * It is actually 3x3 but the last row is [0 0 1].
- * @class Fire.Matrix23
+ * @class Matrix23
+ * @constructor
  */
 var Matrix23 = function () {
     this.a = 1;

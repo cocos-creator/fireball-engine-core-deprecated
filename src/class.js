@@ -134,7 +134,7 @@ var _metaClass = {
      * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
      * 如果传入参数包含Fire.HideInInspector则不在inspector中显示。
      *
-     * @method get
+     * @method class.get
      * @param {string} name - the getter property
      * @param {function} getter - the getter function which returns the real property
      * @param {...object} attribute - additional property attributes, any number of attributes can be added
@@ -210,7 +210,7 @@ var _metaClass = {
     /**
      * 该方法定义的变量**不会**被序列化，除非有对应的getter否则不在inspector中显示。
      *
-     * @method set
+     * @method class.set
      * @static
      * @param {string} name - the setter property
      * @param {function} setter - the setter function
@@ -259,7 +259,7 @@ var _metaClass = {
      * 该方法定义的变量**不会**被序列化，默认会在inspector中显示。
      * 如果传入参数包含Fire.HideInInspector则不在inspector中显示。
      *
-     * @method getset
+     * @method class.getset
      * @static
      * @param {string} name - the getter property
      * @param {function} getter - the getter function which returns the real property
@@ -303,7 +303,7 @@ var _createInstanceProps = function (instance, itsClass) {
 /**
  * Checks whether the constructor is created by Fire.define
  *
- * @method Fire._isFireClass
+ * @method _isFireClass
  * @param {function} constructor
  * @return {boolean}
  * @private
@@ -315,7 +315,7 @@ Fire._isFireClass = function (constructor) {
 /**
  * Checks whether subclass is child of superclass or equals to superclass
  *
- * @method Fire.isChildClassOf
+ * @method isChildClassOf
  * @param {function} subclass
  * @param {function} superclass
  * @return {boolean}
@@ -359,17 +359,15 @@ Fire.isChildClassOf = function (subclass, superclass) {
 /**
  * Creates a FireClass and returns its constructor function.
  * You can also creates a sub-class by supplying a baseClass parameter.
+ * See {% crosslink extend Fire.extend %} for more details.
  *
- * @method Fire.define
+ * @method define
  * @param {string} className - the name of class that is used to deserialize this class
- * @param {function} [baseOrConstructor] - The base class to inherit from.
- *                                         如果你的父类不是由Fire.define定义的，那么必须传入第三个参数(constructor)，否则会被当成创建新类而非继承类。
- *                                         如果你不需要构造函数，可以传入null。
+ * @param {function} [baseOrConstructor] - !#en The base class to inherit from.
+ *                                         !#zh 如果你的父类不是由Fire.define定义的，那么必须传入第三个参数(constructor)，否则会被当成创建新类而非继承类。如果你不需要构造函数，可以传入null。
  * @param {function} [constructor] - a constructor function that is used to instantiate this class,
  *                                   if not supplied, the constructor of base class will be called automatically
  * @return {function} the defined class
- *
- * @see Fire.extend
  */
 Fire.define = function (className, baseOrConstructor, constructor) {
     'use strict';

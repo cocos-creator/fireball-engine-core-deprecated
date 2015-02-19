@@ -54,6 +54,14 @@ Fire.Intersection = (function () {
 
         return false;
     }
+
+    /**
+     * @method lineRect
+     * @param {Fire.Vec2} a1
+     * @param {Fire.Vec2} a2
+     * @param {Fire.Vec2} b
+     * @return {boolean}
+     */
     Intersection.lineRect = _lineRect;
 
     function _linePolygon ( a1, a2, b ) {

@@ -14,7 +14,7 @@
         /**
          * degree to radius
          * @method deg2rad
-         * @param degree
+         * @param {number} degree
          * @return {number}
          */
         deg2rad: function ( degree ) {
@@ -24,7 +24,7 @@
         /**
          * radius to degree
          * @method rad2deg
-         * @param radius
+         * @param {number} radius
          * @return {number}
          */
         rad2deg: function ( radius ) {
@@ -34,7 +34,7 @@
         /**
          * let radius in -pi to pi
          * @method rad180
-         * @param radius
+         * @param {number} radius
          * @return {number}
          */
         rad180: function ( radius ) {
@@ -47,7 +47,7 @@
         /**
          * let radius in 0 to 2pi
          * @method rad360
-         * @param radius
+         * @param {number} radius
          * @return {number}
          */
         rad360: function ( radius ) {
@@ -61,7 +61,7 @@
         /**
          * let degree in -180 to 180
          * @method deg180
-         * @param degree
+         * @param {number} degree
          * @return {number}
          */
 
@@ -75,7 +75,7 @@
         /**
          * let degree in 0 to 360
          * @method deg360
-         * @param degree
+         * @param {number} degree
          * @return {number}
          */
         deg360: function ( degree ) {
@@ -102,12 +102,12 @@
 
         /**
          * @method calculateMaxRect
-         * @param {Fire.Rect} out
-         * @param {Fire.Vec2} p0
-         * @param {Fire.Vec2} p1
-         * @param {Fire.Vec2} p2
-         * @param {Fire.Vec2} p3
-         * @return {Fire.Vec2}
+         * @param {Rect} out
+         * @param {Vec2} p0
+         * @param {Vec2} p1
+         * @param {Vec2} p2
+         * @param {Vec2} p3
+         * @return {Vec2}
          */
         calculateMaxRect: function (out, p0, p1, p2, p3) {
             var minX = Math.min(p0.x, p1.x, p2.x, p3.x);

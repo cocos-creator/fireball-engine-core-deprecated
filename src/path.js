@@ -1,5 +1,9 @@
 ﻿// The utils for path operation
 
+/**
+ * @class Path
+ * @static
+ */
 if (Fire.isNode) {
     Fire.Path = require('path');
 }
@@ -77,7 +81,7 @@ else {
 }
 
 /**
- * @method Fire.Path.setExtname
+ * @method setExtname
  * @param {string} path
  * @param {string} newExtension - extension to replace with
  * @return {string} result
@@ -89,7 +93,7 @@ Fire.Path.setExtname = function (path, newExtension) {
 };
 
 /**
- * @method Fire.Path.setEndWithSep
+ * @method setEndWithSep
  * @param {string} path
  * @param {boolean} [endWithSep = true]
  * @return {string} result
