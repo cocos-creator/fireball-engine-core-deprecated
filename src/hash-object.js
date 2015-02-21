@@ -6,7 +6,7 @@
      * @class HashObject
      * @static
      */
-    var HashObject = Fire.define('Fire.HashObject', Fire.FObject, function () {
+    var HashObject = Fire.extend('Fire.HashObject', Fire.FObject, function () {
         FObject.call(this);
 
         Object.defineProperty(this, '_hashCode', {

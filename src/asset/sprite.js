@@ -3,7 +3,7 @@ Fire.Sprite = (function () {
     /**
      * @param {Image} [img] - Specify the html image element to render so you can create Sprite dynamically.
      */
-    var Sprite = Fire.define('Fire.Sprite', Fire.Asset, function () {
+    var Sprite = Fire.extend('Fire.Sprite', Fire.Asset, function () {
         Sprite.$super.call(this);
 
         var img = arguments[0];

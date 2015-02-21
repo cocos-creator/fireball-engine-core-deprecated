@@ -21,7 +21,7 @@ var BitmapFont = (function () {
     //    amount: 0,
     //};
 
-    var BitmapFont = Fire.define("Fire.BitmapFont", Fire.Asset, null);
+    var BitmapFont = Fire.extend("Fire.BitmapFont", Fire.Asset);
 
     BitmapFont.prop('texture', null, Fire.ObjectType(Fire.Texture));
     BitmapFont.prop('charInfos', []);

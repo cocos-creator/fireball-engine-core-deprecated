@@ -1,7 +1,6 @@
 Fire.Atlas = (function () {
 
-    var Atlas = Fire.define("Fire.Atlas", Fire.Asset, null);  // supply a null constructor to explicitly indicates that
-                                                              // inherit from Asset, because Asset not defined by Fire.define
+    var Atlas = Fire.extend("Fire.Atlas", Fire.Asset);
 
     // enum Algorithm
     Atlas.Algorithm = (function (t) {

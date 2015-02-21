@@ -1,6 +1,6 @@
 ﻿var CustomAsset = (function () {
 
-    var CustomAsset = Fire.define('Fire.CustomAsset', Fire.Asset);
+    var CustomAsset = Fire.extend('Fire.CustomAsset', Fire.Asset);
 
     return CustomAsset;
 })();

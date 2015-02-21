@@ -356,47 +356,7 @@ Fire.isChildClassOf = function (subclass, superclass) {
     return false;
 };
 
-/**
- * Creates a FireClass and returns its constructor function.
- * You can also creates a sub-class by supplying a baseClass parameter.
- * See {% crosslink extend Fire.extend %} for more details.
- *
- * @method define
- * @param {string} className - the name of class that is used to deserialize this class
- * @param {function} [baseOrConstructor] - !#en The base class to inherit from.
- *                                         !#zh 如果你的父类不是由Fire.define定义的，那么必须传入第三个参数(constructor)，否则会被当成创建新类而非继承类。如果你不需要构造函数，可以传入null。
- * @param {function} [constructor] - a constructor function that is used to instantiate this class,
- *                                   if not supplied, the constructor of base class will be called automatically
- * @return {function} the defined class
- */
-Fire.define = function (className, baseOrConstructor, constructor) {
-    'use strict';
-    // check arguments
-    var isInherit = false;
-    switch (arguments.length) {
-        case 2:
-            isInherit = Fire._isFireClass(baseOrConstructor);
-            break;
-        case 3:
-            isInherit = true;
-            break;
-    }
-    var baseClass;
-    if (isInherit) {
-        baseClass = baseOrConstructor;
-    }
-    else {
-        constructor = baseOrConstructor;
-    }
-
-// @ifdef DEV
-    if (constructor) {
-        _checkCtor(constructor);
-    }
-// @endif
-
-    var fireClass = _createCtor(isInherit, constructor, baseClass);
-
+function _initClass(className, fireClass) {
     // occupy some non-inherited static members
     for (var staticMember in _metaClass) {
         Object.defineProperty(fireClass, staticMember, {
@@ -404,19 +364,56 @@ Fire.define = function (className, baseOrConstructor, constructor) {
             // __props__ is writable
             writable: staticMember === '__props__',
             // __props__ is enumerable so it can be inherited by Fire.extend
-            enumerable: staticMember === '__props__',
+            enumerable: staticMember === '__props__'
         });
     }
+}
+
+/**
+ * Defines a FireClass using the given constructor.
+ *
+ * @method define
+ * @param {string} className - the name of class that is used to deserialize this class
+ * @param {function} [constructor] - a constructor function that is used to instantiate this class
+ * @return {function} the constructor of newly defined class
+ */
+Fire.define = function (className, constructor) {
+    var fireClass = _createCtor(false, constructor);
+    _initClass(className, fireClass);
+
+    JS.setClassName(className, fireClass);
+
+    // @ifdef EDITOR
+    _nicifyFireClass(fireClass, className);
+    // @endif
+
+    return fireClass;
+};
+
+/**
+ * Creates a sub FireClass based on the specified baseClass parameter.
+ * See also {% crosslink extend Fire.JS.extend %}.
+ *
+ * @method extend
+ * @param {string} className - the name of class that is used to deserialize this class
+ * @param {function} baseClass - !#en The base class to inherit from
+ *                               !#zh 继承的基类
+ * @param {function} [constructor] - a constructor function that is used to instantiate this class,
+ *                                   if not supplied, the constructor of baseClass will be called automatically.
+ * @return {function} the constructor of newly defined class
+ */
+Fire.extend = function (className, baseClass, constructor) {
+    var fireClass = _createCtor(true, constructor, baseClass);
+    _initClass(className, fireClass);
 
     // inherit
-    if (isInherit) {
-        JS.extend(fireClass, baseClass);
-        fireClass.$super = baseClass;
-        if (baseClass.__props__) {
-            // copy __props__
-            fireClass.__props__ = baseClass.__props__.slice();
-        }
+    JS.extend(fireClass, baseClass);
+    fireClass.$super = baseClass;
+    if (baseClass.__props__) {
+        // copy __props__
+        fireClass.__props__ = baseClass.__props__.slice();
     }
+
     JS.setClassName(className, fireClass);
 
     // @ifdef EDITOR
@@ -429,6 +426,9 @@ Fire.define = function (className, baseOrConstructor, constructor) {
 function _createCtor (isInherit, constructor, baseClass) {
     var fireClass;
     if (constructor) {
+// @ifdef DEV
+        _checkCtor(constructor);
+// @endif
         // constructor provided
         fireClass = function () {
             // @ifdef EDITOR
@@ -464,6 +464,10 @@ function _createCtor (isInherit, constructor, baseClass) {
 
 // @ifdef DEV
 function _checkCtor (ctor) {
+    if (Fire._isFireClass(ctor)) {
+        Fire.error("Constructor can not be another FireClass");
+        return;
+    }
     if (typeof ctor !== 'function') {
         Fire.error("Constructor of FireClass must be function type");
         return;

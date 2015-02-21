@@ -80,7 +80,7 @@ test('nil', function () {
 });
 
 test('test inherited FireClass', function() {
-    var MyAsset = Fire.define('MyAsset', Fire.Asset, function () {
+    var MyAsset = Fire.extend('MyAsset', Fire.Asset, function () {
         Fire.Asset.call(this);
         this.array = [1, '2', {a:3}, [4, [5]], true];
     });

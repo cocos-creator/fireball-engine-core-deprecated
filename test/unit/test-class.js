@@ -72,9 +72,9 @@ test('test', function () {
 
 test('Inherit', function () {
     var Animal = Fire.define('Fire.Animal').prop('name', 'ann');
-    var Dog = Fire.define('Fire.Dog', Animal)
+    var Dog = Fire.extend('Fire.Dog', Animal)
                    .prop('name', 'doge', { type: 'str' });
-    var Husky = Fire.define('Fire.Husky', Dog).prop('weight', 100);
+    var Husky = Fire.extend('Fire.Husky', Dog).prop('weight', 100);
 
     strictEqual(Fire.JS.getClassName(Animal), 'Fire.Animal', 'can get class name 1');
     strictEqual(Fire.JS.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
@@ -104,9 +104,9 @@ test('Inherit + constructor', function () {
     var huskyConstructor = Callback();
     var Animal = Fire.define('Fire.Animal', animalConstructor)
                       .prop('name', 'ann');
-    var Dog = Fire.define('Fire.Dog', Animal)
+    var Dog = Fire.extend('Fire.Dog', Animal)
                   .prop('name', 'doge');
-    var Husky = Fire.define('Fire.Husky', Dog, huskyConstructor);
+    var Husky = Fire.extend('Fire.Husky', Dog, huskyConstructor);
 
     strictEqual(Fire.JS.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
 
@@ -145,7 +145,7 @@ test('prop reference', function () {
 });
 
 test('serialization if inherited from FObject', function () {
-    var type = Fire.define('Fire.MyType', FObject, null);
+    var type = Fire.extend('Fire.MyType', FObject);
     type.__props__.push('_name');
 
     var obj = new type();
@@ -182,13 +182,13 @@ test('isChildClassOf', function () {
 
     // fire class
 
-    var Animal = Fire.define('Fire.Animal', Sub, null)
+    var Animal = Fire.extend('Fire.Animal', Sub)
                 .prop('name', 'ann');
 
-    var Dog = Fire.define('Fire.Dog', Animal)
+    var Dog = Fire.extend('Fire.Dog', Animal)
              .prop('name', 'doge', { type: 'str' });
 
-    var Husky = Fire.define('Fire.Husky', Dog)
+    var Husky = Fire.extend('Fire.Husky', Dog)
                .prop('weight', 100);
 
     strictEqual(Fire.isChildClassOf( Husky, Husky), true, 'Husky is child of itself');

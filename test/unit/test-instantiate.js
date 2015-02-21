@@ -85,7 +85,7 @@
     test('FireClass', function () {
         var Sprite = Fire.define('Sprite', function () {
             this.image = 'sprite.png';
-        })
+        });
         Sprite.prop('size', new Fire.Vec2(128, 128))
               .prop('_isValid', true, Fire.NonSerialized);
 
