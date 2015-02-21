@@ -7,7 +7,7 @@
      * @class Math
      * @static
      */
-    Fire.mixin ( Math, {
+    JS.mixin ( Math, {
         TWO_PI: 2.0 * Math.PI,
         HALF_PI: 0.5 * Math.PI,
 

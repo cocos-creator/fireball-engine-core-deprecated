@@ -155,7 +155,7 @@ var _Deserializer = (function () {
                 // use target
                 if ( !(target instanceof klass) ) {
                     Fire.warn('Type of target to deserialize not matched with data: target is %s, data is %s',
-                               Fire.getClassName(target), klass);
+                               JS.getClassName(target), klass);
                 }
                 obj = target;
             }
@@ -303,7 +303,7 @@ var _Deserializer = (function () {
  */
 Fire.deserialize = function (data, result, options) {
     var isEditor = (options && 'isEditor' in options) ? options.isEditor : Fire.isEditor;
-    var classFinder = (options && options.classFinder) || Fire._getClassById;
+    var classFinder = (options && options.classFinder) || JS._getClassById;
     var createAssetRefs = (options && options.createAssetRefs) || Fire.isEditorCore;
     var target;
     // @ifndef PLAYER

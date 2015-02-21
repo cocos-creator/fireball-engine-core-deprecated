@@ -63,7 +63,7 @@ var _metaClass = {
             if (Array.isArray(defaultValue)) {
                 // check array empty
                 if (defaultValue.length > 0) {
-                    Fire.error('Default array must be empty, set default value of ' + Fire.getClassName(this) + '.prop("' + name +
+                    Fire.error('Default array must be empty, set default value of ' + JS.getClassName(this) + '.prop("' + name +
                         '", ...) to null or [], and initialize in constructor please. (just like "this.' +
                         name + ' = [...];")');
                     return this;
@@ -72,7 +72,7 @@ var _metaClass = {
             else if (!_isPlainEmptyObj_DEV(defaultValue)) {
                 // check cloneable
                 if (!_cloneable_DEV(defaultValue)) {
-                    Fire.error('Do not set default value to non-empty object, unless the object defines its own "clone" function. Set default value of ' + Fire.getClassName(this) + '.prop("' + name +
+                    Fire.error('Do not set default value to non-empty object, unless the object defines its own "clone" function. Set default value of ' + JS.getClassName(this) + '.prop("' + name +
                         '", ...) to null or {}, and initialize in constructor please. (just like "this.' +
                         name + ' = {foo: bar};")');
                     return this;
@@ -86,8 +86,8 @@ var _metaClass = {
         for (var base = this.$super; base; base = base.$super) {
             // 这个循环只能检测到最上面的FireClass的父类，如果再上还有父类，将不做检测。（Fire.extend 将 prototype.constructor 设为子类）
             if (base.prototype.hasOwnProperty(name)) {
-                Fire.error('Can not declare ' + Fire.getClassName(this) + '.' + name +
-                           ', it is already defined in the prototype of ' + Fire.getClassName(base));
+                Fire.error('Can not declare ' + JS.getClassName(this) + '.' + name +
+                           ', it is already defined in the prototype of ' + JS.getClassName(base));
                 return;
             }
         }
@@ -146,7 +146,7 @@ var _metaClass = {
         // @ifdef DEV
         var d = Object.getOwnPropertyDescriptor(this.prototype, name);
         if (d && d.get) {
-            Fire.error(Fire.getClassName(this) + ': the getter of "' + name + '" is already defined!');
+            Fire.error(JS.getClassName(this) + ': the getter of "' + name + '" is already defined!');
             return this;
         }
         // @endif
@@ -160,7 +160,7 @@ var _metaClass = {
                 var attr = arguments[i];
                 // @ifdef DEV
                 if (attr._canUsedInGetter === false) {
-                    Fire.error('Can not apply the specified attribute to the getter of "' + Fire.getClassName(this) + '.' + name + '", attribute index: ' + (i - AttrArgStart));
+                    Fire.error('Can not apply the specified attribute to the getter of "' + JS.getClassName(this) + '.' + name + '", attribute index: ' + (i - AttrArgStart));
                     continue;
                 }
                 // @endif
@@ -174,10 +174,10 @@ var _metaClass = {
                 }
                 if (attr.serializable === false || attr.editorOnly === true) {
                     Fire.warn('No need to use Fire.NonSerialized or Fire.EditorOnly for the getter of ' +
-                        Fire.getClassName(this) + '.' + name + ', every getter is actually non-serialized.');
+                        JS.getClassName(this) + '.' + name + ', every getter is actually non-serialized.');
                 }
                 if (attr.hasOwnProperty('default')) {
-                    Fire.error(Fire.getClassName(this) + ': Can not set default value of a getter!');
+                    Fire.error(JS.getClassName(this) + ': Can not set default value of a getter!');
                     return this;
                 }
                 // @endif
@@ -192,7 +192,7 @@ var _metaClass = {
         else {
             var index = this.__props__.indexOf(name);
             if (index >= 0) {
-                Fire.error(Fire.getClassName(this) + '.' + name + ' is already defined!');
+                Fire.error(JS.getClassName(this) + '.' + name + ' is already defined!');
                 return this;
             }
         }
@@ -220,7 +220,7 @@ var _metaClass = {
         // @ifdef DEV
         var d = Object.getOwnPropertyDescriptor(this.prototype, name);
         if (d && d.set) {
-            Fire.error(Fire.getClassName(this) + ': the setter of "' + name + '" is already defined!');
+            Fire.error(JS.getClassName(this) + ': the setter of "' + name + '" is already defined!');
             return this;
         }
         // @endif
@@ -410,14 +410,14 @@ Fire.define = function (className, baseOrConstructor, constructor) {
 
     // inherit
     if (isInherit) {
-        Fire.extend(fireClass, baseClass);
+        JS.extend(fireClass, baseClass);
         fireClass.$super = baseClass;
         if (baseClass.__props__) {
             // copy __props__
             fireClass.__props__ = baseClass.__props__.slice();
         }
     }
-    Fire.setClassName(className, fireClass);
+    JS.setClassName(className, fireClass);
 
     // @ifdef EDITOR
     _nicifyFireClass(fireClass, className);
@@ -483,7 +483,7 @@ function _nicifyFireClass (fireClass, className) {
     if (className) {
         fireClass.toString = function () {
             var plain = Function.toString.call(this);
-            return plain.replace('function ', 'function ' + Fire.getClassName(this));
+            return plain.replace('function ', 'function ' + JS.getClassName(this));
         };
     }
 }
@@ -494,7 +494,7 @@ function _nicifyFireClass (fireClass, className) {
  * @private
  */
 Fire._fastDefine = function (className, constructor, serializableFields) {
-    Fire.setClassName(className, constructor);
+    JS.setClassName(className, constructor);
     constructor.__props__ = serializableFields;
     for (var i = 0; i < serializableFields.length; i++) {
         Fire.attr(constructor, serializableFields[i], Fire.HideInInspector);

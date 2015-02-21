@@ -29,8 +29,8 @@ test('basic test', function() {
             this.emptyObj = {};
             this.obj = {};
         }
-        Fire.extend(MyAsset, _super);
-        Fire.setClassName('MyAsset', MyAsset);
+        Fire.JS.extend(MyAsset, _super);
+        Fire.JS.setClassName('MyAsset', MyAsset);
 
         // should not serialize ----------------------------
         MyAsset.staticFunc = function () { };
@@ -65,7 +65,7 @@ test('basic test', function() {
     match(asset, expect, 'type test');
     match(asset, expect, 'test re-serialize again');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 test('nil', function () {
@@ -123,7 +123,7 @@ test('test inherited FireClass', function() {
 
     match(asset, expect, 'type test');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 test('test FireClass', function () {
@@ -148,7 +148,7 @@ test('test FireClass', function () {
 
     deepEqual(actual, expected, 'can serialize');
 
-    Fire.unregisterClass(Sprite);
+    Fire.JS.unregisterClass(Sprite);
 });
 
 test('test circular reference', function () {
@@ -195,7 +195,7 @@ test('test serializable attributes', function () {
     strictEqual(resultInEditor._isValid, undefined, 'should not serialize non-serialized in editor');
     strictEqual(resultInPlayer._isValid, undefined, 'should not serialize non-serialized in player');
 
-    Fire.unregisterClass(Sprite);
+    Fire.JS.unregisterClass(Sprite);
 });
 
 test('test asset property', function () {

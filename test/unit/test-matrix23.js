@@ -8,7 +8,7 @@ test('basic', function () {
     strictEqual(mat.d, 1);
     strictEqual(mat.tx, 0);
     strictEqual(mat.ty, 0);
-    strictEqual(Fire.getClassName(mat), 'Fire.Matrix23');
+    strictEqual(Fire.JS.getClassName(mat), 'Fire.Matrix23');
     //Fire.log(mat);
 });
 

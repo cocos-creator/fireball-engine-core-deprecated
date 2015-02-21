@@ -14,7 +14,7 @@ var Color = (function () {
         this.b = typeof b === 'number' ? b : 0.0;
         this.a = typeof a === 'number' ? a : 1.0;
     }
-    Fire.setClassName('Fire.Color', Color);
+    JS.setClassName('Fire.Color', Color);
 
     /**
      * Clone a new color from the current color.

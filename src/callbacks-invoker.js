@@ -96,7 +96,7 @@
     var CallbacksInvoker = function () {
         this._callbackTable = {};
     };
-    Fire.extend(CallbacksInvoker, CallbacksHandler);
+    JS.extend(CallbacksInvoker, CallbacksHandler);
 
     /**
      * This is a property accessible from {% crosslink Fire Fire %} global object

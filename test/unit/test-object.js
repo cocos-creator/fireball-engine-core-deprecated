@@ -149,7 +149,7 @@ test('destruct', function () {
     Sub.prototype.test_function = function () {return 342};
     Sub.prototype.test_boolean = true;
     Sub.prototype.test_string = 'test string';
-    Fire.extend(Sub, FObject);
+    Fire.JS.extend(Sub, FObject);
     var inherited1 = new Sub();
     inherited1.object_value = [1,2];
     inherited1.function_value = {};

@@ -61,7 +61,7 @@ Fire.FontInfo = (function () {
          */
         // this.dashArray = null;
     }
-    Fire.extend(FontInfo, _super);
+    JS.extend(FontInfo, _super);
 
     return FontInfo;
 })();

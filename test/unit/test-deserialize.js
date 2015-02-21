@@ -27,7 +27,7 @@ test('basic deserialize test', function () {
             this.emptyObj = {};
             this.embeddedTypedObj = new Vec2(1, 2.1);
         }
-        Fire.setClassName('MyAsset', MyAsset);
+        Fire.JS.setClassName('MyAsset', MyAsset);
         return MyAsset;
     })();
 
@@ -38,7 +38,7 @@ test('basic deserialize test', function () {
 
     deepEqual(deserializedAsset, asset, 'test deserialize');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 test('basic deserialize test with target', function () {
@@ -57,7 +57,7 @@ test('basic deserialize test with target', function () {
             this.emptyObj = {};
             this.embeddedTypedObj = new Vec2(1, 2.1);
         }
-        Fire.setClassName('MyAsset', MyAsset);
+        Fire.JS.setClassName('MyAsset', MyAsset);
         return MyAsset;
     })();
     var asset = new MyAsset();
@@ -76,7 +76,7 @@ test('basic deserialize test with target', function () {
     strictEqual(deserializedAsset.array[2], newObj, 'embedded obj ref should not changed');
     deepEqual(newObj, {a:3}, 'embedded obj should restored');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 test('nil', function () {
@@ -99,7 +99,7 @@ test('nil', function () {
     obj.nil = null;
     deepEqual(Fire.deserialize(str), obj, 'can override as null');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 test('nil with target', function () {
@@ -128,8 +128,8 @@ test('json deserialize test', function () {
             this.obj = {};
 
         }
-        Fire.extend(MyAsset, _super);
-        Fire.setClassName('MyAsset', MyAsset);
+        Fire.JS.extend(MyAsset, _super);
+        Fire.JS.setClassName('MyAsset', MyAsset);
         return MyAsset;
     })();
 
@@ -141,7 +141,7 @@ test('json deserialize test', function () {
 
     deepEqual(deserializedAsset, expectAsset, 'json deserialize test');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 test('reference to main asset', function () {
@@ -180,8 +180,8 @@ testWithTarget('circular reference by object', function (useTarget) {
             this.refSelf = this;
             this.refToMain = null;
         }
-        Fire.extend(MyAsset, Fire.Asset);
-        Fire.setClassName('MyAsset', MyAsset);
+        Fire.JS.extend(MyAsset, Fire.Asset);
+        Fire.JS.setClassName('MyAsset', MyAsset);
         return MyAsset;
     })();
 
@@ -199,7 +199,7 @@ testWithTarget('circular reference by object', function (useTarget) {
 
     deepEqual(deserializedAsset, mainAsset, 'can ref');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 testWithTarget('circular reference by array', function (useTarget) {
@@ -214,8 +214,8 @@ testWithTarget('circular reference by array', function (useTarget) {
             // array1 = [1, array2]
             // array2 = [array1, 2]
         }
-        Fire.extend(MyAsset, _super);
-        Fire.setClassName('MyAsset', MyAsset);
+        Fire.JS.extend(MyAsset, _super);
+        Fire.JS.setClassName('MyAsset', MyAsset);
 
         return MyAsset;
     })();
@@ -229,7 +229,7 @@ testWithTarget('circular reference by array', function (useTarget) {
     strictEqual(deserializedAsset.array1[1][0], deserializedAsset.array1, 'two arrays can circular reference each other 1');
     strictEqual(deserializedAsset.array2[0][1], deserializedAsset.array2, 'two arrays can circular reference each other 2');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 testWithTarget('circular reference by dict', function (useTarget) {
@@ -242,8 +242,8 @@ testWithTarget('circular reference by dict', function (useTarget) {
             this.dict2 = {num: 2, other: this.dict1};
             this.dict1.other = this.dict2;
         }
-        Fire.extend(MyAsset, _super);
-        Fire.setClassName('MyAsset', MyAsset);
+        Fire.JS.extend(MyAsset, _super);
+        Fire.JS.setClassName('MyAsset', MyAsset);
 
         return MyAsset;
     })();
@@ -256,7 +256,7 @@ testWithTarget('circular reference by dict', function (useTarget) {
     strictEqual(deserializedAsset.dict1.other.other, deserializedAsset.dict1, 'two dicts can circular reference each other 1');
     strictEqual(deserializedAsset.dict2.other.other, deserializedAsset.dict2, 'two dicts can circular reference each other 2');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 test('target', function () {
@@ -280,7 +280,7 @@ test('target', function () {
     strictEqual(myAsset.tmpVal, 321, 'tmp member of target not changed');
     strictEqual(myAsset.saveVal, 111, 'serialized member of target reloaded');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 // jshint ignore: end

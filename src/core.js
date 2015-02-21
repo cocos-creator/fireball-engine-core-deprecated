@@ -1,11 +1,9 @@
 /**
- *
- * !#en Get property descriptor !#zh 获取 property 的描述物体
+ * !#en Get property descriptor !#zh 获取属性的描述
  * @method _getPropertyDescriptor
- * @param {object} obj - !#en do how many times !#zh 表示做几次的参数
+ * @param {object} obj - !#en !#zh 获取属性的对象
  * @param {string} name
  * @return {Object}
- *
  */
 function _getPropertyDescriptor(obj, name) {
     if (obj) {
@@ -19,7 +17,82 @@ function _copyprop(name, source, target) {
     Object.defineProperty(target, name, pd);
 }
 
-Fire.JS = {
+var JS = Fire.JS = {
+
+    /**
+     * copy all properties not defined in obj from arguments[1...n]
+     * @method addon
+     * @param {object} obj object to extend its properties
+     * @param {object} sourceObj source object to copy properties from
+     * @return {object} the result obj
+     */
+    addon: function (obj) {
+        'use strict';
+        obj = obj || {};
+        for (var i = 1, length = arguments.length; i < length; i++) {
+            var source = arguments[i];
+            for ( var name in source) {
+                if ( !(name in obj) ) {
+                    _copyprop( name, source, obj);
+                }
+            }
+        }
+        return obj;
+    },
+
+    /**
+     * copy all properties from arguments[1...n] to obj
+     * @method mixin
+     * @param {object} obj
+     * @param {object} source
+     * @return {object} the result obj
+     */
+    mixin: function (obj) {
+        'use strict';
+        obj = obj || {};
+        for (var i = 1, length = arguments.length; i < length; i++) {
+            var source = arguments[i];
+            if (source) {
+                if (typeof source !== 'object') {
+                    Fire.error('Fire.mixin called on non-object:', source);
+                    continue;
+                }
+                for ( var name in source) {
+                    _copyprop( name, source, obj);
+                }
+            }
+        }
+        return obj;
+    },
+
+    /**
+     * Derive the class from the supplied base class.
+     * Both classes are just native javascript constructors, not created by Fire.define, so
+     * usually you will want to inherit using {% crosslink Fire.define define %} instead.
+     *
+     * @method extend
+     * @param {function} cls
+     * @param {function} base - the baseclass to inherit
+     * @return {function} the result class
+     */
+    extend: function (cls, base) {
+// @ifdef DEV
+        if ( !base ) {
+            Fire.error('The base class to extend from must be non-nil');
+            return;
+        }
+        if ( !cls ) {
+            Fire.error('The class to extend must be non-nil');
+            return;
+        }
+// @endif
+        for (var p in base) if (base.hasOwnProperty(p)) cls[p] = base[p];
+        function __() { this.constructor = cls; }
+        __.prototype = base.prototype;
+        cls.prototype = new __();
+        return cls;
+    },
+
     clear: function (obj) {
         var keys = Object.keys(obj);
         for (var i = 0; i < keys.length; i++) {
@@ -29,90 +102,13 @@ Fire.JS = {
 };
 
 /**
- *
- * copy all properties not defined in obj from arguments[1...n]
- * @method addon
- * @param {object} obj object to extend its properties
- * @param {object} sourceObj source object to copy properties from
- * @return {object} the result obj
- */
-Fire.addon = function (obj) {
-    'use strict';
-    obj = obj || {};
-    for (var i = 1, length = arguments.length; i < length; i++) {
-        var source = arguments[i];
-        for ( var name in source) {
-            if ( !(name in obj) ) {
-                _copyprop( name, source, obj);
-            }
-        }
-    }
-    return obj;
-};
-
-/**
- *
- * copy all properties from arguments[1...n] to obj
- * @method mixin
- * @param {object} obj
- * @param {object} source
- * @return {object} the result obj
- */
-Fire.mixin = function (obj) {
-    'use strict';
-    obj = obj || {};
-    for (var i = 1, length = arguments.length; i < length; i++) {
-        var source = arguments[i];
-        if (source) {
-            if (typeof source !== 'object') {
-                Fire.error('Fire.mixin called on non-object:', source);
-                continue;
-            }
-            for ( var name in source) {
-                _copyprop( name, source, obj);
-            }
-        }
-    }
-    return obj;
-};
-
-/**
- * Derive the class from the supplied base class.
- * Both classes are just native javascript constructors, not created by Fire.define, so
- * usually you will want to inherit using {% crosslink Fire.define define %} instead.
- *
- * @method extend
- * @param {function} cls
- * @param {function} base - the baseclass to inherit
- * @return {function} the result class
- *
- */
-Fire.extend = function (cls, base) {
-// @ifdef DEV
-    if ( !base ) {
-        Fire.error('The base class to extend from must be non-nil');
-        return;
-    }
-    if ( !cls ) {
-        Fire.error('The class to extend must be non-nil');
-        return;
-    }
-// @endif
-    for (var p in base) if (base.hasOwnProperty(p)) cls[p] = base[p];
-    function __() { this.constructor = cls; }
-    __.prototype = base.prototype;
-    cls.prototype = new __();
-    return cls;
-};
-
-/**
  * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null.
  * (modified from <a href="http://stackoverflow.com/questions/1249531/how-to-get-a-javascript-objects-class">the code from this stackoverflow post</a>)
  * @method getClassName
  * @param {object|function} obj - instance or constructor
  * @return {string}
  */
-Fire.getClassName = function (obj) {
+JS.getClassName = function (obj) {
     if (typeof obj === 'function' && obj.prototype.__classname__) {
         return obj.prototype.__classname__;
     }
@@ -186,7 +182,7 @@ Fire.unregisterClass to remove the id of unused class';
      * @param {string} classId
      * @param {function} constructor
      */
-    Fire._setClassId = getRegister('__cid__', _idToClass);
+    JS._setClassId = getRegister('__cid__', _idToClass);
 
     var doSetClassName = getRegister('__classname__', _nameToClass);
 
@@ -196,11 +192,11 @@ Fire.unregisterClass to remove the id of unused class';
      * @param {string} className
      * @param {function} constructor
      */
-    Fire.setClassName = function (className, constructor) {
+    JS.setClassName = function (className, constructor) {
         doSetClassName(className, constructor);
         // auto set class id
         if (className && !constructor.prototype.hasOwnProperty('__cid__')) {
-            Fire._setClassId(className, constructor);
+            JS._setClassId(className, constructor);
         }
     };
 
@@ -212,7 +208,7 @@ Fire.unregisterClass to remove the id of unused class';
      * @method unregisterClass
      * @param {function} [constructor] - the class you will want to unregister, any number of classes can be added
      */
-    Fire.unregisterClass = function (constructor) {
+    JS.unregisterClass = function (constructor) {
         'use strict';
         for (var i = 0; i < arguments.length; i++) {
             var p = arguments[i].prototype;
@@ -233,7 +229,7 @@ Fire.unregisterClass to remove the id of unused class';
      * @param {string} classId
      * @return {function} constructor
      */
-    Fire._getClassById = function (classId) {
+    JS._getClassById = function (classId) {
         return _idToClass[classId];
     };
 
@@ -243,7 +239,7 @@ Fire.unregisterClass to remove the id of unused class';
      * @param {string} classname
      * @return {function} constructor
      */
-    Fire.getClassByName = function (classname) {
+    JS.getClassByName = function (classname) {
         return _nameToClass[classname];
     };
 
@@ -253,7 +249,7 @@ Fire.unregisterClass to remove the id of unused class';
      * @param {object|function} obj - instance or constructor
      * @return {string}
      */
-    Fire._getClassId = function (obj) {
+    JS._getClassId = function (obj) {
         if (typeof obj === 'function' && obj.prototype.__cid__) {
             return obj.prototype.__cid__;
         }
@@ -266,7 +262,7 @@ Fire.unregisterClass to remove the id of unused class';
     };
 
     // @ifdef EDITOR
-    Object.defineProperty(Fire, '_registeredClassIds', {
+    Object.defineProperty(JS, '_registeredClassIds', {
         get: function () {
             var dump = {};
             for (var id in _idToClass) {
@@ -275,13 +271,13 @@ Fire.unregisterClass to remove the id of unused class';
             return dump;
         },
         set: function (value) {
-            Fire.JS.clear(_idToClass);
+            JS.clear(_idToClass);
             for (var id in value) {
                 _idToClass[id] = value[id];
             }
         }
     });
-    Object.defineProperty(Fire, '_registeredClassNames', {
+    Object.defineProperty(JS, '_registeredClassNames', {
         get: function () {
             var dump = {};
             for (var id in _nameToClass) {
@@ -290,7 +286,7 @@ Fire.unregisterClass to remove the id of unused class';
             return dump;
         },
         set: function (value) {
-            Fire.JS.clear(_nameToClass);
+            JS.clear(_nameToClass);
             for (var id in value) {
                 _nameToClass[id] = value[id];
             }

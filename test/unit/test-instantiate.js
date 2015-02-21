@@ -36,8 +36,8 @@
                 this.emptyObj = {};
                 this.obj = {};
             }
-            Fire.extend(MyAsset, _super);
-            Fire.setClassName('MyAsset', MyAsset);
+            Fire.JS.extend(MyAsset, _super);
+            Fire.JS.setClassName('MyAsset', MyAsset);
 
             // should not instantiate --------------------------
             MyAsset.staticFunc = function () { };
@@ -63,7 +63,7 @@
         strictEqual(asset.constructor, clone.constructor, 'instantiated should has the same type');
         deepEqual(clone, expect, 'can instantiate class');
 
-        Fire.unregisterClass(MyAsset);
+        Fire.JS.unregisterClass(MyAsset);
     });
 
     test('Object', function () {
@@ -101,7 +101,7 @@
         strictEqual(clone.image, 'sprite.png', 'should not clone variable which not defined by property');
         strictEqual(clone._isValid, true, 'should not clone non-serialized field');
 
-        Fire.unregisterClass(Sprite);
+        Fire.JS.unregisterClass(Sprite);
     });
 
     test('Circular Reference', function () {

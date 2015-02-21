@@ -9,24 +9,24 @@ test('test', function() {
         function MyAsset () {
             _super.call(this);
         }
-        Fire.extend(MyAsset, _super);
-        Fire.setClassName('Foo', MyAsset);
+        Fire.JS.extend(MyAsset, _super);
+        Fire.JS.setClassName('Foo', MyAsset);
 
         return MyAsset;
     })();
     var myAsset = new MyAsset();
 
-    equal(Fire.getClassName(myAsset), 'Foo', 'can getClassName of user type');
+    equal(Fire.JS.getClassName(myAsset), 'Foo', 'can getClassName of user type');
 
     delete MyAsset.prototype.__classname__;  // hack, remove class name
-    ok(Fire.getClassName(myAsset), 'should fallback to constructor name if classname undefined');
+    ok(Fire.JS.getClassName(myAsset), 'should fallback to constructor name if classname undefined');
     // (constructor's name may renamed by uglify, so we do not test the value exactly)
 
     var asset = new Fire.Asset();
-    ok(Fire.getClassName(asset), 'can getClassName of FireClass');
-    notEqual(Fire.getClassName(myAsset), Fire.getClassName(asset), 'class name should not achieved from its super');
+    ok(Fire.JS.getClassName(asset), 'can getClassName of FireClass');
+    notEqual(Fire.JS.getClassName(myAsset), Fire.JS.getClassName(asset), 'class name should not achieved from its super');
 
-    Fire.unregisterClass(MyAsset);
+    Fire.JS.unregisterClass(MyAsset);
 });
 
 // jshint ignore: end

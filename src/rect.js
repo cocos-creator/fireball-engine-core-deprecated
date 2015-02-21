@@ -13,7 +13,7 @@ var Rect = (function () {
         this.width = typeof w === 'number' ? w : 0.0;
         this.height = typeof h === 'number' ? h : 0.0;
     }
-    Fire.setClassName('Fire.Rect', Rect);
+    JS.setClassName('Fire.Rect', Rect);
 
     /**
      * @method fromVec2

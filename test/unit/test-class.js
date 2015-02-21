@@ -6,7 +6,7 @@ test('test', function () {
                      .prop('eat', function () {
                          return 'eating';
                      });
-    strictEqual(Fire.getClassName(Animal), 'Animal', 'get class name');
+    strictEqual(Fire.JS.getClassName(Animal), 'Animal', 'get class name');
 
     Animal.prop('weight', -1, Fire.NonSerialized);
     Animal.set('weight10', function (value) {
@@ -47,7 +47,7 @@ test('test', function () {
 
     // constructor
 
-    Fire.unregisterClass(Animal);
+    Fire.JS.unregisterClass(Animal);
 
     var constructor = new Callback();
     Animal = Fire.define('Animal', constructor)
@@ -67,7 +67,7 @@ test('test', function () {
     var instance3 = new Animal();
     strictEqual(instance3.weight, 100, 'class define not changed');
 
-    Fire.unregisterClass(Animal);
+    Fire.JS.unregisterClass(Animal);
 });
 
 test('Inherit', function () {
@@ -76,9 +76,9 @@ test('Inherit', function () {
                    .prop('name', 'doge', { type: 'str' });
     var Husky = Fire.define('Fire.Husky', Dog).prop('weight', 100);
 
-    strictEqual(Fire.getClassName(Animal), 'Fire.Animal', 'can get class name 1');
-    strictEqual(Fire.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
-    strictEqual(Fire.getClassName(Husky), 'Fire.Husky', 'can get class name 3');
+    strictEqual(Fire.JS.getClassName(Animal), 'Fire.Animal', 'can get class name 1');
+    strictEqual(Fire.JS.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
+    strictEqual(Fire.JS.getClassName(Husky), 'Fire.Husky', 'can get class name 3');
 
     strictEqual(Dog.$super, Animal, 'can get super');
 
@@ -96,7 +96,7 @@ test('Inherit', function () {
     deepEqual(Husky.__props__, ['name', 'weight'], 'can inherit prop list');
     deepEqual(Dog.__props__, ['name'], 'base prop list not changed');
 
-    Fire.unregisterClass(Animal, Dog, Husky);
+    Fire.JS.unregisterClass(Animal, Dog, Husky);
 });
 
 test('Inherit + constructor', function () {
@@ -108,7 +108,7 @@ test('Inherit + constructor', function () {
                   .prop('name', 'doge');
     var Husky = Fire.define('Fire.Husky', Dog, huskyConstructor);
 
-    strictEqual(Fire.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
+    strictEqual(Fire.JS.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
 
     animalConstructor.disable('base construct should called by sub construct');
     huskyConstructor.enable();
@@ -126,7 +126,7 @@ test('Inherit + constructor', function () {
     strictEqual(dog.name, 'doge', 'can override property');
     strictEqual(husky.name, 'doge', 'can inherit property');
 
-    Fire.unregisterClass(Animal, Dog, Husky);
+    Fire.JS.unregisterClass(Animal, Dog, Husky);
 });
 
 test('prop reference', function () {
@@ -141,7 +141,7 @@ test('prop reference', function () {
     notStrictEqual(obj1.ary, obj2.ary, 'empty array reference not equal');
     notStrictEqual(obj1.dict, obj2.dict, 'empty dict reference not equal');
 
-    Fire.unregisterClass(type);
+    Fire.JS.unregisterClass(type);
 });
 
 test('serialization if inherited from FObject', function () {
@@ -156,7 +156,7 @@ test('serialization if inherited from FObject', function () {
 
     deepEqual(json, expected, 'can serialize FObject.name');
 
-    Fire.unregisterClass(type);
+    Fire.JS.unregisterClass(type);
 });
 
 test('isChildClassOf', function () {
@@ -176,7 +176,7 @@ test('isChildClassOf', function () {
 
     var Base = function () {};
     var Sub = function () {};
-    Fire.extend(Sub, Base);
+    Fire.JS.extend(Sub, Base);
     strictEqual(Fire.isChildClassOf(Sub, Base) &&
                 !Fire.isChildClassOf(Base, Sub), true, 'Sub is child of Base');
 
@@ -201,5 +201,5 @@ test('isChildClassOf', function () {
     strictEqual(Fire.isChildClassOf( Animal, Base), true, 'Animal is child of Base');
     strictEqual(Fire.isChildClassOf( Dog, Base),  true, 'Dog is child of Base');
 
-    Fire.unregisterClass(Animal, Dog, Husky);
+    Fire.JS.unregisterClass(Animal, Dog, Husky);
 });

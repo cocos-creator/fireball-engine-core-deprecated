@@ -27,9 +27,9 @@ test('base', function () {
     // inherit
 
     var MyComp = function () { };
-    Fire.extend(MyComp, MyCompBase);
+    Fire.JS.extend(MyComp, MyCompBase);
     var MyComp2 = function () { };
-    Fire.extend(MyComp2, MyCompBase);
+    Fire.JS.extend(MyComp2, MyCompBase);
 
     strictEqual(Fire.attr(MyComp, 'baseVal').cool, 'nice', 'can get inherited attribute');
 

@@ -61,7 +61,7 @@ Fire.attr = function (constructor, propertyName, attributes) {
                         attrs[name] = attributes[name];
                     }
                 }
-                return Fire.addon({}, attrs, instance.constructor.prototype[key]);
+                return JS.addon({}, attrs, instance.constructor.prototype[key]);
             }
             else {
                 instance[key] = attributes;
@@ -72,7 +72,7 @@ Fire.attr = function (constructor, propertyName, attributes) {
             // get
             attrs = instance[key];
             if (typeof attrs === 'object') {
-                return Fire.addon({}, attrs, instance.constructor.prototype[key]);
+                return JS.addon({}, attrs, instance.constructor.prototype[key]);
             }
             else {
                 return attrs;
@@ -148,7 +148,7 @@ function getTypeChecker (type, attrName) {
     return function (constructor, mainPropName) {
         var mainPropAttrs = Fire.attr(constructor, mainPropName) || {};
         if (mainPropAttrs.type !== type) {
-            Fire.warn('Can only indicate one type attribute for %s.%s.', Fire.getClassName(constructor), mainPropName);
+            Fire.warn('Can only indicate one type attribute for %s.%s.', JS.getClassName(constructor), mainPropName);
             return;
         }
         if (!mainPropAttrs.hasOwnProperty('default')) {
@@ -161,11 +161,11 @@ function getTypeChecker (type, attrName) {
         var defType = typeof mainPropAttrs.default;
         if (defType === type) {
             Fire.warn('No needs to indicate the "%s" attribute for %s.%s, which its default value is type of %s.',
-                       attrName, Fire.getClassName(constructor), mainPropName, type);
+                       attrName, JS.getClassName(constructor), mainPropName, type);
         }
         else {
             Fire.warn('Can not indicate the "%s" attribute for %s.%s, which its default value is type of %s.',
-                       attrName, Fire.getClassName(constructor), mainPropName, defType);
+                       attrName, JS.getClassName(constructor), mainPropName, defType);
         }
         delete mainPropAttrs.type;
     };
