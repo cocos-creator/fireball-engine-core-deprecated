@@ -295,6 +295,9 @@ var _Deserializer = (function () {
 
 /**
  * Deserialize json to Fire.Asset
+ * 当指定了 target 选项时，如果 target 引用的其它 asset 的 uuid 不变，则不会改变 target 对 asset 的引用，
+ * 也不会将 uuid 保存到 result 对象中。
+ *
  * @param {(string|object)} data - the serialized Fire.Asset json string or json object.
  *                                 Note: If data is an object, it will be modified.
  * @param {Fire._DeserializeInfo} [result] - additional loading result
