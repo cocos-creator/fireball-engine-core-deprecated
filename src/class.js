@@ -227,7 +227,7 @@ var _metaClass = {
         // ================================================================
         // @ifdef EDITOR
         Object.defineProperty(this.prototype, name, {
-            set: function (value) {
+            set: function setter_editorWrapper (value) {
                 if (this._observing) {
                      Object.getNotifier(this).notify({
                         type: 'update',
@@ -369,6 +369,29 @@ function _initClass(className, fireClass) {
     }
 }
 
+function _defineFireClass (className, baseClass, constructor) {
+    var fireClass = _createCtor(constructor, baseClass);
+    _initClass(className, fireClass);
+
+    if (baseClass) {
+        // inherit
+        JS.extend(fireClass, baseClass);
+        fireClass.$super = baseClass;
+        if (baseClass.__props__) {
+            // copy __props__
+            fireClass.__props__ = baseClass.__props__.slice();
+        }
+    }
+
+    JS.setClassName(className, fireClass);
+
+    // @ifdef EDITOR
+    _nicifyFireClass(fireClass, className);
+    // @endif
+
+    return fireClass;
+}
+
 /**
  * Defines a FireClass using the given constructor.
  *
@@ -378,16 +401,7 @@ function _initClass(className, fireClass) {
  * @return {function} the constructor of newly defined class
  */
 Fire.define = function (className, constructor) {
-    var fireClass = _createCtor(false, constructor);
-    _initClass(className, fireClass);
-
-    JS.setClassName(className, fireClass);
-
-    // @ifdef EDITOR
-    _nicifyFireClass(fireClass, className);
-    // @endif
-
-    return fireClass;
+    return _defineFireClass(className, null, constructor);
 };
 
 /**
@@ -403,27 +417,10 @@ Fire.define = function (className, constructor) {
  * @return {function} the constructor of newly defined class
  */
 Fire.extend = function (className, baseClass, constructor) {
-    var fireClass = _createCtor(true, constructor, baseClass);
-    _initClass(className, fireClass);
-
-    // inherit
-    JS.extend(fireClass, baseClass);
-    fireClass.$super = baseClass;
-    if (baseClass.__props__) {
-        // copy __props__
-        fireClass.__props__ = baseClass.__props__.slice();
-    }
-
-    JS.setClassName(className, fireClass);
-
-    // @ifdef EDITOR
-    _nicifyFireClass(fireClass, className);
-    // @endif
-
-    return fireClass;
+    return _defineFireClass(className, baseClass, constructor);
 };
 
-function _createCtor (isInherit, constructor, baseClass) {
+function _createCtor (constructor, baseClass) {
     var fireClass;
     if (constructor) {
 // @ifdef DEV
@@ -439,7 +436,7 @@ function _createCtor (isInherit, constructor, baseClass) {
         };
     }
     else {
-        if (isInherit) {
+        if (baseClass) {
             // auto call base constructor
             fireClass = function () {
                 // @ifdef EDITOR
@@ -473,9 +470,9 @@ function _checkCtor (ctor) {
         return;
     }
     if (ctor.length > 0) {
-        // To make a unified FireClass serialization process,
+        // fireball-x/dev#138: To make a unified FireClass serialization process,
         // we don't allow parameters for constructor when creating instances of FireClass.
-        // For advance user, construct arguments can get from 'arguments'.
+        // For advance user, construct arguments can still get from 'arguments'.
         Fire.warn("Can not instantiate FireClass with arguments.");
         return;
     }
