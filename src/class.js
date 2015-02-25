@@ -426,24 +426,34 @@ function _createCtor (constructor, baseClass) {
 // @ifdef DEV
         _checkCtor(constructor);
 // @endif
-        // constructor provided
-        fireClass = function () {
-            // @ifdef EDITOR
-            this._observing = false;
-            // @endif
-            _createInstanceProps(this, fireClass);
-            constructor.apply(this, arguments);
-        };
-    }
-    else {
         if (baseClass) {
-            // auto call base constructor
+            fireClass = function () {
+                // @ifdef EDITOR
+                this._observing = false;
+                // @endif
+                baseClass.apply(this, arguments);
+                _createInstanceProps(this, fireClass);
+                constructor.apply(this, arguments);
+            };
+        }
+        else {
             fireClass = function () {
                 // @ifdef EDITOR
                 this._observing = false;
                 // @endif
                 _createInstanceProps(this, fireClass);
+                constructor.apply(this, arguments);
+            };
+        }
+    }
+    else {
+        if (baseClass) {
+            fireClass = function () {
+                // @ifdef EDITOR
+                this._observing = false;
+                // @endif
                 baseClass.apply(this, arguments);
+                _createInstanceProps(this, fireClass);
             };
         }
         else {

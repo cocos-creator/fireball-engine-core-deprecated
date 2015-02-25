@@ -110,10 +110,10 @@ test('Inherit + constructor', function () {
 
     strictEqual(Fire.JS.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
 
-    animalConstructor.disable('base construct should called by sub construct');
+    animalConstructor.enable();
     huskyConstructor.enable();
     huskyConstructor.callbackFunction(function () {
-        animalConstructor.enable();
+        animalConstructor.once('base construct should called automatically');
         Husky.$super.call(this);
     });
     var husky = new Husky();

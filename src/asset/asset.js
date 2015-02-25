@@ -1,8 +1,6 @@
 var Asset = (function () {
 
     var Asset = Fire.extend('Fire.Asset', Fire.HashObject, function () {
-        Fire.HashObject.call(this);
-
         // define uuid, uuid can not destory
         Object.defineProperty(this, '_uuid', {
             value: '',
