@@ -148,7 +148,7 @@ function _isDomNode(obj) {
  * @return {boolean} is {} ?
  */
 var _isPlainEmptyObj_DEV = function (obj) {
-    if (obj.constructor !== ({}).constructor) {
+    if (!obj || obj.constructor !== ({}).constructor) {
         return false;
     }
     // jshint ignore: start

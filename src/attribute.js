@@ -144,7 +144,7 @@ Fire.SingleText = { textMode: 'single' };
 Fire.MultiText = { textMode: 'multi' };
 
 // @ifdef DEV
-function getTypeChecker (type, attrName) {
+function getTypeChecker (type, attrName, objectTypeCtor) {
     return function (constructor, mainPropName) {
         var mainPropAttrs = Fire.attr(constructor, mainPropName) || {};
         if (mainPropAttrs.type !== type) {
@@ -154,18 +154,33 @@ function getTypeChecker (type, attrName) {
         if (!mainPropAttrs.hasOwnProperty('default')) {
             return;
         }
-        var isContainer = Array.isArray(mainPropAttrs.default) || _isPlainEmptyObj_DEV(mainPropAttrs.default);
+        var defaultVal = mainPropAttrs.default;
+        if (typeof defaultVal === 'undefined') {
+            return;
+        }
+        var isContainer = Array.isArray(defaultVal) || _isPlainEmptyObj_DEV(defaultVal);
         if (isContainer) {
             return;
         }
-        var defType = typeof mainPropAttrs.default;
-        if (defType === type) {
-            Fire.warn('No needs to indicate the "%s" attribute for %s.%s, which its default value is type of %s.',
-                       attrName, JS.getClassName(constructor), mainPropName, type);
+        var defaultType = typeof defaultVal;
+        if (defaultType === type) {
+            if (type === 'object') {
+                if (defaultVal && !(defaultVal instanceof objectTypeCtor)) {
+                    Fire.warn('The default value of %s.%s is not instance of %s.',
+                               JS.getClassName(constructor), mainPropName, JS.getClassName(objectTypeCtor));
+                }
+                else {
+                    return;
+                }
+            }
+            else {
+                Fire.warn('No needs to indicate the "%s" attribute for %s.%s, which its default value is type of %s.',
+                           attrName, JS.getClassName(constructor), mainPropName, type);
+            }
         }
         else {
             Fire.warn('Can not indicate the "%s" attribute for %s.%s, which its default value is type of %s.',
-                       attrName, JS.getClassName(constructor), mainPropName, defType);
+                       attrName, JS.getClassName(constructor), mainPropName, defaultType);
         }
         delete mainPropAttrs.type;
     };
@@ -180,7 +195,7 @@ function getTypeChecker (type, attrName) {
 Fire.Boolean = {
     type: 'boolean',
 // @ifdef DEV
-    _onAfterProp: getTypeChecker('boolean', 'Fire.Boolean'),
+    _onAfterProp: getTypeChecker('boolean', 'Fire.Boolean')
 // @endif
 };
 
@@ -192,7 +207,7 @@ Fire.Boolean = {
 Fire.String = {
     type: 'string',
 // @ifdef DEV
-    _onAfterProp: getTypeChecker('string', 'Fire.String'),
+    _onAfterProp: getTypeChecker('string', 'Fire.String')
 // @endif
 };
 
@@ -201,11 +216,37 @@ Fire.String = {
  * If the type is derived from Fire.Asset, it will be serialized to uuid.
  *
  * @method ObjectType
- * @param {function} ctor - the special type you want
+ * @param {function} constructor - the special type you want
  * @return {object} the attribute
  */
-Fire.ObjectType = function (ctor) {
-    return { type: 'object', ctor: ctor };
+Fire.ObjectType = function (constructor) {
+    // @ifdef EDITOR
+    if ( !constructor ) {
+        Fire.warn('Argument for Fire.ObjectType must be non-nil');
+        return;
+    }
+    if (typeof constructor !== 'function') {
+        Fire.warn('Argument for Fire.ObjectType must be function type');
+        return;
+    }
+    // @endif
+    return {
+        type: 'object',
+        ctor: constructor,
+        // @ifdef EDITOR
+        _onAfterProp: function (ctor, mainPropName) {
+            var check = getTypeChecker('object', 'Fire.ObjectType', constructor);
+            check(ctor, mainPropName);
+            // check Vec2
+            var mainPropAttrs = Fire.attr(ctor, mainPropName) || {};
+            var isNilObj = mainPropAttrs.default === null || mainPropAttrs.default === undefined;
+            if ( isNilObj && typeof constructor.prototype.clone === 'function') {
+                Fire.warn('Please set the default value of %s.%s to a valid instance such as "new %s()", because its ObjectType is value type.',
+                          JS.getClassName(ctor), mainPropName, JS.getClassName(constructor));
+            }
+        }
+        // @endif
+    };
 };
 
 /**
