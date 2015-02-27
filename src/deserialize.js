@@ -62,15 +62,20 @@ var _Deserializer = (function () {
         }
     };
 
+    // 和 _deserializeObject 不同的地方在于会判断 id 和 uuid
     function _deserializeObjField (self, obj, jsonObj, propName, target) {
         var id = jsonObj.__id__;
         if (typeof id === 'undefined') {
             var uuid = jsonObj.__uuid__;
             if (uuid) {
                 // @ifndef PLAYER
-                if (target && target[propName] && target[propName]._uuid === uuid) {
-                    return;
-                }
+                // 这里不做任何操作，因为有可能调用者需要知道依赖哪些 asset。
+                // 调用者使用 uuidList 时，可以判断 obj[propName] 是否为空，为空则表示待进一步加载，
+                // 不为空则只是表明依赖关系。
+                //if (target && target[propName] && target[propName]._uuid === uuid) {
+                //    console.assert(obj[propName] === target[propName]);
+                //    return;
+                //}
                 // @endif
                 self.result.uuidList.push(uuid);
                 self.result.uuidObjList.push(obj);

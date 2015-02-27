@@ -94,7 +94,7 @@
      * @constructor
      */
     var CallbacksInvoker = function () {
-        this._callbackTable = {};
+        this._callbackTable = {}; // 直接赋值，省得调用父构造函数
     };
     JS.extend(CallbacksInvoker, CallbacksHandler);
 

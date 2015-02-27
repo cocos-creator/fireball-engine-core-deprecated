@@ -132,6 +132,8 @@ FObject = (function () {
         }
     };
 
+    FObject.prototype._onPreDestroy = null;
+
     FObject.prototype._destroyImmediate = function () {
         if (this._objFlags & Destroyed) {
             Fire.error('object already destroyed');
