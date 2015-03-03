@@ -162,7 +162,7 @@ gulp.task('unit-runner', function() {
                ;
 });
 
-gulp.task('test', ['js-min', 'unit-runner'], function() {
+gulp.task('test', ['js-min', 'js-dev', 'unit-runner'], function() {
     var timeOutInSeconds = 5;
     return gulp.src(['test/unit/**/*.html', '!**/*.dev.*'], { read: false })
                .pipe(qunit({ timeout: timeOutInSeconds }))
