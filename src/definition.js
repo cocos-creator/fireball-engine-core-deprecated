@@ -81,6 +81,7 @@ var ObjectFlags = {
     IsOnEnableCalled: 1 << 12,
     IsOnLoadCalled: 1 << 13,
     IsOnStartCalled: 1 << 14,
+    IsEditorOnEnabledCalled: 1 << 15
 
 };
 
@@ -96,5 +97,6 @@ Fire._ObjectFlags = ObjectFlags;
 
 var PersistentMask = ~(ToDestroy | Dirty | ObjectFlags.Destroying |     // can not clone these flags
                        ObjectFlags.IsOnEnableCalled |
+                       ObjectFlags.IsEditorOnEnabledCalled |
                        ObjectFlags.IsOnLoadCalled |
                        ObjectFlags.IsOnStartCalled);
