@@ -1,4 +1,19 @@
 var Color = (function () {
+
+    var DefaultColors = {
+        // color: [r, g, b, a]
+        white:      [1, 1, 1, 1],
+        black:      [0, 0, 0, 1],
+        transparent:[0, 0, 0, 0],
+        gray:       [0.5, 0.5, 0.5],
+        red:        [1, 0, 0],
+        green:      [0, 1, 0],
+        blue:       [0, 0, 1],
+        yellow:     [1, 235/255, 4/255],
+        cyan:       [0, 1, 1],
+        magenta:    [1, 0, 1]
+    };
+
     /**
      * A class represents RGBA color
      * @class Color
@@ -15,6 +30,15 @@ var Color = (function () {
         this.a = typeof a === 'number' ? a : 1.0;
     }
     JS.setClassName('Fire.Color', Color);
+
+    for (var colorName in DefaultColors) {
+        var colorGetter = (function (r, g, b, a) {
+            return function () {
+                return new Color(r, g, b, a);
+            };
+        }).apply(null, DefaultColors[colorName]);
+        Object.defineProperty(Color, colorName, { get: colorGetter });
+    }
 
     /**
      * Clone a new color from the current color.

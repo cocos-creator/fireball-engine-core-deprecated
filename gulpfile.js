@@ -92,7 +92,8 @@ gulp.task('jshint', function() {
     .pipe(jshint({
         forin: false,
         multistr: true,
-    }))
+        loopfunc: true
+        }))
     .pipe(jshint.reporter(stylish))
     ;
 });
