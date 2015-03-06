@@ -369,7 +369,7 @@ function _initClass(className, fireClass) {
     }
 }
 
-function _defineFireClass (className, baseClass, constructor) {
+Fire._doDefine = function (className, baseClass, constructor) {
     var fireClass = _createCtor(constructor, baseClass);
     _initClass(className, fireClass);
 
@@ -390,18 +390,18 @@ function _defineFireClass (className, baseClass, constructor) {
     // @endif
 
     return fireClass;
-}
+};
 
 /**
  * Defines a FireClass using the given constructor.
  *
  * @method define
- * @param {string} className - the name of class that is used to deserialize this class
+ * @param {string} [className] - the name of class that is used to deserialize this class
  * @param {function} [constructor] - a constructor function that is used to instantiate this class
  * @return {function} the constructor of newly defined class
  */
 Fire.define = function (className, constructor) {
-    return _defineFireClass(className, null, constructor);
+    return Fire.extend(className, null, constructor);
 };
 
 /**
@@ -409,7 +409,7 @@ Fire.define = function (className, constructor) {
  * See also {% crosslink extend Fire.JS.extend %}.
  *
  * @method extend
- * @param {string} className - the name of class that is used to deserialize this class
+ * @param {string} [className] - the name of class that is used to deserialize this class
  * @param {function} baseClass - !#en The base class to inherit from
  *                               !#zh 继承的基类
  * @param {function} [constructor] - a constructor function that is used to instantiate this class,
@@ -417,7 +417,29 @@ Fire.define = function (className, constructor) {
  * @return {function} the constructor of newly defined class
  */
 Fire.extend = function (className, baseClass, constructor) {
-    return _defineFireClass(className, baseClass, constructor);
+    if (typeof className === 'function') {
+// @ifdef DEV
+        if (constructor) {
+            Fire.error('[Fire.extend] invalid type of arguments');
+            return null;
+        }
+// @endif
+        constructor = baseClass;
+        baseClass = className;
+        className = '';
+    }
+    if (typeof className === 'string') {
+        return Fire._doDefine(className, baseClass, constructor);
+    }
+// @ifdef DEV
+    else if (className) {
+        Fire.error('[Fire.extend] unknown typeof first argument');
+    }
+    else {
+        Fire.error('[Fire.extend] first argument must be non-nil');
+    }
+// @endif
+    return null;
 };
 
 function _createCtor (constructor, baseClass) {
