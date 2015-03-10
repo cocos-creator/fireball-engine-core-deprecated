@@ -44,6 +44,8 @@ var ToDestroy = 1 << 1;
 var DontSave = 1 << 2;
 var EditorOnly  = 1 << 3; // dont save in build
 var Dirty = 1 << 4; // used in editor
+var DontDestroy = 1 << 5; // dont destroy automatically when loading a new scene
+
 /**
  *
  * Mark object with different flags.
@@ -56,6 +58,7 @@ var ObjectFlags = {
     DontSave: DontSave,
     EditorOnly: EditorOnly,
     Dirty: Dirty,
+    DontDestroy: DontDestroy,
 
     // public flags for engine
 
@@ -95,7 +98,7 @@ ObjectFlags.Hide = ObjectFlags.HideInGame | ObjectFlags.HideInEditor;
 
 Fire._ObjectFlags = ObjectFlags;
 
-var PersistentMask = ~(ToDestroy | Dirty | ObjectFlags.Destroying |     // can not clone these flags
+var PersistentMask = ~(ToDestroy | Dirty | ObjectFlags.Destroying | DontDestroy |     // can not clone these flags
                        ObjectFlags.IsOnEnableCalled |
                        ObjectFlags.IsEditorOnEnabledCalled |
                        ObjectFlags.IsOnLoadCalled |
