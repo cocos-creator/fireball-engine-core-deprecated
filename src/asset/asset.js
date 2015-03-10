@@ -9,6 +9,7 @@ var Asset = (function () {
                                 // so the _uuid can not display in console.
         });
 
+        this.dirty = false;
     });
 
     /* TODO: These callbacks available for ?
