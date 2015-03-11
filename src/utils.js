@@ -20,6 +20,55 @@ Fire.padLeft = function ( text, width, ch ) {
     return text;
 };
 
+/**
+ * @method fitRatio
+ * @param {number} ratio (w/h)
+ * @param {number} destWidth
+ * @param {number} destHeight
+ * @return {array}
+ */
+Fire.fitRatio = function ( ratio, destWidth, destHeight ) {
+    var srcWidth, srcHeight;
+    if ( ratio > 1 ) {
+        srcWidth = destWidth;
+        srcHeight = srcWidth / ratio;
+    }
+    else {
+        srcHeight = destHeight;
+        srcWidth = srcHeight * ratio;
+    }
+    return Fire.fitSize( srcWidth, srcHeight, destWidth, destHeight );
+};
+
+Fire.fitSize = function ( srcWidth, srcHeight, destWidth, destHeight ) {
+    var width, height;
+    if ( srcWidth > destWidth &&
+         srcHeight > destHeight )
+    {
+        width = destWidth;
+        height = srcHeight * destWidth/srcWidth;
+
+        if ( height > destHeight ) {
+            height = destHeight;
+            width = srcWidth * destHeight/srcHeight;
+        }
+    }
+    else if ( srcWidth > destWidth ) {
+        width = destWidth;
+        height = srcHeight * destWidth/srcWidth;
+    }
+    else if ( srcHeight > destHeight ) {
+        width = srcWidth * destHeight/srcHeight;
+        height = destHeight;
+    }
+    else {
+        width = srcWidth;
+        height = srcHeight;
+    }
+
+    return [width,height];
+};
+
 //
 Fire.getEnumList = function (enumDef) {
     if ( enumDef.__enums__ !== undefined )
