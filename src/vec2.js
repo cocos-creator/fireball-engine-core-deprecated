@@ -31,6 +31,18 @@ Vec2 = (function () {
         }
     });
 
+    Object.defineProperty(Vec2, 'up', {
+        get: function () {
+            return new Vec2(0.0, 1.0);
+        }
+    });
+
+    Object.defineProperty(Vec2, 'right', {
+        get: function () {
+            return new Vec2(1.0, 0.0);
+        }
+    });
+
     // member
 
     Vec2.prototype.clone = function () {
