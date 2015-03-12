@@ -27,11 +27,11 @@ Fire.Texture = (function () {
         return t;
     })({});
 
-    Texture.prop('image', null, Fire.RawType('image'));
-    Texture.prop('width', 0, Fire.Integer);
-    Texture.prop('height', 0, Fire.Integer);
-    Texture.prop('wrapMode', Texture.WrapMode.Clamp, Fire.Enum(Texture.WrapMode));
-    Texture.prop('filterMode', Texture.FilterMode.Bilinear, Fire.Enum(Texture.FilterMode));
+    Texture.prop('image', null, Fire.RawType('image'), Fire.HideInInspector);
+    Texture.prop('width', 0, Fire.Integer, Fire.ReadOnly);
+    Texture.prop('height', 0, Fire.Integer, Fire.ReadOnly);
+    Texture.prop('wrapMode', Texture.WrapMode.Clamp, Fire.Enum(Texture.WrapMode), Fire.ReadOnly);
+    Texture.prop('filterMode', Texture.FilterMode.Bilinear, Fire.Enum(Texture.FilterMode), Fire.ReadOnly);
 
     //Texture.prototype.onAfterDeserialize = function () {
     //    this.width = this.image.width;

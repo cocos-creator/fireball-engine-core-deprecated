@@ -1,4 +1,12 @@
 Fire.Atlas = (function () {
+    var _atlasSizeList = [
+        { name: '128', value: 128 },
+        { name: '256', value: 256 },
+        { name: '512', value: 512 },
+        { name: '1024', value: 1024 },
+        { name: '2048', value: 2048 },
+        { name: '4096', value: 4096 },
+    ];
 
     var Atlas = Fire.extend("Fire.Atlas", Fire.Asset);
 
@@ -29,8 +37,8 @@ Fire.Atlas = (function () {
     })({});
 
     // basic settings
-    Atlas.prop('width', 512, Fire.Integer );
-    Atlas.prop('height', 512, Fire.Integer );
+    Atlas.prop('width', 512, Fire.EnumList(_atlasSizeList) );
+    Atlas.prop('height', 512, Fire.EnumList(_atlasSizeList) );
 
     Atlas.prop('sprites', [], Fire.ObjectType(Fire.Sprite), Fire.HideInInspector);
 
