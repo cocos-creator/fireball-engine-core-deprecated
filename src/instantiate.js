@@ -30,11 +30,11 @@ Fire.instantiate = function (original) {
         Fire._isCloning = false;
         return clone;
     }
-    //else if (original instanceof Fire.Asset) {
-    //    // 不使用通用的方法实例化资源
-    //    Fire.error('The instantiate method for given asset do not implemented');
-    //    return null;
-    //}
+    else if (original instanceof Fire.Asset) {
+        // 不使用通用的方法实例化资源
+        Fire.error('The instantiate method for given asset do not implemented');
+        return null;
+    }
     //
     Fire._isCloning = true;
     clone = Fire._doInstantiate(original);
