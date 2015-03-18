@@ -95,10 +95,10 @@ var Color = (function () {
     };
 
     Color.prototype.clamp = function () {
-        this.r = Math.clamp(this.r);
-        this.g = Math.clamp(this.g);
-        this.b = Math.clamp(this.b);
-        this.a = Math.clamp(this.a);
+        this.r = Math.clamp01(this.r);
+        this.g = Math.clamp01(this.g);
+        this.b = Math.clamp01(this.b);
+        this.a = Math.clamp01(this.a);
     };
 
     Color.prototype.fromHEX = function (hexString) {
@@ -134,7 +134,9 @@ var Color = (function () {
     };
 
     Color.prototype.toRGBValue = function () {
-        return (this.r * 255 << 16) + (this.g * 255 << 8) + this.b * 255;
+        return (Math.clamp01(this.r) * 255 << 16) +
+               (Math.clamp01(this.g) * 255 << 8) +
+               (Math.clamp01(this.b) * 255);
     };
 
     Color.prototype.fromHSV = function ( h, s, v ) {

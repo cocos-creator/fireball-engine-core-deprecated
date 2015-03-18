@@ -95,9 +95,23 @@
         },
 
         clamp: function ( val, min, max ) {
-            min = typeof min === 'undefined' ? 0 : min;
-            max = typeof max === 'undefined' ? 1 : max;
+            if (typeof min !== 'number') {
+                Fire.error('[clamp] min value must be type number');
+                return;
+            }
+            if (typeof max !== 'number') {
+                Fire.error('[clamp] max value must be type number');
+                return;
+            }
+            if (min > max) {
+                Fire.error('[clamp] max value must not less than min value');
+                return;
+            }
             return Math.min( Math.max( val, min ), max );
+        },
+
+        clamp01: function ( val ) {
+            return Math.min( Math.max( val, 0 ), 1 );
         },
 
         /**
