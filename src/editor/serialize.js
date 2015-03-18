@@ -339,7 +339,8 @@ Fire.serialize = function (obj, options) {
     var exporting = (options && options.exporting);
     // indicates whether needs to convert the result by JSON.stringify, default is true
     var stringify = (options && 'stringify' in options) ? options.stringify : true;
-    var nicify = (options && options.nicify);
+    var minify = (options && 'minify' in options) ? options.minify : false;
+    var nicify = minify || (options && options.nicify);
 
     var serializer = new _Serializer(obj, exporting);
     var serializedList = serializer.serializedList;
@@ -353,7 +354,7 @@ Fire.serialize = function (obj, options) {
         return serializedData;
     }
     else {
-        return JSON.stringify(serializedData, null, 2);
+        return JSON.stringify(serializedData, null, minify ? 0 : 2);
     }
 };
 
