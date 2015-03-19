@@ -282,10 +282,10 @@ Fire.EnumList = function (enumList) {
 Fire.RawType = function (typename) {
     var NEED_EXT_TYPES = ['image', 'json', 'text', 'audio'];  // the types need to specify exact extname
     return {
-        type: 'raw',
+        // type: 'raw',
         rawType: typename,
         serializable: false,
-        hideInInspector: true,
+        // hideInInspector: true,
         _canUsedInGetter: false,
 
         _onAfterProp: function (constructor, mainPropName) {
