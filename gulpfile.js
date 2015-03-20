@@ -44,6 +44,7 @@ var paths = {
         // assets
         'src/asset/asset.js',
         'src/asset/custom-asset.js',
+        'src/asset/script-asset.js',
         'src/asset/texture.js',
         'src/asset/sprite.js',
         'src/asset/atlas.js',
