@@ -268,10 +268,18 @@ var _metaClass = {
      * @return {function} the class itself
      */
     getset: function (name, getter, setter, attribute) {
-        this.get(name, getter, attribute);
+        'use strict';
+        if (attribute) {
+            var getterArgs = [].slice.call(arguments);
+            getterArgs.splice(2, 1);    // remove setter
+            this.get.apply(this, getterArgs);
+        }
+        else {
+            this.get(name, getter);
+        }
         this.set(name, setter);
         return this;
-    },
+    }
 };
 
 var _createInstanceProps = function (instance, itsClass) {

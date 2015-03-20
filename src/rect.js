@@ -16,18 +16,28 @@ var Rect = (function () {
     JS.setClassName('Fire.Rect', Rect);
 
     /**
-     * @method fromVec2
+     * @method fromMinMax
      * @param {Vec2} v1
      * @param {Vec2} v2
      * @return {Rect}
      */
-    Rect.fromVec2 = function ( v1, v2 ) {
+    Rect.fromMinMax = function ( v1, v2 ) {
         var min_x = Math.min( v1.x, v2.x );
         var min_y = Math.min( v1.y, v2.y );
         var max_x = Math.max( v1.x, v2.x );
         var max_y = Math.max( v1.y, v2.y );
 
         return new Rect ( min_x, min_y, max_x - min_x, max_y - min_y );
+    };
+
+    /**
+     * @method fromVec2
+     * @param {Vec2} leftTop
+     * @param {Vec2} size
+     * @return {Rect}
+     */
+    Rect.fromVec2 = function ( leftTop, size ) {
+        return new Rect ( leftTop.x, leftTop.y, size.x, size.y );
     };
 
     /**

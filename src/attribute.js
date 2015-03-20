@@ -253,7 +253,7 @@ Fire.ObjectType = function (constructor) {
  * Makes a property show up as a enum in Inspector.
  *
  * @method Enum
- * @param {(string)} enumType
+ * @param {object} enumType
  * @return {object} the enum attribute
  */
 Fire.Enum = function (enumType) {
@@ -300,9 +300,9 @@ Fire.RawType = function (typename) {
                 for (var p = 0; p < constructor.__props__.length; p++) {
                     var propName = constructor.__props__[p];
                     var attrs = Fire.attr(constructor, propName);
-                    var type = attrs.type;
-                    if (type === 'raw') {
-                        var containsUppercase = (attrs.rawType.toLowerCase() !== attrs.rawType);
+                    var rawType = attrs.rawType;
+                    if (rawType) {
+                        var containsUppercase = (rawType.toLowerCase() !== rawType);
                         if (containsUppercase) {
                             Fire.error('RawType name cannot contain uppercase');
                             return false;
