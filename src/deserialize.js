@@ -449,6 +449,7 @@ Fire._DeserializeInfo.prototype.getUuidOf = function (obj, propName) {
 };
 
 Fire._DeserializeInfo.prototype.assignAssetsBy = function (callback) {
+    var success = true;
     for (var i = 0, len = this.uuidList.length; i < len; i++) {
         var uuid = this.uuidList[i];
         var asset = callback(uuid);
@@ -459,6 +460,8 @@ Fire._DeserializeInfo.prototype.assignAssetsBy = function (callback) {
         }
         else {
             Fire.error('Failed to assign asset: ' + uuid);
+            success = false;
         }
     }
+    return success;
 };
