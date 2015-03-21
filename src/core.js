@@ -233,7 +233,16 @@ Fire.unregisterClass to remove the id of unused class';
      * @return {function} constructor
      */
     JS._getClassById = function (classId) {
-        return _idToClass[classId];
+        var cls = _idToClass[classId];
+// @ifdef EDITOR
+        if (!cls) {
+            if (classId.length === 32) {
+                // 尝试解析旧的 uuid 压缩格式
+                cls = _idToClass[Fire.compressUuid(classId)];
+            }
+        }
+// @endif
+        return cls;
     };
 
     /**
