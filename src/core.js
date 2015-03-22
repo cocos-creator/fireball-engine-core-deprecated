@@ -327,3 +327,41 @@ else {
         console.error.apply(console, arguments);
     };
 }
+
+// enum
+
+Fire.defineEnum = function (obj) {
+    var enumType = {};
+    var lastIndex = -1;
+    for (var key in obj) {
+        var val = obj[key];
+        if (val === -1) {
+            val = ++lastIndex;
+        }
+        else {
+            lastIndex = val;
+        }
+        enumType[key] = val;
+        Object.defineProperty(enumType, '' + val, {
+            value: key,
+            enumerable: false
+        });
+    }
+    return enumType;
+};
+
+// @ifdef DEV
+
+// check key order in object literal
+var _TestEnum = Fire.defineEnum({
+    ZERO: -1,
+    ONE: -1,
+    TWO: -1,
+    THREE: -1
+});
+if (_TestEnum.ZERO !== 0 || _TestEnum.ONE !== 1 || _TestEnum.TWO !== 2 || _TestEnum.THREE !== 3) {
+    Fire.error('Sorry, "Fire.defineEnum" not available on this platform, ' +
+               'please report this error here: https://github.com/fireball-x/fireball/issues/new !');
+}
+
+// @endif

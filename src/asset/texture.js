@@ -13,19 +13,17 @@ Fire.Texture = (function () {
     });
 
     // enum WrapMode
-    Texture.WrapMode = (function (t) {
-        t[t.Repeat = 0] = 'Repeat';
-        t[t.Clamp  = 1] = 'Clamp';
-        return t;
-    })({});
+    Texture.WrapMode = Fire.defineEnum({
+        Repeat: -1,
+        Clamp: -1
+    });
 
     // enum FilterMode
-    Texture.FilterMode = (function (t) {
-        t[t.Point       = 0] = 'Point';
-        t[t.Bilinear    = 1] = 'Bilinear';
-        t[t.Trilinear   = 2] = 'Trilinear';
-        return t;
-    })({});
+    Texture.FilterMode = Fire.defineEnum({
+        Point: -1,
+        Bilinear: -1,
+        Trilinear: -1
+    });
 
     Texture.prop('image', null, Fire.RawType('image'), Fire.HideInInspector);
     Texture.prop('width', 0, Fire.Integer, Fire.ReadOnly);

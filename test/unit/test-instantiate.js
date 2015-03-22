@@ -41,12 +41,11 @@
 
             // should not instantiate --------------------------
             MyAsset.staticFunc = function () { };
-            MyAsset.staticProp = (function (t) {
-                t[t.UseBest    = 0] = 'UseBest';
-                t[t.Ascending  = 1] = 'Ascending';
-                t[t.Descending = 2] = 'Descending';
-                return t;
-            })({});
+            MyAsset.staticProp = Fire.defineEnum({
+                UseBest: -1,
+                Ascending: -1,
+                Descending: -1
+            });
             MyAsset.prototype.protoFunc = function () { };
             MyAsset.prototype.protoProp = 123;
             // -------------------------------------------------

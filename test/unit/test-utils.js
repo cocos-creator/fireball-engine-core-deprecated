@@ -15,14 +15,13 @@ test('getVarFrom', function() {
 });
 
 test('enum', function () {
-    var TestEnum = (function (t) {
-        t[t.Width   = 1] = 'Width';
-        t[t.Name    = 20] = 'Name';
-        t[t.UseBest = 0] = 'UseBest';
-        t[t.Height  = 10] = 'Height';
-        t[t.Area    = 15] = 'Area';
-        return t;
-    })({});
+    var TestEnum = Fire.defineEnum({
+        Width: 1,
+        Name: 20,
+        UseBest: 0,
+        Height: 10,
+        Area: 15,
+    });
 
     deepEqual ( Fire.getEnumList(TestEnum),
                [
