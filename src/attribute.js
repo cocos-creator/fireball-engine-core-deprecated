@@ -110,7 +110,7 @@ Callbacks: {
  */
 Fire.NonSerialized = {
     serializable: false,
-    _canUsedInGetter: false,
+    _canUsedInGetter: false
 };
 
 /**
@@ -217,9 +217,10 @@ Fire.String = {
  *
  * @method ObjectType
  * @param {function} constructor - the special type you want
+ * @param {boolean} [useUuid=false] - the value will be represented as a uuid string
  * @return {object} the attribute
  */
-Fire.ObjectType = function (constructor) {
+Fire.ObjectType = function (constructor, useUuid) {
     // @ifdef EDITOR
     if ( !constructor ) {
         Fire.warn('Argument for Fire.ObjectType must be non-nil');
@@ -231,7 +232,7 @@ Fire.ObjectType = function (constructor) {
     }
     // @endif
     return {
-        type: 'object',
+        type: useUuid ? 'uuid' : 'object',
         ctor: constructor,
         // @ifdef EDITOR
         _onAfterProp: function (ctor, mainPropName) {
