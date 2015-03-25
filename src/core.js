@@ -332,6 +332,11 @@ else {
 
 Fire.defineEnum = function (obj) {
     var enumType = {};
+    Object.defineProperty(enumType, '__enums__', {
+        value: undefined,
+        writable: true
+    });
+
     var lastIndex = -1;
     for (var key in obj) {
         var val = obj[key];
@@ -342,10 +347,14 @@ Fire.defineEnum = function (obj) {
             lastIndex = val;
         }
         enumType[key] = val;
-        Object.defineProperty(enumType, '' + val, {
-            value: key,
-            enumerable: false
-        });
+
+        var reverseKey = '' + val;
+        if (key !== reverseKey) {
+            Object.defineProperty(enumType, reverseKey, {
+                value: key,
+                enumerable: false
+            });
+        }
     }
     return enumType;
 };

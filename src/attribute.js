@@ -262,17 +262,6 @@ Fire.Enum = function (enumType) {
 };
 
 /**
- * Makes a property show up as a enum in Inspector.
- *
- * @method EnumList
- * @param {(array)} enumList
- * @return {object} the enum attribute
- */
-Fire.EnumList = function (enumList) {
-    return { type: 'enum', enumList: enumList };
-};
-
-/**
  * Makes a property referenced to a javascript host object which needs to load before deserialzation.
  * The property will not be serialized but will be referenced to the loaded host object while deserialzation.
  *
@@ -355,7 +344,7 @@ Fire.RawType = function (typename) {
  *
  * @method Custom
  * @param {string} name
- * @return {object} the enum attribute
+ * @return {object}
  */
 Fire.Custom = function (type) {
     return { custom: type };
@@ -433,7 +422,7 @@ Fire.Nullable = function (boolPropName, hasValueByDefault) {
 Fire.Watch = function (names, callback) {
     return {
         watch: [].concat(names),  // array of property name to watch
-        watchCallback: callback,
+        watchCallback: callback
     };
 };
 

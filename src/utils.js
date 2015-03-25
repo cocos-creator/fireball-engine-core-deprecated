@@ -77,16 +77,17 @@ Fire.getEnumList = function (enumDef) {
     var enums = [];
     for ( var entry in enumDef ) {
         if ( enumDef.hasOwnProperty(entry) ) {
-            var test = parseInt(entry);
-            if ( isNaN(test) ) {
-                enums.push( { name: enumDef[enumDef[entry]], value: enumDef[entry] } );
+            var value = enumDef[entry];
+            var isInteger = typeof value === 'number' && (value | 0) === value; // polyfill Number.isInteger
+            if ( isInteger ) {
+                enums.push( { name: entry, value: value } );
             }
         }
     }
     enums.sort( function ( a, b ) { return a.value - b.value; } );
 
     enumDef.__enums__ = enums;
-    return enumDef.__enums__;
+    return enums;
 };
 
 //
