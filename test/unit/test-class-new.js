@@ -1,28 +1,43 @@
-﻿largeModule('Class');
+﻿largeModule('Class New');
 
 test('test', function () {
-    var Animal = Fire.define('Animal')
-                     .prop('name', '...', { type: 'Float' }, { serializable: true })
-                     .prop('eat', function () {
-                         return 'eating';
-                     });
-    strictEqual(Fire.JS.getClassName(Animal), 'Animal', 'get class name');
-
-    Animal.prop('weight', -1, Fire.NonSerialized);
-    Animal.set('weight10', function (value) {
-        this.weight = Math.floor(value / 10);
-    });
-    Animal.get('weight10', function () {
-        return this.weight * 10;
-    }, Fire.Integer);
-    Animal.getset('weight5x',
-        function () {
-            return this.weight * 5;
-        },
-        function (value) {
-            this.weight = value / 5;
+    var Animal = Fire.Class({
+        name: 'Animal',
+        properties: {
+            name: {
+                default: '...',
+                tooltip: 'Float',
+                displayName: 'displayName'
+            },
+            eat: function () {
+                return 'eating';
+            },
+            weight: {
+                default: -1,
+                serializable: false
+            },
+            weight10: {
+                type: 'Integer',
+                set: function (value) {
+                    this.weight = Math.floor(value / 10);
+                },
+                get: function () {
+                    return this.weight * 10;
+                }
+            },
+            weight5x: {
+                type: 'Integer',
+                get: function () {
+                    return this.weight * 5;
+                },
+                set: function (value) {
+                    this.weight = value / 5;
+                },
+            }
         }
-    );
+    });
+
+    strictEqual(Fire.JS.getClassName(Animal), 'Animal', 'get class name');
 
     // property
 
@@ -31,8 +46,8 @@ test('test', function () {
     strictEqual(instance.eat(), 'eating', 'get chained property');
     strictEqual(instance.weight, -1, 'get partial property');
 
-    strictEqual(Fire.attr(Animal, 'name').type, 'Float', 'get name type');
-    strictEqual(Fire.attr(Animal, 'name').serializable, true, 'get name serializable');
+    strictEqual(Fire.attr(Animal, 'name').tooltip, 'Float', 'get name tooltip');
+    strictEqual(Fire.attr(Animal, 'name').displayName, 'displayName', 'get name displayName');
     strictEqual(Fire.attr(Animal, 'weight').serializable, false, 'get attribute');
 
     // getter / setter
@@ -50,8 +65,13 @@ test('test', function () {
     Fire.JS.unregisterClass(Animal);
 
     var constructor = new Callback();
-    Animal = Fire.define('Animal', constructor)
-                 .prop('weight', 100);
+    Animal = Fire.Class({
+        name: 'Animal',
+        constructor: constructor,
+        properties: {
+            weight: 100
+        }
+    });
 
     constructor.enable();
     var instance1 = new Animal();
@@ -71,10 +91,29 @@ test('test', function () {
 });
 
 test('Inherit', function () {
-    var Animal = Fire.define('Fire.Animal').prop('name', 'ann');
-    var Dog = Fire.extend('Fire.Dog', Animal)
-                   .prop('name', 'doge', { type: 'str' });
-    var Husky = Fire.extend('Fire.Husky', Dog).prop('weight', 100);
+    var Animal = Fire.Class({
+        name: 'Fire.Animal',
+        properties: {
+            name: 'ann'
+        }
+    });
+    var Dog = Fire.Class({
+        name: 'Fire.Dog',
+        extends: Animal,
+        properties: {
+            name: {
+                default: 'doge',
+                tooltip: 'String'
+            }
+        }
+    });
+    var Husky = Fire.Class({
+        name: 'Fire.Husky',
+        extends: Dog,
+        properties: {
+            weight: 100
+        }
+    });
 
     strictEqual(Fire.JS.getClassName(Animal), 'Fire.Animal', 'can get class name 1');
     strictEqual(Fire.JS.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
@@ -84,7 +123,7 @@ test('Inherit', function () {
 
     strictEqual(Fire.attr(Animal, 'name'), Fire.attr(Dog, 'name'),
                 "inheritance chain shares the same property's attribute");
-    strictEqual(Fire.attr(Dog, 'name').type, 'str', 'can modify attribute');
+    strictEqual(Fire.attr(Dog, 'name').tooltip, 'String', 'can modify attribute');
     strictEqual(Fire.attr(Dog, 'weight'), undefined, 'base property not added');
 
     var husky = new Husky();
@@ -102,11 +141,25 @@ test('Inherit', function () {
 test('Inherit + constructor', function () {
     var animalConstructor = Callback();
     var huskyConstructor = Callback();
-    var Animal = Fire.define('Fire.Animal', animalConstructor)
-                      .prop('name', 'ann');
-    var Dog = Fire.extend('Fire.Dog', Animal)
-                  .prop('name', 'doge');
-    var Husky = Fire.extend('Fire.Husky', Dog, huskyConstructor);
+    var Animal = Fire.Class({
+        name: 'Fire.Animal',
+        constructor: animalConstructor,
+        properties: {
+            name: 'ann'
+        }
+    });
+    var Dog = Fire.Class({
+        name: 'Fire.Dog',
+        extends: Animal,
+        properties: {
+            name: 'doge'
+        }
+    });
+    var Husky = Fire.Class({
+        name: 'Fire.Husky',
+        extends: Dog,
+        constructor: huskyConstructor
+    });
 
     strictEqual(Fire.JS.getClassName(Dog), 'Fire.Dog', 'can get class name 2');
 
@@ -130,10 +183,18 @@ test('Inherit + constructor', function () {
 });
 
 test('prop reference', function () {
-    var type = Fire.define('Fire.MyType')
-                   .prop('ary', [])
-                   .prop('vec2', new Fire.Vec2(10, 20))
-                   .prop('dict', {});
+    var type = Fire.Class({
+        name: 'Fire.MyType',
+        properties: {
+            ary: [],
+            vec2: {
+                default: new Fire.Vec2(10, 20)
+            },
+            dict: {
+                default: {}
+            }
+        }
+    });
     var obj1 = new type();
     var obj2 = new type();
 
@@ -145,7 +206,10 @@ test('prop reference', function () {
 });
 
 test('serialization if inherited from FObject', function () {
-    var type = Fire.extend('Fire.MyType', FObject);
+    var type = Fire.Class({
+        name: 'Fire.MyType',
+        extends: FObject
+    });
 
     var obj = new type();
     obj.name = '阿加西';
@@ -181,14 +245,27 @@ test('isChildClassOf', function () {
 
     // fire class
 
-    var Animal = Fire.extend('Fire.Animal', Sub)
-                .prop('name', 'ann');
-
-    var Dog = Fire.extend('Fire.Dog', Animal)
-             .prop('name', 'doge', { type: 'str' });
-
-    var Husky = Fire.extend('Fire.Husky', Dog)
-               .prop('weight', 100);
+    var Animal = Fire.Class({
+        name: 'Fire.Animal',
+        extends: Sub,
+        properties: {
+            name: 'ann'
+        }
+    });
+    var Dog = Fire.Class({
+        name: 'Fire.Dog',
+        extends: Animal,
+        properties: {
+            name: 'doge'
+        }
+    });
+    var Husky = Fire.Class({
+        name: 'Fire.Husky',
+        extends: Dog,
+        properties: {
+            weight: 100
+        }
+    });
 
     strictEqual(Fire.isChildClassOf( Husky, Husky), true, 'Husky is child of itself');
     strictEqual(Fire.isChildClassOf( Dog, Animal), true, 'Animal is parent of Dog');

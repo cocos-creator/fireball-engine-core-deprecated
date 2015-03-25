@@ -30,6 +30,7 @@ var paths = {
         'src/utils.js',
         'src/attribute.js',
         'src/class.js',
+        'src/class-new.js',
         'src/path.js',
         'src/object.js',
         'src/hash-object.js',
