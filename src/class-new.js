@@ -32,16 +32,15 @@ Fire.Class = function (options) {
             var val = properties[propName];
             if (val && typeof val === 'object' && !Array.isArray(val)) {
                 var attrs = parseAttributes(val, name, propName);
-                var def = val.default;
-                var getter = val.get;
-                var setter = val.set;
-                if (def) {
-                    cls.prop.apply(cls, [propName, def].concat(attrs));
+                if (val.hasOwnProperty('default')) {
+                    cls.prop.apply(cls, [propName, val.default].concat(attrs));
                 }
                 else {
+                    var getter = val.get;
+                    var setter = val.set;
                     // @ifdef EDITOR
                     if (!getter && !setter) {
-                        Fire.error('属性至少要定义 default, get, set 的其中一个！');
+                        Fire.error('Property %s.%s must define at least one of "default", "get" or "set".', name, propName);
                     }
                     // @endif
                     if (getter) {
@@ -82,10 +81,10 @@ Fire.Class = function (options) {
             };
             var correct = TypoCheckList[funcName];
             if (correct) {
-                Fire.warn('未识别的参数 %s.%s, 你要的是 "%s" ？', name, funcName, correct);
+                Fire.warn('Unknown parameter of %s.%s, maybe you want is "%s".', name, funcName, correct);
             }
             else {
-                Fire.error('未识别的属性 %s.%s', name, funcName);
+                Fire.error('Unknown parameter of %s.%s', name, funcName);
             }
         }
         // @endif
@@ -119,7 +118,7 @@ function parseAttributes (attrs, className, propName) {
         }
         else if (type === 'Object' || type === Object) {
             // @ifdef EDITOR
-            Fire.error('请将 %s.%s 的 type 定义成对应类型的构造函数', className, propName);
+            Fire.error('Please define "type" parameter of %s.%s as the actual constructor.', className, propName);
             // @endif
         }
         else if (typeof type === 'object') {
@@ -128,7 +127,7 @@ function parseAttributes (attrs, className, propName) {
             }
             // @ifdef EDITOR
             else {
-                Fire.error('请将 %s.%s 的 type 定义成对象的构造函数', className, propName);
+                Fire.error('Please define "type" parameter of %s.%s as the constructor of %s.', className, propName, type);
             }
             // @endif
         }
@@ -137,7 +136,7 @@ function parseAttributes (attrs, className, propName) {
         }
         // @ifdef EDITOR
         else {
-            Fire.error('未能识别 %s.%s 的 type 定义：%s', className, propName, type);
+            Fire.error('Unknown "type" parameter of %s.%s：%s', className, propName, type);
         }
         // @endif
     }
@@ -242,247 +241,3 @@ function parseAttributes (attrs, className, propName) {
 
     return result;
 }
-
-//
-//// drafts
-//
-//var Entity = Fire.Class({
-//
-//    is: 'Fire.Entity',
-//
-//    extends: EventTarget,
-//
-//    constructor: function () {
-//        var name = arguments[0];
-//
-//        this._name = typeof name !== 'undefined' ? name : 'New Entity';
-//        this._objFlags |= Entity._defaultFlags;
-//
-//        if (Fire._isCloning) {
-//            // create by deserializer or instantiating
-//
-//            this._activeInHierarchy = false;
-//        }
-//        else {
-//            // create dynamically
-//
-//            this._activeInHierarchy = true;
-//            // init transform
-//            var transform = new Transform();
-//            transform.entity = this;
-//            this._components = [transform];
-//            this.transform = transform;
-//            // add to scene
-//            if (Engine._scene) {
-//                Engine._scene.appendRoot(this);
-//            }
-//            // invoke callbacks
-//            Engine._renderContext.onRootEntityCreated(this);
-//
-//            // activate componet
-//            transform._onEntityActivated(true);     // 因为是刚刚创建，所以 activeInHierarchy 肯定为 true
-//
-//// @ifdef EDITOR
-//            if (editorCallback.onEntityCreated) {
-//                editorCallback.onEntityCreated(this);
-//            }
-//            if ( editorCallback.onComponentAdded ) {
-//                editorCallback.onComponentAdded(this, transform);
-//            }
-//// @endif
-//        }
-//    },
-//
-//    properties: {
-//
-//        _active: {
-//            default: true,
-//            attributes: [Fire.HideInInspector]
-//        },
-//        _parent: {
-//            default: null,
-//            attributes: [Fire.HideInInspector]
-//        },
-//        _children: {
-//            default: [],
-//            attributes: [Fire.HideInInspector]
-//        },
-//        _components: {
-//            default: null,
-//            attributes: [Fire.HideInInspector]
-//        },
-//        transform: {
-//            default: null,
-//            attributes: [Fire.HideInInspector]
-//        },
-//
-//        name: {
-//            get: function () {
-//                return this._name;
-//            },
-//            set: function (value) {
-//                this._name = value;
-//            // @ifdef EDITOR
-//                if (editorCallback.onEntityRenamed) {
-//                    editorCallback.onEntityRenamed(this);
-//                }
-//            // @endif
-//            }
-//        },
-//        active: {
-//            get: function () {
-//                return this._active;
-//            },
-//            set: function (value) {
-//                // jshint eqeqeq: false
-//                if (this._active != value) {
-//                    // jshint eqeqeq: true
-//                    this._active = value;
-//                    var canActiveInHierarchy = (!this._parent || this._parent._activeInHierarchy);
-//                    if (canActiveInHierarchy) {
-//                        this._onActivatedInHierarchy(value);
-//                    }
-//                }
-//            }
-//        },
-//
-//        /**
-//         * Get the amount of children
-//         * @property {number} Fire.Entity#childCount
-//         */
-//        childCount: {
-//            get: function () {
-//                return this._children.length;
-//            }
-//        },
-//
-//        _onPreDestroy: function () {
-//            var parent = this._parent;
-//            this._objFlags |= Destroying;
-//            var isTopMost = !(parent && (parent._objFlags & Destroying));
-//            if (isTopMost) {
-//                Engine._renderContext.onEntityRemoved(this);
-//    // @ifdef EDITOR
-//                if (editorCallback.onEntityRemoved) {
-//                    editorCallback.onEntityRemoved(this/*, isTopMost*/);
-//                }
-//    // @endif
-//            }
-//            // destroy components
-//            for (var c = 0; c < this._components.length; ++c) {
-//                var component = this._components[c];
-//                // destroy immediate so its _onPreDestroy can be called before
-//                component._destroyImmediate();
-//            }
-//            // remove self
-//            if (parent) {
-//                if (isTopMost) {
-//                    parent._children.splice(parent._children.indexOf(this), 1);
-//                }
-//            }
-//            else {
-//                Engine._scene.removeRoot(this);
-//            }
-//            // destroy children
-//            var children = this._children;
-//            for (var i = 0, len = children.length; i < len; ++i) {
-//                // destroy immediate so its _onPreDestroy can be called before
-//                children[i]._destroyImmediate();
-//            }
-//        }
-//    }
-//});
-//
-//var test = Fire.extend(Fire.Component, function () {
-//    this.test = new Foobar();
-//    this.test.foo = 20;
-//});
-//
-//test.prop('speed', 10, Fire.NonSerialized);
-//test.prop('myEntity', null, Fire.ObjectType(Fire.Entity), Fire.HideInInspector);
-//test.prop('sprites', [], Fire.ObjectType(Fire.SpriteRenderer));
-//test.prop('position', new Fire.Vec2(2, 2), Fire.Watch('customSize_', function (obj, propEL) {
-//    propEL.disabled = !obj.customSize_;
-//}));
-//test.prop('multiText', "Hello World", Fire.MultiText);
-//test.prop('slide', 20, Fire.Range(0, 30));
-//
-//var test = Fire.Class({
-//
-//    extends: Fire.Component,
-//
-//    constructor: function () {
-//        this.test = new Foobar();
-//        this.test.foo = 20;
-//    },
-//
-//    speed: {
-//        default: 10,
-//        attributes: Fire.NonSerialized
-//    },
-//    myEntity: {
-//        default: null,
-//        attributes: [Fire.ObjectType(Fire.Entity), Fire.HideInInspector]
-//    },
-//    sprites: {
-//        default: [],
-//        attributes: Fire.ObjectType(Fire.SpriteRenderer)
-//    },
-//    position: {
-//        default: new Fire.Vec2(2, 2),
-//        attributes: [
-//            Fire.Watch('customSize_', function (obj, propEL) {
-//                propEL.disabled = !obj.customSize_;
-//            })
-//        ]
-//    },
-//    multiText: {
-//        default: "Hello World",
-//        attributes: Fire.MultiText
-//    },
-//    slide: {
-//        default: 20,
-//        attributes: Fire.Range(0, 30)
-//    }
-//});
-//
-//var test = Fire.Class({
-//
-//    extends: Fire.Component,
-//
-//    constructor: function () {
-//        this.test = new Foobar();
-//        this.test.foo = 20;
-//    },
-//
-//    speed: {
-//        default: 10,
-//        serializable: false
-//    },
-//    myEntity: {
-//        default: null,
-//        type: Fire.Entity,
-//        hideInInspector: true
-//    },
-//    sprites: {
-//        default: [],
-//        type: Fire.SpriteRenderer
-//    },
-//    position: {
-//        default: new Fire.Vec2(2, 2),
-//        watch: {
-//            names: 'customSize_',
-//            callback: function (obj, propEL) {
-//                propEL.disabled = !obj.customSize_;
-//            }
-//        }
-//    },
-//    multiText: {
-//        default: "Hello World",
-//        textMode: 'multi'
-//    },
-//    slide: {
-//        default: 20,
-//        range: [0, 30]
-//    }
-//});
