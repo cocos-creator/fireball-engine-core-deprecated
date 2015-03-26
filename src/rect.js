@@ -83,18 +83,40 @@ var Rect = (function () {
                ', ' + this.height.toFixed(2) + ')';
     };
 
+    Object.defineProperty(Rect.prototype, 'xMin', {
+        get: function () { return this.x; },
+        set: function (value) {
+            this.width += this.x - value;
+            this.x = value;
+        }
+    });
+
+    Object.defineProperty(Rect.prototype, 'yMin', {
+        get: function () { return this.y; },
+        set: function (value) {
+            this.height += this.y - value;
+            this.y = value;
+        }
+    });
+
     Object.defineProperty(Rect.prototype, 'xMax', {
-        get: function () { return this.x + this.width; }
+        get: function () { return this.x + this.width; },
+        set: function (value) { this.width = value - this.x; }
     });
 
     Object.defineProperty(Rect.prototype, 'yMax', {
-        get: function () { return this.y + this.height; }
+        get: function () { return this.y + this.height; },
+        set: function (value) { this.height = value - this.y; }
     });
 
     Object.defineProperty(Rect.prototype, 'center', {
         get: function () {
             return new Fire.Vec2( this.x + this.width * 0.5,
                                   this.y + this.height * 0.5 );
+        },
+        set: function (value) {
+            this.x = value.x - this.width * 0.5;
+            this.y = value.y - this.height * 0.5;
         }
     });
 
