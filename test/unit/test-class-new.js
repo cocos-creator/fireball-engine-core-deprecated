@@ -1,6 +1,9 @@
 ﻿largeModule('Class New');
 
 test('test', function () {
+
+    ok(Fire.Class(), 'can define empty class');
+
     var Animal = Fire.Class({
         name: 'Animal',
         properties: {

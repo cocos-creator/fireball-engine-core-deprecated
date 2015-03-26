@@ -439,6 +439,10 @@ Fire.extend = function (className, baseClass, constructor) {
     if (typeof className === 'string') {
         return Fire._doDefine(className, baseClass, constructor);
     }
+    else if (typeof className === 'undefined') {
+        // 未传入任何参数
+        return Fire._doDefine('', baseClass, constructor);
+    }
 // @ifdef DEV
     else if (className) {
         Fire.error('[Fire.extend] unknown typeof first argument');

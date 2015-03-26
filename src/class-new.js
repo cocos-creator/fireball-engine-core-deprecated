@@ -1,5 +1,13 @@
 
 Fire.Class = function (options) {
+    if (arguments.length === 0) {
+        return Fire.define();
+    }
+    if ( !options ) {
+        Fire.error('[Fire.Class] Option must be non-nil');
+        return Fire.define();
+    }
+
     var name = options.name;
     var base = options.extends;
     var ctor = options.hasOwnProperty('constructor') && options.constructor;
