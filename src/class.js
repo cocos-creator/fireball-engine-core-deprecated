@@ -6,11 +6,11 @@
  */
 var _appendProp = function (name/*, isGetter*/) {
     // @ifdef DEV
-    var JsVarReg = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
-    if (!JsVarReg.test(name)) {
-        Fire.error('The property name "' + name + '" is not compliant with JavaScript naming standards');
-        return;
-    }
+    //var JsVarReg = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/;
+    //if (!JsVarReg.test(name)) {
+    //    Fire.error('The property name "' + name + '" is not compliant with JavaScript naming standards');
+    //    return;
+    //}
     // @endif
 
     if (!this.__props__) {
