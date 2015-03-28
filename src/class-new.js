@@ -164,16 +164,19 @@ function parseAttributes (attrs, className, propName) {
     }
 
     applyAttr('rawType', 'string', Fire.RawType);
-    applyAttr('hideInInspector', 'boolean', Fire.HideInInspector);
     applyAttr('editorOnly', 'boolean', Fire.EditorOnly);
     applyAttr('displayName', 'string', Fire.DisplayName);
     applyAttr('multiline', 'boolean', Fire.MultiText);
-    applyAttr('readOnly', 'boolean', Fire.ReadOnly);
+    applyAttr('readonly', 'boolean', Fire.ReadOnly);
     applyAttr('tooltip', 'string', Fire.Tooltip);
 
     if (attrs.serializable === false) {
         result.push(Fire.NonSerialized);
     }
+    if (attrs.visible === false) {
+        result.push(Fire.HideInInspector);
+    }
+
     //if (attrs.custom) {
     //    result.push(Fire.Custom(attrs.custom));
     //}

@@ -151,9 +151,6 @@ var _metaClass = {
         }
         // @endif
 
-        // @ifdef DEV
-        var displayInInspector = true;
-        // @endif
         if (attribute) {
             var AttrArgStart = 2;
             for (var i = AttrArgStart; i < arguments.length; i++) {
@@ -169,9 +166,6 @@ var _metaClass = {
 
                 // @ifdef DEV
                 // check attributes
-                if (attr.hideInInspector) {
-                    displayInInspector = false;
-                }
                 if (attr.serializable === false || attr.editorOnly === true) {
                     Fire.warn('No need to use Fire.NonSerialized or Fire.EditorOnly for the getter of ' +
                         JS.getClassName(this) + '.' + name + ', every getter is actually non-serialized.');
@@ -186,17 +180,10 @@ var _metaClass = {
         Fire.attr(this, name, Fire.NonSerialized);
 
         // @ifdef DEV
-        if (displayInInspector) {
-            _appendProp.call(this, name/*, true*/);
-        }
-        else {
-            var index = this.__props__.indexOf(name);
-            if (index >= 0) {
-                Fire.error(JS.getClassName(this) + '.' + name + ' is already defined!');
-                return this;
-            }
-        }
+        // 不论是否 hide in inspector 都要添加到 props，否则 asset watcher 不能正常工作
+        _appendProp.call(this, name/*, true*/);
         // @endif
+
         Object.defineProperty(this.prototype, name, {
             get: getter,
             configurable: true
