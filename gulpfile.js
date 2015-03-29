@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var del = require('del');
 var rename = require('gulp-rename');
+var header = require('gulp-header');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
 var uglify = require('gulp-uglifyjs');
@@ -170,6 +171,29 @@ gulp.task('test', ['js-min', 'js-dev', 'unit-runner'], function() {
     return gulp.src(['test/unit/**/*.html', '!**/*.dev.*'], { read: false })
                .pipe(qunit({ timeout: timeOutInSeconds }))
                ;
+});
+
+gulp.task('export-api-syntax', function (done) {
+
+    // 默认所有 core 模块都在 Fire 下面
+    var DefaultModuleHeader = "/**\n" +
+                              " * @module Fire\n" +
+                              " * @class Fire\n" +
+                              " * @namespace Fire\n" +
+                              " */\n";
+    var dest = '../../utils/api/core';
+
+    del(dest + '/**/*', { force: true }, function (err) {
+        if (err) {
+            done(err);
+            return;
+        }
+
+        gulp.src(paths.src)
+            .pipe(header(DefaultModuleHeader))
+            .pipe(gulp.dest(dest))
+            .on('end', done);
+    });
 });
 
 /////////////////////////////////////////////////////////////////////////////
