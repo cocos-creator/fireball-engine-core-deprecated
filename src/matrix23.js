@@ -5,18 +5,62 @@
  * @constructor
  */
 var Matrix23 = function () {
+    /**
+     * @property a
+     * @type {number}
+     * @default 1
+     */
     this.a = 1;
+
+    /**
+     * @property b
+     * @type {number}
+     * @default 0
+     */
     this.b = 0;
+
+    /**
+     * @property c
+     * @type {number}
+     * @default 0
+     */
     this.c = 0;
+
+    /**
+     * @property d
+     * @type {number}
+     * @default 1
+     */
     this.d = 1;
+
+    /**
+     * @property tx
+     * @type {number}
+     * @default 0
+     */
     this.tx = 0;
+
+    /**
+     * @property ty
+     * @type {number}
+     * @default 0
+     */
     this.ty = 0;
 };
 JS.setClassName('Fire.Matrix23', Matrix23);
 Fire.Matrix23 = Matrix23;
 
+/**
+ * @property identity
+ * @type {Matrix23}
+ * @static
+ */
 Matrix23.identity = new Matrix23();
 
+/**
+ * @method clone
+ * @return {Matrix23}
+ */
 Matrix23.prototype.clone = function () {
     var mat = new Matrix23();
     mat.a = this.a;
@@ -28,6 +72,12 @@ Matrix23.prototype.clone = function () {
     return mat;
 };
 
+/**
+ * @method clone
+ * @param {Matrix23}
+ * @return {Matrix23}
+ * @chainable
+ */
 Matrix23.prototype.set = function (other) {
     this.a = other.a;
     this.b = other.b;
@@ -35,8 +85,14 @@ Matrix23.prototype.set = function (other) {
     this.d = other.d;
     this.tx = other.tx;
     this.ty = other.ty;
+    return this;
 };
 
+/**
+ * @method equals
+ * @param {Matrix23}
+ * @return {boolean}
+ */
 Matrix23.prototype.equals = function (other) {
     return this.a === other.a &&
            this.b === other.b &&
@@ -46,12 +102,22 @@ Matrix23.prototype.equals = function (other) {
            this.ty === other.ty;
 };
 
+/**
+ * @method toString
+ * @return {string}
+ */
 Matrix23.prototype.toString = function () {
     return '|' + this.a.toFixed(2) + ' ' + this.c.toFixed(2) + ' ' + this.tx.toFixed(2) +
         '|\n|' + this.b.toFixed(2) + ' ' + this.d.toFixed(2) + ' ' + this.ty.toFixed(2) +
         '|\n|0.00 0.00 1.00|';
 };
 
+/**
+ * Reset this matrix to identity.
+ * @method identity
+ * @return {Matrix23}
+ * @chainable
+ */
 Matrix23.prototype.identity = function () {
     this.a = 1;
     this.b = 0;
@@ -62,6 +128,13 @@ Matrix23.prototype.identity = function () {
     return this;
 };
 
+/**
+ * Prepend this matrix.
+ * @method prepend
+ * @param {Matrix23} other
+ * @return {Matrix23}
+ * @chainable
+ */
 Matrix23.prototype.prepend = function (other) {
     var a = other.a;
     var b = other.b;
@@ -85,6 +158,12 @@ Matrix23.prototype.prepend = function (other) {
     return this;
 };
 
+/**
+ * Invert this matrix.
+ * @method invert
+ * @return {Matrix23}
+ * @chainable
+ */
 Matrix23.prototype.invert = function () {
     var a = this.a;
     var b = this.b;
@@ -101,6 +180,13 @@ Matrix23.prototype.invert = function () {
     return this;
 };
 
+/**
+ * Apply transforms to given vector
+ * @method transformPoint
+ * @param {Vec2} vector
+ * @param {Vec2} [out] - optional, the receiving vector
+ * @return {Vec2} the result
+ */
 Matrix23.prototype.transformPoint = function (vector, out) {
     out = out || new Vec2();
     var x = vector.x;   // vector may === out
@@ -116,7 +202,13 @@ Matrix23.prototype.transformPoint = function (vector, out) {
 //    return out;
 //};
 
-// negative scaling (mirroring) is not supported
+/**
+ * Get scaling of this matrix.
+ * - NOTE: negative scaling (mirroring) is not supported
+ * @method getScale
+ * @param {Vec2} [out] - optional, the receiving vector
+ * @return {Vec2} the result
+ */
 Matrix23.prototype.getScale = function (out) {
     out = out || new Vec2();
     out.x = Math.sqrt(this.a * this.a + this.b * this.b);
@@ -124,6 +216,13 @@ Matrix23.prototype.getScale = function (out) {
     return out;
 };
 
+/**
+ * Set scaling of this matrix.
+ * @method setScale
+ * @param {Vec2} scale
+ * @return {Matrix23}
+ * @chainable
+ */
 Matrix23.prototype.setScale = function (scale) {
     var s = this.getScale();
     var x = scale.x / s.x;
@@ -135,6 +234,11 @@ Matrix23.prototype.setScale = function (scale) {
     return this;
 };
 
+/**
+ * Get rotation of this matrix.
+ * @method getRotation
+ * @return {number}
+ */
 Matrix23.prototype.getRotation = function () {
     var hasSkew = this.b / this.a !== -this.c / this.d;
     if ( !hasSkew ) {
@@ -145,6 +249,11 @@ Matrix23.prototype.getRotation = function () {
     }
 };
 
+/**
+ * Get translation of this matrix.
+ * @method getTranslation
+ * @return {Vec2}
+ */
 Matrix23.prototype.getTranslation = function (out) {
     out = out || new Vec2();
     out.x = this.tx;
@@ -152,7 +261,13 @@ Matrix23.prototype.getTranslation = function (out) {
     return out;
 };
 
-// rotate counterclockwise
+/**
+ * Rotate this matrix by counterclockwise.
+ * @method rotate
+ * @param {number} radians
+ * @return {Matrix23}
+ * @chainable
+ */
 Matrix23.prototype.rotate = function (radians) {
     var sin = Math.sin(radians);
     var cos = Math.cos(radians);

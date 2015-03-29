@@ -1,11 +1,14 @@
 var Rect = (function () {
     /**
+     * A 2D rectangle defined by x, y position and width, height.
+     * - see {% crosslink Fire.rect Fire.rect %}
+     *
      * @class Rect
      * @constructor
-     * @param {number} x
-     * @param {number} y
-     * @param {number} w
-     * @param {number} h
+     * @param {number} [x=0]
+     * @param {number} [y=0]
+     * @param {number} [w=0]
+     * @param {number} [h=0]
      */
     function Rect( x, y, w, h ) {
         this.x = typeof x === 'number' ? x : 0.0;
@@ -16,6 +19,8 @@ var Rect = (function () {
     JS.setClassName('Fire.Rect', Rect);
 
     /**
+     * Creates a rectangle from two coordinate values.
+     * @static
      * @method fromMinMax
      * @param {Vec2} v1
      * @param {Vec2} v2
@@ -31,6 +36,8 @@ var Rect = (function () {
     };
 
     /**
+     * Creates a rectangle from left-top coordinate value and size.
+     * @static
      * @method fromVec2
      * @param {Vec2} leftTop
      * @param {Vec2} size
@@ -41,7 +48,8 @@ var Rect = (function () {
     };
 
     /**
-     * Check if rect contains
+     * Checks if rect contains
+     * @static
      * @method contain
      * @param a {Rect} Rect a
      * @param b {Rect} Rect b
@@ -67,10 +75,19 @@ var Rect = (function () {
         return 0;
     };
 
+    /**
+     * @method clone
+     * @returns {Rect}
+     */
     Rect.prototype.clone = function () {
         return new Rect(this.x, this.y, this.width, this.height);
     };
 
+    /**
+     * @method equals
+     * @param {Rect} other
+     * @returns {boolean}
+     */
     Rect.prototype.equals = function (other) {
         return this.x === other.x &&
                this.y === other.y &&
@@ -78,11 +95,19 @@ var Rect = (function () {
                this.height === other.height;
     };
 
+    /**
+     * @method toString
+     * @returns {string}
+     */
     Rect.prototype.toString = function () {
         return '(' + this.x.toFixed(2) + ', ' + this.y.toFixed(2) + ', ' + this.width.toFixed(2) +
                ', ' + this.height.toFixed(2) + ')';
     };
 
+    /**
+     * @property xMin
+     * @type number
+     */
     Object.defineProperty(Rect.prototype, 'xMin', {
         get: function () { return this.x; },
         set: function (value) {
@@ -91,6 +116,10 @@ var Rect = (function () {
         }
     });
 
+    /**
+     * @property yMin
+     * @type number
+     */
     Object.defineProperty(Rect.prototype, 'yMin', {
         get: function () { return this.y; },
         set: function (value) {
@@ -99,16 +128,28 @@ var Rect = (function () {
         }
     });
 
+    /**
+     * @property xMax
+     * @type number
+     */
     Object.defineProperty(Rect.prototype, 'xMax', {
         get: function () { return this.x + this.width; },
         set: function (value) { this.width = value - this.x; }
     });
 
+    /**
+     * @property yMax
+     * @type number
+     */
     Object.defineProperty(Rect.prototype, 'yMax', {
         get: function () { return this.y + this.height; },
         set: function (value) { this.height = value - this.y; }
     });
 
+    /**
+     * @property center
+     * @type number
+     */
     Object.defineProperty(Rect.prototype, 'center', {
         get: function () {
             return new Fire.Vec2( this.x + this.width * 0.5,
@@ -120,10 +161,21 @@ var Rect = (function () {
         }
     });
 
+    /**
+     * @method intersects
+     * @param {Rect} rect
+     * @type {boolean}
+     */
     Rect.prototype.intersects = function ( rect ) {
         return Fire.Intersection.rectRect( this, rect );
     };
 
+    /**
+     * Returns true if the point inside this rectangle.
+     * @method contains
+     * @param {Vec2} point
+     * @type {boolean}
+     */
     Rect.prototype.contains = function ( point ) {
         if ( this.x <= point.x &&
              this.x + this.width >= point.x &&
@@ -135,6 +187,12 @@ var Rect = (function () {
         return false;
     };
 
+    /**
+     * Returns true if the other rect totally inside this rectangle.
+     * @method containsRect
+     * @param {Rect} rect
+     * @type {boolean}
+     */
     Rect.prototype.containsRect = function ( rect ) {
         if ( this.x <= rect.x &&
              this.x + this.width >= rect.x + rect.width &&
@@ -152,8 +210,11 @@ var Rect = (function () {
 Fire.Rect = Rect;
 
 /**
+ * @class Fire
+ */
+/**
  * The convenience method to create a new Rect
- * @method Fire.rect
+ * @method rect
  * @param {number} [x=0]
  * @param {number} [y=0]
  * @param {number} [w=0]

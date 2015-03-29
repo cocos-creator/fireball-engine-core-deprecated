@@ -1,4 +1,5 @@
 /**
+ * The base class of most of all the objects in Fireball.
  * @class FObject
  * @constructor
  */
@@ -7,23 +8,23 @@ FObject = (function () {
     // constructor
 
     function FObject () {
+
+        /**
+         * @property _name
+         * @type string
+         * @private
+         */
         this._name = '';
+
+        /**
+         * @property _objFlags
+         * @type number
+         * @private
+         */
         this._objFlags = 0;
     }
 
-    // TODO: 统一FireClass和FObject
     Fire._fastDefine('Fire.FObject', FObject, ['_name', '_objFlags']);
-
-    // static
-
-    /**
-     * Checks whether the object is not destroyed
-     * @method Fire.isValid
-     * @return {boolean} whether it is not destroyed
-     */
-    Fire.isValid = function (object) {
-        return !!object && !(object._objFlags & Destroyed);
-    };
 
     // internal static
 
@@ -54,7 +55,7 @@ FObject = (function () {
 
     /**
      * @property name
-     * @type boolean
+     * @type string
      */
     Object.defineProperty(FObject.prototype, 'name', {
         get: function () {
@@ -66,6 +67,12 @@ FObject = (function () {
         enumerable: false
     });
 
+    /**
+     * Indicates whether the object is not yet destroyed
+     * @property isValid
+     * @type boolean
+     * @default true
+     */
     Object.defineProperty(FObject.prototype, 'isValid', {
         get: function () {
             return !(this._objFlags & Destroyed);
@@ -74,7 +81,7 @@ FObject = (function () {
 
     /**
      * Destroy this FObject, and release all its own references to other resources.
-     * After destory, this FObject is not usable any more.
+     * - After destory, this FObject is not usable any more.
      * You can use Fire.isValid(obj) (or obj.isValid if obj is non-nil) to check whether the object is destroyed before accessing it.
      * @method destroy
      * @return {boolean} whether it is the first time the destroy being called
@@ -82,7 +89,7 @@ FObject = (function () {
     FObject.prototype.destroy = function () {
         if (this._objFlags & Destroyed) {
             Fire.error('object already destroyed');
-            return;
+            return false;
         }
         if (this._objFlags & ToDestroy) {
             return false;
@@ -94,8 +101,10 @@ FObject = (function () {
 
     /**
      * Clear all references in the instance.
-     * NOTE: this method will not clear the getter or setter functions which defined in the INSTANCE of FObject.
+     * - NOTE: this method will not clear the getter or setter functions which defined in the INSTANCE of FObject.
      *       You can override the _destruct method if you need.
+     * @method _destruct
+     * @private
      */
     FObject.prototype._destruct = function () {
         // 允许重载destroy
@@ -120,6 +129,10 @@ FObject = (function () {
         }
     };
 
+    /**
+     * @method _onPreDestroy
+     * @private
+     */
     FObject.prototype._onPreDestroy = null;
 
     FObject.prototype._destroyImmediate = function () {
@@ -139,5 +152,18 @@ FObject = (function () {
 
     return FObject;
 })();
+
+/**
+ * @class Fire
+ */
+/**
+ * Checks whether the object is non-nil and not yet destroyed
+ * @method isValid
+ * @param {FObject}
+ * @return {boolean} whether is valid
+ */
+Fire.isValid = function (object) {
+    return !!object && !(object._objFlags & Destroyed);
+};
 
 Fire.FObject = FObject;

@@ -1,14 +1,8 @@
 /**
- * @module Fire
- * @class Fire
- * @static
- */
-
-/**
  * @method padLeft
  * @param {string} text
  * @param {number} width
- * @param {string} ch
+ * @param {string} ch - the character used to pad
  * @return {string}
  */
 Fire.padLeft = function ( text, width, ch ) {
@@ -22,7 +16,7 @@ Fire.padLeft = function ( text, width, ch ) {
 
 /**
  * @method fitRatio
- * @param {number} ratio (w/h)
+ * @param {number} ratio - width / height
  * @param {number} destWidth
  * @param {number} destHeight
  * @return {array}
@@ -40,6 +34,14 @@ Fire.fitRatio = function ( ratio, destWidth, destHeight ) {
     return Fire.fitSize( srcWidth, srcHeight, destWidth, destHeight );
 };
 
+/**
+ * @method fitSize
+ * @param {number} srcWidth
+ * @param {number} srcHeight
+ * @param {number} destWidth
+ * @param {number} destHeight
+ * @return {number[]} - [width, height]
+ */
 Fire.fitSize = function ( srcWidth, srcHeight, destWidth, destHeight ) {
     var width, height;
     if ( srcWidth > destWidth &&
@@ -69,7 +71,12 @@ Fire.fitSize = function ( srcWidth, srcHeight, destWidth, destHeight ) {
     return [width,height];
 };
 
-//
+/**
+ * @method getEnumList
+ * @param {object} enumDef - the enum type defined from Fire.defineEnum
+ * @return {object[]}
+ * @private
+ */
 Fire.getEnumList = function (enumDef) {
     if ( enumDef.__enums__ !== undefined )
         return enumDef.__enums__;
@@ -90,7 +97,13 @@ Fire.getEnumList = function (enumDef) {
     return enums;
 };
 
-//
+/**
+ * @method getVarFrom
+ * @param {object} obj
+ * @param {string} text
+ * @return {any}
+ * @private
+ */
 Fire.getVarFrom = function ( obj, text ) {
     var res = text.split('.');
     var curObj = obj;
@@ -103,7 +116,13 @@ Fire.getVarFrom = function ( obj, text ) {
     return curObj;
 };
 
-// r, g, b must be [0.0, 1.0]
+/**
+ * @method rgb2hsv
+ * @param {number} r - red, must be [0.0, 1.0]
+ * @param {number} g - red, must be [0.0, 1.0]
+ * @param {number} b - red, must be [0.0, 1.0]
+ * @return {object} - {h: number, s: number, v: number}
+ */
 Fire.rgb2hsv = function ( r, g, b ) {
     var hsv = { h: 0, s: 0, v: 0 };
     var max = Math.max(r,g,b);
@@ -123,7 +142,13 @@ Fire.rgb2hsv = function ( r, g, b ) {
     return hsv;
 };
 
-// the return rgb will be in [0.0, 1.0]
+/**
+ * hsv2rgb
+ * @param {number} h
+ * @param {number} s
+ * @param {number} v
+ * @return {object} - {r: number, g: number, b: number}}, rgb will be in [0.0, 1.0]
+ */
 Fire.hsv2rgb = function ( h, s, v ) {
     var rgb = { r: 0, g: 0, b: 0 };
     if (s === 0) {

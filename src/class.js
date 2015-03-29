@@ -1,8 +1,6 @@
 ﻿/**
  * both getter and prop must register the name into __props__ array
- * @method _appendProp
  * @param {string} name - prop name
- * @private
  */
 var _appendProp = function (name/*, isGetter*/) {
     // @ifdef DEV
@@ -31,15 +29,10 @@ var _appendProp = function (name/*, isGetter*/) {
 /**
  * the metaclass of the "fire class" created by Fire.define, all its static members
  * will inherited by fire class.
- * @property _metaClass
- * @type object
  */
 var _metaClass = {
 
-    /**
-     * @property {string[]} class.__props__
-     * @private
-     */
+    // string[]
     __props__: null,
 
     /**
@@ -54,6 +47,7 @@ var _metaClass = {
      * @param {*} defaultValue - the default value
      * @param {...object} attribute - additional property attributes, any number of attributes can be added
      * @return {function} the class itself
+     * @private
      */
     prop: function (name, defaultValue, attribute) {
         'use strict';
@@ -139,6 +133,7 @@ var _metaClass = {
      * @param {function} getter - the getter function which returns the real property
      * @param {...object} attribute - additional property attributes, any number of attributes can be added
      * @return {function} the class itself
+     * @private
      */
     get: function (name, getter, attribute) {
         'use strict';
@@ -202,6 +197,7 @@ var _metaClass = {
      * @param {string} name - the setter property
      * @param {function} setter - the setter function
      * @return {function} the class itself
+     * @private
      */
     set: function (name, setter) {
         // @ifdef DEV
@@ -237,7 +233,6 @@ var _metaClass = {
         // ================================================================
         // @ifdef EDITOR
         Fire.attr(this, name, { hasSetter: true }); // 方便 editor 做判断
-        Fire.attr(this, name, { originalSetter: setter }); // 方便 editor 重载 setter
         // @endif
         return this;
     },
@@ -253,6 +248,7 @@ var _metaClass = {
      * @param {function} setter - the setter function
      * @param {...object} attribute - additional property attributes, any number of attributes can be added
      * @return {function} the class itself
+     * @private
      */
     getset: function (name, getter, setter, attribute) {
         'use strict';
@@ -296,12 +292,11 @@ var _createInstanceProps = function (instance, itsClass) {
 };
 
 /**
- * Checks whether the constructor is created by Fire.define
+ * Checks whether the constructor is created by Fire.define or Fire.Class
  *
  * @method _isFireClass
  * @param {function} constructor
  * @return {boolean}
- * @private
  */
 Fire._isFireClass = function (constructor) {
     return !!constructor && (constructor.prop === _metaClass.prop);
@@ -394,6 +389,7 @@ Fire._doDefine = function (className, baseClass, constructor) {
  * @param {string} [className] - the name of class that is used to deserialize this class
  * @param {function} [constructor] - a constructor function that is used to instantiate this class
  * @return {function} the constructor of newly defined class
+ * @private
  */
 Fire.define = function (className, constructor) {
     return Fire.extend(className, null, constructor);
@@ -401,7 +397,6 @@ Fire.define = function (className, constructor) {
 
 /**
  * Creates a sub FireClass based on the specified baseClass parameter.
- * See also {% crosslink extend Fire.JS.extend %}.
  *
  * @method extend
  * @param {string} [className] - the name of class that is used to deserialize this class
@@ -410,6 +405,7 @@ Fire.define = function (className, constructor) {
  * @param {function} [constructor] - a constructor function that is used to instantiate this class,
  *                                   if not supplied, the constructor of baseClass will be called automatically.
  * @return {function} the constructor of newly defined class
+ * @private
  */
 Fire.extend = function (className, baseClass, constructor) {
     if (typeof className === 'function') {
@@ -523,6 +519,10 @@ function _nicifyFireClass (fireClass, className) {
 
 /**
  * Specially optimized define function only for internal base classes
+ *
+ * @param {string} className
+ * @param {function} constructor
+ * @param {string[]} serializableFields
  * @private
  */
 Fire._fastDefine = function (className, constructor, serializableFields) {

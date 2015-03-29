@@ -1,7 +1,18 @@
-var Asset = (function () {
+/**
+ * Base class for asset handling.
+ * @class Asset
+ * @constructor
+ */
+var Asset = Fire.Class({
+    name: 'Fire.Asset', extends: Fire.HashObject,
 
-    var Asset = Fire.extend('Fire.Asset', Fire.HashObject, function () {
-        // define uuid, uuid can not destroy
+    constructor: function () {
+        /**
+         * @property _uuid
+         * @type string
+         * @private
+         */
+        // define uuid, uuid can not clear while destroying
         Object.defineProperty(this, '_uuid', {
             value: '',
             writable: true,
@@ -9,10 +20,21 @@ var Asset = (function () {
                                 // so the _uuid can not display in console.
         });
 
+        /**
+         * @property dirty
+         * @type boolean
+         * @private
+         */
         this.dirty = false;
-    });
+    },
 
-    Asset.prototype._setRawExtname = function (extname) {
+    /**
+     * Set raw extname for this asset, this method is used for plugin only.
+     * @method _setRawExtname
+     * @param {string} extname
+     * @private
+     */
+    _setRawExtname: function (extname) {
         if (this.hasOwnProperty('_rawext')) {
             if (extname.charAt(0) === '.') {
                 extname = extname.substring(1);
@@ -22,9 +44,7 @@ var Asset = (function () {
         else {
             Fire.error('Have not defined any RawTypes yet, no need to set raw file\'s extname.');
         }
-    };
-
-    return Asset;
-})();
+    }
+});
 
 Fire.Asset = Asset;

@@ -1,13 +1,16 @@
 ﻿/**
- * Instantiate 时，对于不可序列化的字段(包含function和dom)，直接设为 null。
+ * !#en Clones the object original and returns the clone.
+ * - See [Clone exists Entity](http://docs.fireball-x.com/en/scripting/create-destroy-entities/#instantiate)
+ *
+ * !#zh 复制给定的对象
+ * - 详细用法可参考[复制已有Entity](http://docs.fireball-x.com/zh/scripting/create-destroy-entities/#instantiate)
+ * - Instantiate 时，对于不可序列化的字段(包含function和dom)，直接设为 null。
  * 对可以被序列化的字段则统一进行拷贝，不考虑引用是否该和现有场景共享，但能保证实例化后的对象间能共享一份引用。
  * 对于 Asset 永远只拷贝引用。对于 Entity / Component 等 Scene Object，如果对方也会被一起 Instantiate，则重定向到新的引用，否则设置为原来的引用。
  *
- * 另规定：B和C均由A实例化而来，则BC相等。A实例化出B，B再实例化出C的话，则BC相等。
- */
-
-/**
- * @param {object} original
+ * @method instantiate
+ * @param {object} original - An existing object that you want to make a copy of.
+ * @return {object} the newly instantiated object
  */
 Fire.instantiate = function (original) {
     if (typeof original !== 'object' || Array.isArray(original)) {
@@ -176,6 +179,11 @@ Fire._doInstantiate = (function () {
 })();
 
 /**
- * @property {boolean} Fire._isCloning
+ * @class Fire
+ */
+/**
+ * @property _isCloning
+ * @type {boolean}
+ * @private
  */
 Fire._isCloning = false;

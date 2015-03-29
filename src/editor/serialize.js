@@ -331,6 +331,7 @@ var _Serializer = (function () {
 
 /**
  * Serialize Fire.Asset to a json string
+ * @method serialize
  * @param {Fire.Asset} obj - The object to serialize
  * @param {object} [options=null]
  * @return {string|object} The json string to represent the object or json object if dontStringify is true
@@ -360,6 +361,9 @@ Fire.serialize = function (obj, options) {
 
 /**
  * Create a pseudo object which will be force serialized as a reference to any asset by specified uuid.
+ * @method serialize.asAsset
+ * @param {string} uuid
+ * @return {Asset}
  */
 Fire.serialize.asAsset = function (uuid) {
     if ( !uuid ) {
@@ -370,6 +374,12 @@ Fire.serialize.asAsset = function (uuid) {
     return pseudoAsset;
 };
 
+/**
+ * Set the asset's name directly in JSON object
+ * @method serialize.setName
+ * @param {object} jsonObj
+ * @param {string} name
+ */
 Fire.serialize.setName = function (jsonObj, name) {
     if ( Array.isArray(jsonObj) ) {
         jsonObj[0]._name = name;

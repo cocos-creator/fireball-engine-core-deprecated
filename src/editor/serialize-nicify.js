@@ -1,7 +1,4 @@
-﻿/**
- * @class RefInfos
- */
-var RefInfos = function () {
+﻿var RefInfos = function () {
     // id所在的对象列表
     this.objList = [];
     // 关键字列表

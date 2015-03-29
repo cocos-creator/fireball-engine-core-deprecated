@@ -179,7 +179,6 @@ gulp.task('export-api-syntax', function (done) {
     var DefaultModuleHeader = "/**\n" +
                               " * @module Fire\n" +
                               " * @class Fire\n" +
-                              " * @namespace Fire\n" +
                               " */\n";
     var dest = '../../utils/api/core';
 

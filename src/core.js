@@ -1,12 +1,8 @@
+
 /**
- * !#en Get property descriptor
- * descriptor is blah blah
- * !#zh 获取 property 的描述物体
- * 描述物体是这样的
- * @method _getPropertyDescriptor
- * @param {object} obj - !#en !#zh 获取属性的对象
+ * @param {object} obj
  * @param {string} name
- * @return {Object}
+ * @return {object}
  */
 function _getPropertyDescriptor(obj, name) {
     if (obj) {
@@ -20,13 +16,18 @@ function _copyprop(name, source, target) {
     Object.defineProperty(target, name, pd);
 }
 
+/**
+ * provides some JavaScript utilities
+ * @class JS
+ * @static
+ */
 var JS = Fire.JS = {
 
     /**
      * copy all properties not defined in obj from arguments[1...n]
      * @method addon
      * @param {object} obj object to extend its properties
-     * @param {object} sourceObj source object to copy properties from
+     * @param {object} ...sourceObj source object to copy properties from
      * @return {object} the result obj
      */
     addon: function (obj) {
@@ -47,7 +48,7 @@ var JS = Fire.JS = {
      * copy all properties from arguments[1...n] to obj
      * @method mixin
      * @param {object} obj
-     * @param {object} source
+     * @param {object} ...sourceObj
      * @return {object} the result obj
      */
     mixin: function (obj) {
@@ -70,8 +71,8 @@ var JS = Fire.JS = {
 
     /**
      * Derive the class from the supplied base class.
-     * Both classes are just native javascript constructors, not created by Fire.define, so
-     * usually you will want to inherit using {% crosslink Fire.define define %} instead.
+     * Both classes are just native javascript constructors, not created by Fire.Class, so
+     * usually you will want to inherit using {% crosslink Fire.Class Fire.Class %} instead.
      *
      * @method extend
      * @param {function} cls
@@ -96,6 +97,11 @@ var JS = Fire.JS = {
         return cls;
     },
 
+    /**
+     * Removes all enumerable properties from object
+     * @method clear
+     * @param {any} obj
+     */
     clear: function (obj) {
         var keys = Object.keys(obj);
         for (var i = 0; i < keys.length; i++) {
@@ -184,13 +190,14 @@ Fire.unregisterClass to remove the id of unused class';
      * @method _setClassId
      * @param {string} classId
      * @param {function} constructor
+     * @private
      */
     JS._setClassId = getRegister('__cid__', _idToClass);
 
     var doSetClassName = getRegister('__classname__', _nameToClass);
 
     /**
-     * Register the class by specified name
+     * Register the class by specified name manually
      * @method setClassName
      * @param {string} className
      * @param {function} constructor
@@ -204,12 +211,13 @@ Fire.unregisterClass to remove the id of unused class';
     };
 
     /**
-     * If you dont need a class (which defined by Fire.define or Fire.setClassName) anymore,
+     * Unregister a class from fireball.
+     * - If you dont need a class (which defined by Fire.define or Fire.setClassName) anymore,
      * You should unregister the class so that Fireball will not keep its reference anymore.
      * Please note that its still your responsibility to free other references to the class.
      *
      * @method unregisterClass
-     * @param {function} [constructor] - the class you will want to unregister, any number of classes can be added
+     * @param {function} ...constructor - the class you will want to unregister, any number of classes can be added
      */
     JS.unregisterClass = function (constructor) {
         'use strict';
@@ -231,6 +239,7 @@ Fire.unregisterClass to remove the id of unused class';
      * @method _getClassById
      * @param {string} classId
      * @return {function} constructor
+     * @private
      */
     JS._getClassById = function (classId) {
         var cls = _idToClass[classId];
@@ -260,6 +269,7 @@ Fire.unregisterClass to remove the id of unused class';
      * @method _getClassId
      * @param {object|function} obj - instance or constructor
      * @return {string}
+     * @private
      */
     JS._getClassId = function (obj) {
         if (typeof obj === 'function' && obj.prototype.__cid__) {
@@ -309,15 +319,53 @@ Fire.unregisterClass to remove the id of unused class';
 
 // logs
 
+/**
+ * @module Fire
+ * @class Fire
+ */
+
+/**
+ * Outputs a message to the Fireball Console (editor) or Web Console (runtime).
+ * @method log
+ * @param {any|string} obj - A JavaScript string containing zero or more substitution strings.
+ * @param {any} ...subst - JavaScript objects with which to replace substitution strings within msg. This gives you additional control over the format of the output.
+ */
 Fire.log = function () {
     console.log.apply(console, arguments);
 };
+
+/**
+ * Outputs an informational message to the Fireball Console (editor) or Web Console (runtime).
+ * - In Fireball, info is blue.
+ * - In Firefox and Chrome, a small "i" icon is displayed next to these items in the Web Console's log.
+ * @method info
+ * @param {any|string} obj - A JavaScript string containing zero or more substitution strings.
+ * @param {any} ...subst - JavaScript objects with which to replace substitution strings within msg. This gives you additional control over the format of the output.
+ */
 Fire.info = function () {
     (console.info || console.log).apply(console, arguments);
 };
+
+/**
+ * Outputs a warning message to the Fireball Console (editor) or Web Console (runtime).
+ * - In Fireball, warning is yellow.
+ * - In Chrome, warning have a yellow warning icon with the message text.
+ * @method warn
+ * @param {any|string} obj - A JavaScript string containing zero or more substitution strings.
+ * @param {any} ...subst - JavaScript objects with which to replace substitution strings within msg. This gives you additional control over the format of the output.
+ */
 Fire.warn = function () {
     console.warn.apply(console, arguments);
 };
+
+/**
+ * Outputs an error message to the Fireball Console (editor) or Web Console (runtime).
+ * - In Fireball, error is red.
+ * - In Chrome, error have a red icon along with red message text.
+ * @method error
+ * @param {any|string} obj - A JavaScript string containing zero or more substitution strings.
+ * @param {any} ...subst - JavaScript objects with which to replace substitution strings within msg. This gives you additional control over the format of the output.
+ */
 if (console.error.bind) {
     // error会dump call stack，用bind可以避免dump Fire.error自己。
     Fire.error = console.error.bind(console);
@@ -330,6 +378,37 @@ else {
 
 // enum
 
+/**
+ * Define an enum type.
+ * @method defineEnum
+ * @param {object} obj - a JavaScript literal object containing enum names and values
+ * @return {object} the defined enum type
+ *
+ * @example
+ ```js
+Texture.WrapMode = Fire.defineEnum({
+    Repeat: -1,
+    Clamp: -1
+});
+// Texture.WrapMode.Repeat == 0
+// Texture.WrapMode.Clamp == 1
+// Texture.WrapMode[0] == "Repeat"
+// Texture.WrapMode[1] == "Clamp"
+
+var FlagType = Fire.defineEnum({
+    Flag1: 1,
+    Flag2: 2,
+    Flag3: 4,
+    Flag4: 8,
+});
+var AtlasSizeList = Fire.defineEnum({
+    128: 128,
+    256: 256,
+    512: 512,
+    1024: 1024,
+});
+ ```
+ */
 Fire.defineEnum = function (obj) {
     var enumType = {};
     Object.defineProperty(enumType, '__enums__', {

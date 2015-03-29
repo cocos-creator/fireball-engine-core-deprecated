@@ -5,6 +5,14 @@
 Fire.Intersection = (function () {
     var Intersection = {};
 
+    /**
+     * @method lineLine
+     * @param {Vec2} a1
+     * @param {Vec2} a2
+     * @param {Vec2} b1
+     * @param {Vec2} b2
+     * @return {boolean}
+     */
     function _lineLine ( a1, a2, b1, b2 ) {
         var result;
 
@@ -24,16 +32,15 @@ Fire.Intersection = (function () {
         return false;
     }
 
-    /**
-     * @method lineLine
-     * @param {Fire.Vec2} a1
-     * @param {Fire.Vec2} a2
-     * @param {Fire.Vec2} b1
-     * @param {Fire.Vec2} b2
-     * @return {boolean}
-     */
     Intersection.lineLine = _lineLine;
 
+    /**
+     * @method lineRect
+     * @param {Vec2} a1
+     * @param {Vec2} a2
+     * @param {Vec2} b
+     * @return {boolean}
+     */
     function _lineRect ( a1, a2, b ) {
         var r0 = new Fire.Vec2( b.x, b.y );
         var r1 = new Fire.Vec2( b.x, b.yMax );
@@ -55,15 +62,15 @@ Fire.Intersection = (function () {
         return false;
     }
 
-    /**
-     * @method lineRect
-     * @param {Fire.Vec2} a1
-     * @param {Fire.Vec2} a2
-     * @param {Fire.Vec2} b
-     * @return {boolean}
-     */
     Intersection.lineRect = _lineRect;
 
+    /**
+     * @method linePolygon
+     * @param {Vec2} a1
+     * @param {Vec2} a2
+     * @param {Polygon} b
+     * @return {boolean}
+     */
     function _linePolygon ( a1, a2, b ) {
         var length = b.points.length;
 
@@ -79,6 +86,12 @@ Fire.Intersection = (function () {
     }
     Intersection.linePolygon = _linePolygon;
 
+    /**
+     * @method rectRect
+     * @param {Fire.Rect} a
+     * @param {Fire.Rect} b
+     * @return {boolean}
+     */
     function _rectRect ( a, b ) {
         var a_min_x = a.x;
         var a_min_y = a.y;
@@ -98,6 +111,12 @@ Fire.Intersection = (function () {
     }
     Intersection.rectRect = _rectRect;
 
+    /**
+     * @method rectPolygon
+     * @param {Fire.Rect} a
+     * @param {Fire.Polygon} b
+     * @return {boolean}
+     */
     function _rectPolygon ( a, b ) {
         var i;
         var r0 = new Fire.Vec2( a.x, a.y );
@@ -141,6 +160,12 @@ Fire.Intersection = (function () {
     }
     Intersection.rectPolygon = _rectPolygon;
 
+    /**
+     * @method polygonPolygon
+     * @param {Fire.Polygon} a
+     * @param {Fire.Polygon} b
+     * @return {boolean}
+     */
     function _polygonPolygon ( a, b ) {
         var i;
 

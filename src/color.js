@@ -1,27 +1,16 @@
 var Color = (function () {
 
-    var DefaultColors = {
-        // color: [r, g, b, a]
-        white:      [1, 1, 1, 1],
-        black:      [0, 0, 0, 1],
-        transparent:[0, 0, 0, 0],
-        gray:       [0.5, 0.5, 0.5],
-        red:        [1, 0, 0],
-        green:      [0, 1, 0],
-        blue:       [0, 0, 1],
-        yellow:     [1, 235/255, 4/255],
-        cyan:       [0, 1, 1],
-        magenta:    [1, 0, 1]
-    };
-
     /**
-     * A class represents RGBA color
+     * Representation of RGBA colors.
+     * - Each color component is a floating point value with a range from 0 to 1.
+     * - You can also use the convenience method <% crosslink Fire.color Fire.color %> to create a new Color.
+     *
      * @class Color
      * @constructor
-     * @param {number} r - red component of the color
-     * @param {number} g - green component of the color
-     * @param {number} b - blue component of the color
-     * @param {number} a - alpha component of the color
+     * @param {number} [r=0] - red component of the color
+     * @param {number} [g=0] - green component of the color
+     * @param {number} [b=0] - blue component of the color
+     * @param {number} [a=1] - alpha component of the color
      */
     function Color( r, g, b, a ) {
         this.r = typeof r === 'number' ? r : 0.0;
@@ -31,6 +20,69 @@ var Color = (function () {
     }
     JS.setClassName('Fire.Color', Color);
 
+    var DefaultColors = {
+        // color: [r, g, b, a]
+        /**
+         * @property white
+         * @type Color
+         * @static
+         */
+        white:      [1, 1, 1, 1],
+        /**
+         * @property black
+         * @type Color
+         * @static
+         */
+        black:      [0, 0, 0, 1],
+        /**
+         * @property transparent
+         * @type Color
+         * @static
+         */
+        transparent:[0, 0, 0, 0],
+        /**
+         * @property gray
+         * @type Color
+         * @static
+         */
+        gray:       [0.5, 0.5, 0.5],
+        /**
+         * @property red
+         * @type Color
+         * @static
+         */
+        red:        [1, 0, 0],
+        /**
+         * @property green
+         * @type Color
+         * @static
+         */
+        green:      [0, 1, 0],
+        /**
+         * @property blue
+         * @type Color
+         * @static
+         */
+        blue:       [0, 0, 1],
+        /**
+         * @property yellow
+         * @type Color
+         * @static
+         */
+        yellow:     [1, 235/255, 4/255],
+        /**
+         * @property cyan
+         * @type Color
+         * @static
+         */
+        cyan:       [0, 1, 1],
+        /**
+         * @property magenta
+         * @type Color
+         * @static
+         */
+        magenta:    [1, 0, 1]
+    };
     for (var colorName in DefaultColors) {
         var colorGetter = (function (r, g, b, a) {
             return function () {
@@ -49,6 +101,11 @@ var Color = (function () {
         return new Color(this.r, this.g, this.b, this.a);
     };
 
+    /**
+     * @method equals
+     * @param {Color} other
+     * @return {boolean}
+     */
     Color.prototype.equals = function (other) {
         return this.r === other.r &&
                this.g === other.g &&
@@ -56,6 +113,10 @@ var Color = (function () {
                this.a === other.a;
     };
 
+    /**
+     * @method toString
+     * @return {string}
+     */
     Color.prototype.toString = function () {
         return "rgba(" +
             this.r.toFixed(2) + ", " +
@@ -65,6 +126,11 @@ var Color = (function () {
         ;
     };
 
+    /**
+     * @method toCSS
+     * @param {string} opt - "rgba", "rgb", "#rgb" or "#rrggbb"
+     * @return {string}
+     */
     Color.prototype.toCSS = function ( opt ) {
         if ( opt === 'rgba' ) {
             return "rgba(" +
@@ -86,14 +152,10 @@ var Color = (function () {
         }
     };
 
-    Color.prototype.equalTo = function ( rhs ) {
-        return (rhs instanceof Color &&
-                this.r === rhs.r &&
-                this.g === rhs.g &&
-                this.b === rhs.b &&
-                this.a === rhs.a);
-    };
-
+    /**
+     * Clamp this color to make all components between 0 to 1.
+     * @method clamp
+     */
     Color.prototype.clamp = function () {
         this.r = Math.clamp01(this.r);
         this.g = Math.clamp01(this.g);
@@ -101,6 +163,12 @@ var Color = (function () {
         this.a = Math.clamp01(this.a);
     };
 
+    /**
+     * @method fromHEX
+     * @param {string} hexString
+     * @returns {Color}
+     * @chainable
+     */
     Color.prototype.fromHEX = function (hexString) {
         var hex = parseInt(((hexString.indexOf('#') > -1) ? hexString.substring(1) : hexString), 16);
         this.r = hex >> 16;
@@ -109,6 +177,11 @@ var Color = (function () {
         return this;
     };
 
+    /**
+     * @method toHEX
+     * @param {string} fmt - "#rgb" or "#rrggbb"
+     * @returns {string}
+     */
     Color.prototype.toHEX = function ( fmt ) {
         var hex = [
             (this.r * 255 | 0 ).toString(16),
@@ -133,12 +206,25 @@ var Color = (function () {
         return hex.join('');
     };
 
+    /**
+     * Convert to 24bit rgb value
+     * @method toRGBValue
+     * @returns {number}
+     */
     Color.prototype.toRGBValue = function () {
         return (Math.clamp01(this.r) * 255 << 16) +
                (Math.clamp01(this.g) * 255 << 8) +
                (Math.clamp01(this.b) * 255);
     };
 
+    /**
+     * @method fromHSV
+     * @param {number} h
+     * @param {number} s
+     * @param {number} v
+     * @returns {Color}
+     * @chainable
+     */
     Color.prototype.fromHSV = function ( h, s, v ) {
         var rgb = Fire.hsv2rgb( h, s, v );
         this.r = rgb.r;
@@ -147,6 +233,10 @@ var Color = (function () {
         return this;
     };
 
+    /**
+     * @method toHSV
+     * @return {object} - {h: number, s: number, v: number}
+     */
     Color.prototype.toHSV = function () {
         return Fire.rgb2hsv( this.r, this.g, this.b );
     };

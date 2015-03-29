@@ -9,14 +9,16 @@
  * @return {object|undefined} return all attributes associated with the property. if none undefined will be returned
  *
  * @example
- *  var klass = function () { this.value = 0.5 };
- *  Fire.attr(klass, 'value');              // return undefined
- *  Fire.attr(klass, 'value', {}).min = 0;  // assign new attribute table associated with 'value', and set its min = 0
- *  Fire.attr(klass, 'value', {             // set values max and default
- *      max: 1,
- *      default: 0.5,
- *  });
- *  Fire.attr(klass, 'value');              // return { default: 0.5, min: 0, max: 1 }
+ ```js
+    var klass = function () { this.value = 0.5 };
+    Fire.attr(klass, 'value');              // return undefined
+    Fire.attr(klass, 'value', {}).min = 0;  // assign new attribute table associated with 'value', and set its min = 0
+    Fire.attr(klass, 'value', {             // set values max and default
+       max: 1,
+       default: 0.5,
+    });
+    Fire.attr(klass, 'value');              // return { default: 0.5, min: 0, max: 1 }
+```
  */
 Fire.attr = function (constructor, propertyName, attributes) {
     var key = '_attr$' + propertyName;
@@ -107,6 +109,7 @@ Callbacks: {
  *
  * @property NonSerialized
  * @type object
+ * @private
  */
 Fire.NonSerialized = {
     serializable: false,
@@ -119,6 +122,7 @@ Fire.NonSerialized = {
  *
  * @property EditorOnly
  * @type object
+ * @private
  */
 Fire.EditorOnly = {
     editorOnly: true,
@@ -219,6 +223,7 @@ Fire.String = {
  * @param {function} constructor - the special type you want
  * @param {boolean} [useUuid=false] - the value will be represented as a uuid string
  * @return {object} the attribute
+ * @private
  */
 Fire.ObjectType = function (constructor, useUuid) {
     // @ifdef EDITOR
@@ -256,6 +261,7 @@ Fire.ObjectType = function (constructor, useUuid) {
  * @method Enum
  * @param {object} enumType
  * @return {object} the enum attribute
+ * @private
  */
 Fire.Enum = function (enumType) {
     return { type: 'enum', enumList: Fire.getEnumList(enumType) };
@@ -268,6 +274,7 @@ Fire.Enum = function (enumType) {
  * @method RawType
  * @param {string} [typename]
  * @return {object} the attribute
+ * @private
  */
 Fire.RawType = function (typename) {
     var NEED_EXT_TYPES = ['image', 'json', 'text', 'audio'];  // the types need to specify exact extname
@@ -322,29 +329,13 @@ Fire.RawType = function (typename) {
     };
 };
 
-///**
-// * @property {object} Fire.Float
-// * @deprecated - No need to define Fire.Float, you should just set default value to any number
-// */
-//Object.defineProperty(Fire, 'Float', { get: function () {
-//    Fire.warn('No need to use "Fire.Float", you just need to set default value to any number');
-//    return {};
-//}});
-///**
-// * @property {object} Fire.Serializable
-// * @deprecated - No need to use Fire.Serializable, all properties defined by "Class.prop" is already serializable.
-// */
-//Object.defineProperty(Fire, 'Serializable', { get: function () {
-//    Fire.warn('No need to use "Fire.Serializable", all properties defined by "Class.prop" is already serializable.');
-//    return {};
-//}});
-
 /**
  * Makes a custom property
  *
  * @method Custom
  * @param {string} name
  * @return {object}
+ * @private
  */
 Fire.Custom = function (type) {
     return { custom: type };
@@ -354,6 +345,7 @@ Fire.Custom = function (type) {
  * Makes a property not show up in the Inspector but be serialized.
  * @property HideInInspector
  * @type object
+ * @private
  */
 Fire.HideInInspector = { hideInInspector: true };
 
@@ -363,6 +355,7 @@ Fire.HideInInspector = { hideInInspector: true };
  * @method Fire.DisplayName
  * @param {string} name
  * @return {object} the attribute
+ * @private
  */
 Fire.DisplayName = function (name) {
     return { displayName: name };
@@ -372,6 +365,7 @@ Fire.DisplayName = function (name) {
  * The ReadOnly attribute indicates that the property field is disabled in Inspector.
  * @property ReadOnly
  * @type object
+ * @private
  */
 Fire.ReadOnly = {
     readOnly: true
@@ -383,6 +377,7 @@ Fire.ReadOnly = {
  * @method Tooltip
  * @param {string} tooltip
  * @return {object} the attribute
+ * @private
  */
 Fire.Tooltip = function (tooltip) {
     return { tooltip: tooltip };
@@ -393,6 +388,7 @@ Fire.Tooltip = function (tooltip) {
  * @param {string} boolPropName
  * @param {boolean} hasValueByDefault
  * @return {object} the attribute
+ * @private
  */
 Fire.Nullable = function (boolPropName, hasValueByDefault) {
     return {
@@ -418,6 +414,7 @@ Fire.Nullable = function (boolPropName, hasValueByDefault) {
  * @param {string} names - the name of target property to watch, array is also acceptable.
  * @param {function} callback - the callback function to invoke when target property(s) is changed.
  * @return {object} the attribute
+ * @private
  */
 Fire.Watch = function (names, callback) {
     return {
@@ -431,6 +428,7 @@ Fire.Watch = function (names, callback) {
  * @param {number} min: null mins infinite
  * @param {number} max: null mins infinite
  * @return {object} the attribute
+ * @private
  */
 Fire.Range = function (min, max) {
    return { min: min, max: max };

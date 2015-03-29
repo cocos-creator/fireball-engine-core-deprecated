@@ -1,6 +1,5 @@
-﻿// The utils for path operation
-
-/**
+﻿/**
+ * The utils for path operation
  * @class Path
  * @static
  */
@@ -50,12 +49,54 @@ else {
         }
 
         path = {
+            /**
+             * Return the last portion of a path.
+             * @method basename
+             * @param {string} path
+             * @return {string}
+             *
+             * @example
+```js
+    path.basename('/foo/bar/baz/asdf/quux.html')    // returns 'quux.html'
+```
+             */
             basename: function (path) {
                 return path.replace(/^.*(\\|\/|\:)/, '');
             },
+
+            /**
+             * Return the extension of the path, from the last '.' to end of string in the last portion of the path.
+             * If there is no '.' in the last portion of the path or the first character of it is '.',
+             * then it returns an empty string.
+             *
+             * @method extname
+             * @param {string} path
+             * @return {string}
+             *
+             * @example
+```js
+path.extname('index.html')      // returns '.html'
+path.extname('index.coffee.md') // returns '.md'
+path.extname('index.')          // returns '.'
+path.extname('index')           // returns ''
+```
+             */
             extname: function (path) {
                 return path.substring((~-path.lastIndexOf(".") >>> 0) + 1);
             },
+
+            /**
+             * Return the directory name of a path.
+             *
+             * @method dirname
+             * @param {string} path
+             * @return {string}
+             *
+             * @example
+```js
+path.dirname('/foo/bar/baz/asdf/quux') // returns '/foo/bar/baz/asdf'
+```
+             */
             dirname: function (path) {
                 // copied from node.js/lib/path.js
                 var result = splitPath(path),
@@ -74,6 +115,12 @@ else {
 
                 return root + dir;
             },
+
+            /**
+             * The platform-specific file separator. '\\' or '/'.
+             * @property sep
+             * @type {string}
+             */
             sep: (Fire.isWin32 ? '\\' : '/'),
         };
         return path;

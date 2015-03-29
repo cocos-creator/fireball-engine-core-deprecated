@@ -1,4 +1,58 @@
+/**
+ * !#en Defines a FireClass using the given literal prototype object, please see [Class](http://docs.fireball-x.com/en/scripting/class/) for details.
+ * !#zh 定义一个 FireClass，传入参数必须是一个包含类型参数的字面量对象，具体用法请查阅[类型定义](http://docs.fireball-x.com/zh/scripting/class/)。
+ *
+ * @method Class
+ * @param {object} options
+ * @return {function} - the created class
+ *
+ * @example
+```js
+    // define base class
+    var Node = Fire.Class();
 
+    // define sub class
+    var Sprite = Fire.Class({
+        name: 'Sprite',
+        extends: Node,
+        constructor: function () {
+            this.url = "";
+            this.id = 0;
+        },
+
+        properties {
+            width: {
+                default: 128,
+                type: 'Integer',
+                tooltip: 'The width of sprite'
+            },
+            height: 128,
+            size: {
+                get: function () {
+                    return Fire.v2(this.width, this.height);
+                }
+            }
+        },
+
+        load: function () {
+            // load this.url
+        };
+    });
+
+    // instantiate
+
+    var obj = new Sprite();
+    obj.url = 'sprite.png';
+    obj.load();
+
+    // define static member
+
+    Sprite.count = 0;
+    Sprite.getBounds = function (spriteList) {
+        // ...
+    };
+```
+ */
 Fire.Class = function (options) {
     if (arguments.length === 0) {
         return Fire.define();

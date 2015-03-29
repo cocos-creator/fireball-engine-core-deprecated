@@ -3,8 +3,9 @@
     /**
      * The CallbacksHandler is an abstract class that can register and unregister callbacks by key.
      * Subclasses should implement their own methods about how to invoke the callbacks.
-     * @class CallbacksHandler
+     * @class _CallbacksHandler
      * @constructor
+     * @private
      */
     var CallbacksHandler = (function () {
         this._callbackTable = {};
@@ -89,30 +90,26 @@
 
     /**
      * The callbacks invoker to handle and invoke callbacks by key
+     *
      * @class CallbacksInvoker
-     * @extends CallbacksHandler
      * @constructor
+     * @extends _CallbacksHandler
      */
     var CallbacksInvoker = function () {
         this._callbackTable = {}; // 直接赋值，省得调用父构造函数
     };
     JS.extend(CallbacksInvoker, CallbacksHandler);
 
-    /**
-     * This is a property accessible from {% crosslink Fire Fire %} global object
-     * @property Fire.CallbacksInvoker
-     * @type CallbacksInvoker
-     */
     Fire.CallbacksInvoker = CallbacksInvoker;
 
     /**
      * @method invoke
      * @param {string} key
-     * @param {*} [p1]
-     * @param {*} [p2]
-     * @param {*} [p3]
-     * @param {*} [p4]
-     * @param {*} [p5]
+     * @param {any} [p1]
+     * @param {any} [p2]
+     * @param {any} [p3]
+     * @param {any} [p4]
+     * @param {any} [p5]
      */
     CallbacksInvoker.prototype.invoke = function (key, p1, p2, p3, p4, p5) {
         var list = this._callbackTable[key];
@@ -126,11 +123,11 @@
     /**
      * @method invokeAndRemove
      * @param {string} key
-     * @param {*} [p1]
-     * @param {*} [p2]
-     * @param {*} [p3]
-     * @param {*} [p4]
-     * @param {*} [p5]
+     * @param {any} [p1]
+     * @param {any} [p2]
+     * @param {any} [p3]
+     * @param {any} [p4]
+     * @param {any} [p5]
      */
     CallbacksInvoker.prototype.invokeAndRemove = function (key, p1, p2, p3, p4, p5) {
         // this.invoke(key, p1, p2, p3, p4, p5);

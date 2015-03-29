@@ -3,19 +3,31 @@
     var _r2d = 180.0/Math.PI;
 
     /**
-     * Helper class for math operation
+     * Extends the JavaScript built-in object that has properties and methods for mathematical constants and functions.
+     * See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math)
+     * @module Math
      * @class Math
      * @static
      */
     JS.mixin ( Math, {
+
+        /**
+         * @property TWO_PI
+         * @type number
+         */
         TWO_PI: 2.0 * Math.PI,
+
+        /**
+         * @property HALF_PI
+         * @type number
+         */
         HALF_PI: 0.5 * Math.PI,
 
         /**
          * degree to radius
          * @method deg2rad
          * @param {number} degree
-         * @return {number}
+         * @return {number} radius
          */
         deg2rad: function ( degree ) {
             return degree * _d2r;
@@ -25,7 +37,7 @@
          * radius to degree
          * @method rad2deg
          * @param {number} radius
-         * @return {number}
+         * @return {number} degree
          */
         rad2deg: function ( radius ) {
             return radius * _r2d;
@@ -35,7 +47,7 @@
          * let radius in -pi to pi
          * @method rad180
          * @param {number} radius
-         * @return {number}
+         * @return {number} clamped radius
          */
         rad180: function ( radius ) {
             if ( radius > Math.PI || radius < -Math.PI ) {
@@ -48,7 +60,7 @@
          * let radius in 0 to 2pi
          * @method rad360
          * @param {number} radius
-         * @return {number}
+         * @return {number} clamped radius
          */
         rad360: function ( radius ) {
             if ( radius > Math.TWO_PI )
@@ -62,7 +74,7 @@
          * let degree in -180 to 180
          * @method deg180
          * @param {number} degree
-         * @return {number}
+         * @return {number} clamped degree
          */
 
         deg180: function ( degree ) {
@@ -76,7 +88,7 @@
          * let degree in 0 to 360
          * @method deg360
          * @param {number} degree
-         * @return {number}
+         * @return {number} clamped degree
          */
         deg360: function ( degree ) {
             if ( degree > 360.0 )
@@ -86,14 +98,36 @@
             return degree;
         },
 
+        /**
+         * Returns a floating-point random number between min (inclusive) and max (exclusive).
+         * @method randomRange
+         * @param {number} min
+         * @param {number} max
+         * @return {number} the random number
+         */
         randomRange: function (min, max) {
             return Math.random() * (max - min) + min;
         },
 
+        /**
+         * Returns a random integer between min (inclusive) and max (exclusive).
+         * @method randomRangeInt
+         * @param {number} min
+         * @param {number} max
+         * @return {number} the random integer
+         */
         randomRangeInt: function (min, max) {
             return Math.floor(this.randomRange(min, max));
         },
 
+        /**
+         * Clamps a value between a minimum float and maximum float value.
+         * @method clamp
+         * @param {number} val
+         * @param {number} min
+         * @param {number} max
+         * @return {number}
+         */
         clamp: function ( val, min, max ) {
             if (typeof min !== 'number') {
                 Fire.error('[clamp] min value must be type number');
@@ -110,6 +144,14 @@
             return Math.min( Math.max( val, min ), max );
         },
 
+        /**
+         * Clamps a value between 0 and 1.
+         * @method clamp01
+         * @param {number} val
+         * @param {number} min
+         * @param {number} max
+         * @return {number}
+         */
         clamp01: function ( val ) {
             return Math.min( Math.max( val, 0 ), 1 );
         },
@@ -121,7 +163,7 @@
          * @param {Vec2} p1
          * @param {Vec2} p2
          * @param {Vec2} p3
-         * @return {Vec2}
+         * @return {Rect} just the out rect itself
          */
         calculateMaxRect: function (out, p0, p1, p2, p3) {
             var minX = Math.min(p0.x, p1.x, p2.x, p3.x);

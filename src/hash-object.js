@@ -1,17 +1,27 @@
 ﻿var HashObject = (function () {
 
     /**
-     * 提供获取对象ID的功能，该ID全局唯一但不会被序列化，可用于索引对象。
-     * 如果你将对象索引起来，必须记住清除索引，否则对象将永远不会被销毁。
+     * !#zh 提供获取对象ID的功能，该ID全局唯一但不会被序列化，可用于索引对象。
+     * - 如果你将对象索引起来，必须记住清除索引，否则对象将永远不会被销毁。
      * @class HashObject
-     * @static
+     * @constructor
      */
     var HashObject = Fire.extend('Fire.HashObject', Fire.FObject, function () {
+        /**
+         * @property _hashCode
+         * @type number
+         * @private
+         */
         Object.defineProperty(this, '_hashCode', {
             value: 0,
             writable: true,
             enumerable: false
         });
+        /**
+         * @property _id
+         * @type string
+         * @private
+         */
         Object.defineProperty(this, '_id', {
             value: '',
             writable: true,

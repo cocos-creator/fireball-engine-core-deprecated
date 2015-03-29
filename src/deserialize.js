@@ -345,14 +345,15 @@ var _Deserializer = (function () {
 })();
 
 /**
- * Deserialize json to Fire.Asset
- * 当指定了 target 选项时，如果 target 引用的其它 asset 的 uuid 不变，则不会改变 target 对 asset 的引用，
+ * !#en Deserialize json to Fire.Asset
+ * !#zh 将 JSON 反序列化为对象实例。
+ * - 当指定了 target 选项时，如果 target 引用的其它 asset 的 uuid 不变，则不会改变 target 对 asset 的引用，
  * 也不会将 uuid 保存到 result 对象中。
  *
+ * @method deserialize
  * @param {(string|object)} data - the serialized Fire.Asset json string or json object.
- *                                 Note: If data is an object, it will be modified.
- * @param {Fire._DeserializeInfo} [result] - additional loading result
- * @param {object} [options=null]
+ * @param {_DeserializeInfo} [result] - additional loading result
+ * @param {object} [options]
  * @return {object} the main data(asset)
  */
 Fire.deserialize = function (data, result, options) {
@@ -390,8 +391,9 @@ Fire.deserialize = function (data, result, options) {
 };
 
 /**
- * 包含反序列化时的一些信息
- * @class Fire._DeserializeInfo
+ * !#zh 包含反序列化时的一些信息
+ * @class _DeserializeInfo
+ * @constructor
  */
 Fire._DeserializeInfo = function () {
 
@@ -401,15 +403,21 @@ Fire._DeserializeInfo = function () {
     // uuids(assets) need to load
 
     /**
-     * @property {string[]} uuidList - list of the depends assets' uuid
+     * list of the depends assets' uuid
+     * @property uuidList
+     * @type {string[]}
      */
     this.uuidList = [];
     /**
-     * @property {object[]} uuidObjList - the obj list whose field needs to load asset by uuid
+     * the obj list whose field needs to load asset by uuid
+     * @property uuidObjList
+     * @type {object[]}
      */
     this.uuidObjList = [];
     /**
-     * @property {string[]} uuidPropList - the corresponding field name which referenced to the asset
+     * the corresponding field name which referenced to the asset
+     * @property uuidPropList
+     * @type {string[]}
      */
     this.uuidPropList = [];
 
@@ -417,19 +425,20 @@ Fire._DeserializeInfo = function () {
     // (不用存rawList因为它的uuid可以从asset上获得)
 
     /**
-     * @property {string} rawProp - the corresponding field name which referenced to the raw object
+     * the corresponding field name which referenced to the raw object
+     * @property rawProp
+     * @type {string}
      */
     this.rawProp = '';
-    ///**
-    // * @property {Fire.Asset[]} rawObjList - the obj list whose corresponding raw object needs to load
-    // */
+    // @property {Fire.Asset[]} rawObjList - the obj list whose corresponding raw object needs to load
     //this.rawObjList = [];
-    ///**
-    // * @property {string[]} rawPropList - the corresponding field name which referenced to the raw object
-    // */
+    //@property {string[]} rawPropList - the corresponding field name which referenced to the raw object
     //this.rawPropList = [];
 };
 
+/**
+ * @method reset
+ */
 Fire._DeserializeInfo.prototype.reset = function () {
     this.uuidList.length = 0;
     this.uuidObjList.length = 0;
@@ -439,6 +448,12 @@ Fire._DeserializeInfo.prototype.reset = function () {
     //this.rawPropList.length = 0;
 };
 
+/**
+ * @method getUuidOf
+ * @param {object} obj
+ * @param {string} propName
+ * @return {string}
+ */
 Fire._DeserializeInfo.prototype.getUuidOf = function (obj, propName) {
     for (var i = 0; i < this.uuidObjList.length; i++) {
         if (this.uuidObjList[i] === obj && this.uuidPropList[i] === propName) {
@@ -448,11 +463,16 @@ Fire._DeserializeInfo.prototype.getUuidOf = function (obj, propName) {
     return "";
 };
 
-Fire._DeserializeInfo.prototype.assignAssetsBy = function (callback) {
+/**
+ * @method assignAssetsBy
+ * @param {function} getter
+ * @return {boolean} success
+ */
+Fire._DeserializeInfo.prototype.assignAssetsBy = function (getter) {
     var success = true;
     for (var i = 0, len = this.uuidList.length; i < len; i++) {
         var uuid = this.uuidList[i];
-        var asset = callback(uuid);
+        var asset = getter(uuid);
         if (asset) {
             var obj = this.uuidObjList[i];
             var prop = this.uuidPropList[i];
