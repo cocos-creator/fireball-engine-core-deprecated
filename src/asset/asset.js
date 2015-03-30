@@ -1,6 +1,7 @@
 /**
  * Base class for asset handling.
  * @class Asset
+ * @extends HashObject
  * @constructor
  */
 var Asset = Fire.Class({

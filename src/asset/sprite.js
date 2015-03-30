@@ -3,6 +3,7 @@ Fire.Sprite = (function () {
     /**
      * Represents a Sprite object which obtained from Texture.
      * @class Sprite
+     * @extends Asset
      * @constructor
      * @param {Image} [img] - Specify the html image element to render so you can create Sprite dynamically.
      */

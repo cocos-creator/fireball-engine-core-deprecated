@@ -5,6 +5,7 @@ Fire.Texture = (function () {
      * Use this to create textures on the fly or to modify existing texture assets.
      *
      * @class Texture
+     * @extends Asset
      * @constructor
      * @param {Image} [img] - the html image element to render
      */
