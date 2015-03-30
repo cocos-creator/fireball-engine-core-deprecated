@@ -88,8 +88,8 @@ Fire.Intersection = (function () {
 
     /**
      * @method rectRect
-     * @param {Fire.Rect} a
-     * @param {Fire.Rect} b
+     * @param {Rect} a
+     * @param {Rect} b
      * @return {boolean}
      */
     function _rectRect ( a, b ) {
@@ -113,8 +113,8 @@ Fire.Intersection = (function () {
 
     /**
      * @method rectPolygon
-     * @param {Fire.Rect} a
-     * @param {Fire.Polygon} b
+     * @param {Rect} a
+     * @param {Polygon} b
      * @return {boolean}
      */
     function _rectPolygon ( a, b ) {
@@ -162,8 +162,8 @@ Fire.Intersection = (function () {
 
     /**
      * @method polygonPolygon
-     * @param {Fire.Polygon} a
-     * @param {Fire.Polygon} b
+     * @param {Polygon} a
+     * @param {Polygon} b
      * @return {boolean}
      */
     function _polygonPolygon ( a, b ) {

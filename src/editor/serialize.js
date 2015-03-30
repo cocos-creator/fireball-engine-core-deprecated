@@ -332,7 +332,7 @@ var _Serializer = (function () {
 /**
  * Serialize Fire.Asset to a json string
  * @method serialize
- * @param {Fire.Asset} obj - The object to serialize
+ * @param {Asset} obj - The object to serialize
  * @param {object} [options=null]
  * @return {string|object} The json string to represent the object or json object if dontStringify is true
  */

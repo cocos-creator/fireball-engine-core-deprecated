@@ -430,7 +430,7 @@ Fire._DeserializeInfo = function () {
      * @type {string}
      */
     this.rawProp = '';
-    // @property {Fire.Asset[]} rawObjList - the obj list whose corresponding raw object needs to load
+    // @property {Asset[]} rawObjList - the obj list whose corresponding raw object needs to load
     //this.rawObjList = [];
     //@property {string[]} rawPropList - the corresponding field name which referenced to the raw object
     //this.rawPropList = [];
