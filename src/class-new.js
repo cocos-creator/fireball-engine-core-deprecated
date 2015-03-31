@@ -1,6 +1,6 @@
 /**
- * !#en Defines a FireClass using the given literal prototype object, please see [Class](http://docs.fireball-x.com/en/scripting/class/) for details.
- * !#zh 定义一个 FireClass，传入参数必须是一个包含类型参数的字面量对象，具体用法请查阅[类型定义](http://docs.fireball-x.com/zh/scripting/class/)。
+ * !#en Defines a FireClass using the given literal prototype object, please see [Class](/en/scripting/class/) for details.
+ * !#zh 定义一个 FireClass，传入参数必须是一个包含类型参数的字面量对象，具体用法请查阅[类型定义](/zh/scripting/class/)。
  *
  * @method Class
  * @param {object} options

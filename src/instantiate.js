@@ -1,11 +1,11 @@
 ﻿/**
  * !#en Clones the object original and returns the clone.
  *
- * See [Clone exists Entity](http://docs.fireball-x.com/en/scripting/create-destroy-entities/#instantiate)
+ * See [Clone exists Entity](/en/scripting/create-destroy-entities/#instantiate)
  *
  * !#zh 复制给定的对象
  *
- * 详细用法可参考[复制已有Entity](http://docs.fireball-x.com/zh/scripting/create-destroy-entities/#instantiate)
+ * 详细用法可参考[复制已有Entity](/zh/scripting/create-destroy-entities/#instantiate)
  *
  * Instantiate 时，对于不可序列化的字段(包含function和dom)，直接设为 null。
  * 对可以被序列化的字段则统一进行拷贝，不考虑引用是否该和现有场景共享，但能保证实例化后的对象间能共享一份引用。
