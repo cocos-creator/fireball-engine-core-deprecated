@@ -2,8 +2,10 @@ var Color = (function () {
 
     /**
      * Representation of RGBA colors.
-     * - Each color component is a floating point value with a range from 0 to 1.
-     * - You can also use the convenience method <% crosslink Fire.color Fire.color %> to create a new Color.
+     *
+     * Each color component is a floating point value with a range from 0 to 1.
+     *
+     * You can also use the convenience method <% crosslink Fire.color Fire.color %> to create a new Color.
      *
      * @class Color
      * @constructor
@@ -166,7 +168,7 @@ var Color = (function () {
     /**
      * @method fromHEX
      * @param {string} hexString
-     * @returns {Color}
+     * @return {Color}
      * @chainable
      */
     Color.prototype.fromHEX = function (hexString) {
@@ -180,7 +182,7 @@ var Color = (function () {
     /**
      * @method toHEX
      * @param {string} fmt - "#rgb" or "#rrggbb"
-     * @returns {string}
+     * @return {string}
      */
     Color.prototype.toHEX = function ( fmt ) {
         var hex = [
@@ -209,7 +211,7 @@ var Color = (function () {
     /**
      * Convert to 24bit rgb value
      * @method toRGBValue
-     * @returns {number}
+     * @return {number}
      */
     Color.prototype.toRGBValue = function () {
         return (Math.clamp01(this.r) * 255 << 16) +
@@ -222,7 +224,7 @@ var Color = (function () {
      * @param {number} h
      * @param {number} s
      * @param {number} v
-     * @returns {Color}
+     * @return {Color}
      * @chainable
      */
     Color.prototype.fromHSV = function ( h, s, v ) {

@@ -1,7 +1,8 @@
 var Rect = (function () {
     /**
      * A 2D rectangle defined by x, y position and width, height.
-     * - see {% crosslink Fire.rect Fire.rect %}
+     *
+     * see {% crosslink Fire.rect Fire.rect %}
      *
      * @class Rect
      * @constructor
@@ -77,7 +78,7 @@ var Rect = (function () {
 
     /**
      * @method clone
-     * @returns {Rect}
+     * @return {Rect}
      */
     Rect.prototype.clone = function () {
         return new Rect(this.x, this.y, this.width, this.height);
@@ -86,7 +87,7 @@ var Rect = (function () {
     /**
      * @method equals
      * @param {Rect} other
-     * @returns {boolean}
+     * @return {boolean}
      */
     Rect.prototype.equals = function (other) {
         return this.x === other.x &&
@@ -97,7 +98,7 @@ var Rect = (function () {
 
     /**
      * @method toString
-     * @returns {string}
+     * @return {string}
      */
     Rect.prototype.toString = function () {
         return '(' + this.x.toFixed(2) + ', ' + this.y.toFixed(2) + ', ' + this.width.toFixed(2) +

@@ -204,7 +204,8 @@ Matrix23.prototype.transformPoint = function (vector, out) {
 
 /**
  * Get scaling of this matrix.
- * - NOTE: negative scaling (mirroring) is not supported
+ *
+ * NOTE: negative scaling (mirroring) is not supported
  * @method getScale
  * @param {Vec2} [out] - optional, the receiving vector
  * @return {Vec2} the result

@@ -2,7 +2,8 @@ Vec2 = (function () {
 
     /**
      * Representation of 2D vectors and points.
-     * - see {% crosslink Fire.v2 Fire.v2 %}
+     *
+     * see {% crosslink Fire.v2 Fire.v2 %}
      * @class Vec2
      * @constructor
      * @param {number} [x=0]
@@ -331,7 +332,8 @@ Vec2 = (function () {
 
     /**
      * Returns this vector with a magnitude of 1.
-     * - Note that the current vector is unchanged and a new normalized vector is returned. If you want to normalize the current vector, use normalizeSelf function.
+     *
+     * Note that the current vector is unchanged and a new normalized vector is returned. If you want to normalize the current vector, use normalizeSelf function.
      * @method normalize
      * @param {Vec2} [out] - optional, the receiving vector
      * @return {Vec2} result

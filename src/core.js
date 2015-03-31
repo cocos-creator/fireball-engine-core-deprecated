@@ -212,7 +212,8 @@ Fire.unregisterClass to remove the id of unused class';
 
     /**
      * Unregister a class from fireball.
-     * - If you dont need a class (which defined by Fire.define or Fire.setClassName) anymore,
+     *
+     * If you dont need a class (which defined by Fire.define or Fire.setClassName) anymore,
      * You should unregister the class so that Fireball will not keep its reference anymore.
      * Please note that its still your responsibility to free other references to the class.
      *

@@ -54,6 +54,7 @@ FObject = (function () {
     // instance
 
     /**
+     * The name of the object.
      * @property name
      * @type string
      */
@@ -81,7 +82,8 @@ FObject = (function () {
 
     /**
      * Destroy this FObject, and release all its own references to other resources.
-     * - After destory, this FObject is not usable any more.
+     *
+     * After destory, this FObject is not usable any more.
      * You can use Fire.isValid(obj) (or obj.isValid if obj is non-nil) to check whether the object is destroyed before accessing it.
      * @method destroy
      * @return {boolean} whether it is the first time the destroy being called
@@ -101,7 +103,8 @@ FObject = (function () {
 
     /**
      * Clear all references in the instance.
-     * - NOTE: this method will not clear the getter or setter functions which defined in the INSTANCE of FObject.
+     *
+     * NOTE: this method will not clear the getter or setter functions which defined in the INSTANCE of FObject.
      *       You can override the _destruct method if you need.
      * @method _destruct
      * @private
