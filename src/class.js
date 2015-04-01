@@ -428,10 +428,7 @@ Fire.extend = function (className, baseClass, constructor) {
     }
 // @ifdef DEV
     else if (className) {
-        Fire.error('[Fire.extend] unknown typeof first argument');
-    }
-    else {
-        Fire.error('[Fire.extend] first argument must be non-nil');
+        Fire.error('[Fire.extend] unknown typeof first argument:' + className);
     }
 // @endif
     return null;
@@ -439,39 +436,55 @@ Fire.extend = function (className, baseClass, constructor) {
 
 function _createCtor (constructor, baseClass) {
     var fireClass;
+    var propsInitedByBase = baseClass && Fire._isFireClass(baseClass);
     if (constructor) {
 // @ifdef DEV
         _checkCtor(constructor);
 // @endif
         if (baseClass) {
-            fireClass = function () {
-                // @ifdef EDITOR
-                this._observing = false;
-                // @endif
-                baseClass.apply(this, arguments);
-                _createInstanceProps(this, fireClass);
-                constructor.apply(this, arguments);
-            };
+            if (propsInitedByBase) {
+                fireClass = function () {
+                    baseClass.apply(this, arguments);
+                    constructor.apply(this, arguments);
+                };
+            }
+            else {
+                fireClass = function () {
+                    // @ifdef EDITOR
+                    this._observing = false;
+                    // @endif
+                    baseClass.apply(this, arguments);
+                    _createInstanceProps(this, this.constructor);
+                    constructor.apply(this, arguments);
+                };
+            }
         }
         else {
             fireClass = function () {
                 // @ifdef EDITOR
                 this._observing = false;
                 // @endif
-                _createInstanceProps(this, fireClass);
+                _createInstanceProps(this, this.constructor);
                 constructor.apply(this, arguments);
             };
         }
     }
     else {
         if (baseClass) {
-            fireClass = function () {
-                // @ifdef EDITOR
-                this._observing = false;
-                // @endif
-                baseClass.apply(this, arguments);
-                _createInstanceProps(this, fireClass);
-            };
+            if (propsInitedByBase) {
+                fireClass = function () {
+                    baseClass.apply(this, arguments);
+                };
+            }
+            else {
+                fireClass = function () {
+                    // @ifdef EDITOR
+                    this._observing = false;
+                    // @endif
+                    baseClass.apply(this, arguments);
+                    _createInstanceProps(this, this.constructor);
+                };
+            }
         }
         else {
             // no constructor
@@ -479,7 +492,7 @@ function _createCtor (constructor, baseClass) {
                 // @ifdef EDITOR
                 this._observing = false;
                 // @endif
-                _createInstanceProps(this, fireClass);
+                _createInstanceProps(this, this.constructor);
             };
         }
     }

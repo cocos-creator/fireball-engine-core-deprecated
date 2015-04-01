@@ -118,7 +118,7 @@ test('test inherited FireClass', function() {
         obj: {},
     };
 
-    match(asset, expect, 'type test');
+    match(asset, expect, 'test');
 
     Fire.JS.unregisterClass(MyAsset);
 });

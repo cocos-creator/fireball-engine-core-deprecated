@@ -64,7 +64,7 @@ Fire.Class = function (options) {
 
     var name = options.name;
     var base = options.extends;
-    var ctor = options.hasOwnProperty('constructor') && options.constructor;
+    var ctor = (options.hasOwnProperty('constructor') && options.constructor) || undefined;
 
     // create constructor
     var cls;

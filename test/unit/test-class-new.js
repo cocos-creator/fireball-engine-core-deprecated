@@ -185,6 +185,38 @@ test('Inherit + constructor', function () {
     Fire.JS.unregisterClass(Animal, Dog, Husky);
 });
 
+test('prop initial times', function () {
+    var Base = Fire.Class({
+        properties: {
+            foo: 0,
+        }
+    });
+    var fooTester = Callback().enable();
+    var instanceMocker = {
+        constructor: Base,  // mock constructor of class instance
+    };
+    Object.defineProperty(instanceMocker, 'foo', {
+        set: fooTester
+    });
+    Base.call(instanceMocker);
+    fooTester.once('property should init once');
+
+    var Sub = Fire.Class({
+        extends: Base,
+        properties: {
+            bar: 0,
+        }
+    });
+    var barTester = Callback().enable();
+    instanceMocker.constructor = Sub;
+    Object.defineProperty(instanceMocker, 'bar', {
+        set: barTester
+    });
+    Sub.call(instanceMocker);
+    fooTester.once('foo prop should init once even if inherited');
+    barTester.once('bar prop should init once');
+});
+
 test('prop reference', function () {
     var type = Fire.Class({
         name: 'Fire.MyType',
