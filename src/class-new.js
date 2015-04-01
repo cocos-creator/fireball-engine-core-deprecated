@@ -203,7 +203,7 @@ function parseAttributes (attrs, className, propName) {
         // @endif
     }
 
-    function applyAttr (attrName, expectType, attrCreater) {
+    function parseSimpleAttr (attrName, expectType, attrCreater) {
         var val = attrs[attrName];
         if (val) {
             if (typeof val === expectType) {
@@ -217,18 +217,28 @@ function parseAttributes (attrs, className, propName) {
         }
     }
 
-    applyAttr('rawType', 'string', Fire.RawType);
-    applyAttr('editorOnly', 'boolean', Fire.EditorOnly);
-    applyAttr('displayName', 'string', Fire.DisplayName);
-    applyAttr('multiline', 'boolean', Fire.MultiText);
-    applyAttr('readonly', 'boolean', Fire.ReadOnly);
-    applyAttr('tooltip', 'string', Fire.Tooltip);
+    parseSimpleAttr('rawType', 'string', Fire.RawType);
+    parseSimpleAttr('editorOnly', 'boolean', Fire.EditorOnly);
+    parseSimpleAttr('displayName', 'string', Fire.DisplayName);
+    parseSimpleAttr('multiline', 'boolean', Fire.MultiText);
+    parseSimpleAttr('readonly', 'boolean', Fire.ReadOnly);
+    parseSimpleAttr('tooltip', 'string', Fire.Tooltip);
 
     if (attrs.serializable === false) {
         result.push(Fire.NonSerialized);
     }
-    if (attrs.visible === false) {
-        result.push(Fire.HideInInspector);
+
+    var visible = attrs.visible;
+    if (typeof visible !== 'undefined') {
+        if ( !attrs.visible ) {
+            result.push(Fire.HideInInspector);
+        }
+    }
+    else {
+        // if starts with '_', hide in inspector by default
+        if (propName.charCodeAt(0) === 95) {
+            result.push(Fire.HideInInspector);
+        }
     }
 
     //if (attrs.custom) {
