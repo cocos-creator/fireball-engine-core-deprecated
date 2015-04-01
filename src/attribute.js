@@ -251,18 +251,18 @@ Fire.ObjectType = function (typeCtor, useUuid) {
         _onAfterProp: function (classCtor, mainPropName) {
             var check = getTypeChecker('object', 'Fire.ObjectType', typeCtor);
             check(classCtor, mainPropName);
-            // check Vec2
+            // check ValueType
             var mainPropAttrs = Fire.attr(classCtor, mainPropName) || {};
-            if (typeof typeCtor.prototype.clone === 'function') {
+            if (!Array.isArray(mainPropAttrs.default) && typeof typeCtor.prototype.clone === 'function') {
                 var typename = JS.getClassName(typeCtor);
                 var hasDefault = mainPropAttrs.default === null || mainPropAttrs.default === undefined;
                 if ( hasDefault ) {
-                    Fire.warn('%s is a ValueType, no need to specify the "type" of %s.%s, ' +
+                    Fire.warn('%s is a ValueType, no need to specify the "type" of "%s.%s", ' +
                         'because the type information can obtain from its default value directly.',
                         typename, JS.getClassName(classCtor), mainPropName, typename);
                 }
                 else {
-                    Fire.warn('%s is a ValueType, no need to specify the "type" of %s.%s, ' +
+                    Fire.warn('%s is a ValueType, no need to specify the "type" of "%s.%s", ' +
                         'just set the default value to "new %s()" and it will be handled properly.',
                         typename, JS.getClassName(classCtor), mainPropName, typename);
                 }
