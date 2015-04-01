@@ -20,7 +20,7 @@ test('test', function () {
                 serializable: false
             },
             weight10: {
-                type: 'Integer',
+                type: Fire.Integer,
                 set: function (value) {
                     this.weight = Math.floor(value / 10);
                 },
@@ -29,7 +29,7 @@ test('test', function () {
                 }
             },
             weight5x: {
-                type: 'Integer',
+                type: Fire.Integer,
                 get: function () {
                     return this.weight * 5;
                 },

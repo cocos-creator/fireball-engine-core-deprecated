@@ -135,14 +135,18 @@ Fire.EditorOnly = {
  * @property Integer
  * @type object
  */
-Fire.Integer = { type: 'int' };
+Fire.Integer = 'Integer';
+
+Fire.Integer_Obsoleted = { type: 'int' };
 
 /**
  * Indicates that the type of elements in array or the type of value in dictionary is double.
  * @property Float
  * @type object
  */
-Fire.Float = { type: 'float' };
+Fire.Float = 'Float';
+
+Fire.Float_Obsoleted = { type: 'float' };
 
 Fire.SingleText = { textMode: 'single' };
 Fire.MultiText = { textMode: 'multi' };
@@ -196,7 +200,9 @@ function getTypeChecker (type, attrName, objectTypeCtor) {
  * @property Boolean
  * @type
  */
-Fire.Boolean = {
+Fire.Boolean = 'Boolean';
+
+Fire.Boolean_Obsoleted = {
     type: 'boolean',
 // @ifdef DEV
     _onAfterProp: getTypeChecker('boolean', 'Fire.Boolean')
@@ -208,7 +214,9 @@ Fire.Boolean = {
  * @property String
  * @type object
  */
-Fire.String = {
+Fire.String = 'String';
+
+Fire.String_Obsoleted = {
     type: 'string',
 // @ifdef DEV
     _onAfterProp: getTypeChecker('string', 'Fire.String')

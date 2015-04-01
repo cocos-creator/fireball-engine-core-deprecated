@@ -166,17 +166,17 @@ function parseAttributes (attrs, className, propName) {
 
     var type = attrs.type;
     if (type) {
-        if (type === 'Integer') {
-            result.push(Fire.Integer);
+        if (type === Fire.Integer) {
+            result.push(Fire.Integer_Obsoleted);
         }
-        else if (type === 'Float' || type === Number) {
-            result.push(Fire.Float);
+        else if (type === Fire.Float || type === Number) {
+            result.push(Fire.Float_Obsoleted);
         }
-        else if (type === 'Boolean' || type === Boolean) {
-            result.push(Fire.Boolean);
+        else if (type === Fire.Boolean || type === Boolean) {
+            result.push(Fire.Boolean_Obsoleted);
         }
-        else if (type === 'String' || type === String) {
-            result.push(Fire.String);
+        else if (type === Fire.String || type === String) {
+            result.push(Fire.String_Obsoleted);
         }
         else if (type === 'Object' || type === Object) {
             // @ifdef EDITOR

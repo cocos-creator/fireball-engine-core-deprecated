@@ -31,22 +31,22 @@ Fire.Sprite = (function () {
      * @property trimX
      * @type number
      */
-    Sprite.prop('trimX', 0, Fire.Integer);
+    Sprite.prop('trimX', 0, Fire.Integer_Obsoleted);
     /**
      * @property trimY
      * @type number
      */
-    Sprite.prop('trimY', 0, Fire.Integer);
+    Sprite.prop('trimY', 0, Fire.Integer_Obsoleted);
     /**
      * @property width
      * @type number
      */
-    Sprite.prop('width', 0, Fire.Integer);
+    Sprite.prop('width', 0, Fire.Integer_Obsoleted);
     /**
      * @property height
      * @type number
      */
-    Sprite.prop('height', 0, Fire.Integer);
+    Sprite.prop('height', 0, Fire.Integer_Obsoleted);
 
     /**
      * @property texture
@@ -68,26 +68,26 @@ Fire.Sprite = (function () {
      * @property x
      * @type number
      */
-    Sprite.prop('x', 0, Fire.Integer, Fire.HideInInspector);
+    Sprite.prop('x', 0, Fire.Integer_Obsoleted, Fire.HideInInspector);
 
     /**
      * uv of the sprite in atlas-texture
      * @property y
      * @type number
      */
-    Sprite.prop('y', 0, Fire.Integer, Fire.HideInInspector);
+    Sprite.prop('y', 0, Fire.Integer_Obsoleted, Fire.HideInInspector);
 
     /**
      * @property rawWidth
      * @type number
      */
-    Sprite.prop('rawWidth', 0, Fire.Integer, Fire.HideInInspector);
+    Sprite.prop('rawWidth', 0, Fire.Integer_Obsoleted, Fire.HideInInspector);
 
     /**
      * @property rawHeight
      * @type number
      */
-    Sprite.prop('rawHeight', 0, Fire.Integer, Fire.HideInInspector);
+    Sprite.prop('rawHeight', 0, Fire.Integer_Obsoleted, Fire.HideInInspector);
 
     /**
      * @property rotatedWidth

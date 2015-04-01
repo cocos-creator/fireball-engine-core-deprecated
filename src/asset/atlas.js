@@ -26,8 +26,8 @@ Fire.Atlas = (function () {
     });
 
     // basic settings
-    Atlas.prop('width', 512, Fire.Integer, Fire.ReadOnly );
-    Atlas.prop('height', 512, Fire.Integer, Fire.ReadOnly );
+    Atlas.prop('width', 512, Fire.Integer_Obsoleted, Fire.ReadOnly );
+    Atlas.prop('height', 512, Fire.Integer_Obsoleted, Fire.ReadOnly );
 
     Atlas.prop('sprites', [], Fire.ObjectType(Fire.Sprite), Fire.HideInInspector);
 

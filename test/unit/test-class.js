@@ -14,7 +14,7 @@ test('test', function () {
     });
     Animal.get('weight10', function () {
         return this.weight * 10;
-    }, Fire.Integer);
+    }, Fire.Integer_Obsoleted);
     Animal.getset('weight5x',
         function () {
             return this.weight * 5;

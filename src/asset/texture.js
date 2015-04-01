@@ -71,12 +71,12 @@ Fire.Texture = (function () {
      * @property width
      * @type number
      */
-    Texture.prop('width', 0, Fire.Integer, Fire.ReadOnly);
+    Texture.prop('width', 0, Fire.Integer_Obsoleted, Fire.ReadOnly);
     /**
      * @property height
      * @type number
      */
-    Texture.prop('height', 0, Fire.Integer, Fire.ReadOnly);
+    Texture.prop('height', 0, Fire.Integer_Obsoleted, Fire.ReadOnly);
     /**
      * @property wrapMode
      * @type Texture.WrapMode

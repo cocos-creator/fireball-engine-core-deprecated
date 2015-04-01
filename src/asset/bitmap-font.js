@@ -26,9 +26,9 @@ var BitmapFont = (function () {
     BitmapFont.prop('texture', null, Fire.ObjectType(Fire.Texture), Fire.HideInInspector);
     BitmapFont.prop('charInfos', [], Fire.HideInInspector);
     BitmapFont.prop('kernings', [], Fire.HideInInspector);
-    BitmapFont.prop('baseLine', 0, Fire.Integer, Fire.ReadOnly);
-    BitmapFont.prop('lineHeight', 0, Fire.Integer, Fire.ReadOnly);
-    BitmapFont.prop('size', 0, Fire.Integer, Fire.ReadOnly);
+    BitmapFont.prop('baseLine', 0, Fire.Integer_Obsoleted, Fire.ReadOnly);
+    BitmapFont.prop('lineHeight', 0, Fire.Integer_Obsoleted, Fire.ReadOnly);
+    BitmapFont.prop('size', 0, Fire.Integer_Obsoleted, Fire.ReadOnly);
     BitmapFont.prop('face', null, Fire.HideInInspector);
 
     return BitmapFont;
