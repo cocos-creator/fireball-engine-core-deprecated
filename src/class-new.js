@@ -92,7 +92,14 @@ Fire.Class = function (options) {
     if (properties) {
         for (var propName in properties) {
             var val = properties[propName];
-            if (val && typeof val === 'object' && !Array.isArray(val)) {
+            var isObj = val && typeof val === 'object' && !Array.isArray(val);
+            var isLiteral = isObj && val.constructor === ({}).constructor;
+            if (isLiteral) {
+                //var isValueType = typeof val.prototype.clone === 'function';
+                //if (isValueType) {
+                //    cls.prop(propName, val);
+                //    continue;
+                //}
                 var attrs = parseAttributes(val, name, propName);
                 if (val.hasOwnProperty('default')) {
                     cls.prop.apply(cls, [propName, val.default].concat(attrs));
