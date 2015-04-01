@@ -1,34 +1,49 @@
 ﻿
 var BitmapFont = (function () {
 
-    //var CharInfo = {
-    //    id: -1,
-    //    trim_x: 0,
-    //    trim_y: 0,
-    //    x: 0,
-    //    y: 0,
-    //    width: 0,
-    //    height: 0,
-    //    xOffset: 0,
-    //    yOffset: 0,
-    //    xAdvance: 0,
-    //    rotated: false,
-    //};
-
-    //var Kerning = {
-    //    first: 0,
-    //    second: 0,
-    //    amount: 0,
-    //};
-
+    /**
+     * The texture-info asset
+     * @class BitmapFont
+     * @extends Asset
+     */
     var BitmapFont = Fire.extend("Fire.BitmapFont", Fire.Asset);
 
+    /**
+     * The atlas  or raw texture
+     * @property texture
+     * @type {Texture}
+     * @default null
+     */
     BitmapFont.prop('texture', null, Fire.ObjectType(Fire.Texture), Fire.HideInInspector);
+
     BitmapFont.prop('charInfos', [], Fire.HideInInspector);
+
     BitmapFont.prop('kernings', [], Fire.HideInInspector);
+
+    /**
+     * The base-line of the text when draw
+     * @property baseLine
+     * @type {number}
+     * @default 0
+     */
     BitmapFont.prop('baseLine', 0, Fire.Integer, Fire.ReadOnly);
+
+    /**
+     * The space of the line
+     * @property lineHeight
+     * @type {number}
+     * @default 0
+     */
     BitmapFont.prop('lineHeight', 0, Fire.Integer, Fire.ReadOnly);
+
+    /**
+     * The size in pixel of the font
+     * @property size
+     * @type {number}
+     * @default 0
+     */
     BitmapFont.prop('size', 0, Fire.Integer, Fire.ReadOnly);
+
     BitmapFont.prop('face', null, Fire.HideInInspector);
 
     return BitmapFont;
