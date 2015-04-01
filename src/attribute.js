@@ -220,35 +220,44 @@ Fire.String = {
  * If the type is derived from Fire.Asset, it will be serialized to uuid.
  *
  * @method ObjectType
- * @param {function} constructor - the special type you want
+ * @param {function} typeCtor - the special type you want
  * @param {boolean} [useUuid=false] - the value will be represented as a uuid string
  * @return {object} the attribute
  * @private
  */
-Fire.ObjectType = function (constructor, useUuid) {
+Fire.ObjectType = function (typeCtor, useUuid) {
     // @ifdef EDITOR
-    if ( !constructor ) {
+    if ( !typeCtor ) {
         Fire.warn('Argument for Fire.ObjectType must be non-nil');
         return;
     }
-    if (typeof constructor !== 'function') {
+    if (typeof typeCtor !== 'function') {
         Fire.warn('Argument for Fire.ObjectType must be function type');
         return;
     }
     // @endif
     return {
         type: useUuid ? 'uuid' : 'object',
-        ctor: constructor,
+        ctor: typeCtor,
         // @ifdef EDITOR
-        _onAfterProp: function (ctor, mainPropName) {
-            var check = getTypeChecker('object', 'Fire.ObjectType', constructor);
-            check(ctor, mainPropName);
+        _onAfterProp: function (classCtor, mainPropName) {
+            var check = getTypeChecker('object', 'Fire.ObjectType', typeCtor);
+            check(classCtor, mainPropName);
             // check Vec2
-            var mainPropAttrs = Fire.attr(ctor, mainPropName) || {};
-            var isNilObj = mainPropAttrs.default === null || mainPropAttrs.default === undefined;
-            if ( isNilObj && typeof constructor.prototype.clone === 'function') {
-                Fire.warn('Please set the default value of %s.%s to a valid instance such as "new %s()", because its ObjectType is value type.',
-                          JS.getClassName(ctor), mainPropName, JS.getClassName(constructor));
+            var mainPropAttrs = Fire.attr(classCtor, mainPropName) || {};
+            if (typeof typeCtor.prototype.clone === 'function') {
+                var typename = JS.getClassName(typeCtor);
+                var hasDefault = mainPropAttrs.default === null || mainPropAttrs.default === undefined;
+                if ( hasDefault ) {
+                    Fire.warn('%s is a ValueType, no need to specify the "type" of %s.%s, ' +
+                        'because the type information can obtain from its default value directly.',
+                        typename, JS.getClassName(classCtor), mainPropName, typename);
+                }
+                else {
+                    Fire.warn('%s is a ValueType, no need to specify the "type" of %s.%s, ' +
+                        'just set the default value to "new %s()" and it will be handled properly.',
+                        typename, JS.getClassName(classCtor), mainPropName, typename);
+                }
             }
         }
         // @endif
