@@ -94,41 +94,35 @@ Fire.Class = function (options) {
             var val = properties[propName];
             var isObj = val && typeof val === 'object' && !Array.isArray(val);
             var isLiteral = isObj && val.constructor === ({}).constructor;
-            if (isLiteral) {
-                //var isValueType = typeof val.prototype.clone === 'function';
-                //if (isValueType) {
-                //    cls.prop(propName, val);
-                //    continue;
-                //}
-                var attrs = parseAttributes(val, name, propName);
-                if (val.hasOwnProperty('default')) {
-                    cls.prop.apply(cls, [propName, val.default].concat(attrs));
-                }
-                else {
-                    var getter = val.get;
-                    var setter = val.set;
-                    // @ifdef EDITOR
-                    if (!getter && !setter) {
-                        Fire.error('Property %s.%s must define at least one of "default", "get" or "set".', name, propName);
-                    }
-                    // @endif
-                    if (getter) {
-                        cls.get.apply(cls, [propName, getter].concat(attrs));
-                    }
-                    if (setter) {
-                        cls.set(propName, setter);
-                    }
-                }
-                //Fire.error('属性 %s.%s 不能定义为 null', name, propName);
+            if ( !isLiteral ) {
+                val = {
+                    default: val
+                };
+            }
+            //var isValueType = typeof val.prototype.clone === 'function';
+            //if (isValueType) {
+            //    cls.prop(propName, val);
+            //    continue;
+            //}
+            var attrs = parseAttributes(val, name, propName);
+            if (val.hasOwnProperty('default')) {
+                cls.prop.apply(cls, [propName, val.default].concat(attrs));
             }
             else {
-                cls.prop(propName, val);
+                var getter = val.get;
+                var setter = val.set;
+                // @ifdef EDITOR
+                if (!getter && !setter) {
+                    Fire.error('Property %s.%s must define at least one of "default", "get" or "set".', name, propName);
+                }
+                // @endif
+                if (getter) {
+                    cls.get.apply(cls, [propName, getter].concat(attrs));
+                }
+                if (setter) {
+                    cls.set(propName, setter);
+                }
             }
-            // @ifdef EDITOR
-            //else {
-            //    Fire.error('属性 %s.%s 不能定义为 %s', name, propName, type);
-            //}
-            // @endif
         }
     }
 
