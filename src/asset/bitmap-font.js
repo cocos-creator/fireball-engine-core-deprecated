@@ -2,7 +2,6 @@
 var BitmapFont = (function () {
 
     /**
-     * The texture-info asset
      * @class BitmapFont
      * @extends Asset
      */
