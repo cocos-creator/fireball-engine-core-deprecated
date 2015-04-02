@@ -7,7 +7,6 @@
  * @return {function} - the created class
  *
  * @example
-```js
     // define base class
     var Node = Fire.Class();
 
@@ -51,7 +50,6 @@
     Sprite.getBounds = function (spriteList) {
         // ...
     };
-```
  */
 Fire.Class = function (options) {
     if (arguments.length === 0) {

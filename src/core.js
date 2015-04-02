@@ -386,7 +386,6 @@ else {
  * @return {object} the defined enum type
  *
  * @example
- ```js
 Texture.WrapMode = Fire.defineEnum({
     Repeat: -1,
     Clamp: -1
@@ -408,7 +407,6 @@ var AtlasSizeList = Fire.defineEnum({
     512: 512,
     1024: 1024,
 });
- ```
  */
 Fire.defineEnum = function (obj) {
     var enumType = {};

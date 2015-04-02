@@ -56,9 +56,7 @@ else {
              * @return {string}
              *
              * @example
-```js
     path.basename('/foo/bar/baz/asdf/quux.html')    // returns 'quux.html'
-```
              */
             basename: function (path) {
                 return path.replace(/^.*(\\|\/|\:)/, '');
@@ -74,12 +72,10 @@ else {
              * @return {string}
              *
              * @example
-```js
 path.extname('index.html')      // returns '.html'
 path.extname('index.coffee.md') // returns '.md'
 path.extname('index.')          // returns '.'
 path.extname('index')           // returns ''
-```
              */
             extname: function (path) {
                 return path.substring((~-path.lastIndexOf(".") >>> 0) + 1);
@@ -93,9 +89,7 @@ path.extname('index')           // returns ''
              * @return {string}
              *
              * @example
-```js
 path.dirname('/foo/bar/baz/asdf/quux') // returns '/foo/bar/baz/asdf'
-```
              */
             dirname: function (path) {
                 // copied from node.js/lib/path.js

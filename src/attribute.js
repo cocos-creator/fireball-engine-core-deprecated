@@ -9,7 +9,6 @@
  * @return {object|undefined} return all attributes associated with the property. if none undefined will be returned
  *
  * @example
- ```js
     var klass = function () { this.value = 0.5 };
     Fire.attr(klass, 'value');              // return undefined
     Fire.attr(klass, 'value', {}).min = 0;  // assign new attribute table associated with 'value', and set its min = 0
@@ -18,7 +17,6 @@
        default: 0.5,
     });
     Fire.attr(klass, 'value');              // return { default: 0.5, min: 0, max: 1 }
-```
  */
 Fire.attr = function (constructor, propertyName, attributes) {
     var key = '_attr$' + propertyName;
