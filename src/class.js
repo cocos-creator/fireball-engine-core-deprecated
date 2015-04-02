@@ -435,6 +435,116 @@ Fire.extend = function (className, baseClass, constructor) {
 };
 
 function _createCtor (constructor, baseClass) {
+    // get base user constructors
+    var ctors;
+    if (Fire._isFireClass(baseClass)) {
+        ctors = baseClass.__ctors__;
+        if (ctors) {
+            ctors = ctors.slice();
+        }
+    }
+    else if (baseClass) {
+        ctors = [baseClass];
+    }
+    // append subclass user constructors
+    if (ctors) {
+        if (constructor) {
+            ctors.push(constructor);
+        }
+    }
+    else if (constructor) {
+        ctors = [constructor];
+    }
+    // create class constructor
+    var fireClass;
+    if (ctors) {
+        // @ifdef EDITOR
+        console.assert(ctors.length > 0);
+        // @endif
+        switch (ctors.length) {
+            case 1:
+                fireClass = function () {
+                    // @ifdef EDITOR
+                    this._observing = false;
+                    // @endif
+                    _createInstanceProps(this, fireClass);
+                    // call user constructors
+                    var ctors = fireClass.__ctors__;
+                    (ctors[0]).apply(this, arguments);
+                };
+                break;
+            case 2:
+                fireClass = function () {
+                    // @ifdef EDITOR
+                    this._observing = false;
+                    // @endif
+                    _createInstanceProps(this, fireClass);
+                    // call user constructors
+                    var ctors = fireClass.__ctors__;
+                    (ctors[0]).apply(this, arguments);
+                    (ctors[1]).apply(this, arguments);
+                };
+                break;
+            case 3:
+                fireClass = function () {
+                    // @ifdef EDITOR
+                    this._observing = false;
+                    // @endif
+                    _createInstanceProps(this, fireClass);
+                    // call user constructors
+                    var ctors = fireClass.__ctors__;
+                    (ctors[0]).apply(this, arguments);
+                    (ctors[1]).apply(this, arguments);
+                    (ctors[2]).apply(this, arguments);
+                };
+                break;
+            case 4:
+                fireClass = function () {
+                    // @ifdef EDITOR
+                    this._observing = false;
+                    // @endif
+                    _createInstanceProps(this, fireClass);
+                    // call user constructors
+                    var ctors = fireClass.__ctors__;
+                    (ctors[0]).apply(this, arguments);
+                    (ctors[1]).apply(this, arguments);
+                    (ctors[2]).apply(this, arguments);
+                    (ctors[3]).apply(this, arguments);
+                };
+                break;
+            default:
+                fireClass = function () {
+                    // @ifdef EDITOR
+                    this._observing = false;
+                    // @endif
+                    _createInstanceProps(this, fireClass);
+                    // call user constructors
+                    var ctors = fireClass.__ctors__;
+                    for (var i = 0, len = ctors.length; i < len; ++i) {
+                        (ctors[i]).apply(this, arguments);
+                    }
+                };
+                break;
+        }
+    }
+    else {
+        // no user constructor
+        fireClass = function () {
+            // @ifdef EDITOR
+            this._observing = false;
+            // @endif
+            _createInstanceProps(this, fireClass);
+        };
+    }
+    Object.defineProperty(fireClass, '__ctors__', {
+        value: ctors || null,
+        writable: false,
+        enumerable: false
+    });
+    return fireClass;
+}
+/*
+function _createCtor_old (constructor, baseClass) {
     var fireClass;
     var propsInitedByBase = baseClass && Fire._isFireClass(baseClass);
     if (constructor) {
@@ -498,7 +608,7 @@ function _createCtor (constructor, baseClass) {
     }
     return fireClass;
 }
-
+*/
 // @ifdef DEV
 function _checkCtor (ctor) {
     if (Fire._isFireClass(ctor)) {
