@@ -430,6 +430,8 @@ Fire.Nullable = function (boolPropName, hasValueByDefault) {
  * @method Watch
  * @param {string} names - the name of target property to watch, array is also acceptable.
  * @param {function} callback - the callback function to invoke when target property(s) is changed.
+ * @param {object} callback.param object - the instance object which contains watching property(s).
+ * @param {object} callback.param element - the property element which displays watching property(s).
  * @return {object} the attribute
  * @private
  */
