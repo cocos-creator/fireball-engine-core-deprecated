@@ -221,17 +221,25 @@ Fire.String_Obsoleted = {
 // @endif
 };
 
+// the value will be represented as a uuid string
+Object.defineProperty(Fire, '_ScriptUuid', {
+    get: function () {
+        var attr = Fire.ObjectType(Fire.ScriptAsset);
+        attr.type = 'script-uuid';
+        return attr;
+    }
+});
+
 /**
  * Makes a property only accept the supplied object type in Inspector.
  * If the type is derived from Fire.Asset, it will be serialized to uuid.
  *
  * @method ObjectType
  * @param {function} typeCtor - the special type you want
- * @param {boolean} [useUuid=false] - the value will be represented as a uuid string
  * @return {object} the attribute
  * @private
  */
-Fire.ObjectType = function (typeCtor, useUuid) {
+Fire.ObjectType = function (typeCtor) {
     // @ifdef EDITOR
     if ( !typeCtor ) {
         Fire.warn('Argument for Fire.ObjectType must be non-nil');
@@ -243,7 +251,7 @@ Fire.ObjectType = function (typeCtor, useUuid) {
     }
     // @endif
     return {
-        type: useUuid ? 'uuid' : 'object',
+        type: 'object',
         ctor: typeCtor,
         // @ifdef EDITOR
         _onAfterProp: function (classCtor, mainPropName) {
