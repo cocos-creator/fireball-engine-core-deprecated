@@ -160,7 +160,7 @@ var ObjectFlags = {
 
     /**
      * Hide in game and hierarchy.
-     * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
+     * This flag is readonly, it can only be used as an argument of scene.addEntity() or Entity.createWithFlags()
      * @property HideInGame
      * @type number
      */
@@ -169,7 +169,7 @@ var ObjectFlags = {
     // public flags for editor
 
     /**
-     * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
+     * This flag is readonly, it can only be used as an argument of scene.addEntity() or Entity.createWithFlags()
      * @property HideInEditor
      * @type number
      */
@@ -185,7 +185,7 @@ var ObjectFlags = {
 
 /**
  * Hide in game view, hierarchy, and scene view... etc.
- * This flag is readonly, it can only be used as an argument of scene.createEntity() or Entity.createWithFlags()
+ * This flag is readonly, it can only be used as an argument of scene.addEntity() or Entity.createWithFlags()
  * @property Hide
  * @type number
  */
