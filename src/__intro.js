@@ -15,3 +15,5 @@
      * @static
      */
     var Fire = root.Fire || {};
+    var Editor = root.Editor || {};
+    Fire.Editor = Editor;

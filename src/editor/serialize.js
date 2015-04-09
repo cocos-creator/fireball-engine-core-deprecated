@@ -330,13 +330,17 @@ var _Serializer = (function () {
 })();
 
 /**
+ * @module Editor
+ * @class Editor
+ */
+/**
  * Serialize Fire.Asset to a json string
  * @method serialize
  * @param {Asset} obj - The object to serialize
  * @param {object} [options=null]
  * @return {string|object} The json string to represent the object or json object if dontStringify is true
  */
-Fire.serialize = function (obj, options) {
+Editor.serialize = function (obj, options) {
     var exporting = (options && options.exporting);
     // indicates whether needs to convert the result by JSON.stringify, default is true
     var stringify = (options && 'stringify' in options) ? options.stringify : true;
@@ -365,9 +369,9 @@ Fire.serialize = function (obj, options) {
  * @param {string} uuid
  * @return {Asset}
  */
-Fire.serialize.asAsset = function (uuid) {
+Editor.serialize.asAsset = function (uuid) {
     if ( !uuid ) {
-        Fire.error('[Fire.serialize.asAsset] The uuid must be non-nil!');
+        Fire.error('[Editor.serialize.asAsset] The uuid must be non-nil!');
     }
     var pseudoAsset = new Asset();
     pseudoAsset._uuid = uuid;
@@ -380,7 +384,7 @@ Fire.serialize.asAsset = function (uuid) {
  * @param {object} jsonObj
  * @param {string} name
  */
-Fire.serialize.setName = function (jsonObj, name) {
+Editor.serialize.setName = function (jsonObj, name) {
     if ( Array.isArray(jsonObj) ) {
         jsonObj[0]._name = name;
     }

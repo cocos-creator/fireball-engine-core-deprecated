@@ -150,7 +150,7 @@ test('serialization if inherited from FObject', function () {
     var obj = new type();
     obj.name = '阿加西';
 
-    var json = JSON.parse(Fire.serialize(obj));
+    var json = JSON.parse(Editor.serialize(obj));
     var expected = { "__type__": "Fire.MyType", "_name": "阿加西", "_objFlags": 0 };
 
     deepEqual(json, expected, 'can serialize FObject.name');

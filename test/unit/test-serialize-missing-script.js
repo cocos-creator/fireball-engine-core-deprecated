@@ -12,7 +12,7 @@ test('deserialize missing script', function() {
     var obj = new ToMiss();
     obj.ref = new Fire.FObject();
 
-    var lastData = Fire.serialize(obj);
+    var lastData = Editor.serialize(obj);
     delete obj.__id__;
     delete obj.ref.__id__;
     Fire.JS.unregisterClass(ToMiss);
@@ -29,7 +29,7 @@ test('deserialize missing script', function() {
 
     // serialize
 
-    reSerialized = Fire.serialize(missed, {stringify: false});
+    reSerialized = Editor.serialize(missed, {stringify: false});
     delete obj.ref.__id__;
     deepEqual(reSerialized, JSON.parse(lastData), 'can serialize missing script as its original data');
 

@@ -16,7 +16,7 @@
     /**
      * @method add
      * @param {string} key
-     * @param {function} callback
+     * @param {function} callback - can be null
      * @return {boolean} whether the key is new
      */
     CallbacksHandler.prototype.add = function (key, callback) {
