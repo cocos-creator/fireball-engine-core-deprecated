@@ -32,7 +32,7 @@ test('basic deserialize test', function () {
     })();
 
     var asset = new MyAsset();
-    var serializedAsset = Fire.serialize(asset);
+    var serializedAsset = Editor.serialize(asset);
     delete asset.__id__;
     var deserializedAsset = Fire.deserialize(serializedAsset);
 
@@ -61,7 +61,7 @@ test('basic deserialize test with target', function () {
         return MyAsset;
     })();
     var asset = new MyAsset();
-    var serializedAsset = Fire.serialize(asset);
+    var serializedAsset = Editor.serialize(asset);
     delete asset.__id__;
 
     var newObj = {a:100};
@@ -154,17 +154,17 @@ test('reference to main asset', function () {
         }
      */
 
-    var serializedAsset = Fire.serialize(asset);
+    var serializedAsset = Editor.serialize(asset);
     var deserializedAsset = Fire.deserialize(serializedAsset);
 
     ok(deserializedAsset.refSelf === deserializedAsset, 'should ref to self');
-    //deepEqual(Fire.serialize(deserializedAsset), serializedAsset, 'test deserialize');
+    //deepEqual(Editor.serialize(deserializedAsset), serializedAsset, 'test deserialize');
 });
 
 test('reference to main asset with target', function () {
     var asset = {};
     asset.refSelf = asset;
-    var serializedAsset = Fire.serialize(asset);
+    var serializedAsset = Editor.serialize(asset);
 
     asset.refSelf = null;
 
@@ -189,7 +189,7 @@ testWithTarget('circular reference by object', function (useTarget) {
     var mainAsset = { myAsset: asset };
     asset.refToMain = mainAsset;
 
-    var serializedAsset = Fire.serialize(mainAsset);
+    var serializedAsset = Editor.serialize(mainAsset);
     delete mainAsset.__id__;
     delete asset.__id__;
     var deserializedAsset = Fire.deserialize(serializedAsset, null, useTarget ? {target: mainAsset} : null);
@@ -221,7 +221,7 @@ testWithTarget('circular reference by array', function (useTarget) {
     })();
 
     var expectAsset = new MyAsset();
-    //Fire.log(Fire.serialize(expectAsset));
+    //Fire.log(Editor.serialize(expectAsset));
     var json = '[{"__type__":"MyAsset","array1":{"__id__":1},"array2":{"__id__":2}},[1,{"__id__":2}],[{"__id__":1},2]]';
     var deserializedAsset = Fire.deserialize(json, null, useTarget ? {target: expectAsset} : null);
 
@@ -271,7 +271,7 @@ test('target', function () {
     var myAsset = new MyAsset();
     myAsset.tmpVal = 321;
     myAsset.saveVal = 111;
-    var data = Fire.serialize(myAsset);
+    var data = Editor.serialize(myAsset);
     myAsset.saveVal = 0;
 
     var newAsset = Fire.deserialize(data, null, { target:myAsset });

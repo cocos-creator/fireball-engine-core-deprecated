@@ -3,8 +3,8 @@
 largeModule('Serialize');
 
 var match = function (obj, expect, info) {
-    deepEqual(JSON.parse(Fire.serialize(obj)), expect, info);
-    //deepEqual(Fire.serialize(obj, {stringify: false}), expect, info);
+    deepEqual(JSON.parse(Editor.serialize(obj)), expect, info);
+    //deepEqual(Editor.serialize(obj, {stringify: false}), expect, info);
 };
 
 test('basic test', function() {
@@ -75,7 +75,7 @@ test('nil', function () {
     var expect = '{\n\
   "null": null\n\
 }'
-    equal(Fire.serialize(obj), expect);
+    equal(Editor.serialize(obj), expect);
 });
 
 test('test inherited FireClass', function() {
@@ -130,7 +130,7 @@ test('test FireClass', function () {
     Sprite.prop('size', new Fire.Vec2(128, 128));
 
     var sprite = new Sprite();
-    var actual = JSON.parse(Fire.serialize(sprite));
+    var actual = JSON.parse(Editor.serialize(sprite));
 
     strictEqual(actual.image, undefined, 'should not serialize variable which not defined by property');
 
@@ -182,8 +182,8 @@ test('test serializable attributes', function () {
                      .prop('_isValid', true, Fire.NonSerialized);
 
     var sprite = new Sprite();
-    var resultInEditor = JSON.parse(Fire.serialize(sprite));
-    var resultInPlayer = JSON.parse(Fire.serialize(sprite, { exporting: true }));
+    var resultInEditor = JSON.parse(Editor.serialize(sprite));
+    var resultInPlayer = JSON.parse(Editor.serialize(sprite, { exporting: true }));
 
     strictEqual(resultInEditor.trimThreshold, 2, 'serialize editor only in editor');
 
@@ -201,7 +201,7 @@ test('test asset property', function () {
     var uuid = '541020432560';
     sprite.texture._uuid = uuid;
 
-    var result = JSON.parse(Fire.serialize(sprite));
+    var result = JSON.parse(Editor.serialize(sprite));
 
     deepEqual(result.texture, {__uuid__: uuid}, 'serialize asset as uuid reference');
 });

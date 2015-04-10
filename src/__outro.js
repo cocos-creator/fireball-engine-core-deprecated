@@ -10,6 +10,7 @@
     }
     else {
         root.Fire = Fire;
+        root.Editor = Editor;
     }
 }).call(this);
 // @endif

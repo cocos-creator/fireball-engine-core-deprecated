@@ -1,7 +1,4 @@
-﻿/**
- * @module Editor
- */
-
+﻿
 // registered custom asset menu items
 Fire._customAssetMenuItems = [];
 
@@ -19,7 +16,7 @@ Fire.addCustomAssetMenu = function (constructor, menuPath, priority) {
         menuPath: menuPath,
         priority: priority
     });
-    if (Fire.sendToWindows) {
-        Fire.sendToWindows('asset:refresh-context-menu');
+    if (Editor.sendToWindows) {
+        Editor.sendToWindows('asset:refresh-context-menu');
     }
 };

@@ -385,7 +385,7 @@ Fire.deserialize = function (data, result, options) {
     Fire._isCloning = false;
 
     if (createAssetRefs) {
-        result.assignAssetsBy(Fire.serialize.asAsset);
+        result.assignAssetsBy(Editor.serialize.asAsset);
     }
 
     return deserializer.deserializedData;

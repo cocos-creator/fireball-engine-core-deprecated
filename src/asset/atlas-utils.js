@@ -449,4 +449,4 @@ AtlasUtils.sort = function ( atlas, algorithm, sortBy, sortOrder, allowRotate ) 
     }
 };
 
-Fire.AtlasUtils = AtlasUtils;
+Editor.AtlasUtils = AtlasUtils;

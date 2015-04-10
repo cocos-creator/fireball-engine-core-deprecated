@@ -248,7 +248,7 @@ Fire.unregisterClass to remove the id of unused class';
         if (!cls) {
             if (classId.length === 32) {
                 // 尝试解析旧的 uuid 压缩格式
-                cls = _idToClass[Fire.compressUuid(classId)];
+                cls = _idToClass[Editor.compressUuid(classId)];
             }
         }
 // @endif
