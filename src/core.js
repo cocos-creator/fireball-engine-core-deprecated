@@ -318,6 +318,47 @@ Fire.unregisterClass to remove the id of unused class';
     // @endif
 })();
 
+/**
+ * Define get set accessor, just help to call Object.defineProperty(...)
+ * @method getset
+ * @param {any} obj
+ * @param {string} prop
+ * @param {function} getter
+ * @param {function} setter
+ */
+JS.getset = function (obj, prop, getter, setter) {
+    Object.defineProperty(obj, prop, {
+        get: getter,
+        set: setter
+    });
+};
+
+/**
+ * Define get accessor, just help to call Object.defineProperty(...)
+ * @method get
+ * @param {any} obj
+ * @param {string} prop
+ * @param {function} getter
+ */
+JS.get = function (obj, prop, getter) {
+    Object.defineProperty(obj, prop, {
+        get: getter
+    });
+};
+
+/**
+ * Define set accessor, just help to call Object.defineProperty(...)
+ * @method set
+ * @param {any} obj
+ * @param {string} prop
+ * @param {function} setter
+ */
+JS.set = function (obj, prop, setter) {
+    Object.defineProperty(obj, prop, {
+        set: setter
+    });
+};
+
 // logs
 
 /**
