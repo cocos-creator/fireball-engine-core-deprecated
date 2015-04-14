@@ -73,19 +73,3 @@
     });
     return AudioClip;
 })();
-
-// create entity action
-// @ifdef EDITOR
-Fire.AudioClip.prototype.createEntity = function ( cb ) {
-    var ent = new Fire.Entity(this.name);
-
-    var audioSource = ent.addComponent(Fire.AudioSource);
-
-    audioSource.clip = this;
-
-    if ( cb )
-        cb (ent);
-};
-// @endif
-
-module.exports = Fire.AudioClip;
