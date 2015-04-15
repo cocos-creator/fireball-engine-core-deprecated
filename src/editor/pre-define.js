@@ -17,6 +17,6 @@ Fire.addCustomAssetMenu = function (constructor, menuPath, priority) {
         priority: priority
     });
     if (Editor.sendToWindows) {
-        Editor.sendToWindows('asset:refresh-context-menu');
+        Editor.sendToWindows('fire-assets:refresh-context-menu');
     }
 };
