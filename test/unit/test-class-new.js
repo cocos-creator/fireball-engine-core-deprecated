@@ -272,7 +272,7 @@ test('isChildClassOf', function () {
     strictEqual(Fire.isChildClassOf(Base, Object) &&
                 ! Fire.isChildClassOf(Object, Base), true, 'any type is child of Object');
 
-    var Base = function () {};
+    Base = function () {};
     var Sub = function () {};
     Fire.JS.extend(Sub, Base);
     strictEqual(Fire.isChildClassOf(Sub, Base) &&
@@ -313,4 +313,20 @@ test('isChildClassOf', function () {
     strictEqual(Fire.isChildClassOf( Dog, Base),  true, 'Dog is child of Base');
 
     Fire.JS.unregisterClass(Animal, Dog, Husky);
+});
+
+test('statics', function () {
+    var Animal = Fire.Class({
+        statics: {
+            id: "be-bu"
+        }
+    });
+    var Dog = Fire.Class({
+        extends: Animal
+    });
+
+    strictEqual(Animal.id, "be-bu", 'can get static prop');
+    strictEqual(Dog.id, "be-bu", 'can copy static prop to child class');
+    Animal.id = "duang-duang";
+    strictEqual(Animal.id, "duang-duang", 'can set static prop');
 });

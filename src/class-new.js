@@ -124,9 +124,28 @@ Fire.Class = function (options) {
         }
     }
 
+    // define statics
+    var statics = options.statics;
+    if (statics) {
+        // @ifdef EDITOR
+        var INVALID_STATICS = ['name', '__ctors__', '__props__', 'arguments', 'call', 'apply', 'caller', 'get', 'getset',
+                               'length', 'prop', 'prototype', 'set'];
+        // @endif
+        for (var staticPropName in statics) {
+            // @ifdef EDITOR
+            if (INVALID_STATICS.indexOf(staticPropName) !== -1) {
+                Fire.error('Cannot define %s.%s because static member name can not be "%s".', name, staticPropName, staticPropName);
+                continue;
+            }
+            // @endif
+            cls[staticPropName] = statics[staticPropName];
+        }
+    }
+
     // define functions
+    var BUILTIN_ENTRIES = ['name', 'extends', 'constructor', 'properties', 'statics'];
     for (var funcName in options) {
-        if (funcName === 'name' || funcName === 'extends' || funcName === 'constructor' || funcName === 'properties') {
+        if (BUILTIN_ENTRIES.indexOf(funcName) !== -1) {
             continue;
         }
         var func = options[funcName];
@@ -138,7 +157,8 @@ Fire.Class = function (options) {
         else {
             var TypoCheckList = {
                 extend: 'extends',
-                property: 'properties'
+                property: 'properties',
+                static: 'statics'
             };
             var correct = TypoCheckList[funcName];
             if (correct) {
