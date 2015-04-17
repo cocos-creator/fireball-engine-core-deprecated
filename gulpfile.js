@@ -40,6 +40,7 @@ var paths = {
         'src/rect.js',
         'src/polygon.js',
         'src/color.js',
+        'src/types.js',
         'src/deserialize.js',
         'src/instantiate.js',
 
