@@ -90,6 +90,27 @@ Fire.Sprite = (function () {
     Sprite.prop('rawHeight', 0, Fire.Integer_Obsoleted, Fire.HideInInspector);
 
     /**
+     * Use pixel-level hit testing.
+     * @property pixelLevelHitTest
+     * @type boolean
+     * @default false
+     */
+    Sprite.prop('pixelLevelHitTest', false, Fire.Tooltip('Use pixel-level hit testing.'));
+
+    /**
+     * The highest alpha channel value that is considered opaque for hit test. [0, 1]
+     * @property alphaThreshold
+     * @type number
+     * @default 0.1
+     */
+    Sprite.prop('alphaThreshold', 0.1,
+        Fire.Watch('pixelLevelHitTest', function (obj, propEL) {
+            propEL.disabled = !obj.pixelLevelHitTest;
+        }),
+        Fire.Tooltip('The highest alpha channel value that is considered opaque for hit test.')
+    );
+
+    /**
      * @property rotatedWidth
      * @type number
      * @readOnly

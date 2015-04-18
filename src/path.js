@@ -115,8 +115,10 @@ path.dirname('/foo/bar/baz/asdf/quux') // returns '/foo/bar/baz/asdf'
              * The platform-specific file separator. '\\' or '/'.
              * @property sep
              * @type {string}
+             * @default windows: "\", mac: "/"
+             * @readOnly
              */
-            sep: (Fire.isWin32 ? '\\' : '/'),
+            sep: (Fire.isWin32 ? '\\' : '/')
         };
         return Path;
     })();
