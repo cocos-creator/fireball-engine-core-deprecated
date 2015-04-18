@@ -133,6 +133,7 @@ FObject = (function () {
     };
 
     /**
+     * Called before the object being destroyed.
      * @method _onPreDestroy
      * @private
      */

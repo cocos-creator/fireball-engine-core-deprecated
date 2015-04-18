@@ -46,6 +46,11 @@ var Asset = Fire.Class({
             Fire.error('Have not defined any RawTypes yet, no need to set raw file\'s extname.');
         }
     }
+
+    /*
+    Virtual function inherited from FObject:
+        _onPreDestroy: function () {}
+    */
 });
 
 Fire.Asset = Asset;

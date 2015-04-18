@@ -21,7 +21,7 @@ function _copyprop(name, source, target) {
  * @class JS
  * @static
  */
-var JS = Fire.JS = {
+var JS = {
 
     /**
      * copy all properties not defined in obj from arguments[1...n]
@@ -109,6 +109,8 @@ var JS = Fire.JS = {
         }
     }
 };
+
+Fire.JS = JS;
 
 /**
  * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null.

@@ -48,7 +48,7 @@ else {
             };
         }
 
-        path = {
+        var Path = {
             /**
              * Return the last portion of a path.
              * @method basename
@@ -78,6 +78,7 @@ path.extname('index.')          // returns '.'
 path.extname('index')           // returns ''
              */
             extname: function (path) {
+                path = Path.basename(path);
                 return path.substring((~-path.lastIndexOf(".") >>> 0) + 1);
             },
 
@@ -117,7 +118,7 @@ path.dirname('/foo/bar/baz/asdf/quux') // returns '/foo/bar/baz/asdf'
              */
             sep: (Fire.isWin32 ? '\\' : '/'),
         };
-        return path;
+        return Path;
     })();
 }
 
