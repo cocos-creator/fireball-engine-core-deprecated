@@ -101,7 +101,7 @@ Fire.Texture = (function () {
      *
      * @method getPixel
      * @param {number} x
-     * @param {nmber} y
+     * @param {number} y
      * @return {Fire.Color}
      */
     Texture.prototype.getPixel = function (x, y) {
@@ -118,11 +118,11 @@ Fire.Texture = (function () {
         else if (this.wrapMode === Texture.WrapMode.Repeat) {
             x = x % this.image.width;
             if (x < 0) {
-                x += this.image.width
+                x += this.image.width;
             }
             y = y % this.image.width;
             if (y < 0) {
-                y += this.image.width
+                y += this.image.width;
             }
         }
         canvasCtxToGetPixel.clearRect(0, 0, 1, 1);
@@ -142,7 +142,7 @@ Fire.Texture = (function () {
         result.b = imgBytes[2] / 255;
         result.a = imgBytes[3] / 255;
         return result;
-    }
+    };
 
     return Texture;
 })();
