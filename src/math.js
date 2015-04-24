@@ -1,6 +1,6 @@
 (function () {
-    var _d2r = Math.PI/180.0;
-    var _r2d = 180.0/Math.PI;
+    var _d2r = Math.PI / 180.0;
+    var _r2d = 180.0 / Math.PI;
 
     /**
      * Extends the JavaScript built-in object that has properties and methods for mathematical constants and functions.
@@ -22,6 +22,20 @@
          * @type number
          */
         HALF_PI: 0.5 * Math.PI,
+
+        /**
+         * degree to radius
+         * @property D2R
+         * @type number
+         */
+        D2R: _d2r,
+
+        /**
+         * radius to degree
+         * @property R2D
+         * @type number
+         */
+        R2D: _r2d,
 
         /**
          * degree to radius
