@@ -218,7 +218,38 @@ Matrix23.prototype.getScale = function (out) {
 };
 
 /**
+ * Extract translation, rotation and scaling component from this matrix.
+ * Only support negative(mirroring) scaling in some special case.
+ *
+ * @method getTRS
+ * @return {object} {translation: Vec2, rotation: number, scale: Vec2}
+ */
+Matrix23.prototype.getTRS = function () {
+    var r = 0;
+    var s = this.getScale();
+    var mirrored = this.a !== 0 && this.a === -this.d && this.b === 0 && this.c === 0;
+    if (mirrored) {
+        if (this.a < 0) {
+            s.x = -s.x;
+        }
+        else {
+            s.y = -s.y;
+        }
+    }
+    else {
+        r = this.getRotation();
+    }
+    return {
+        translation: new Fire.Vec2(this.tx, this.ty),
+        rotation: r,
+        scale: s
+    };
+};
+
+/**
  * Set scaling of this matrix.
+ *
+ * NOTE: Can not scale negative scaling (mirroring) and zero scaling matrix.
  * @method setScale
  * @param {Vec2} scale
  * @return {Matrix23}
