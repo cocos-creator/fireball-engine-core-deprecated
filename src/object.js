@@ -157,6 +157,27 @@ FObject = (function () {
         this._objFlags |= Destroyed;
     };
 
+    // @ifdef EDITOR
+    /**
+     * The customized serialization for this object. (Editor Only)
+     * @method _serialize
+     * @param {boolean} exporting
+     * @return {object} the serialized json data object
+     * @private
+     */
+    prototype._serialize = null;
+    // @endif
+
+    /**
+     * Init this object from the custom serialized data.
+     * @method _deserialize
+     * @param {object} data - the serialized json data
+     * @param {_Deserializer} ctx
+     * @param {object} target
+     * @private
+     */
+    prototype._deserialize = null;
+
     return FObject;
 })();
 

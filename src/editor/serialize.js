@@ -82,7 +82,7 @@ var _Serializer = (function () {
         }
         else {
             var klass = obj.constructor;
-            if (!Fire._isFireClass(klass)) {
+            if (! Fire._isFireClass(klass)) {
                 // primitive javascript object
                 for (var key in obj) {
                     //Fire.log(key);
@@ -241,16 +241,21 @@ var _Serializer = (function () {
                                     // If it will lead to performance degradations in V8, we just need to save ids to another table.
             self._objsToResetId.push(obj);
 
-            var data = {};
-            self.serializedList.push(data);
-
             // get FObject data
+            var data = {};
             var type = _getType(obj);
             if (type) {
                 data.__type__ = type;
             }
-            _enumerateObject(self, obj, data);
-            data._objFlags &= PersistentMask;
+            if (! obj._serialize) {
+                _enumerateObject(self, obj, data);
+                data._objFlags &= PersistentMask;
+            }
+            else {
+                //obj._objFlags &= PersistentMask;
+                data.content = obj._serialize(self._exporting);
+            }
+            self.serializedList.push(data);
 
             return { __id__: id };
         }

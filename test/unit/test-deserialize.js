@@ -283,4 +283,30 @@ test('target', function () {
     Fire.JS.unregisterClass(MyAsset);
 });
 
+test('custom deserialization', function () {
+    var Asset = Fire.Class({
+        name: 'a a b b',
+        properties: {
+            prop1: 1,
+            prop2: 2
+        },
+        _serialize: function () {
+            return [this.prop1, this.prop2];
+        },
+        _deserialize: function (data) {
+            this.prop1 = data[0];
+            this.prop2 = data[1];
+        }
+    });
+    var a = new Asset();
+    var sa = Editor.serialize(a, { stringify: false });
+    deepEqual(sa.content, [1, 2], 'should pack value to array');
+
+    var da = Fire.deserialize(sa);
+    strictEqual(da.prop1, 1, 'can extract packed value 1');
+    strictEqual(da.prop2, 2, 'can extract packed value 2');
+
+    Fire.JS.unregisterClass(Asset);
+});
+
 // jshint ignore: end

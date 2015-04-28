@@ -278,7 +278,12 @@ var _Deserializer = (function () {
             // @endif
 
             if ( Fire._isFireClass(klass) ) {
-                _deserializeFireClass(self, obj, serialized, klass, target);
+                if (! obj._deserialize) {
+                    _deserializeFireClass(self, obj, serialized, klass, target);
+                }
+                else {
+                    obj._deserialize(serialized.content, self, target);
+                }
             }
             else {
                 _deserializeTypedObject(self, obj, serialized);
