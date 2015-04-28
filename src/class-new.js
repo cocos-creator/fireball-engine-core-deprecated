@@ -61,12 +61,12 @@ Fire.Class = function (options) {
     }
 
     var name = options.name;
-    var base = options.extends;
+    var base = options.extends || FObject;
     var ctor = (options.hasOwnProperty('constructor') && options.constructor) || undefined;
 
     // create constructor
     var cls;
-    if (base) {
+    //if (base) {
         if (name) {
             cls = Fire.extend(name, base, ctor);
         }
@@ -74,16 +74,16 @@ Fire.Class = function (options) {
             cls = Fire.extend(base, ctor);
             name = Fire.JS.getClassName(cls);
         }
-    }
-    else {
-        if (name) {
-            cls = Fire.define(name, ctor);
-        }
-        else {
-            cls = Fire.define(ctor);
-            name = Fire.JS.getClassName(cls);
-        }
-    }
+    //}
+    //else {
+    //    if (name) {
+    //        cls = Fire.define(name, ctor);
+    //    }
+    //    else {
+    //        cls = Fire.define(ctor);
+    //        name = Fire.JS.getClassName(cls);
+    //    }
+    //}
 
     // define properties
     var properties = options.properties;

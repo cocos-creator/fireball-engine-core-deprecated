@@ -12,6 +12,7 @@ FObject = (function () {
         /**
          * @property _name
          * @type string
+         * @default ""
          * @private
          */
         this._name = '';
@@ -19,6 +20,7 @@ FObject = (function () {
         /**
          * @property _objFlags
          * @type number
+         * @default 0
          * @private
          */
         this._objFlags = 0;
@@ -51,33 +53,34 @@ FObject = (function () {
         enumerable: false
     });
 
-    // instance
+    // member
+
+    var prototype = FObject.prototype;
 
     /**
      * The name of the object.
      * @property name
      * @type string
+     * @default ""
      */
-    Object.defineProperty(FObject.prototype, 'name', {
-        get: function () {
+    JS.getset(prototype, 'name',
+        function () {
             return this._name;
         },
-        set: function (value) {
+        function (value) {
             this._name = value;
-        },
-        enumerable: false
-    });
+        }
+    );
 
     /**
      * Indicates whether the object is not yet destroyed
      * @property isValid
      * @type boolean
      * @default true
+     * @readOnly
      */
-    Object.defineProperty(FObject.prototype, 'isValid', {
-        get: function () {
-            return !(this._objFlags & Destroyed);
-        }
+    JS.get(prototype, 'isValid', function () {
+        return !(this._objFlags & Destroyed);
     });
 
     /**
@@ -88,7 +91,7 @@ FObject = (function () {
      * @method destroy
      * @return {boolean} whether it is the first time the destroy being called
      */
-    FObject.prototype.destroy = function () {
+    prototype.destroy = function () {
         if (this._objFlags & Destroyed) {
             Fire.error('object already destroyed');
             return false;
@@ -109,7 +112,7 @@ FObject = (function () {
      * @method _destruct
      * @private
      */
-    FObject.prototype._destruct = function () {
+    prototype._destruct = function () {
         // 允许重载destroy
         // 所有可枚举到的属性，都会被清空
         for (var key in this) {
@@ -137,9 +140,9 @@ FObject = (function () {
      * @method _onPreDestroy
      * @private
      */
-    FObject.prototype._onPreDestroy = null;
+    prototype._onPreDestroy = null;
 
-    FObject.prototype._destroyImmediate = function () {
+    prototype._destroyImmediate = function () {
         if (this._objFlags & Destroyed) {
             Fire.error('object already destroyed');
             return;

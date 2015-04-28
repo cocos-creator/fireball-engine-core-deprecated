@@ -7,7 +7,7 @@ test('test', function () {
     var Animal = Fire.Class({
         name: 'Animal',
         properties: {
-            name: {
+            myName: {
                 default: '...',
                 tooltip: 'Float',
                 displayName: 'displayName'
@@ -45,12 +45,12 @@ test('test', function () {
     // property
 
     var instance = new Animal();
-    strictEqual(instance.name, '...', 'get property');
+    strictEqual(instance.myName, '...', 'get property');
     strictEqual(instance.eat(), 'eating', 'get chained property');
     strictEqual(instance.weight, -1, 'get partial property');
 
-    strictEqual(Fire.attr(Animal, 'name').tooltip, 'Float', 'get name tooltip');
-    strictEqual(Fire.attr(Animal, 'name').displayName, 'displayName', 'get name displayName');
+    strictEqual(Fire.attr(Animal, 'myName').tooltip, 'Float', 'get name tooltip');
+    strictEqual(Fire.attr(Animal, 'myName').displayName, 'displayName', 'get name displayName');
     strictEqual(Fire.attr(Animal, 'weight').serializable, false, 'get attribute');
 
     // getter / setter
@@ -97,14 +97,14 @@ test('Inherit', function () {
     var Animal = Fire.Class({
         name: 'Fire.Animal',
         properties: {
-            name: 'ann'
+            myName: 'ann'
         }
     });
     var Dog = Fire.Class({
         name: 'Fire.Dog',
         extends: Animal,
         properties: {
-            name: {
+            myName: {
                 default: 'doge',
                 tooltip: 'String'
             }
@@ -124,19 +124,19 @@ test('Inherit', function () {
 
     strictEqual(Dog.$super, Animal, 'can get super');
 
-    strictEqual(Fire.attr(Animal, 'name'), Fire.attr(Dog, 'name'),
+    strictEqual(Fire.attr(Animal, 'myName'), Fire.attr(Dog, 'myName'),
                 "inheritance chain shares the same property's attribute");
-    strictEqual(Fire.attr(Dog, 'name').tooltip, 'String', 'can modify attribute');
+    strictEqual(Fire.attr(Dog, 'myName').tooltip, 'String', 'can modify attribute');
     strictEqual(Fire.attr(Dog, 'weight'), undefined, 'base property not added');
 
     var husky = new Husky();
     var dog = new Dog();
 
-    strictEqual(dog.name, 'doge', 'can override property');
-    strictEqual(husky.name, 'doge', 'can inherit property');
+    strictEqual(dog.myName, 'doge', 'can override property');
+    strictEqual(husky.myName, 'doge', 'can inherit property');
 
-    deepEqual(Husky.__props__, ['name', 'weight'], 'can inherit prop list');
-    deepEqual(Dog.__props__, ['name'], 'base prop list not changed');
+    deepEqual(Husky.__props__, FObject.__props__.concat(['myName', 'weight']), 'can inherit prop list');
+    deepEqual(Dog.__props__, FObject.__props__.concat(['myName']), 'base prop list not changed');
 
     Fire.JS.unregisterClass(Animal, Dog, Husky);
 });
@@ -148,14 +148,14 @@ test('Inherit + constructor', function () {
         name: 'Fire.Animal',
         constructor: animalConstructor,
         properties: {
-            name: 'ann'
+            myName: 'ann'
         }
     });
     var Dog = Fire.Class({
         name: 'Fire.Dog',
         extends: Animal,
         properties: {
-            name: 'doge'
+            myName: 'doge'
         }
     });
     var Husky = Fire.Class({
@@ -179,8 +179,8 @@ test('Inherit + constructor', function () {
     var dog = new Dog();
     animalConstructor.once('call anim constructor by dog');
 
-    strictEqual(dog.name, 'doge', 'can override property');
-    strictEqual(husky.name, 'doge', 'can inherit property');
+    strictEqual(dog.myName, 'doge', 'can override property');
+    strictEqual(husky.myName, 'doge', 'can inherit property');
 
     Fire.JS.unregisterClass(Animal, Dog, Husky);
 });
