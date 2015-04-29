@@ -327,11 +327,13 @@ Fire.unregisterClass to remove the id of unused class';
  * @param {string} prop
  * @param {function} getter
  * @param {function} setter
+ * @param {boolean} [enumerable=false]
  */
-JS.getset = function (obj, prop, getter, setter) {
+JS.getset = function (obj, prop, getter, setter, enumerable) {
     Object.defineProperty(obj, prop, {
         get: getter,
-        set: setter
+        set: setter,
+        enumerable: !!enumerable
     });
 };
 
@@ -341,10 +343,12 @@ JS.getset = function (obj, prop, getter, setter) {
  * @param {any} obj
  * @param {string} prop
  * @param {function} getter
+ * @param {boolean} [enumerable=false]
  */
-JS.get = function (obj, prop, getter) {
+JS.get = function (obj, prop, getter, enumerable) {
     Object.defineProperty(obj, prop, {
-        get: getter
+        get: getter,
+        enumerable: !!enumerable
     });
 };
 
@@ -354,10 +358,12 @@ JS.get = function (obj, prop, getter) {
  * @param {any} obj
  * @param {string} prop
  * @param {function} setter
+ * @param {boolean} [enumerable=false]
  */
-JS.set = function (obj, prop, setter) {
+JS.set = function (obj, prop, setter, enumerable) {
     Object.defineProperty(obj, prop, {
-        set: setter
+        set: setter,
+        enumerable: !!enumerable
     });
 };
 
