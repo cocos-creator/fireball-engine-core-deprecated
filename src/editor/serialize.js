@@ -243,6 +243,8 @@ var _Serializer = (function () {
 
             // get FObject data
             var data = {};
+            self.serializedList.push(data);
+
             var type = _getType(obj);
             if (type) {
                 data.__type__ = type;
@@ -255,7 +257,6 @@ var _Serializer = (function () {
                 //obj._objFlags &= PersistentMask;
                 data.content = obj._serialize(self._exporting);
             }
-            self.serializedList.push(data);
 
             return { __id__: id };
         }

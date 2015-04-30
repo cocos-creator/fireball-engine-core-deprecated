@@ -219,6 +219,44 @@ test('test FObject reference', function () {
     match(asset, expected, 'references should the same');
 });
 
+test('main asset', function () {
+    var Scene = Fire.Class({
+        name: "Scene",
+        properties: {
+            entities: [],
+        }
+    });
+
+    var Entity = Fire.Class({
+        name: "Entity"
+    });
+
+    var scene = new Scene();
+    scene.entities.push(new Entity());
+
+    var expected = [
+        {
+            "__type__": "Scene",
+            "_name": "",
+            "_objFlags": 0,
+            "entities": [
+                {
+                    "__id__": 1
+                }
+            ]
+        },
+        {
+            "__type__": "Entity",
+            "_name": "",
+            "_objFlags": 0
+        }
+    ];
+
+    match(scene, expected, 'main asset should listed first');
+
+    Fire.JS.unregisterClass(Scene, Entity);
+});
+
 test('nicify ', function () {
     var data = [
       {
