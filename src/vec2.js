@@ -93,9 +93,7 @@ Vec2 = (function () {
      * @return {boolean}
      */
     Vec2.prototype.equals = function (other) {
-        if ( other && other instanceof Vec2 )
-            return this.x === other.x && this.y === other.y;
-        return false;
+        return other && this.x === other.x && this.y === other.y;
     };
 
     /**
@@ -107,6 +105,22 @@ Vec2 = (function () {
             this.x.toFixed(2) + ", " +
             this.y.toFixed(2) + ")"
         ;
+    };
+
+    /**
+     * @method lerp
+     * @param {Vec2} to
+     * @param {number} ratio - the interpolation coefficient
+     * @param {Vec2} [out] - optional, the receiving vector
+     * @return {Vec2}
+     */
+    Vec2.prototype.lerp = function (to, ratio, out) {
+        out = out || new Vec2();
+        var x = this.x;
+        var y = this.y;
+        out.x = x + (to.x - x) * ratio;
+        out.y = y + (to.y - y) * ratio;
+        return out;
     };
 
     /**

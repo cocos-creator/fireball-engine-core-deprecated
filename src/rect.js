@@ -90,10 +90,31 @@ var Rect = (function () {
      * @return {boolean}
      */
     Rect.prototype.equals = function (other) {
-        return this.x === other.x &&
+        return other &&
+               this.x === other.x &&
                this.y === other.y &&
                this.width === other.width &&
                this.height === other.height;
+    };
+
+    /**
+     * @method lerp
+     * @param {Rect} to
+     * @param {number} ratio - the interpolation coefficient
+     * @param {Rect} [out] - optional, the receiving vector
+     * @return {Rect}
+     */
+    Rect.prototype.lerp = function (to, ratio, out) {
+        out = out || new Rect();
+        var x = this.x;
+        var y = this.y;
+        var width = this.width;
+        var height = this.height;
+        out.x = x + (to.x - x) * ratio;
+        out.y = y + (to.y - y) * ratio;
+        out.width = width + (to.width - width) * ratio;
+        out.height = height + (to.height - height) * ratio;
+        return out;
     };
 
     /**

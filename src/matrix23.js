@@ -94,7 +94,8 @@ Matrix23.prototype.set = function (other) {
  * @return {boolean}
  */
 Matrix23.prototype.equals = function (other) {
-    return this.a === other.a &&
+    return other &&
+           this.a === other.a &&
            this.b === other.b &&
            this.c === other.c &&
            this.d === other.d &&

@@ -189,8 +189,18 @@
             out.width = maxX - minX;
             out.height = maxY - minY;
             return out;
-        }
+        },
 
+        /**
+         * @method lerp
+         * @param {number} from
+         * @param {number} to
+         * @param {number} ratio - the interpolation coefficient
+         * @return {number}
+         */
+        lerp: function (from, to, ratio) {
+            return from + (to - from) * ratio;
+        }
     } );
 
 })();

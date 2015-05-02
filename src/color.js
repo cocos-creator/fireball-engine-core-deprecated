@@ -109,10 +109,31 @@ var Color = (function () {
      * @return {boolean}
      */
     Color.prototype.equals = function (other) {
-        return this.r === other.r &&
+        return other &&
+               this.r === other.r &&
                this.g === other.g &&
                this.b === other.b &&
                this.a === other.a;
+    };
+
+    /**
+     * @method lerp
+     * @param {Color} to
+     * @param {number} ratio - the interpolation coefficient
+     * @param {Color} [out] - optional, the receiving vector
+     * @return {Color}
+     */
+    Color.prototype.lerp = function (to, ratio, out) {
+        out = out || new Color();
+        var r = this.r;
+        var g = this.g;
+        var b = this.b;
+        var a = this.a;
+        out.r = r + (to.r - r) * ratio;
+        out.g = g + (to.g - g) * ratio;
+        out.b = b + (to.b - b) * ratio;
+        out.a = a + (to.a - a) * ratio;
+        return out;
     };
 
     /**
