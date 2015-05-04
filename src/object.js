@@ -34,8 +34,6 @@ FObject = (function () {
 
     Object.defineProperty(FObject, '_deferredDestroy', {
         value: function () {
-            // if we called b.destory() in a.onDestroy(), objectsToDestroy will be resized,
-            // but we only destroy the objects which called destory in this frame.
             var deleteCount = objectsToDestroy.length;
             for (var i = 0; i < deleteCount; ++i) {
                 var obj = objectsToDestroy[i];
@@ -43,15 +41,33 @@ FObject = (function () {
                     obj._destroyImmediate();
                 }
             }
+            // if we called b.destory() in a.onDestroy(), objectsToDestroy will be resized,
+            // but we only destroy the objects which called destory in this frame.
             if (deleteCount === objectsToDestroy.length) {
                 objectsToDestroy.length = 0;
             }
             else {
                 objectsToDestroy.splice(0, deleteCount);
             }
+
+            // @ifdef EDITOR
+            deferredDestroyTimer = -1;
+            // @endif
         },
         enumerable: false
     });
+
+    // @ifdef EDITOR
+    Object.defineProperty(FObject, '_clearDeferredDestroyTimer', {
+        value: function () {
+            if (deferredDestroyTimer !== -1) {
+                clearTimeout(deferredDestroyTimer);
+                deferredDestroyTimer = -1;
+            }
+        },
+        enumerable: false
+    });
+    // @endif
 
     // member
 
@@ -83,17 +99,23 @@ FObject = (function () {
         return !(this._objFlags & Destroyed);
     });
 
+    // @ifdef EDITOR
+    var deferredDestroyTimer = -1;
+    // @endif
+
     /**
      * Destroy this FObject, and release all its own references to other resources.
      *
      * After destory, this FObject is not usable any more.
-     * You can use Fire.isValid(obj) (or obj.isValid if obj is non-nil) to check whether the object is destroyed before accessing it.
+     * You can use Fire.isValid(obj) (or obj.isValid if obj is non-nil) to check whether the object is destroyed before
+     * accessing it.
+     *
      * @method destroy
      * @return {boolean} whether it is the first time the destroy being called
      */
     prototype.destroy = function () {
         if (this._objFlags & Destroyed) {
-            Fire.error('object already destroyed');
+            Fire.warn('object already destroyed');
             return false;
         }
         if (this._objFlags & ToDestroy) {
@@ -101,6 +123,13 @@ FObject = (function () {
         }
         this._objFlags |= ToDestroy;
         objectsToDestroy.push(this);
+
+        // @ifdef EDITOR
+        if (deferredDestroyTimer === -1 && Fire.Engine && ! Fire.Engine._isUpdating) {
+            // auto destroy immediate in edit mode
+            deferredDestroyTimer = setTimeout(FObject._deferredDestroy, 1);
+        }
+        // @endif
         return true;
     };
 
