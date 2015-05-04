@@ -5,8 +5,7 @@
     /**
      * Extends the JavaScript built-in object that has properties and methods for mathematical constants and functions.
      * See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math)
-     * @module Fire
-     * @submodule Math
+     * @module Math
      */
     JS.mixin ( Math, {
 
