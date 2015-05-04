@@ -211,12 +211,12 @@ FObject = (function () {
 })();
 
 /**
- * @class Fire
+ * @module Fire
  */
 /**
  * Checks whether the object is non-nil and not yet destroyed
  * @method isValid
- * @param {FObject}
+ * @param {FObject} object
  * @return {boolean} whether is valid
  */
 Fire.isValid = function (object) {

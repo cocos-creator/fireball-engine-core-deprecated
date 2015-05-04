@@ -180,7 +180,6 @@ gulp.task('export-api-syntax', function (done) {
     // 默认所有 core 模块都在 Fire 下面
     var DefaultModuleHeader = "/**\n" +
                               " * @module Fire\n" +
-                              " * @class Fire\n" +
                               " */\n";
     var dest = '../../utils/api/core';
 
@@ -190,7 +189,7 @@ gulp.task('export-api-syntax', function (done) {
             return;
         }
 
-        gulp.src(paths.src)
+        gulp.src(paths.src.concat("!src/class.js"))
             .pipe(header(DefaultModuleHeader))
             .pipe(gulp.dest(dest))
             .on('end', done);

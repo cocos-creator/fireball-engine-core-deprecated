@@ -232,7 +232,7 @@ var Rect = (function () {
 Fire.Rect = Rect;
 
 /**
- * @class Fire
+ * @module Fire
  */
 /**
  * The convenience method to create a new Rect

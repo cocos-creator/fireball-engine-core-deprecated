@@ -1,4 +1,8 @@
 ﻿/**
+ * @module Fire
+ */
+
+/**
  * Tag the class with any meta attributes, then return all current attributes assigned to it.
  * This function holds only the attributes, not their implementations.
  *

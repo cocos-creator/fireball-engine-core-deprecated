@@ -432,7 +432,7 @@ Vec2 = (function () {
 Fire.Vec2 = Vec2;
 
 /**
- * @class Fire
+ * @module Fire
  */
 /**
  * The convenience method to create a new {% crosslink Vec2 Vec2 %}

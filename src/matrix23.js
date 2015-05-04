@@ -74,7 +74,7 @@ Matrix23.prototype.clone = function () {
 
 /**
  * @method clone
- * @param {Matrix23}
+ * @param {Matrix23} other
  * @return {Matrix23}
  * @chainable
  */
@@ -90,7 +90,7 @@ Matrix23.prototype.set = function (other) {
 
 /**
  * @method equals
- * @param {Matrix23}
+ * @param {Matrix23} other
  * @return {boolean}
  */
 Matrix23.prototype.equals = function (other) {

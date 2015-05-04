@@ -18,8 +18,8 @@ function _copyprop(name, source, target) {
 
 /**
  * provides some JavaScript utilities
- * @class JS
- * @static
+ * @module Fire
+ * @submodule JS
  */
 var JS = {
 
@@ -371,7 +371,6 @@ JS.set = function (obj, prop, setter, enumerable) {
 
 /**
  * @module Fire
- * @class Fire
  */
 
 /**

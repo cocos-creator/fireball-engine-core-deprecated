@@ -182,7 +182,7 @@ Fire._doInstantiate = (function () {
 })();
 
 /**
- * @class Fire
+ * @module Fire
  */
 /**
  * @property _isCloning
