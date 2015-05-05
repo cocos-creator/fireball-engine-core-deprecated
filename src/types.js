@@ -74,3 +74,20 @@ Fire.TextAnchor = (function (t) {
     t[t.botRight = 8] = 'Bottom Right';
     return t;
 })({});
+
+/**
+ * @class FontType
+ * @static
+ */
+Fire.FontType = Fire.defineEnum({
+    /**
+     * @property Arial
+     * @type {number}
+     */
+    Arial: -1,
+    /**
+     * @property Custom
+     * @type {number}
+     */
+    Custom: -1
+});
