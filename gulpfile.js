@@ -22,6 +22,7 @@ var paths = {
 
         // javascript extends
         'src/definition.js',
+        'src/js.js',
         'src/core.js',
         'src/math.js',
         'src/intersection.js',
