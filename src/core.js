@@ -18,8 +18,8 @@ function _copyprop(name, source, target) {
 
 /**
  * provides some JavaScript utilities
- * @module Fire
- * @submodule JS
+ * @class JS
+ * @static
  */
 var JS = {
 

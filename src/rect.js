@@ -184,6 +184,20 @@ var Rect = (function () {
     });
 
     /**
+     * @property size
+     * @type {Vec2}
+     */
+    Object.defineProperty(Rect.prototype, 'size', {
+        get: function () {
+            return new Fire.Vec2(this.width, this.height);
+        },
+        set: function (value) {
+            this.width = value.x;
+            this.height = value.y;
+        }
+    });
+
+    /**
      * @method intersects
      * @param {Rect} rect
      * @type {boolean}
