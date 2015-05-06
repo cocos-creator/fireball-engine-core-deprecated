@@ -337,7 +337,6 @@ var _Serializer = (function () {
 
 /**
  * @module Editor
- * @class Editor
  */
 /**
  * Serialize Fire.Asset to a json string

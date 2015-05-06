@@ -18,8 +18,7 @@ function _copyprop(name, source, target) {
 
 /**
  * provides some JavaScript utilities
- * @module Fire
- * @submodule JS
+ * @module JS
  */
 var JS = {
 
@@ -109,8 +108,17 @@ var JS = {
         }
     }
 };
-
+/**
+ * @module Fire
+ */
+/**
+ * @property {object} JS - JS utilities accessible globally, see [JS module](./JS.html).
+ */
 Fire.JS = JS;
+
+/**
+ * @module JS
+ */
 
 /**
  * Get class name of the object, if object is just a {} (and which class named 'Object'), it will return null.
