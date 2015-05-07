@@ -2,9 +2,10 @@
 // logs
 
 /**
- * Outputs a message to the Fireball Console (editor) or Web Console (runtime).
+ * !#en Outputs a message to the Fireball Console (editor) or Web Console (runtime).
+ * !#zh 向 Fireball 编辑器控制台或浏览器控制台输出信息。
  * @method log
- * @param {any|string} obj - A JavaScript string containing zero or more substitution strings.
+ * @param {any|string} obj - !#en A JavaScript string containing zero or more substitution strings. !#zh 包含一个或多个替代 string
  * @param {any} ...subst - JavaScript objects with which to replace substitution strings within msg. This gives you additional control over the format of the output.
  */
 Fire.log = function () {

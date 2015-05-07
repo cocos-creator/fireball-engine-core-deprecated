@@ -68,6 +68,8 @@ Vec2 = (function () {
     // member
 
     /**
+     * !#en clone a Vec2 value
+     * !#zh 克隆一个 Vec2 值
      * @method clone
      * @return {Vec2}
      */
@@ -77,7 +79,7 @@ Vec2 = (function () {
 
     /**
      * @method set
-     * @param {Vec2} newValue
+     * @param {Vec2} newValue - !#en new value to set. !#zh 要设置的新值
      * @return {Vec2} returns this
      * @chainable
      */

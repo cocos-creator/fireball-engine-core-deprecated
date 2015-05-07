@@ -1,6 +1,7 @@
 ﻿var HashObject = (function () {
 
     /**
+     * !#en Provides object id, this id is unique globally.
      * !#zh 提供获取对象ID的功能，该ID全局唯一但不会被序列化，可用于索引对象。
      *
      * 如果你将对象索引起来，必须记住清除索引，否则对象将永远不会被销毁。
@@ -47,6 +48,8 @@
     });
 
     /**
+     * !#en the universal unique id
+     * !#zh 全局唯一标识
      * @property id
      * @type string
      * @readOnly

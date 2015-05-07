@@ -1,9 +1,11 @@
 /**
- * @class TextAlign
- * @static
+ * !#en Text alignment
+ * !#zh 文字对齐方式
+ * @enum TextAlign
  */
 Fire.TextAlign = Fire.defineEnum({
     /**
+     * !#en Align to the left !#zh 文字靠左对齐
      * @property left
      * @type {number}
      */
@@ -21,8 +23,7 @@ Fire.TextAlign = Fire.defineEnum({
 });
 
 /**
- * @class TextAnchor
- * @static
+ * @enum TextAnchor
  */
 Fire.TextAnchor = (function (t) {
     /**
@@ -74,8 +75,7 @@ Fire.TextAnchor = (function (t) {
 })({});
 
 /**
- * @class FontType
- * @static
+ * @enum FontType
  */
 Fire.FontType = Fire.defineEnum({
     /**

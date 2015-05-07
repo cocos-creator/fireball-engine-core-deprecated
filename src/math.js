@@ -3,8 +3,11 @@
     var _r2d = 180.0 / Math.PI;
 
     /**
+     * !#en
      * Extends the JavaScript built-in object that has properties and methods for mathematical constants and functions.
-     * See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math)
+     * See [Global_Objects/Math on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math)
+     * !#zh 扩展 JavaScript 内建的数学计算属性和方法。
+     * 请参考[MDN上的Global_Objects/Math](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math)
      * @module Math
      */
     JS.mixin ( Math, {

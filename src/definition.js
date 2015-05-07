@@ -1,9 +1,7 @@
 ﻿// global definitions
 
 /**
- * indicates whether executes in node.js application
- * @property isNode
- * @type {boolean}
+ * @property {boolean} isNode - !#en indicates whether executes in node.js application !#zh 是否在 nodejs 运行环境下
  */
 Fire.isNode = !!(typeof process !== 'undefined' && process.versions && process.versions.node);
 Fire.isNodeWebkit = !!(Fire.isNode && 'node-webkit' in process.versions);   // node-webkit
