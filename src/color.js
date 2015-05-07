@@ -194,9 +194,9 @@ var Color = (function () {
      */
     Color.prototype.fromHEX = function (hexString) {
         var hex = parseInt(((hexString.indexOf('#') > -1) ? hexString.substring(1) : hexString), 16);
-        this.r = hex >> 16;
-        this.g = (hex & 0x00FF00) >> 8;
-        this.b = (hex & 0x0000FF);
+        this.r = (hex >> 16)/255;
+        this.g = ((hex & 0x00FF00) >> 8)/255;
+        this.b = ((hex & 0x0000FF))/255;
         return this;
     };
 

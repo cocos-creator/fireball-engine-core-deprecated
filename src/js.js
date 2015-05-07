@@ -19,10 +19,7 @@ function _copyprop(name, source, target) {
 /**
  * This module provides some JavaScript utilities.
  *
- * You can access this module using `Fire.JS`.
- *
- * @submodule JS
- * @main JS
+ * @module Fire.JS
  */
 var JS = {
 
@@ -368,4 +365,10 @@ JS.set = function (obj, prop, setter, enumerable) {
     });
 };
 
+/**
+ * @module Fire
+ */
+/**
+ * @property {object} JS - JS utilities accessible globally, see [JS module](./Fire.JS.html).
+ */
 Fire.JS = JS;
