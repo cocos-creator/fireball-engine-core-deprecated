@@ -9,7 +9,6 @@ var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
 var uglify = require('gulp-uglifyjs');
 var concat = require('gulp-concat');
-var qunit = require('gulp-qunit');
 var preprocess = require('gulp-preprocess');
 
 var fb = require('gulp-fb');
@@ -169,6 +168,7 @@ gulp.task('unit-runner', function() {
 });
 
 gulp.task('test', ['js-min', 'js-dev', 'unit-runner'], function() {
+    var qunit = require('gulp-qunit');
     var timeOutInSeconds = 5;
     return gulp.src(['test/unit/**/*.html', '!**/*.dev.*'], { read: false })
                .pipe(qunit({ timeout: timeOutInSeconds }))
