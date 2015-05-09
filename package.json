@@ -11,7 +11,7 @@
     "gulp": "3.8.11",
     "gulp-concat": "",
     "gulp-fb": "",
-    "gulp-header": "^1.2.2",
+    "gulp-header": "1.2.2",
     "gulp-jshint": "",
     "gulp-preprocess": "1.2.0",
     "gulp-qunit": "1.2.1",
