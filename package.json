@@ -15,7 +15,7 @@
     "gulp-jshint": "",
     "gulp-preprocess": "1.2.0",
     "gulp-qunit": "1.2.1",
-    "gulp-rename": "1.2.0",
+    "gulp-rename": "1.2.2",
     "gulp-uglifyjs": "",
     "gulp-util": "3.0.3",
     "jshint-stylish": ""
