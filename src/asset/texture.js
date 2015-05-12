@@ -1,4 +1,4 @@
-Fire.Texture = (function () {
+var Texture = (function () {
 
     /**
      * Class for texture handling.
@@ -146,5 +146,6 @@ Fire.Texture = (function () {
 
     return Texture;
 })();
+Fire.Texture = Texture;
 
 var canvasCtxToGetPixel = null;
