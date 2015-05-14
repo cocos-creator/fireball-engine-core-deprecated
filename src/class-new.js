@@ -150,7 +150,7 @@ Fire.Class = function (options) {
         }
         var func = options[funcName];
         var type = typeof func;
-        if (type === 'function') {
+        if (type === 'function' || func === null) {
             cls.prototype[funcName] = func;
         }
         // @ifdef EDITOR
@@ -202,24 +202,31 @@ function parseAttributes (attrs, className, propName) {
             Fire.error('Please define "type" parameter of %s.%s as the actual constructor.', className, propName);
             // @endif
         }
-        else if (typeof type === 'object') {
-            if (type.hasOwnProperty('__enums__')) {
-                result.push(Fire.Enum(type));
+        else if (type === Fire._ScriptUuid) {
+            var attr = Fire.ObjectType(Fire.ScriptAsset);
+            attr.type = 'script-uuid';
+            result.push(attr);
+        }
+        else {
+            if (typeof type === 'object') {
+                if (type.hasOwnProperty('__enums__')) {
+                    result.push(Fire.Enum(type));
+                }
+                // @ifdef EDITOR
+                else {
+                    Fire.error('Please define "type" parameter of %s.%s as the constructor of %s.', className, propName, type);
+                }
+                // @endif
+            }
+            else if (typeof type === 'function') {
+                result.push(Fire.ObjectType(type));
             }
             // @ifdef EDITOR
             else {
-                Fire.error('Please define "type" parameter of %s.%s as the constructor of %s.', className, propName, type);
+                Fire.error('Unknown "type" parameter of %s.%s：%s', className, propName, type);
             }
             // @endif
         }
-        else if (typeof type === 'function') {
-            result.push(Fire.ObjectType(type));
-        }
-        // @ifdef EDITOR
-        else {
-            Fire.error('Unknown "type" parameter of %s.%s：%s', className, propName, type);
-        }
-        // @endif
     }
 
     function parseSimpleAttr (attrName, expectType, attrCreater) {

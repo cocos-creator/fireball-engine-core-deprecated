@@ -222,13 +222,7 @@ Fire.String_Obsoleted = {
 };
 
 // the value will be represented as a uuid string
-Object.defineProperty(Fire, '_ScriptUuid', {
-    get: function () {
-        var attr = Fire.ObjectType(Fire.ScriptAsset);
-        attr.type = 'script-uuid';
-        return attr;
-    }
-});
+Fire._ScriptUuid = {};
 
 /**
  * Makes a property only accept the supplied object type in Inspector.
