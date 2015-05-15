@@ -56,6 +56,7 @@ var paths = {
         'src/asset/text-asset.js',
         'src/asset/bitmap-font.js',
         'src/asset/audio-clip.js',
+        'src/asset/animation-clip.js',
 
         // editor utils
         'src/editor/serialize.js',
