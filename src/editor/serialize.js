@@ -12,7 +12,6 @@ function _getType (obj) {
 var _Serializer = (function () {
 
     /**
-     * @method _Serializer
      * @param {boolean} [exporting=false] - if true, property with Fire.EditorOnly will be discarded
      */
     function _Serializer(obj, exporting) {
@@ -58,7 +57,6 @@ var _Serializer = (function () {
     };
 
     /**
-     * @method _enumerateObject
      * @param {object} obj - The object to serialize
      * @param {array|object} data - The array or dict where serialized data to store
      * @return {object} The reference info used to embed to its container.
@@ -145,7 +143,6 @@ var _Serializer = (function () {
 
     /**
      * serialize any type
-     * @method _serializeField
      * @param {*} val - The element to serialize
      */
     var _serializeField = function (self, val) {
@@ -172,7 +169,6 @@ var _Serializer = (function () {
 
     /**
      * serialize only primitive object type
-     * @method _serializePrimitiveObj
      * @param {object} obj - The object to serialize
      */
     var _serializePrimitiveObj = function (self, obj) {
@@ -214,7 +210,6 @@ var _Serializer = (function () {
 
     /**
      * serialize object
-     * @method _serializeObj
      * @param {object} obj - The object to serialize
      */
     var _serializeObj = function (self, obj) {
@@ -288,12 +283,9 @@ var _Serializer = (function () {
     };
 
     /**
-     * !#en
      * serialize main object
-     * !#zh
      * 这个方法主要是对 main object 做特殊处理，虽然和 _serializeObj 很接近，但为了
      * 避免增加 _serializeObj 的额外开销并不和它合并到一起。
-     * @method _serializeMainObj
      * @param {object} obj - The object to serialize
      */
     var _serializeMainObj = function (self, obj) {

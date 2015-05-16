@@ -243,7 +243,6 @@ function _isDomNode(obj) {
 
 // @ifdef DEV
 /**
- * @method _isPlainEmptyObj_DEV
  * @param {object} obj
  * @return {boolean} is {} ?
  */
