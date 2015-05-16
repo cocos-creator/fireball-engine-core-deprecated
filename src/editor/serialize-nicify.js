@@ -11,7 +11,9 @@
     this.temporaryDataList = [];
 };
 /**
- *  nicify
+ * nicify
+ * @method nicifySerialized
+ * @param {Array} serialized
  */
 var nicifySerialized = function (serialized) {
 
@@ -33,7 +35,7 @@ var nicifySerialized = function (serialized) {
 
     // 遍历，并且保存需要美化的数据
     _iterative(mainObject, serialized, refInfos);
-    
+
     var idx = 0;
 
     // del _iN$t
@@ -73,7 +75,11 @@ var nicifySerialized = function (serialized) {
 Fire._nicifySerialized = nicifySerialized;
 
 /**
- *  iterative
+ * iterative
+ * @method _iterative
+ * @param {object} obj
+ * @param {object} serialized
+ * @param {object} refInfos
  */
 var _iterative = function (obj, serialized, refInfos) {
     if (typeof obj !== 'object') {
@@ -103,7 +109,8 @@ var _iterative = function (obj, serialized, refInfos) {
 };
 
 /**
- *  traversal Child
+ * traversal Child
+ * @method _traversalChild
  */
 var _traversalChild = function (element, key, obj, serialized, refInfos) {
     var hasRepeatID;

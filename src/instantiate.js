@@ -53,11 +53,13 @@ Fire._doInstantiate = (function () {
     var objsToClearTmpVar = [];   // 用于重设临时变量
 
     /**
+     * !#en
      * Do instantiate object, the object to instantiate must be non-nil.
+     * !#zh
      * 这是一个实例化的通用方法，可能效率比较低。
      * 之后可以给各种类型重载快速实例化的特殊实现，但应该在单元测试中将结果和这个方法的结果进行对比。
      * 值得注意的是，这个方法不可重入。
-     *
+     * @method doInstantiate
      * @param {object} obj - 该方法仅供内部使用，用户需负责保证参数合法。什么参数是合法的请参考 Fire.instantiate().
      * @return {object}
      * @private
@@ -83,6 +85,7 @@ Fire._doInstantiate = (function () {
     }
 
     /**
+     * @method enumerateObject
      * @param {object} obj - The object to instantiate, typeof mustbe 'object' and should not be an array.
      * @return {object} - the instantiated instance
      */
@@ -137,6 +140,7 @@ Fire._doInstantiate = (function () {
     };
 
     /**
+     * @method instantiateObj
      * @return {object} - the original non-nil object, typeof must be 'object'
      */
     function instantiateObj (obj) {

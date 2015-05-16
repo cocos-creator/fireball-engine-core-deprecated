@@ -1,5 +1,6 @@
 
 /**
+ * @method _getPropertyDescriptor
  * @param {object} obj
  * @param {string} name
  * @return {object}

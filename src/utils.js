@@ -143,7 +143,7 @@ Fire.rgb2hsv = function ( r, g, b ) {
 };
 
 /**
- * hsv2rgb
+ * @method hsv2rgb
  * @param {number} h
  * @param {number} s
  * @param {number} v
@@ -243,6 +243,7 @@ function _isDomNode(obj) {
 
 // @ifdef DEV
 /**
+ * @method _isPlainEmptyObj_DEV
  * @param {object} obj
  * @return {boolean} is {} ?
  */
