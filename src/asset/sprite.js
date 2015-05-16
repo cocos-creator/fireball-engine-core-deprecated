@@ -110,6 +110,15 @@ Fire.Sprite = (function () {
         Fire.Tooltip('The highest alpha channel value that is considered opaque for hit test.')
     );
 
+    Sprite.prop('borderTop', 0, Fire.Integer_Obsoleted);
+
+    Sprite.prop('borderBottom', 0, Fire.Integer_Obsoleted);
+
+    Sprite.prop('borderLeft', 0, Fire.Integer_Obsoleted);
+
+    Sprite.prop('borderRight', 0, Fire.Integer_Obsoleted);
+
+
     /**
      * @property rotatedWidth
      * @type number

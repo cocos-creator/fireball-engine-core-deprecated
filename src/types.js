@@ -1,4 +1,35 @@
 /**
+ * !#en Image Type
+ * @enum ImageType
+ */
+Fire.ImageType = Fire.defineEnum({
+    /**
+     * Simple
+     * @property Simple
+     * @type {number}
+     */
+    Simple: -1,
+    /**
+     * Sliced
+     * @property Sliced
+     * @type {number}
+     */
+    Sliced: -1
+    /**
+     * Filled
+     * @property Filled
+     * @type {number}
+     */
+    //Filled: -1,
+    /**
+     * Tiled
+     * @property Tiled
+     * @type {number}
+     */
+    //Tiled: -1
+});
+
+/**
  * !#en Text alignment
  * !#zh 文字对齐方式
  * @enum TextAlign
