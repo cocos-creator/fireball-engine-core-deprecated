@@ -2,6 +2,7 @@
  * Simple matrix to do 2D affine transformations.
  * It is actually 3x3 but the last row is [0 0 1].
  * @class Matrix23
+ * @extends ValueType
  * @constructor
  */
 var Matrix23 = function () {
@@ -47,7 +48,8 @@ var Matrix23 = function () {
      */
     this.ty = 0;
 };
-JS.setClassName('Fire.Matrix23', Matrix23);
+JS.extend(Matrix23, ValueType);
+Fire._fastDefine('Fire.Matrix23', Matrix23, ['a', 'b', 'c', 'd', 'tx', 'ty']);
 Fire.Matrix23 = Matrix23;
 
 /**

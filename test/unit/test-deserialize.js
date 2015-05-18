@@ -25,7 +25,7 @@ test('basic deserialize test', function () {
             this.number = 1;
             this.boolean = true;
             this.emptyObj = {};
-            this.embeddedTypedObj = new Vec2(1, 2.1);
+            this.embeddedTypedObj = new Fire.Vec2(1, 2.1);
         }
         Fire.JS.setClassName('MyAsset', MyAsset);
         return MyAsset;
@@ -55,7 +55,7 @@ test('basic deserialize test with target', function () {
             this.number = 1;
             this.boolean = true;
             this.emptyObj = {};
-            this.embeddedTypedObj = new Vec2(1, 2.1);
+            this.embeddedTypedObj = new Fire.Vec2(1, 2.1);
         }
         Fire.JS.setClassName('MyAsset', MyAsset);
         return MyAsset;

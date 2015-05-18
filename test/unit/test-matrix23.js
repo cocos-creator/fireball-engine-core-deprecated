@@ -42,7 +42,7 @@ test('scale', function () {
     strictEqual(s.x, 1);
     strictEqual(s.y, 1);
 
-    mat.setScale(new Vec2(321, 0.4));
+    mat.setScale(new Fire.Vec2(321, 0.4));
     s = mat.getScale();
     strictEqual(s.x, 321);
     strictEqual(s.y, 0.4);
@@ -50,7 +50,7 @@ test('scale', function () {
 
 test('invert', function () {
     var mat = new Fire.Matrix23();
-    mat.setScale(new Vec2(321, 0.4));
+    mat.setScale(new Fire.Vec2(321, 0.4));
     mat.rotate(Math.PI * 0.5);
     mat.tx = 10;  mat.ty = 22;
     var expected = mat.clone();
@@ -72,8 +72,8 @@ test('transform', function () {
     var sm = new Fire.Matrix23();
     sm.setScale(new Fire.Vec2(7, 2));
 
-    var point = new Vec2(10, -5);
-    var expected = new Vec2(10, 70);
+    var point = new Fire.Vec2(10, -5);
+    var expected = new Fire.Vec2(10, 70);
 
     var scaled = sm.transformPoint(point);
     var scaledRotated = rm.transformPoint(scaled);
@@ -88,8 +88,8 @@ test('prepend', function () {
     var sm = new Fire.Matrix23();
     sm.setScale(new Fire.Vec2(7, 2));
 
-    var point = new Vec2(10, -5);
-    var expected = new Vec2(10, 70);
+    var point = new Fire.Vec2(10, -5);
+    var expected = new Fire.Vec2(10, 70);
 
     var mat = sm.prepend(rm);
     var actual = mat.transformPoint(point);

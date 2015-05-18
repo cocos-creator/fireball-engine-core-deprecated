@@ -5,6 +5,7 @@ var Rect = (function () {
      * see {% crosslink Fire.rect Fire.rect %}
      *
      * @class Rect
+     * @extends ValueType
      * @constructor
      * @param {number} [x=0]
      * @param {number} [y=0]
@@ -17,7 +18,8 @@ var Rect = (function () {
         this.width = typeof w === 'number' ? w : 0.0;
         this.height = typeof h === 'number' ? h : 0.0;
     }
-    JS.setClassName('Fire.Rect', Rect);
+    JS.extend(Rect, ValueType);
+    Fire._fastDefine('Fire.Rect', Rect, ['x', 'y', 'width', 'height']);
 
     /**
      * Creates a rectangle from two coordinate values.

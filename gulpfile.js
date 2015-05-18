@@ -35,14 +35,17 @@ var paths = {
         'src/path.js',
         'src/object.js',
         'src/hash-object.js',
-        'src/vec2.js',
-        'src/matrix23.js',
-        'src/rect.js',
         'src/polygon.js',
-        'src/color.js',
         'src/types.js',
         'src/deserialize.js',
         'src/instantiate.js',
+
+        // value types
+        'src/value-types/value-type.js',
+        'src/value-types/vec2.js',
+        'src/value-types/rect.js',
+        'src/value-types/color.js',
+        'src/value-types/matrix23.js',
 
         // assets
         'src/asset/asset.js',

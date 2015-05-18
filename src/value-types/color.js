@@ -8,6 +8,7 @@ var Color = (function () {
      * You can also use the convenience method <% crosslink Fire.color Fire.color %> to create a new Color.
      *
      * @class Color
+     * @extends ValueType
      * @constructor
      * @param {number} [r=0] - red component of the color
      * @param {number} [g=0] - green component of the color
@@ -20,7 +21,8 @@ var Color = (function () {
         this.b = typeof b === 'number' ? b : 0.0;
         this.a = typeof a === 'number' ? a : 1.0;
     }
-    JS.setClassName('Fire.Color', Color);
+    JS.extend(Color, ValueType);
+    Fire._fastDefine('Fire.Color', Color, ['r', 'g', 'b', 'a']);
 
     var DefaultColors = {
         // color: [r, g, b, a]
