@@ -26,6 +26,26 @@ Fire.AnimationClip = Fire.Class({
         }
     },
 
+    removeProperty: function ( compName, propName ) {
+        for ( var i = 0; i < this.frames.length; ++i ) {
+            var frame = this.frames[i];
+            if ( frame.component === compName &&
+                 frame.property === propName ) {
+                this.frames.splice( i, 1 );
+                break;
+            }
+        }
+    },
+
+    sort: function () {
+        this.frames.sort( function ( a, b ) {
+            if ( a.component !== b.component ) {
+                return a.component.localeCompare(b.component);
+            }
+            return a.property.localeCompare( b.property );
+        });
+    },
+
     // frames structure:
     // [
     //     {
