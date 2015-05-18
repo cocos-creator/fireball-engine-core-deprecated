@@ -22,21 +22,26 @@ test('base', function () {
     Fire.attr(MyCompBase, 'baseVal', {
         data: false
     });
-    strictEqual(attr.data, false, 'can override attribute');
+    strictEqual(attr.data, false, 'can change attribute');
 
     // inherit
 
-    var MyComp = function () { };
-    Fire.JS.extend(MyComp, MyCompBase);
+    var MyComp1 = function () { };
+    Fire.JS.extend(MyComp1, MyCompBase);
     var MyComp2 = function () { };
     Fire.JS.extend(MyComp2, MyCompBase);
 
-    strictEqual(Fire.attr(MyComp, 'baseVal').cool, 'nice', 'can get inherited attribute');
+    strictEqual(Fire.attr(MyComp1, 'baseVal').cool, 'nice', 'can get inherited attribute');
+    Fire.attr(MyComp1, 'baseVal', {cool: 'good'});
+    strictEqual(Fire.attr(MyComp1, 'baseVal').cool, 'good', 'can override inherited attribute');
 
-    Fire.attr(MyComp, 'subVal', {}).cool = 'very nice';
-    strictEqual(Fire.attr(MyComp, 'subVal').cool, 'very nice', 'can have own attribute');
+    // yes, current implement of attr is not based on real javascript prototype
+    strictEqual(Fire.attr(MyCompBase, 'baseVal').cool, 'good', 'Oh yes, sub prop of base class will be pulluted!');
 
-    strictEqual(Fire.attr(MyCompBase, 'subVal'), undefined, 'base class not pulluted');
+    Fire.attr(MyComp1, 'subVal', {}).cool = 'very nice';
+    strictEqual(Fire.attr(MyComp1, 'subVal').cool, 'very nice', 'can have own attribute');
+
+    strictEqual(Fire.attr(MyCompBase, 'subVal'), undefined, 'main prop of base class not pulluted');
     strictEqual(Fire.attr(MyComp2, 'subVal'), undefined, 'sibling class not pulluted');
 });
 
