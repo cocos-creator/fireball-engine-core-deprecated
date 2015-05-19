@@ -21,7 +21,7 @@ Fire.AnimationClip = Fire.Class({
             this.frames.push({
                 component: compName,
                 property: propName,
-                frames: [],
+                keys: [],
             });
         }
     },
@@ -49,14 +49,14 @@ Fire.AnimationClip = Fire.Class({
     // frames structure:
     // [
     //     {
-    //         component: 'foobar', property: 'hello', frames: [
+    //         component: 'foobar', property: 'hello', keys: [
     //             { frame: 0, value: 10, curve: [0,0.5,0.5,1] },
     //             { frame: 5, value: 15, curve: 'linear' },
     //             { frame: 10, value: 20, curve: null },
     //         ]
     //     },
     //     {
-    //         component: 'foobar', property: 'world', frames: [
+    //         component: 'foobar', property: 'world', keys: [
     //             { frame: 0, value: 10, curve: [0,0.5,0.5,1] },
     //             { frame: 5, value: 15, curve: 'linear' },
     //             { frame: 10, value: 20, curve: null },
