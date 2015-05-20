@@ -58,47 +58,47 @@ Fire.TextAlign = Fire.defineEnum({
  */
 Fire.TextAnchor = Fire.defineEnum({
     /**
-     * @property top left
+     * @property TopLeft
      * @type {number}
      */
-    TopLef: -1,
+    TopLeft: -1,
     /**
-     * @property top center
+     * @property TopCenter
      * @type {number}
      */
     TopCenter: -1,
     /**
-     * @property top right
+     * @property TopRight
      * @type {number}
      */
     TopRight: -1,
     /**
-     * @property midd leLeft
+     * @property MiddleLeft
      * @type {number}
      */
     MiddleLeft: -1,
     /**
-     * @property middle center
+     * @property MiddleCenter
      * @type {number}
      */
     MiddleCenter: -1,
     /**
-     * @property middle right
+     * @property MiddleRight
      * @type {number}
      */
     MiddleRight: -1,
     /**
-     * @property bottom left
+     * @property BottomLeft
      * @type {number}
      */
     BottomLeft: -1,
     /**
-     * @property bottom center
+     * @property BottomCenter
      * @type {number}
      */
     BottomCenter: -1,
     /**
-     * @property bottom right
+     * @property BottomRight
      * @type {number}
      */
     BottomRight: -1,
