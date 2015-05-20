@@ -56,54 +56,53 @@ Fire.TextAlign = Fire.defineEnum({
 /**
  * @enum TextAnchor
  */
-Fire.TextAnchor = (function (t) {
+Fire.TextAnchor = Fire.defineEnum({
     /**
-     * @property topLeft
+     * @property top left
      * @type {number}
      */
-    t[t.TopLeft = 0] = 'Top Left';
+    TopLef: -1,
     /**
-     * @property topCenter
+     * @property top center
      * @type {number}
      */
-    t[t.TopCenter = 1] = 'Top Center';
+    TopCenter: -1,
     /**
-     * @property topRight
+     * @property top right
      * @type {number}
      */
-    t[t.TopRight = 2] = 'Top Right';
+    TopRight: -1,
     /**
-     * @property midLeft
+     * @property midd leLeft
      * @type {number}
      */
-    t[t.MidLeft = 3] = 'Middle Left';
+    MiddleLeft: -1,
     /**
-     * @property midCenter
+     * @property middle center
      * @type {number}
      */
-    t[t.MidCenter = 4] = 'Middle Center';
+    MiddleCenter: -1,
     /**
-     * @property midRight
+     * @property middle right
      * @type {number}
      */
-    t[t.MidRight = 5] = 'Middle Right';
+    MiddleRight: -1,
     /**
-     * @property botLeft
+     * @property bottom left
      * @type {number}
      */
-    t[t.BotLeft = 6] = 'Bottom Left';
+    BottomLeft: -1,
     /**
-     * @property botCenter
+     * @property bottom center
      * @type {number}
      */
-    t[t.BotCenter = 7] = 'Bottom Center';
+    BottomCenter: -1,
     /**
-     * @property botRight
+     * @property bottom right
      * @type {number}
      */
-    t[t.BotRight = 8] = 'Bottom Right';
-    return t;
-})({});
+    BottomRight: -1,
+});
 
 /**
  * @enum FontType

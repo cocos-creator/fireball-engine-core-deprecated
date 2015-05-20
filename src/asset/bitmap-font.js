@@ -5,46 +5,71 @@ var BitmapFont = (function () {
      * @class BitmapFont
      * @extends Asset
      */
-    var BitmapFont = Fire.extend("Fire.BitmapFont", Fire.Asset);
+    var BitmapFont = Fire.Class({
+        name: "Fire.BitmapFont",
 
-    /**
-     * The atlas  or raw texture
-     * @property texture
-     * @type {Texture}
-     * @default null
-     */
-    BitmapFont.prop('texture', null, Fire.ObjectType(Fire.Texture), Fire.HideInInspector);
+        extends: Fire.Asset,
 
-    BitmapFont.prop('charInfos', [], Fire.HideInInspector);
-
-    BitmapFont.prop('kernings', [], Fire.HideInInspector);
-
-    /**
-     * The base-line of the text when draw
-     * @property baseLine
-     * @type {number}
-     * @default 0
-     */
-    BitmapFont.prop('baseLine', 0, Fire.Integer_Obsoleted, Fire.ReadOnly);
-
-    /**
-     * The space of the line
-     * @property lineHeight
-     * @type {number}
-     * @default 0
-     */
-    BitmapFont.prop('lineHeight', 0, Fire.Integer_Obsoleted, Fire.ReadOnly);
-
-    /**
-     * The size in pixel of the font
-     * @property size
-     * @type {number}
-     * @default 0
-     */
-    BitmapFont.prop('size', 0, Fire.Integer_Obsoleted, Fire.ReadOnly);
-
-    BitmapFont.prop('face', null, Fire.HideInInspector);
-
+        properties:{
+            /**
+             * The atlas  or raw texture
+             * @property texture
+             * @type {Texture}
+             * @default null
+             */
+            texture: {
+                default: null,
+                type: Fire.Texture,
+                visible: false
+            },
+            charInfos: {
+                default: [],
+                visible: false
+            },
+            kernings: {
+                default: [],
+                visible: false
+            },
+            /**
+             * The base-line of the text when draw
+             * @property baseLine
+             * @type {number}
+             * @default 0
+             */
+            baseLine: {
+                default: 0,
+                type: Fire.Integer,
+                readonly: true
+            },
+            /**
+             * The space of the line
+             * @property lineHeight
+             * @type {number}
+             * @default 0
+             */
+            lineHeight: {
+                default: 0,
+                type: Fire.Integer,
+                readonly: true
+            },
+            /**
+             * The size in pixel of the font
+             * @property size
+             * @type {number}
+             * @default 0
+             */
+            size: {
+                default: 0,
+                type: Fire.Integer,
+                readonly: true
+            },
+            face: {
+                default: null,
+                type: Fire.Integer,
+                visible: false
+            }
+        }
+    });
     return BitmapFont;
 })();
 

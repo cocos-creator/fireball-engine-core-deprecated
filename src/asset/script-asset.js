@@ -1,11 +1,19 @@
 Fire.ScriptAsset = (function () {
-    var ScriptAsset = Fire.extend("Fire.ScriptAsset", Fire.Asset);
+    var ScriptAsset = Fire.Class({
 
-    ScriptAsset.prop( 'text', '',
-                      Fire.MultiText,
-                      Fire.RawType('text'),
-                      Fire.HideInInspector
-                    );
+        name: "Fire.ScriptAsset",
+
+        extends: Fire.Asset,
+
+        properties: {
+            text: {
+                default: '',
+                rawType: 'text',
+                multiline: true,
+                visible: false
+            }
+        }
+    });
 
     return ScriptAsset;
 })();

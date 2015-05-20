@@ -1,4 +1,4 @@
-Fire.Sprite = (function () {
+var Sprite = (function () {
 
     /**
      * Represents a Sprite object which obtained from Texture.
@@ -7,135 +7,212 @@ Fire.Sprite = (function () {
      * @constructor
      * @param {Image} [img] - Specify the html image element to render so you can create Sprite dynamically.
      */
-    var Sprite = Fire.extend('Fire.Sprite', Fire.Asset, function () {
-        var img = arguments[0];
-        if (img) {
-            this.texture = new Fire.Texture(img);
-            this.width = img.width;
-            this.height = img.height;
+    var Sprite = Fire.Class({
+
+        name: 'Fire.Sprite',
+
+        extends: Fire.Asset,
+
+        constructor: function () {
+            var img = arguments[0];
+            if (img) {
+                this.texture = new Fire.Texture(img);
+                this.width = img.width;
+                this.height = img.height;
+            }
+        },
+        properties: {
+            /**
+             * @property pivot
+             * @type Vec2
+             * @default new Fire.Vec2(0.5, 0.5)
+             */
+            pivot: {
+                default: new Fire.Vec2(0.5, 0.5),
+                tooltip: 'The pivot is normalized, like a percentage.\n' +
+                         '(0,0) means the bottom-left corner and (1,1) means the top-right corner.\n' +
+                         'But you can use values higher than (1,1) and lower than (0,0) too.'
+            },
+            // trim info
+            /**
+             * @property trimX
+             * @type number
+             */
+            trimX: {
+                default: 0,
+                type: Fire.Integer
+            },
+            /**
+             * @property trimY
+             * @type number
+             */
+            trimY: {
+                default: 0,
+                type: Fire.Integer
+            },
+            /**
+             * @property width
+             * @type number
+             */
+            width: {
+                default: 0,
+                type: Fire.Integer
+            },
+            /**
+             * @property height
+             * @type number
+             */
+            height: {
+                default: 0,
+                type: Fire.Integer
+            },
+            /**
+             * @property texture
+             * @type Texture
+             */
+            texture: {
+                default: null,
+                type: Fire.Texture,
+                visible: false
+            },
+            /**
+             * @property rotated
+             * @type boolean
+             * @default false
+             */
+            rotated: {
+                default: false,
+                visible: false
+            },
+            // raw texture info (used for texture-offset calculation)
+
+            /**
+             * uv of the sprite in atlas-texture
+             * @property x
+             * @type number
+             */
+            x: {
+                default: 0,
+                type: Fire.Integer,
+                visible: false
+            },
+            /**
+             * uv of the sprite in atlas-texture
+             * @property y
+             * @type number
+             */
+            y: {
+                default: 0,
+                type: Fire.Integer,
+                visible: false
+            },
+
+            /**
+             * @property rawWidth
+             * @type number
+             */
+            rawWidth: {
+                default: 0,
+                type: Fire.Integer,
+                visible: false
+            },
+            /**
+             * @property rawHeight
+             * @type number
+             */
+            rawHeight: {
+                default: 0,
+                type: Fire.Integer,
+                visible: false
+            },
+            /**
+             * Use pixel-level hit testing.
+             * @property pixelLevelHitTest
+             * @type boolean
+             * @default false
+             */
+            pixelLevelHitTest: {
+                default: false,
+                tooltip: 'Use pixel-level hit testing.'
+            },
+            /**
+             * The highest alpha channel value that is considered opaque for hit test. [0, 1]
+             * @property alphaThreshold
+             * @type number
+             * @default 0.1
+             */
+            alphaThreshold: {
+                default: 0.1,
+                tooltip: 'The highest alpha channel value that is considered opaque for hit test.',
+                watch: {
+                    'pixelLevelHitTest': function (obj, propEL) {
+                        propEL.disabled = !obj.pixelLevelHitTest;
+                    }
+                }
+            },
+            /**
+             * Top border of the sprite
+             * @property borderTop
+             * @type number
+             * @default 0
+             */
+            borderTop: {
+                default: 0,
+                type: Fire.Integer
+            },
+            /**
+             * Bottom border of the sprite
+             * @property borderTop
+             * @type number
+             * @default 0
+             */
+            borderBottom: {
+                default: 0,
+                type: Fire.Integer
+            },
+            /**
+             * Left border of the sprite
+             * @property borderTop
+             * @type number
+             * @default 0
+             */
+            borderLeft: {
+                default: 0,
+                type: Fire.Integer
+            },
+            /**
+             * Right border of the sprite
+             * @property borderTop
+             * @type number
+             * @default 0
+             */
+            borderRight: {
+                default: 0,
+                type: Fire.Integer
+            }
         }
-    });
-
-    /**
-     * @property pivot
-     * @type Vec2
-     * @default new Fire.Vec2(0.5, 0.5)
-     */
-    Sprite.prop('pivot', new Fire.Vec2(0.5, 0.5), Fire.Tooltip('The pivot is normalized, like a percentage.\n' +
-                                                               '(0,0) means the bottom-left corner and (1,1) means the top-right corner.\n' +
-                                                               'But you can use values higher than (1,1) and lower than (0,0) too.'));
-
-    // trim info
-
-    /**
-     * @property trimX
-     * @type number
-     */
-    Sprite.prop('trimX', 0, Fire.Integer_Obsoleted);
-    /**
-     * @property trimY
-     * @type number
-     */
-    Sprite.prop('trimY', 0, Fire.Integer_Obsoleted);
-    /**
-     * @property width
-     * @type number
-     */
-    Sprite.prop('width', 0, Fire.Integer_Obsoleted);
-    /**
-     * @property height
-     * @type number
-     */
-    Sprite.prop('height', 0, Fire.Integer_Obsoleted);
-
-    /**
-     * @property texture
-     * @type Texture
-     */
-    Sprite.prop('texture', null, Fire.ObjectType(Fire.Texture), Fire.HideInInspector);
-
-    /**
-     * @property rotated
-     * @type boolean
-     * @default false
-     */
-    Sprite.prop('rotated', false, Fire.HideInInspector);
-
-    // raw texture info (used for texture-offset calculation)
-
-    /**
-     * uv of the sprite in atlas-texture
-     * @property x
-     * @type number
-     */
-    Sprite.prop('x', 0, Fire.Integer_Obsoleted, Fire.HideInInspector);
-
-    /**
-     * uv of the sprite in atlas-texture
-     * @property y
-     * @type number
-     */
-    Sprite.prop('y', 0, Fire.Integer_Obsoleted, Fire.HideInInspector);
-
-    /**
-     * @property rawWidth
-     * @type number
-     */
-    Sprite.prop('rawWidth', 0, Fire.Integer_Obsoleted, Fire.HideInInspector);
-
-    /**
-     * @property rawHeight
-     * @type number
-     */
-    Sprite.prop('rawHeight', 0, Fire.Integer_Obsoleted, Fire.HideInInspector);
-
-    /**
-     * Use pixel-level hit testing.
-     * @property pixelLevelHitTest
-     * @type boolean
-     * @default false
-     */
-    Sprite.prop('pixelLevelHitTest', false, Fire.Tooltip('Use pixel-level hit testing.'));
-
-    /**
-     * The highest alpha channel value that is considered opaque for hit test. [0, 1]
-     * @property alphaThreshold
-     * @type number
-     * @default 0.1
-     */
-    Sprite.prop('alphaThreshold', 0.1,
-        Fire.Watch('pixelLevelHitTest', function (obj, propEL) {
-            propEL.disabled = !obj.pixelLevelHitTest;
-        }),
-        Fire.Tooltip('The highest alpha channel value that is considered opaque for hit test.')
-    );
-
-    Sprite.prop('borderTop', 0, Fire.Integer_Obsoleted);
-
-    Sprite.prop('borderBottom', 0, Fire.Integer_Obsoleted);
-
-    Sprite.prop('borderLeft', 0, Fire.Integer_Obsoleted);
-
-    Sprite.prop('borderRight', 0, Fire.Integer_Obsoleted);
-
-
-    /**
-     * @property rotatedWidth
-     * @type number
-     * @readOnly
-     */
-    Object.defineProperty(Sprite.prototype, 'rotatedWidth', {
-        get: function () { return this.rotated ? this.height : this.width; }
-    });
-
-    /**
-     * @property rotatedHeight
-     * @type number
-     * @readOnly
-     */
-    Object.defineProperty(Sprite.prototype, 'rotatedHeight', {
-        get: function () { return this.rotated ? this.width : this.height; }
     });
 
     return Sprite;
 })();
+
+Fire.Sprite = Sprite;
+
+/**
+ * @property rotatedWidth
+ * @type number
+ * @readOnly
+ */
+JS.get(Sprite.prototype, 'rotatedWidth', function () {
+    return this.rotated ? this.height : this.width;
+});
+
+/**
+ * @property rotatedHeight
+ * @type number
+ * @readOnly
+ */
+
+JS.get(Sprite.prototype, 'rotatedHeight', function () {
+    return this.rotated ? this.width : this.height;
+});
