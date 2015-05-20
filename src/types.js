@@ -37,17 +37,17 @@ Fire.ImageType = Fire.defineEnum({
 Fire.TextAlign = Fire.defineEnum({
     /**
      * !#en Align to the left !#zh 文字靠左对齐
-     * @property left
+     * @property Left
      * @type {number}
      */
     Left: -1,
     /**
-     * @property center
+     * @property Center
      * @type {number}
      */
     Center: -1,
     /**
-     * @property right
+     * @property Right
      * @type {number}
      */
     Right: -1
