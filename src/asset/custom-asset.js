@@ -1,6 +1,12 @@
 ﻿var CustomAsset = (function () {
 
-    var CustomAsset = Fire.extend('Fire.CustomAsset', Fire.Asset);
+    var CustomAsset = Fire.Class({
+
+        name: "Fire.CustomAsset",
+
+        extends: Fire.Atlas
+
+    });
 
     return CustomAsset;
 })();

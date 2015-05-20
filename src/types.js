@@ -37,17 +37,17 @@ Fire.ImageType = Fire.defineEnum({
 Fire.TextAlign = Fire.defineEnum({
     /**
      * !#en Align to the left !#zh 文字靠左对齐
-     * @property left
+     * @property Left
      * @type {number}
      */
     Left: -1,
     /**
-     * @property center
+     * @property Center
      * @type {number}
      */
     Center: -1,
     /**
-     * @property right
+     * @property Right
      * @type {number}
      */
     Right: -1
@@ -56,54 +56,53 @@ Fire.TextAlign = Fire.defineEnum({
 /**
  * @enum TextAnchor
  */
-Fire.TextAnchor = (function (t) {
+Fire.TextAnchor = Fire.defineEnum({
     /**
-     * @property topLeft
+     * @property TopLeft
      * @type {number}
      */
-    t[t.TopLeft = 0] = 'Top Left';
+    TopLeft: -1,
     /**
-     * @property topCenter
+     * @property TopCenter
      * @type {number}
      */
-    t[t.TopCenter = 1] = 'Top Center';
+    TopCenter: -1,
     /**
-     * @property topRight
+     * @property TopRight
      * @type {number}
      */
-    t[t.TopRight = 2] = 'Top Right';
+    TopRight: -1,
     /**
-     * @property midLeft
+     * @property MiddleLeft
      * @type {number}
      */
-    t[t.MidLeft = 3] = 'Middle Left';
+    MiddleLeft: -1,
     /**
-     * @property midCenter
+     * @property MiddleCenter
      * @type {number}
      */
-    t[t.MidCenter = 4] = 'Middle Center';
+    MiddleCenter: -1,
     /**
-     * @property midRight
+     * @property MiddleRight
      * @type {number}
      */
-    t[t.MidRight = 5] = 'Middle Right';
+    MiddleRight: -1,
     /**
-     * @property botLeft
+     * @property BottomLeft
      * @type {number}
      */
-    t[t.BotLeft = 6] = 'Bottom Left';
+    BottomLeft: -1,
     /**
-     * @property botCenter
+     * @property BottomCenter
      * @type {number}
      */
-    t[t.BotCenter = 7] = 'Bottom Center';
+    BottomCenter: -1,
     /**
-     * @property botRight
+     * @property BottomRight
      * @type {number}
      */
-    t[t.BotRight = 8] = 'Bottom Right';
-    return t;
-})({});
+    BottomRight: -1,
+});
 
 /**
  * @enum FontType

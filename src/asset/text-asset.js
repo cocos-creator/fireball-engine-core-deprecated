@@ -1,7 +1,18 @@
 ﻿Fire.TextAsset = (function () {
-    var TextAsset = Fire.extend("Fire.TextAsset", Fire.Asset);
+    var TextAsset = Fire.Class({
 
-    TextAsset.prop('text', '', Fire.MultiText, Fire.RawType('text'));
+        name: 'Fire.TextAsset',
+
+        extends: Fire.Asset,
+
+        properties: {
+            text: {
+                default: '',
+                rawType: 'text',
+                multiline: true
+            }
+        }
+    });
 
     return TextAsset;
 })();
