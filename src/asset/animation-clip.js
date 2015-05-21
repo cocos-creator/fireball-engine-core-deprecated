@@ -3,22 +3,32 @@ Fire.AnimationClip = Fire.Class({
     extends: Fire.Asset,
 
     properties: {
-        frames: {
+        _length: {
+            default: 0,
+            type: Fire.Float,
+        },
+        length: {
+            get: function () { return this._length; },
+        },
+        frameRate: {
+            default: 60,
+        },
+        curveData: {
             default: [],
             visible: false,
         },
         events: {
             default: [],
             visible: false,
-        }
+        },
     },
 
     addProperty: function ( compName, propName ) {
-        var result = this.frames.some( function ( item ) {
+        var result = this.curveData.some( function ( item ) {
             return item.component === compName && item.property == propName;
         });
         if ( !result ) {
-            this.frames.push({
+            this.curveData.push({
                 component: compName,
                 property: propName,
                 keys: [],
@@ -27,29 +37,29 @@ Fire.AnimationClip = Fire.Class({
     },
 
     removeProperty: function ( compName, propName ) {
-        for ( var i = 0; i < this.frames.length; ++i ) {
-            var frame = this.frames[i];
-            if ( frame.component === compName &&
-                 frame.property === propName ) {
-                this.frames.splice( i, 1 );
+        for ( var i = 0; i < this.curveData.length; ++i ) {
+            var curveInfo = this.curveData[i];
+            if ( curveInfo.component === compName &&
+                 curveInfo.property === propName ) {
+                this.curveData.splice( i, 1 );
                 break;
             }
         }
     },
 
-    getFrameInfo: function ( compName, propName ) {
-        for ( var i = 0; i < this.frames.length; ++i ) {
-            var frameInfo = this.frames[i];
-            if ( frameInfo.component === compName &&
-                 frameInfo.property === propName ) {
-                return frameInfo;
+    getCurveInfo: function ( compName, propName ) {
+        for ( var i = 0; i < this.curveData.length; ++i ) {
+            var curveInfo = this.curveData[i];
+            if ( curveInfo.component === compName &&
+                 curveInfo.property === propName ) {
+                return curveInfo;
             }
         }
         return null;
     },
 
     sort: function () {
-        this.frames.sort( function ( a, b ) {
+        this.curveData.sort( function ( a, b ) {
             if ( a.component !== b.component ) {
                 return a.component.localeCompare(b.component);
             }
@@ -57,7 +67,7 @@ Fire.AnimationClip = Fire.Class({
         });
     },
 
-    // frames structure:
+    // curveData structure:
     // [
     //     {
     //         component: 'foobar', property: 'hello', keys: [
