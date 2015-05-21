@@ -37,6 +37,17 @@ Fire.AnimationClip = Fire.Class({
         }
     },
 
+    getFrameInfo: function ( compName, propName ) {
+        for ( var i = 0; i < this.frames.length; ++i ) {
+            var frameInfo = this.frames[i];
+            if ( frameInfo.component === compName &&
+                 frameInfo.property === propName ) {
+                return frameInfo;
+            }
+        }
+        return null;
+    },
+
     sort: function () {
         this.frames.sort( function ( a, b ) {
             if ( a.component !== b.component ) {
