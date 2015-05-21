@@ -185,6 +185,15 @@ function parseAttributes (attrs, className, propName) {
 
     var type = attrs.type;
     if (type) {
+        if (Array.isArray(type)) {
+            if (type.length > 0) {
+                type = type[0];
+            }
+            else {
+                Fire.error('Invalid type of %s.%s', className, propName);
+                return;
+            }
+        }
         if (type === Fire.Integer) {
             result.push(Fire.Integer_Obsoleted);
         }

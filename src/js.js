@@ -366,6 +366,51 @@ JS.set = function (obj, prop, setter, enumerable) {
 };
 
 /**
+ * @class Array
+ * @static
+ */
+JS.Array = {
+    /**
+     * Removes the first occurrence of a specific object from the array.
+     * @method remove
+     * @param {any[]} array
+     * @param {any} value
+     * @return {boolean}
+     */
+    remove: function (array, value) {
+        var index = array.indexOf(value);
+        if (index !== -1) {
+            array.splice(index, 1);
+            return true;
+        }
+        else {
+            return false;
+        }
+    },
+
+    /**
+     * Removes the array item at the specified index.
+     * @method removeAt
+     * @param {any[]} array
+     * @param {number} index
+     */
+    removeAt: function (array, index) {
+        array.splice(index, 1);
+    },
+
+    /**
+     * Determines whether the array contains a specific value.
+     * @method contains
+     * @param {any[]} array
+     * @param {any} value
+     * @return {boolean}
+     */
+    contains: function (array, value) {
+        return array.indexOf(value) !== -1;
+    }
+};
+
+/**
  * @module Fire
  */
 /**
