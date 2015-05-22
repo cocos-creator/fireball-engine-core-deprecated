@@ -13,7 +13,7 @@ test('destroyImmediate', 2, function () {
 
     obj._onPreDestroy = function () {
         ok(true, 'destroy callback called');
-    }
+    };
 
     obj._destroyImmediate();
 
@@ -21,18 +21,19 @@ test('destroyImmediate', 2, function () {
 
     obj._onPreDestroy = function () {
         ok(false, 'can only destroyed once');
-    }
+    };
 });
 
 test('Fire.isValid', function () {
     var obj = new FObject();
     strictEqual(Fire.isValid(obj), true, 'valid');
+    strictEqual(Fire.isValid(0), true, '0 is valid');
 
     obj._destroyImmediate();
 
     strictEqual(Fire.isValid(obj), false, 'destroyed');
 
-    delete obj;
+    obj = undefined;
 
     strictEqual(Fire.isValid(), false, 'undefined return false 1');
     strictEqual(Fire.isValid(obj), false, 'undefined return false 2');
