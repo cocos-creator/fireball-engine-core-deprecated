@@ -72,14 +72,14 @@ Fire.AnimationClip = Fire.Class({
     //     {
     //         component: 'foobar', property: 'hello', keys: [
     //             { frame: 0, value: 10, curve: [0,0.5,0.5,1] },
-    //             { frame: 5, value: 15, curve: 'linear' },
+    //             { frame: 5, value: 15, curve: [0.5,0.5,0.5,0.5] },
     //             { frame: 10, value: 20, curve: null },
     //         ]
     //     },
     //     {
     //         component: 'foobar', property: 'world', keys: [
     //             { frame: 0, value: 10, curve: [0,0.5,0.5,1] },
-    //             { frame: 5, value: 15, curve: 'linear' },
+    //             { frame: 5, value: 15, curve: [0.5,0.5,0.5,0.5] },
     //             { frame: 10, value: 20, curve: null },
     //         ]
     //     },
