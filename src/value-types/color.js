@@ -152,6 +152,43 @@ var Color = (function () {
     };
 
     /**
+     * @method setR
+     * @param {number} red - the new Red component
+     * @return {Color} this color
+     */
+    Color.prototype.setR = function (red) {
+        this.r = red;
+        return this;
+    };
+    /**
+     * @method setG
+     * @param {number} green - the new Green component
+     * @return {Color} this color
+     */
+    Color.prototype.setG = function (green) {
+        this.g = green;
+        return this;
+    };
+    /**
+     * @method setB
+     * @param {number} blue - the new Blue component
+     * @return {Color} this color
+     */
+    Color.prototype.setB = function (blue) {
+        this.b = blue;
+        return this;
+    };
+    /**
+     * @method setA
+     * @param {number} alpha - the new Alpha component
+     * @return {Color} this color
+     */
+    Color.prototype.setA = function (alpha) {
+        this.a = alpha;
+        return this;
+    };
+
+    /**
      * @method toCSS
      * @param {string} opt - "rgba", "rgb", "#rgb" or "#rrggbb"
      * @return {string}

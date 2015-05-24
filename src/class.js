@@ -9,6 +9,10 @@ var _appendProp = function (name/*, isGetter*/) {
     //    Fire.error('The property name "' + name + '" is not compliant with JavaScript naming standards');
     //    return;
     //}
+    if (name.indexOf('.') !== -1) {
+        Fire.error('Disallow to use "." in property name');
+        return;
+    }
     // @endif
 
     if (!this.__props__) {

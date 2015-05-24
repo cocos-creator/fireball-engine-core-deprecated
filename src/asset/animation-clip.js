@@ -25,7 +25,7 @@ Fire.AnimationClip = Fire.Class({
 
     addProperty: function ( compName, propName ) {
         var result = this.curveData.some( function ( item ) {
-            return item.component === compName && item.property == propName;
+            return item.component === compName && item.property === propName;
         });
         if ( !result ) {
             this.curveData.push({
