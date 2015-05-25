@@ -4,7 +4,7 @@
 
         name: "Fire.CustomAsset",
 
-        extends: Fire.Atlas
+        extends: Fire.Asset
 
     });
 
