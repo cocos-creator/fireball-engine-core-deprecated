@@ -216,11 +216,16 @@ FObject = (function () {
 /**
  * Checks whether the object is non-nil and not yet destroyed
  * @method isValid
- * @param {FObject} object
+ * @param {object|any} value
  * @return {boolean} whether is valid
  */
-Fire.isValid = function (object) {
-    return !!object && !(object._objFlags & Destroyed);
+Fire.isValid = function (value) {
+    if (typeof value === 'object') {
+        return !!value && !(value._objFlags & Destroyed);
+    }
+    else {
+        return typeof value !== 'undefined';
+    }
 };
 
 Fire.FObject = FObject;
