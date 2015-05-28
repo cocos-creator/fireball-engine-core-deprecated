@@ -366,6 +366,47 @@ JS.set = function (obj, prop, setter, enumerable) {
 };
 
 /**
+ * Defines a polyfill field for obsoleted codes.
+ * @method obsolete
+ * @param {any} obj - YourObject or YourClass.prototype
+ * @param {string} obsoleted - "OldParam" or "YourClass.OldParam"
+ * @param {string} newName - "NewParam"
+ * @param {bool} [writable=false]
+ */
+JS.obsolete = function (obj, obsoleted, newName, writable) {
+    var oldName = obsoleted.split('.').slice(-1);
+    JS.get(obj, oldName, function () {
+        // @ifdef DEV
+        Fire.warn('"%s" is deprecated, use "%s" instead please.', obsoleted, newName);
+        // @endif
+        return obj[newName];
+    });
+    if (writable) {
+        JS.set(obj, oldName, function (value) {
+            // @ifdef DEV
+            Fire.warn('"%s" is deprecated, use "%s" instead please.', obsoleted, newName);
+            // @endif
+            obj[newName] = value;
+        });
+    }
+};
+
+/**
+ * Defines all polyfill fields for obsoleted codes corresponding to the enumerable properties of props.
+ * @method obsoletes
+ * @param {any} obj - YourObject or YourClass.prototype
+ * @param {any} objName - "YourObject" or "YourClass"
+ * @param {object} props
+ * @param {bool} [writable=false]
+ */
+JS.obsoletes = function (obj, objName, props, writable) {
+    for (var obsoleted in props) {
+        var newName = props[obsoleted];
+        JS.obsolete(obj, objName + '.' + obsoleted, newName, writable);
+    }
+};
+
+/**
  * @class Array
  * @static
  */
