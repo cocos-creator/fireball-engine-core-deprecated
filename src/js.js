@@ -1,9 +1,9 @@
 
-/**
- * @param {object} obj
- * @param {string} name
- * @return {object}
- */
+///**
+// * @param {object} obj
+// * @param {string} name
+// * @return {object}
+// */
 function _getPropertyDescriptor(obj, name) {
     if (obj) {
         var pd = Object.getOwnPropertyDescriptor(obj, name);

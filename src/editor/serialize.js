@@ -11,9 +11,9 @@ function _getType (obj) {
 
 var _Serializer = (function () {
 
-    /**
-     * @param {boolean} [exporting=false] - if true, property with Fire.EditorOnly will be discarded
-     */
+    ///**
+    // * @param {boolean} [exporting=false] - if true, property with Fire.EditorOnly will be discarded
+    // */
     function _Serializer(obj, exporting) {
         this._exporting = exporting;
 
@@ -56,12 +56,12 @@ var _Serializer = (function () {
         }
     };
 
-    /**
-     * @param {object} obj - The object to serialize
-     * @param {array|object} data - The array or dict where serialized data to store
-     * @return {object} The reference info used to embed to its container.
-     *                   if the serialized data not contains in serializedList, then return the data directly.
-     */
+    ///**
+    // * @param {object} obj - The object to serialize
+    // * @param {array|object} data - The array or dict where serialized data to store
+    // * @return {object} The reference info used to embed to its container.
+    // *                   if the serialized data not contains in serializedList, then return the data directly.
+    // */
     var _enumerateObject = function (self, obj, data) {
         if (Array.isArray(obj)) {
             //var oldSerializedCount = self.serializedList.length;
@@ -141,10 +141,10 @@ var _Serializer = (function () {
         //return data;
     };
 
-    /**
-     * serialize any type
-     * @param {*} val - The element to serialize
-     */
+    ///**
+    // * serialize any type
+    // * @param {*} val - The element to serialize
+    // */
     var _serializeField = function (self, val) {
         var type = typeof val;
         if (type === 'object') {
@@ -167,10 +167,10 @@ var _Serializer = (function () {
         }
     };
 
-    /**
-     * serialize only primitive object type
-     * @param {object} obj - The object to serialize
-     */
+    ///**
+    // * serialize only primitive object type
+    // * @param {object} obj - The object to serialize
+    // */
     var _serializePrimitiveObj = function (self, obj) {
         var data;
         if (Array.isArray(obj)) {
@@ -208,10 +208,10 @@ var _Serializer = (function () {
         return data;
     };
 
-    /**
-     * serialize object
-     * @param {object} obj - The object to serialize
-     */
+    ///**
+    // * serialize object
+    // * @param {object} obj - The object to serialize
+    // */
     var _serializeObj = function (self, obj) {
         //Fire.log(obj);
         if (!obj) {
@@ -282,12 +282,12 @@ var _Serializer = (function () {
         }
     };
 
-    /**
-     * serialize main object
-     * 这个方法主要是对 main object 做特殊处理，虽然和 _serializeObj 很接近，但为了
-     * 避免增加 _serializeObj 的额外开销并不和它合并到一起。
-     * @param {object} obj - The object to serialize
-     */
+    ///**
+    // * serialize main object
+    // * 这个方法主要是对 main object 做特殊处理，虽然和 _serializeObj 很接近，但为了
+    // * 避免增加 _serializeObj 的额外开销并不和它合并到一起。
+    // * @param {object} obj - The object to serialize
+    // */
     var _serializeMainObj = function (self, obj) {
         if (obj instanceof FObject) {
             var uuid = obj._uuid;

@@ -242,10 +242,10 @@ function _isDomNode(obj) {
 }
 
 // @ifdef DEV
-/**
- * @param {object} obj
- * @return {boolean} is {} ?
- */
+///**
+// * @param {object} obj
+// * @return {boolean} is {} ?
+// */
 var _isPlainEmptyObj_DEV = function (obj) {
     if (!obj || obj.constructor !== ({}).constructor) {
         return false;

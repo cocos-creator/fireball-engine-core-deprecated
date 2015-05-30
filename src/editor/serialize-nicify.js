@@ -10,9 +10,7 @@
     // 保存有标记_iN$t列表
     this.temporaryDataList = [];
 };
-/**
- *  nicify
- */
+
 var nicifySerialized = function (serialized) {
 
     var mainObject = serialized[0];
@@ -72,9 +70,6 @@ var nicifySerialized = function (serialized) {
 
 Fire._nicifySerialized = nicifySerialized;
 
-/**
- *  iterative
- */
 var _iterative = function (obj, serialized, refInfos) {
     if (typeof obj !== 'object') {
         return;
@@ -102,9 +97,6 @@ var _iterative = function (obj, serialized, refInfos) {
     }
 };
 
-/**
- *  traversal Child
- */
 var _traversalChild = function (element, key, obj, serialized, refInfos) {
     var hasRepeatID;
     var id = element.__id__;
@@ -131,5 +123,4 @@ var _traversalChild = function (element, key, obj, serialized, refInfos) {
             refInfos.referencedCounts[id]++;
         }
     }
-
 };

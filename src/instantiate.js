@@ -52,16 +52,16 @@ Fire._doInstantiate = (function () {
 
     var objsToClearTmpVar = [];   // 用于重设临时变量
 
-    /**
-     * Do instantiate object, the object to instantiate must be non-nil.
-     * 这是一个实例化的通用方法，可能效率比较低。
-     * 之后可以给各种类型重载快速实例化的特殊实现，但应该在单元测试中将结果和这个方法的结果进行对比。
-     * 值得注意的是，这个方法不可重入。
-     *
-     * @param {object} obj - 该方法仅供内部使用，用户需负责保证参数合法。什么参数是合法的请参考 Fire.instantiate().
-     * @return {object}
-     * @private
-     */
+    ///**
+    // * Do instantiate object, the object to instantiate must be non-nil.
+    // * 这是一个实例化的通用方法，可能效率比较低。
+    // * 之后可以给各种类型重载快速实例化的特殊实现，但应该在单元测试中将结果和这个方法的结果进行对比。
+    // * 值得注意的是，这个方法不可重入。
+    // *
+    // * @param {object} obj - 该方法仅供内部使用，用户需负责保证参数合法。什么参数是合法的请参考 Fire.instantiate().
+    // * @return {object}
+    // * @private
+    // */
     function doInstantiate (obj) {
         if (Array.isArray(obj)) {
             Fire.error('Can not instantiate array');
@@ -82,10 +82,10 @@ Fire._doInstantiate = (function () {
         return clone;
     }
 
-    /**
-     * @param {object} obj - The object to instantiate, typeof mustbe 'object' and should not be an array.
-     * @return {object} - the instantiated instance
-     */
+    ///**
+    // * @param {object} obj - The object to instantiate, typeof mustbe 'object' and should not be an array.
+    // * @return {object} - the instantiated instance
+    // */
     var enumerateObject = function (obj) {
         var value, type;
         var klass = obj.constructor;
@@ -136,9 +136,9 @@ Fire._doInstantiate = (function () {
         return clone;
     };
 
-    /**
-     * @return {object} - the original non-nil object, typeof must be 'object'
-     */
+    ///**
+    // * @return {object} - the original non-nil object, typeof must be 'object'
+    // */
     function instantiateObj (obj) {
         // 目前使用“_iN$t”这个特殊字段来存实例化后的对象，这样做主要是为了防止循环引用
         // 注意，为了避免循环引用，所有新创建的实例，必须在赋值前被设为源对象的_iN$t

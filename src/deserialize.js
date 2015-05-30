@@ -1,8 +1,8 @@
 
 var _Deserializer = (function () {
-    /**
-     * @param {boolean} isEditor - if false, property with Fire.EditorOnly will be discarded
-     */
+    ///**
+    // * @param {boolean} isEditor - if false, property with Fire.EditorOnly will be discarded
+    // */
     function _Deserializer(jsonObj, result, target, isEditor, classFinder) {
         this._editor = isEditor;
         this._classFinder = classFinder;
@@ -242,10 +242,10 @@ var _Deserializer = (function () {
         }
     }
 
-    /**
-     * @param {object} serialized - The obj to deserialize, must be non-nil
-     * @param {object} [target=null]
-     */
+    ///**
+    // * @param {object} serialized - The obj to deserialize, must be non-nil
+    // * @param {object} [target=null]
+    // */
     var _deserializeObject = function (self, serialized, target) {
         var propName, prop;
         var obj = null;     // the obj to return
