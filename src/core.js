@@ -54,6 +54,8 @@ else {
     };
 }
 
+Fire._throw = Fire.error;
+
 // enum
 
 /**

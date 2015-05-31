@@ -330,3 +330,19 @@ test('statics', function () {
     Animal.id = "duang-duang";
     strictEqual(Animal.id, "duang-duang", 'can set static prop');
 });
+
+test('try catch', function () {
+    var originThrow = Fire._throw;
+
+    Fire._throw = Callback().enable();
+    var Animal = Fire.Class({
+        constructor: function () {
+            null.foo();
+        }
+    });
+    var animal = new Animal();
+    ok(animal, 'should create new instance even if an exception occurs');
+    Fire._throw.once('should throw exception');
+
+    Fire._throw = originThrow;
+});

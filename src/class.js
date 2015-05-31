@@ -364,7 +364,8 @@ function _initClass(className, fireClass) {
 }
 
 Fire._doDefine = function (className, baseClass, constructor) {
-    var fireClass = _createCtor(constructor, baseClass);
+    var useTryCatch = ! JS.String.startsWith(className, 'Fire.');
+    var fireClass = _createCtor(constructor, baseClass, useTryCatch);
     _initClass(className, fireClass);
 
     if (baseClass) {
@@ -438,7 +439,7 @@ Fire.extend = function (className, baseClass, constructor) {
     return null;
 };
 
-function _createCtor (constructor, baseClass) {
+function _createCtor (constructor, baseClass, useTryCatch) {
     // get base user constructors
     var ctors;
     if (Fire._isFireClass(baseClass)) {
@@ -461,85 +462,45 @@ function _createCtor (constructor, baseClass) {
     }
     // create class constructor
     var fireClass;
+    var body = '(function(){\n';
+
+    // @ifdef EDITOR
+    body += 'this._observing=false;\n';
+    // @endif
+    body += '_createInstanceProps(this,fireClass);\n';
+
+    // call user constructors
     if (ctors) {
         // @ifdef EDITOR
         console.assert(ctors.length > 0);
         // @endif
-        switch (ctors.length) {
-            case 1:
-                fireClass = function () {
-                    // @ifdef EDITOR
-                    this._observing = false;
-                    // @endif
-                    _createInstanceProps(this, fireClass);
-                    // call user constructors
-                    var ctors = fireClass.__ctors__;
-                    (ctors[0]).apply(this, arguments);
-                };
-                break;
-            case 2:
-                fireClass = function () {
-                    // @ifdef EDITOR
-                    this._observing = false;
-                    // @endif
-                    _createInstanceProps(this, fireClass);
-                    // call user constructors
-                    var ctors = fireClass.__ctors__;
-                    (ctors[0]).apply(this, arguments);
-                    (ctors[1]).apply(this, arguments);
-                };
-                break;
-            case 3:
-                fireClass = function () {
-                    // @ifdef EDITOR
-                    this._observing = false;
-                    // @endif
-                    _createInstanceProps(this, fireClass);
-                    // call user constructors
-                    var ctors = fireClass.__ctors__;
-                    (ctors[0]).apply(this, arguments);
-                    (ctors[1]).apply(this, arguments);
-                    (ctors[2]).apply(this, arguments);
-                };
-                break;
-            case 4:
-                fireClass = function () {
-                    // @ifdef EDITOR
-                    this._observing = false;
-                    // @endif
-                    _createInstanceProps(this, fireClass);
-                    // call user constructors
-                    var ctors = fireClass.__ctors__;
-                    (ctors[0]).apply(this, arguments);
-                    (ctors[1]).apply(this, arguments);
-                    (ctors[2]).apply(this, arguments);
-                    (ctors[3]).apply(this, arguments);
-                };
-                break;
-            default:
-                fireClass = function () {
-                    // @ifdef EDITOR
-                    this._observing = false;
-                    // @endif
-                    _createInstanceProps(this, fireClass);
-                    // call user constructors
-                    var ctors = fireClass.__ctors__;
-                    for (var i = 0, len = ctors.length; i < len; ++i) {
-                        (ctors[i]).apply(this, arguments);
-                    }
-                };
-                break;
+
+        body += 'var cs=fireClass.__ctors__;\n';
+
+        if (useTryCatch) {
+            body += 'try{\n';
+        }
+
+        if (ctors.length <= 5) {
+            for (var i = 0; i < ctors.length; i++) {
+                body += '(cs[' + i + ']).apply(this,arguments);\n';
+            }
+        }
+        else {
+            body += 'for(var i=0,l=cs.length;i<l;++i){\n';
+            body += '(cs[i]).apply(this,arguments);\n}\n';
+        }
+
+        if (useTryCatch) {
+            body += '}catch(e){\nFire._throw(e);\n}\n';
         }
     }
-    else {
-        // no user constructor
-        fireClass = function () {
-            // @ifdef EDITOR
-            this._observing = false;
-            // @endif
-            _createInstanceProps(this, fireClass);
-        };
-    }
+    body += '})';
+
+    // jshint evil: true
+    fireClass = eval(body);
+    // jshint evil: false
+
     Object.defineProperty(fireClass, '__ctors__', {
         value: ctors || null,
         writable: false,
@@ -547,72 +508,7 @@ function _createCtor (constructor, baseClass) {
     });
     return fireClass;
 }
-/*
-function _createCtor_old (constructor, baseClass) {
-    var fireClass;
-    var propsInitedByBase = baseClass && Fire._isFireClass(baseClass);
-    if (constructor) {
-// @ifdef DEV
-        _checkCtor(constructor);
-// @endif
-        if (baseClass) {
-            if (propsInitedByBase) {
-                fireClass = function () {
-                    baseClass.apply(this, arguments);
-                    constructor.apply(this, arguments);
-                };
-            }
-            else {
-                fireClass = function () {
-                    // @ifdef EDITOR
-                    this._observing = false;
-                    // @endif
-                    baseClass.apply(this, arguments);
-                    _createInstanceProps(this, this.constructor);
-                    constructor.apply(this, arguments);
-                };
-            }
-        }
-        else {
-            fireClass = function () {
-                // @ifdef EDITOR
-                this._observing = false;
-                // @endif
-                _createInstanceProps(this, this.constructor);
-                constructor.apply(this, arguments);
-            };
-        }
-    }
-    else {
-        if (baseClass) {
-            if (propsInitedByBase) {
-                fireClass = function () {
-                    baseClass.apply(this, arguments);
-                };
-            }
-            else {
-                fireClass = function () {
-                    // @ifdef EDITOR
-                    this._observing = false;
-                    // @endif
-                    baseClass.apply(this, arguments);
-                    _createInstanceProps(this, this.constructor);
-                };
-            }
-        }
-        else {
-            // no constructor
-            fireClass = function () {
-                // @ifdef EDITOR
-                this._observing = false;
-                // @endif
-                _createInstanceProps(this, this.constructor);
-            };
-        }
-    }
-    return fireClass;
-}
-*/
+
 // @ifdef DEV
 function _checkCtor (ctor) {
     if (Fire._isFireClass(ctor)) {
