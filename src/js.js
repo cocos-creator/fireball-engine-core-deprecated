@@ -170,7 +170,7 @@ JS.getClassName = function (obj) {
                     if (!Fire.isEditor) {
                         error += ' (This may be caused by error of unit test.) \
 If you dont need serialization, you can set class id to "". You can also call \
-Fire.unregisterClass to remove the id of unused class';
+Fire.JS.unregisterClass to remove the id of unused class';
                     }
                     // @endif
                     Fire.error(error);
@@ -449,6 +449,50 @@ JS.Array = {
     contains: function (array, value) {
         return array.indexOf(value) !== -1;
     }
+};
+
+/**
+ * @class String
+ * @static
+ */
+JS.String = {
+    /**
+     * The startsWith() method determines whether a string begins with the characters of another string, returning true or false as appropriate.
+     * @method startsWith
+     * @param {string} string
+     * @param {string} searchString - The characters to be searched for at the start of this string.
+     * @param {string} [position=0] - Optional. The position in this string at which to begin searching for searchString; defaults to 0.
+     * @return {boolean}
+     */
+    startsWith: String.prototype.startsWith ?
+        function (string, searchString, position) {
+            return string.startsWith(searchString, position);
+        } :
+        function (string, searchString, position) {
+            position = position || 0;
+            return string.lastIndexOf(searchString, position) === position;
+        },
+
+    /**
+     * This method lets you determine whether or not a string ends with another string.
+     * @method startsWith
+     * @param {string} string
+     * @param {string} searchString - The characters to be searched for at the end of this string.
+     * @param {string} [position=0] - Optional. Search within this string as if this string were only this long; defaults to this string's actual length, clamped within the range established by this string's length.
+     * @return {boolean}
+     */
+    endsWith: String.prototype.endsWith ?
+        function (string, searchString, position) {
+            return string.endsWith(searchString, position);
+        } :
+        function (string, searchString, position) {
+            if (typeof position === 'undefined' || position > string.length) {
+                position = string.length;
+            }
+            position -= searchString.length;
+            var lastIndex = string.indexOf(searchString, position);
+            return lastIndex !== -1 && lastIndex === position;
+        }
 };
 
 /**
