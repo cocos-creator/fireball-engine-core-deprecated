@@ -190,21 +190,19 @@ Fire.Class = function (options) {
 function preParseProperties (className, properties) {
     for (var propName in properties) {
         var val = properties[propName];
-        if (!val) { 
-            continue; 
+        if (!val) {
+            continue;
         }
 
-        var hasGetSet  = val.hasOwnProperty('get') || val.hasOwnProperty('set');
-        var hasDefault = val.hasOwnProperty('default');
-        var hasNotify  = val.hasOwnProperty('notify');
-
-        if (hasNotify) {
-            if (hasGetSet) {
-                Fire.warn("\'notify\' can't work with \'get/set\' !");
+        var notify = val.notify;
+        if (notify) {
+            if (val.get || val.set) {
+                // @ifdef DEV
+                Fire.warn('"notify" can\'t work with "get/set" !');
+                // @endif
+                continue;
             }
-
-            if (hasDefault) {
-
+            if (val.hasOwnProperty('default')) {
                 (function () {
                     // 添加新的内部属性，将原来的属性修改为 getter/setter 形式
                     // 以 _ 开头将自动设置property 为 Fire.HideInInspector
@@ -212,8 +210,6 @@ function preParseProperties (className, properties) {
                     var newValue = {};
                     properties[newKey] = newValue;
 
-                    var notify = val.notify;
-                    
                     val.get = function () {
                         return this[newKey];
                     };
@@ -234,9 +230,11 @@ function preParseProperties (className, properties) {
                     }
                 })();
             }
+            // @ifdef DEV
             else {
-                 Fire.warn("\'notify\' must work with \'default\' !");
+                Fire.warn('"notify" must work with "default" !');
             }
+            // @endif
         }
     }
 }
@@ -337,8 +335,8 @@ function parseAttributes (attrs, className, propName) {
         }
     }
     else {
-        // if starts with '_', hide in inspector by default
-        if (propName.charCodeAt(0) === 95) {
+        var startsWithUS = (propName.charCodeAt(0) === 95);
+        if (startsWithUS) {
             result.push(Fire.HideInInspector);
         }
     }
