@@ -98,7 +98,7 @@ Fire.Class = function (options) {
     var properties = options.properties;
     if (properties) {
         // 预处理属性
-        preParseProperties(name, properties);
+        preParseProperties(properties);
 
         for (var propName in properties) {
             var val = properties[propName];
@@ -187,7 +187,7 @@ Fire.Class = function (options) {
 };
 
 // 预处理属性值，例如：notify等
-function preParseProperties (className, properties) {
+function preParseProperties (properties) {
     for (var propName in properties) {
         var val = properties[propName];
         if (!val) {
@@ -203,13 +203,11 @@ function preParseProperties (className, properties) {
                 continue;
             }
             if (val.hasOwnProperty('default')) {
-                (function () {
-                    // 添加新的内部属性，将原来的属性修改为 getter/setter 形式
-                    // 以 _ 开头将自动设置property 为 Fire.HideInInspector
-                    var newKey = "_val$" + propName;
-                    var newValue = {};
-                    properties[newKey] = newValue;
+                // 添加新的内部属性，将原来的属性修改为 getter/setter 形式
+                // 以 _ 开头将自动设置property 为 Fire.HideInInspector
+                var newKey = "_val$" + propName;
 
+                (function (notify, newKey) {
                     val.get = function () {
                         return this[newKey];
                     };
@@ -218,17 +216,19 @@ function preParseProperties (className, properties) {
                         this[newKey] = value;
                         notify.call(this, oldValue);
                     };
+                })(notify, newKey);
 
-                    // 将不能用于get方法中的属性移动到newValue中
-                    for (var i in _propertyNotForGet) {
-                        var prop = _propertyNotForGet[i];
+                var newValue = {};
+                properties[newKey] = newValue;
+                // 将不能用于get方法中的属性移动到newValue中
+                for (var i in _propertyNotForGet) {
+                    var prop = _propertyNotForGet[i];
 
-                        if (val.hasOwnProperty(prop)) {
-                            newValue[prop] = val[prop];
-                            delete val[prop];
-                        }
+                    if (val.hasOwnProperty(prop)) {
+                        newValue[prop] = val[prop];
+                        delete val[prop];
                     }
-                })();
+                }
             }
             // @ifdef DEV
             else {
