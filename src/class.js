@@ -440,6 +440,12 @@ Fire.extend = function (className, baseClass, constructor) {
 };
 
 function _createCtor (constructor, baseClass, useTryCatch) {
+    // @ifdef DEV
+    if (constructor) {
+        _checkCtor(constructor);
+    }
+    // @endif
+    
     // get base user constructors
     var ctors;
     if (Fire._isFireClass(baseClass)) {
