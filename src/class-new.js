@@ -194,13 +194,16 @@ function preParseProperties (className, properties) {
             continue; 
         }
 
-        var hasGetSet = val.hasOwnProperty('get') || val.hasOwnProperty('set');
-        if (val.hasOwnProperty('default') && hasGetSet) {
-            Fire.warn("default 不能和 get/set 公用！")
-        }
+        var hasGetSet  = val.hasOwnProperty('get') || val.hasOwnProperty('set');
+        var hasDefault = val.hasOwnProperty('default');
+        var hasNotify  = val.hasOwnProperty('notify');
 
-        if (val.hasOwnProperty('notify')) {
-            if (val.hasOwnProperty('default')) {
+        if (hasNotify) {
+            if (hasGetSet) {
+                Fire.warn("\'notify\' can't work with \'get/set\' !");
+            }
+
+            if (hasDefault) {
 
                 (function () {
                     // 添加新的内部属性，将原来的属性修改为 getter/setter 形式
@@ -232,7 +235,7 @@ function preParseProperties (className, properties) {
                 })();
             }
             else {
-                 Fire.warn("notify 必须指定 default 才能用！")
+                 Fire.warn("\'notify\' must work with \'default\' !");
             }
         }
     }
