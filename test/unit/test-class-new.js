@@ -346,3 +346,33 @@ test('try catch', function () {
 
     Fire._throw = originThrow;
 });
+
+test('property notify', function () {
+    var string1 = "";
+    var string2 = "";
+
+    var Animal = Fire.Class({
+        properties: {
+            legs: {
+                default: 0,
+                notify: function (oldValue) {
+                    string1 = oldValue + " : " + this.legs;
+                }
+            },
+
+            eyes: {
+                default: 0,
+                notify: function (oldValue) {
+                    string2 = oldValue + " : " + this.eyes;
+                }
+            }
+        }
+    });
+
+    var dogs = new Animal();
+    dogs.legs = 4;
+    dogs.eyes = 2;
+
+    strictEqual(string1, "0 : 4", 'dogs has 4 legs');
+    strictEqual(string2, "0 : 2", 'dogs has 2 eyes');
+})

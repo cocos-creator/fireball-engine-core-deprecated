@@ -88,6 +88,9 @@ Fire.Class = function (options) {
     // define properties
     var properties = options.properties;
     if (properties) {
+        // 预处理属性
+        preParseProperties(name, properties);
+
         for (var propName in properties) {
             var val = properties[propName];
             var isObj = val && typeof val === 'object' && !Array.isArray(val);
@@ -173,6 +176,37 @@ Fire.Class = function (options) {
 
     return cls;
 };
+
+// 预处理属性值，例如：notify等
+function preParseProperties (className, properties) {
+    for (var propName in properties) {
+        var val = properties[propName];
+        if(!val) { 
+            continue; 
+        }
+
+        if(val.hasOwnProperty('default') && val.hasOwnProperty('notify')) {
+            (function () {
+                // 添加新的内部属性，将原来的属性修改为 getter/setter 形式
+                var newKey = "_" + className + "_" + propName + "_";
+                properties[newKey] = val;
+
+                var notify = val.notify;
+                
+                properties[propName] = {
+                    get: function () {
+                        return this[newKey];
+                    },
+                    set: function (value) {
+                        var oldValue = this[newKey];
+                        this[newKey] = value;
+                        notify.call(this, oldValue);
+                    }
+                };
+            })();
+        }
+    }
+}
 
 var tmpAttrs = [];
 function parseAttributes (attrs, className, propName) {
