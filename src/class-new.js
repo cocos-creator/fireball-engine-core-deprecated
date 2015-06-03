@@ -51,6 +51,15 @@
         // ...
     };
  */
+
+// 不能使用于get方法的属性
+var _propertyNotForGet = [
+    'default',
+    'serializable',
+    'editorOnly',
+    'rawType'
+];
+
 Fire.Class = function (options) {
     if (arguments.length === 0) {
         return Fire.define();
@@ -88,6 +97,9 @@ Fire.Class = function (options) {
     // define properties
     var properties = options.properties;
     if (properties) {
+        // 预处理属性
+        preParseProperties(name, properties);
+
         for (var propName in properties) {
             var val = properties[propName];
             var isObj = val && typeof val === 'object' && !Array.isArray(val);
@@ -173,6 +185,61 @@ Fire.Class = function (options) {
 
     return cls;
 };
+
+// 预处理属性值，例如：notify等
+function preParseProperties (className, properties) {
+    for (var propName in properties) {
+        var val = properties[propName];
+        if (!val) { 
+            continue; 
+        }
+
+        var hasGetSet  = val.hasOwnProperty('get') || val.hasOwnProperty('set');
+        var hasDefault = val.hasOwnProperty('default');
+        var hasNotify  = val.hasOwnProperty('notify');
+
+        if (hasNotify) {
+            if (hasGetSet) {
+                Fire.warn("\'notify\' can't work with \'get/set\' !");
+            }
+
+            if (hasDefault) {
+
+                (function () {
+                    // 添加新的内部属性，将原来的属性修改为 getter/setter 形式
+                    // 以 _ 开头将自动设置property 为 Fire.HideInInspector
+                    var newKey = "_val$" + propName;
+                    var newValue = {};
+                    properties[newKey] = newValue;
+
+                    var notify = val.notify;
+                    
+                    val.get = function () {
+                        return this[newKey];
+                    };
+                    val.set = function (value) {
+                        var oldValue = this[newKey];
+                        this[newKey] = value;
+                        notify.call(this, oldValue);
+                    };
+
+                    // 将不能用于get方法中的属性移动到newValue中
+                    for (var i in _propertyNotForGet) {
+                        var prop = _propertyNotForGet[i];
+
+                        if (val.hasOwnProperty(prop)) {
+                            newValue[prop] = val[prop];
+                            delete val[prop];
+                        }
+                    }
+                })();
+            }
+            else {
+                 Fire.warn("\'notify\' must work with \'default\' !");
+            }
+        }
+    }
+}
 
 var tmpAttrs = [];
 function parseAttributes (attrs, className, propName) {
