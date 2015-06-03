@@ -216,12 +216,12 @@ function preParseProperties (className, properties) {
                     
                     val.get = function () {
                         return this[newKey];
-                    }
+                    };
                     val.set = function (value) {
                         var oldValue = this[newKey];
                         this[newKey] = value;
                         notify.call(this, oldValue);
-                    }
+                    };
 
                     // 将不能用于get方法中的属性移动到newValue中
                     for (var i in _propertyNotForGet) {
