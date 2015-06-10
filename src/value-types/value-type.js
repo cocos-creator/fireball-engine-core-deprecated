@@ -34,7 +34,7 @@ JS.mixin(ValueType.prototype, {
      * @return {string}
      */
     toString: function () {
-        return Object.valueOf.call(this);
+        return '[object Object]';
     },
 
     /**

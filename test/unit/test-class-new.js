@@ -375,4 +375,4 @@ test('property notify', function () {
 
     strictEqual(string1, "0 : 4", 'dogs has 4 legs');
     strictEqual(string2, "0 : 2", 'dogs has 2 eyes');
-})
+});
