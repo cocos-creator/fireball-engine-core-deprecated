@@ -221,9 +221,8 @@ function preParseProperties (properties) {
                 var newValue = {};
                 properties[newKey] = newValue;
                 // 将不能用于get方法中的属性移动到newValue中
-                for (var i in _propertyNotForGet) {
+                for (var i = 0; i < _propertyNotForGet.length; i++) {
                     var prop = _propertyNotForGet[i];
-
                     if (val.hasOwnProperty(prop)) {
                         newValue[prop] = val[prop];
                         delete val[prop];

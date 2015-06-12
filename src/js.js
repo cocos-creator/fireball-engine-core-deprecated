@@ -1,13 +1,15 @@
 
-///**
-// * @param {object} obj
-// * @param {string} name
-// * @return {object}
-// */
-function _getPropertyDescriptor(obj, name) {
-    if (obj) {
-        var pd = Object.getOwnPropertyDescriptor(obj, name);
-        return pd || _getPropertyDescriptor(Object.getPrototypeOf(obj), name);
+function _getPropertyDescriptor (obj, name) {
+    var pd = Object.getOwnPropertyDescriptor(obj, name);
+    if (pd) {
+        return pd;
+    }
+    var p = Object.getPrototypeOf(obj);
+    if (p) {
+        return _getPropertyDescriptor(p, name);
+    }
+    else {
+        return null;
     }
 }
 
@@ -35,9 +37,15 @@ var JS = {
         obj = obj || {};
         for (var i = 1, length = arguments.length; i < length; i++) {
             var source = arguments[i];
-            for ( var name in source) {
-                if ( !(name in obj) ) {
-                    _copyprop( name, source, obj);
+            if (source) {
+                if (typeof source !== 'object') {
+                    Fire.error('Fire.JS.addon called on non-object:', source);
+                    continue;
+                }
+                for ( var name in source) {
+                    if ( !(name in obj) ) {
+                        _copyprop( name, source, obj);
+                    }
                 }
             }
         }
@@ -58,7 +66,7 @@ var JS = {
             var source = arguments[i];
             if (source) {
                 if (typeof source !== 'object') {
-                    Fire.error('Fire.mixin called on non-object:', source);
+                    Fire.error('Fire.JS.mixin called on non-object:', source);
                     continue;
                 }
                 for ( var name in source) {
@@ -107,7 +115,16 @@ var JS = {
         for (var i = 0; i < keys.length; i++) {
             delete obj[keys[i]];
         }
-    }
+    },
+
+    /**
+     * 查找所有父类，直到找到原始定义 property 的地方
+     * @method getPropertyDescriptor
+     * @param {object} obj
+     * @param {string} name
+     * @return {object}
+     */
+    getPropertyDescriptor: _getPropertyDescriptor
 };
 
 /**
@@ -167,7 +184,7 @@ JS.getClassName = function (obj) {
                 if (registered && registered !== constructor) {
                     var error = 'A Class already exists with the same ' + key + ' : "' + id + '".';
                     // @ifdef EDITOR
-                    if (!Fire.isEditor) {
+                    if (!FIRE_EDITOR) {
                         error += ' (This may be caused by error of unit test.) \
 If you dont need serialization, you can set class id to "". You can also call \
 Fire.JS.unregisterClass to remove the id of unused class';

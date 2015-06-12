@@ -183,10 +183,19 @@ var _metaClass = {
         _appendProp.call(this, name/*, true*/);
         // @endif
 
-        Object.defineProperty(this.prototype, name, {
-            get: getter,
-            configurable: true
-        });
+        if (Object.getOwnPropertyDescriptor(this.prototype, name)) {
+            Object.defineProperty(this.prototype, name, {
+                get: getter
+            });
+        }
+        else {
+            Object.defineProperty(this.prototype, name, {
+                get: getter,
+                configurable: true,
+                enumerable: true
+            });
+        }
+
         // @ifdef EDITOR
         Fire.attr(this, name, { hasGetter: true }); // 方便 editor 做判断
         // @endif
@@ -224,15 +233,24 @@ var _metaClass = {
                 }
                 setter.call(this, value);
             },
-            configurable: true
+            configurable: true,
+            enumerable: true
         });
         // @endif
         // ----------------------------------------------------------------
         // @ifndef EDITOR
-        Object.defineProperty(this.prototype, name, {
-            set: setter,
-            configurable: true
-        });
+        if (Object.getOwnPropertyDescriptor(this.prototype, name)) {
+            Object.defineProperty(this.prototype, name, {
+                set: setter
+            });
+        }
+        else {
+            Object.defineProperty(this.prototype, name, {
+                set: setter,
+                configurable: true,
+                enumerable: true
+            });
+        }
         // @endif
         // ================================================================
         // @ifdef EDITOR
